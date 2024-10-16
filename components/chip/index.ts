@@ -1,0 +1,1 @@
+export { default as chip } from './ui.vue'

@@ -1,0 +1,44 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "overrides": {
+    "vue": "^3.4.19"
+  },
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@ctrl/tinycolor": "^4.1.0",
+    "@infectoone/vue-ganttastic": "^2.3.2",
+    "@nuxtjs/axios": "^5.13.6",
+    "@pinia/nuxt": "^0.5.1",
+    "@prisma/client": "^5.10.1",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.3.3",
+    "d3": "^7.9.0",
+    "dayjs": "^1.11.13",
+    "html2pdf.js": "^0.10.2",
+    "i": "^0.3.7",
+    "lay-excel": "^1.8.3",
+    "lodash": "^4.17.21",
+    "npm": "^10.5.0",
+    "nuxt": "^3.10.2",
+    "pinia": "^2.1.7",
+    "prisma": "^5.10.1",
+    "uuid": "^9.0.1",
+    "vanilla-calendar-pro": "^2.9.10",
+    "vue": "^3.4.19",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@kevinmarrec/nuxt-pwa": "^0.17.0",
+    "@types/uuid": "^9.0.8",
+    "nuxt-auth-utils": "^0.0.20",
+    "nuxt-icon": "^0.6.10"
+  }
+}

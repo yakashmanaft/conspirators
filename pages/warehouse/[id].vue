@@ -1,0 +1,1698 @@
+<script lang="ts" setup>
+import { onMounted, watch } from "vue";
+import { Container } from "@/shared/container";
+
+useHead({
+  title: `Склад | Соучастники`,
+  meta: [
+    {
+      name: "description",
+      content: "My Description",
+    },
+  ],
+  link: [
+    {
+      rel: "stylesheet",
+      href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
+      integrity:
+        "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH",
+      crossorigin: "anonymous",
+      type: "text/css",
+    },
+  ],
+  script: [
+    {
+      src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+      integrity:
+        "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
+      crossorigin: "anonymous",
+    },
+  ],
+});
+
+//
+const route = useRoute();
+const router = useRouter();
+//
+const items = ref(null);
+const item = ref(null);
+const itemLocations = ref(null);
+const switchedItem = ref(null);
+const projects = ref(null);
+const locations = ref(null);
+const organizations = ref(null);
+// const allTransactions = ref(null);
+const currentItemTransactions = ref(null);
+//
+const sumQtyUniqLocations = ref(null);
+//
+const switchedLocation = ref({
+  location: "",
+  locationID: null,
+});
+// other locations info actions buttons
+const infoActionBtns = ref([
+  {
+    name: "available",
+    title: "Наличие",
+  },
+  {
+    name: "history",
+    title: "История",
+  },
+]);
+const infoActionBtn = ref("available");
+
+// subtitles
+const subtitles = ref([
+  {
+    name: "description",
+    title: "Описание",
+    guard: false,
+  },
+  {
+    name: "available",
+    title: "Наличие",
+    guard: true,
+  },
+  {
+    name: "history",
+    title: "История",
+    guard: false,
+  },
+]);
+const currentSubtitle = ref("description");
+
+const showCaseByAvailable = ref(null);
+const showCaseByHistory = ref(null);
+
+// Дергаем пользователей из БД с помощью функций из стора
+const { users } = storeToRefs(useUsersStore());
+const { loadData } = useUsersStore();
+
+// Получаем и сразу трансформируем массив транзакций из БД
+const { data: allTransactions } = await useFetch("/api/warehouse/ledger", {
+  transform: (allTransactions) => {
+    return allTransactions.sort((a, b) =>
+      b.created_at > a.created_at ? 1 : -1
+    );
+  },
+});
+
+// onBeforeMount(async () => {
+//   if(!switchedItem.value.length) {
+//     infoActionBtn.value = 'history'
+//   }
+// })
+
+onMounted(async () => {
+  //
+  await loadData();
+  projects.value = await getProjects();
+  items.value = await getItems();
+  locations.value = await getLocations();
+  organizations.value = await getOrganizations();
+  // allTransactions.value = await getWarehouseTransaction();
+
+  item.value = items.value.find((item: any) => item.id == route.params.id);
+
+  itemLocations.value = items.value.filter((element) => {
+    if (
+      (element.type === "stuff" || element.type === "consumables") &&
+      // element.type === "stuff" &&
+      // element.type === "consumables" &&
+      element.title === item.value.title &&
+      element.location !== "deleted" &&
+      element.location !== "archive"
+    ) {
+      return element;
+    }
+  });
+
+  // суммируем количество одной и той ж позиции (но которая может быть с разными собственниками или отвесттвенными)
+  sumQtyUniqLocations.value = Object.values(
+    itemLocations.value.reduce((acc, { id, location, locationID, qty }) => {
+      let key = location + "|" + locationID;
+
+      acc[key] = acc[key] || { id, location, locationID, qty: 0 };
+      acc[key].qty += qty;
+      return acc;
+    }, {})
+  );
+
+  if (item.value) {
+    switchedLocation.value.location = item.value.location;
+    switchedLocation.value.locationID = item.value.locationID;
+  }
+
+  switchedItem.value = itemLocations.value.filter((element) => {
+    if (
+      switchedLocation.value.location === element.location &&
+      switchedLocation.value.locationID === element.locationID
+    ) {
+      return element;
+    }
+  });
+
+  if (switchedLocation.value.location === "all") {
+    currentItemTransactions.value = allTransactions.value.filter((element) => {
+      if (element.itemTitle === item.value.title) {
+        return element;
+      }
+    });
+  } else {
+    currentItemTransactions.value = allTransactions.value.filter((element) => {
+      if (
+        element.itemTitle === item.value.title
+        // &&
+        //   element.locationTo === switchedLocation.value.location &&
+        //   element.locationToID === switchedLocation.value.locationID)
+        // (element.itemTitle === item.value.title &&
+        //   element.locationFrom === switchedLocation.value.location &&
+        //   element.locationFromID === switchedLocation.value.locationID)
+      ) {
+        return element;
+      }
+    });
+  }
+
+  // showCase();
+  if (!switchedItem.value) {
+    infoActionBtn.value = "history";
+  }
+});
+
+// translators functions
+const translateLocation = (id: any, location: string) => {
+  if (location && id) {
+    // PROJECTS
+    if (location === "project") {
+      if (projects.value) {
+        let project = projects.value.find((project) => project.id == id);
+        return project.title;
+      }
+    }
+
+    // SKLAD (location)
+    else if (location === "sklad") {
+      if (locations.value) {
+        let locationItem = locations.value.find(
+          (locationItem) => locationItem.id == id
+        );
+        return locationItem.title;
+      }
+    }
+
+    // OFFICE (locations)
+    else if (location === "office") {
+      if (locations.value) {
+        let locationItem = locations.value.find(
+          (locationItem) => locationItem.id == id
+        );
+        return `${locationItem.title}`;
+      }
+    }
+
+    // REPAIR (locations)
+    else if (location === "repair") {
+      if (locations.value) {
+        let locationItem = locations.value.find(
+          (locationItem) => locationItem.id == id
+        );
+        return `Ремонт: ${locationItem.title}`;
+      }
+    }
+
+    // ARCHIVE
+    else if (location === "archive") {
+      return `Архив`;
+    }
+
+    // DELETED
+    else if (location === "deleted") {
+      return "Списание";
+    }
+
+    // ELSE location
+    else {
+      return alert(
+        "warehouse :id.vue error - strange object.location in translateLocation function"
+      );
+    }
+  } else {
+    alert("warehouse :id.vue translateLocation function error");
+  }
+  return location;
+};
+const translateOwner = (ownerID: any, ownerType: string) => {
+  if (ownerID && ownerType && users.value && organizations.value) {
+    if (ownerType === "user") {
+      // return `USER #${ownerID}`
+      let userItem = users.value.find((item) => item.id === ownerID);
+      return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
+    } else if (ownerType === "company") {
+      // return `Компания #${ownerID}`
+      let organizationItem = organizations.value.find(
+        (item) => item.id === ownerID
+      );
+      return organizationItem.title;
+    }
+  } else if (ownerID === 0 && !ownerType) {
+    return `Не соучастник`;
+  }
+};
+const translateResponsibles = (id: any) => {
+  if (id) {
+    let responsible = users.value.find((user) => user.id === id);
+    return `${responsible?.surname} ${responsible?.name[0]}. ${responsible?.middleName[0]}.`;
+  }
+};
+const translateItemType = (type) => {
+  if (type === "tools") {
+    return "Инструмент";
+  } else if (type === "stuff") {
+    return "Материалы";
+  } else if (type === "consumables") {
+    return "Расходники";
+  } else if (type === "technic") {
+    return "Техника";
+  } else if (type === "office equipment") {
+    return "Оргтехника";
+  }else if (type === "equipment") {
+    return "Экипировка"
+  } else {
+    return type;
+  }
+};
+const translateDate = (date) => {
+  // var day = date.getDate();
+  // day = day < 10 ? "0" + day : day;
+  // var month = date.getMonth() + 1;
+  // month = month < 10 ? "0" + month : month;
+  // var year = date.getFullYear();
+  // return day + "." + month + "." + year;
+  // Нихуя не работает.... как не хочетс библиотеки устанавливать...
+  return date.substring(0,10);
+};
+
+//
+/**
+ * @desc Get warehouse items, projects, locations, organizations, warehouseTransactions from BD
+ */
+async function getItems() {
+  return await $fetch("/api/warehouse/item");
+}
+
+async function getProjects() {
+  return await $fetch("/api/projects/projects");
+}
+
+async function getLocations() {
+  return await $fetch("/api/locations/locations");
+}
+async function getOrganizations() {
+  return await $fetch("/api/organizations/organizations");
+}
+// async function getWarehouseTransaction() {
+//   return await $fetch("/api/warehouse/ledger");
+// }
+
+// sum items qty
+const sumItemsQty = () => {
+  let total;
+  if (items.value) {
+    if (itemLocations.value && item.value) {
+      total = itemLocations.value.reduce((sum, el) => sum + el.qty, 0);
+    }
+  }
+  return total;
+};
+
+// SHOW HISTORY or AVAILABLE CASE
+const showCase = () => {
+  if (
+    itemLocations.value.length <= 1 &&
+    currentItemTransactions.value.length !== 0
+  ) {
+    showCaseByAvailable.value = false;
+    showCaseByHistory.value = true;
+  } else if (
+    itemLocations.value.length <= 1 &&
+    currentItemTransactions.value.length === 0
+  ) {
+    showCaseByAvailable.value = false;
+    showCaseByHistory.value = false;
+  } else {
+    if (infoActionBtn.value === "available") {
+      showCaseByAvailable.value = true;
+      showCaseByHistory.value = false;
+    } else if (infoActionBtn.value === "history") {
+      showCaseByAvailable.value = false;
+      showCaseByHistory.value = true;
+    }
+  }
+  // itemLocations.value.length > 1
+  // currentItemTransactions.value.length !== 0
+};
+
+// expended item block
+const currentExpendedItemBlock = ref(null);
+
+const toggleExpendedItemBlock = (itemID: number) => {
+  if (itemID) {
+    currentExpendedItemBlock.value = `expended-item-${itemID}_block`;
+    let block = document.querySelector(`#${currentExpendedItemBlock.value}`);
+    // console.log(block);
+    // console.log(currentExpendedItemBlock.value);
+    if (block) {
+      //   console.log(block)
+      if (block.classList.contains("expended-item_opened")) {
+        block.classList.remove("expended-item_opened");
+      } else {
+        block.classList.add("expended-item_opened");
+      }
+    }
+
+    console.log(currentExpendedItemBlock.value);
+  }
+};
+
+// Router create link
+const routerLocationsFunc = (locationID, location) => {
+  if (location === "project") {
+    router.push(`/projects/${locationID}`);
+  } else if (
+    location === "sklad" ||
+    location === "repair" ||
+    location === "office"
+  ) {
+    router.push(`/locations/${locationID}`);
+  } else {
+    alert("Путь не найден (warehouse :id... routerLocationsFunc )");
+  }
+};
+const routerUsersFunc = (ownerID, ownerType) => {
+  if (ownerType === "company") {
+    router.push(`/organizations/${ownerID}`);
+  } else if (ownerType === "user") {
+    router.push(`/partners/${ownerID}`);
+  } else {
+    alert("Путь не найден (warehouse :id... routerUsersFunc )");
+  }
+};
+
+// Добавляем знак +/- к транзакции
+const addSignToTransaction = (
+  locationFromID,
+  locationFrom,
+  locationToID,
+  locationTo
+) => {
+  if (item.value && switchedLocation.value.location !== "all") {
+    if (
+      locationFromID === switchedLocation.value.locationID &&
+      locationFrom === switchedLocation.value.location
+    ) {
+      return "-";
+    } else if (
+      locationToID === switchedLocation.value.locationID &&
+      locationTo === switchedLocation.value.location
+    ) {
+      return "+";
+    }
+  }
+};
+
+// скрываем некоторые элементы по условию
+const hideOwnerCell = () => {
+  // console.log(window.screen.width);
+  if (switchedLocation.value.location === "all" && window.screen.width < 576) {
+    return `display: none`;
+  }
+};
+
+const setGridTemplate = () => {
+  if (switchedLocation.value.location !== "all" && window.screen.width < 767)
+    return `grid-template-columns: 30px 1fr 1fr;`;
+};
+
+// функции раскраски
+const locationMarkColorized = (location: string) => {
+  if (location) {
+    return `mark_${location}`;
+  }
+};
+const historyMarkColorized = (transactionType: string, location: string) => {
+  if (transactionType && transactionType !== "move" && !location) {
+    return `mark_history_${transactionType}`;
+  } else if (transactionType && transactionType === "move" && location) {
+    return `mark_history_${transactionType}_${location}`;
+  }
+};
+
+// WATHERS
+watch(switchedLocation, () => {
+  // ALL
+  if (switchedLocation.value.location === "all") {
+    switchedItem.value = itemLocations.value;
+    //
+    currentItemTransactions.value = allTransactions.value.filter((element) => {
+      if (element.itemTitle === item.value.title) {
+        return element;
+      }
+    });
+  }
+  //
+  else {
+    switchedItem.value = itemLocations.value.filter((element) => {
+      if (
+        switchedLocation.value.location === element.location &&
+        switchedLocation.value.locationID === element.locationID
+      ) {
+        return element;
+      }
+    });
+    //
+    currentItemTransactions.value = allTransactions.value.filter((element) => {
+      if (
+        element.itemTitle === item.value.title &&
+        element.locationTo === switchedLocation.value.location &&
+        element.locationToID === switchedLocation.value.locationID
+      ) {
+        return element;
+      } else if (
+        element.itemTitle === item.value.title &&
+        element.locationFrom === switchedLocation.value.location &&
+        element.locationFromID === switchedLocation.value.locationID
+      ) {
+        return 123;
+      }
+    });
+  }
+});
+
+watch(infoActionBtn, (next, prev) => {
+  // если предыдущая - available
+  if (prev === "available" && switchedLocation.value.location === "all") {
+    switchedLocation.value = {
+      location: item.value.location,
+      locationID: item.value.locationID,
+    };
+  }
+  // если следующая - history
+  if (next === "history") {
+    currentItemTransactions.value = allTransactions.value.filter((element) => {
+      if (
+        element.itemTitle === item.value.title &&
+        element.locationTo === switchedLocation.value.location &&
+        element.locationToID === switchedLocation.value.locationID
+      ) {
+        return element;
+      } else if (
+        element.itemTitle === item.value.title &&
+        element.locationFrom === switchedLocation.value.location &&
+        element.locationFromID === switchedLocation.value.locationID
+      ) {
+        return element;
+      }
+    });
+  }
+});
+</script>
+
+<template>
+  <Container>
+    <div v-if="item">
+      <!-- ХЭДЕР страницы -->
+      <div class="page_header">
+        <!-- Заголовок -->
+        <h1>{{ item.title }}</h1>
+
+        <!-- ДОП инфа -->
+        <div style="margin: 0; margin-top: 1rem">
+          <!-- Кол-во -->
+          <p>
+            Кол-во:
+            <span style="font-weight: bold"
+              >{{ item.qty }} <span>{{ item.measure }}</span></span
+            >
+          </p>
+          <!-- Местонахождени -->
+          <p>
+            Где:
+            <span
+              class="item-location_mark"
+              :class="locationMarkColorized(item.location)"
+              @click="routerLocationsFunc(item.locationID, item.location)"
+              ><label style="cursor: pointer">{{
+                translateLocation(item.locationID, item.location)
+              }}</label>
+            </span>
+          </p>
+          <!-- Собственник -->
+          <p>
+            Собственник:
+            <span
+              style="font-weight: bold"
+              class="link_hover"
+              @click="routerUsersFunc(item.ownerID, item.ownerType)"
+              >{{ translateOwner(item.ownerID, item.ownerType) }}</span
+            >
+          </p>
+          <!-- Отвественный -->
+          <p>
+            Ответственный:
+            <span
+              style="font-weight: bold"
+              class="link_hover"
+              @click="$router.push(`/partners/${item.responsible}`)"
+              >{{ translateResponsibles(item.responsible) }}</span
+            >
+          </p>
+        </div>
+      </div>
+
+      <!-- Переключатели вкладок -->
+      <div class="toggle-subtitle">
+        <div
+          v-for="(subtitle, i) in subtitles.filter((el) => {
+            if (
+              el.guard &&
+              (item.type === 'office equipment' || item.type === 'tools')
+            ) {
+            } else {
+              return el;
+            }
+          })"
+          class="switch-subtitle_el"
+        >
+          <input
+            type="radio"
+            :id="i"
+            :value="subtitle.name"
+            v-model="currentSubtitle"
+          />
+          <label :for="i"
+            ><h2 style="margin: 0">{{ subtitle.title }}</h2></label
+          >
+        </div>
+      </div>
+
+      <!-- ОПИСАНИЕ -->
+      <div style="margin-top: 1rem" v-if="currentSubtitle === 'description'">
+        <!-- <h2 style="margin-top: 1rem">Описание</h2> -->
+
+        <!-- ПО ТИПУ ПРЕДМЕТА -->
+        <div>
+          <!-- Инструмент -->
+          <div v-if="item.type === 'tools' || item.type === 'office equipment'">
+            <!-- <p>Тип: {{ item.type }}</p> -->
+            <ul>
+              <li>Тип: {{ translateItemType(item.type) }}</li>
+              <li>Серийник: {{ item.serial }}</li>
+              <li>Дата производства: {{ item.productionDate }}</li>
+              <li>Закупочная цена: {{ item.price }}</li>
+            </ul>
+          </div>
+          <!-- Материалы -->
+          <div v-if="item.type === 'stuff'">
+            <p>Тип: {{ translateItemType(item.type) }}</p>
+          </div>
+          <!-- Расходники -->
+          <div v-if="item.type === 'consumables'">
+            <p>Тип: {{ translateItemType(item.type) }}</p>
+            <!-- {{ item }} -->
+          </div>
+          <!-- Техника -->
+          <div v-if="item.type === 'technic'">
+            <p>Тип: {{ translateItemType(item.type) }}</p>
+            <ul>
+              <li>Какие данные по технике чекать имеет смысл?</li>
+            </ul>
+            <!-- {{ item }} -->
+          </div>
+          <!-- Текст -->
+          <p>Это item:{{ item }}</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1rem;">
+        <!-- ЛОКАЦИИ -->
+        <div
+          v-if="itemLocations.length > 1 && currentSubtitle !== 'description'"
+        >
+          <!-- <h2>{{ item.title }} в других местах</h2> -->
+          <fieldset id="item-locations" class="switch-item_wrapper">
+            <!-- ALL only for available items in location / project -->
+            <div class="switch-item_el" v-if="infoActionBtn === 'available'">
+              <input
+                type="radio"
+                id="all-item-view"
+                name="item-locations"
+                :value="{ location: 'all', locationID: null }"
+                v-model="switchedLocation"
+              />
+              <label class="item-label_element" for="all-item-view">
+                Всего
+                <span v-if="infoActionBtn === 'available'">{{
+                  sumItemsQty()
+                }}</span>
+              </label>
+              <!-- infoActionBtn -->
+            </div>
+
+            <!-- Если location только один (в массиве itemLocations нет повторений и других location) -->
+            <div
+              class="switch-item_el"
+              v-for="(location, i) in sumQtyUniqLocations"
+              :key="i"
+            >
+              <input
+                type="radio"
+                :id="`${location.location}${location.id}`"
+                name="item-locations"
+                :value="{
+                  location: location.location,
+                  locationID: location.locationID,
+                }"
+                v-model="switchedLocation"
+              />
+              <label
+                class="item-label_element"
+                :class="locationMarkColorized(location.location)"
+                :for="`${location.location}${location.id}`"
+                >{{
+                  translateLocation(location.locationID, location.location)
+                }}
+                <span v-if="infoActionBtn === 'available'">{{
+                  location.qty
+                }}</span></label
+              >
+            </div>
+          </fieldset>
+          <!-- set item to view -->
+        </div>
+
+        <!-- hISTOrY TRANSACTIONS -->
+        <div class="item-history_block" v-if="currentSubtitle === 'history'">
+          <!-- <h3>История</h3> -->
+          <table class="table table-by-history">
+            <!-- head of table -->
+            <thead class="item-table_header">
+              <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Транзакция</th>
+                <th scope="col">Автор</th>
+              </tr>
+            </thead>
+
+            <!-- body of table -->
+            <tbody>
+              <div v-if="currentItemTransactions">
+                <div v-if="!currentItemTransactions.length">Нет истории</div>
+              </div>
+
+              <!-- transactions -->
+              <tr
+                v-for="(transaction, i) in currentItemTransactions"
+                :key="i"
+                class="table-row_wrapper"
+              >
+                <!-- 1 -->
+                <td scope="col" class="transaction_date">
+                  <span>{{ translateDate(transaction.created_at) }}</span>
+                </td>
+
+                <!-- 2 -->
+                <!-- Варианты описания транзакции -->
+                <td scope="col">
+                  <!-- CREATED / ДОБАВЛЕН-->
+                  <p
+                    class="transaction_paragraph"
+                    v-if="transaction.transactionType === 'created'"
+                  >
+                    +{{ transaction.qty }}{{ transaction.measure }}
+                    <span
+                      :class="historyMarkColorized(transaction.transactionType)"
+                      >Добавлен</span
+                    >
+                  </p>
+                  <!-- ADD / ПРИХОД-->
+                  <p
+                    class="transaction_paragraph"
+                    v-if="transaction.transactionType === 'add'"
+                  >
+                    +{{ transaction.qty }}{{ transaction.measure }}
+                    <span
+                      :class="historyMarkColorized(transaction.transactionType)"
+                      >Приход</span
+                    >
+                  </p>
+                  <!-- SUB / РАСХОД-->
+                  <p
+                    class="transaction_paragraph"
+                    v-if="transaction.transactionType === 'sub'"
+                  >
+                    {{
+                      addSignToTransaction(
+                        transaction.locationFromID,
+                        transaction.locationFrom,
+                        transaction.locationToID,
+                        transaction.locationTo
+                      )
+                    }}{{ transaction.qty }}{{ transaction.measure }}
+                    <span
+                      :class="historyMarkColorized(transaction.transactionType)"
+                      >Расход</span
+                    >
+                  </p>
+                  <!-- MOVE -->
+                  <div
+                    class="transaction_paragraph paragraph-move_wrapper"
+                    v-if="transaction.transactionType === 'move'"
+                  >
+                    <div style="white-space: nowrap">
+                      {{
+                        addSignToTransaction(
+                          transaction.locationFromID,
+                          transaction.locationFrom,
+                          transaction.locationToID,
+                          transaction.locationTo
+                        )
+                      }}{{ transaction.qty }}{{ transaction.measure }}
+                    </div>
+
+                    <!--  -->
+                    <div class="transaction_path">
+                      <!-- transaction location from -->
+                      <span
+                        :class="
+                          historyMarkColorized(
+                            transaction.transactionType,
+                            transaction.locationFrom
+                          )
+                        "
+                        class="link_hover"
+                        @click="
+                          routerLocationsFunc(
+                            transaction.locationFromID,
+                            transaction.locationFrom
+                          )
+                        "
+                      >
+                        {{
+                          translateLocation(
+                            transaction.locationFromID,
+                            transaction.locationFrom
+                          )
+                        }}
+                      </span>
+
+                      
+                      <!--  -->
+                      <span style="white-space: nowrap;"
+                        >-></span
+                      >
+                      <!-- transaction loction to -->
+                      <span
+                        :class="
+                          historyMarkColorized(
+                            transaction.transactionType,
+                            transaction.locationTo
+                          )
+                        "
+                        class="link_hover"
+                        @click="
+                          routerLocationsFunc(
+                            transaction.locationToID,
+                            transaction.locationTo
+                          )
+                        "
+                        >{{
+                          translateLocation(
+                            transaction.locationToID,
+                            transaction.locationTo
+                          )
+                        }}</span
+                      >
+                    </div>
+                  </div>
+                </td>
+
+                <!-- 3 -->
+                <!-- Автор транзакции -->
+                <td scope="col" class="transaction_athor_wrapper">
+                  <span class="hide-575" style="margin-right: 0.5rem"
+                    >Автор:</span
+                  >
+                  <span
+                    @click="$router.push(`/partners/${transaction.authorID}`)"
+                    class="link_hover"
+                    >{{ translateResponsibles(transaction.authorID) }}</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- AVAILABLE IN LOCATION -->
+        <div
+          class="item-locations_block"
+          v-if="currentSubtitle === 'available'"
+        >
+          <!-- <h3>Наличие</h3> -->
+          <!-- Предметы по разным параметрам, но на одной локации -->
+          <table class="table table-by-available" v-if="switchedItem.length">
+            <thead class="item-table_header">
+              <tr :style="setGridTemplate()">
+                <th scope="col"></th>
+                <!-- <th scope="col">Наименование</th> -->
+                <th v-if="switchedLocation.location === 'all'" scope="col">
+                  Где
+                </th>
+                <th scope="col">Кол-во</th>
+                <th scope="col" class="hide-991" :style="hideOwnerCell()">
+                  Собственник
+                </th>
+                <th scope="col" class="hide-max-767">Ответственный</th>
+              </tr>
+            </thead>
+            <tbody>
+              <div v-if="switchedItem">
+                <div v-if="!switchedItem.length">Ничего нет</div>
+              </div>
+
+              <!--  -->
+              <tr
+                :style="setGridTemplate()"
+                class="table-row_wrapper"
+                v-for="element in switchedItem"
+                :key="element.id"
+              >
+                <!-- 1 -->
+                <!-- btn expend -->
+                <td>
+                  <label>
+                    <input
+                      type="checkbox"
+                      id="expend-item"
+                      :class="`expended-item-${element.id}_block`"
+                    />
+                    <Icon
+                      class="expand-item_icon"
+                      @click="toggleExpendedItemBlock(element.id)"
+                      name="material-symbols-light:expand-more"
+                      size="28px"
+                    />
+                  </label>
+                </td>
+
+                <!-- 2 -->
+                <!-- IF ALL LOCATIONS -->
+                <td scope="col" v-if="switchedLocation.location === 'all'">
+                  <span
+                    class="link_hover"
+                    @click="
+                      routerLocationsFunc(element.locationID, element.location)
+                    "
+                    >{{
+                      translateLocation(element.locationID, element.location)
+                    }}</span
+                  >
+                </td>
+
+                <!-- 3 -->
+                <!-- QTY, MEASURE -->
+                <td class="item-qty" scope="col">
+                  <div class="location-mark">
+                    <span>{{ element.qty }} {{ element.measure }}</span>
+                  </div>
+                </td>
+
+                <!-- 4 -->
+                <!-- OWNER -->
+                <!-- v-if="switchedLocation.location !== 'all'" -->
+                <td
+                  class="span-2 hide-767"
+                  scope="col"
+                  :style="hideOwnerCell()"
+                >
+                  <span
+                    style="white-space: nowrap"
+                    class="link_hover"
+                    @click="routerUsersFunc(element.ownerID, element.ownerType)"
+                  >
+                    {{ translateOwner(element.ownerID, element.ownerType) }}
+                  </span>
+                </td>
+
+                <!-- 5 -->
+                <!-- RESPONSIBLE -->
+                <td class="span-2 hide-767 hide-max-767" scope="col">
+                  <span
+                    style="white-space: nowrap"
+                    class="link_hover"
+                    @click="$router.push(`/partners/${element.responsible}`)"
+                  >
+                    {{ translateResponsibles(element.responsible) }}
+                  </span>
+                </td>
+
+                <!-- 6 -->
+                <!-- Expended item block -->
+                <td
+                  class="span-5 expended-item"
+                  :id="`expended-item-${element.id}_block`"
+                >
+                  <div class="expended-item_content">
+                    <!-- show owner -->
+                    <div
+                      class="hide-max-575 expended-content_article"
+                      v-if="switchedLocation.location === 'all'"
+                    >
+                      <p>
+                        Собственник:
+                        <span
+                          @click="
+                            routerUsersFunc(element.ownerID, element.ownerType)
+                          "
+                          class="link_hover"
+                          >{{
+                            translateOwner(element.ownerID, element.ownerType)
+                          }}</span
+                        >
+                      </p>
+                    </div>
+                    <!-- show responsible -->
+                    <div class="hide-min-768 expended-content_article">
+                      <p>
+                        Ответственный:
+                        <span
+                          class="link_hover"
+                          @click="
+                            $router.push(`/partners/${element.responsible}`)
+                          "
+                          >{{
+                            translateResponsibles(element.responsible)
+                          }}</span
+                        >
+                      </p>
+                    </div>
+                    <!--  -->
+                    <div class="expended-content_article">
+                      <p>В разработке...</p>
+                      <p>{{ currentExpendedItemBlock }}</p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          {{itemLocations}}
+        </div>
+      </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+  </Container>
+</template>
+
+<style scoped>
+.toggle-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.switch-subtitle_el input[type="radio"] {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+}
+.switch-subtitle_el label h2 {
+  color: var(--bs-tertiary-color);
+}
+.switch-subtitle_el label h2:hover {
+  cursor: pointer;
+}
+.switch-subtitle_el input[type="radio"]:checked + label h2 {
+  color: unset;
+}
+
+.switch-item_wrapper {
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  gap: 1rem;
+  scrollbar-width: none;
+  background-color: var(--bs-secondary-bg);
+  border-bottom: 1px solid var(--bs-border-color);
+}
+.switch-item_wrapper::-webkit-scrollbar {
+  display: none;
+}
+.infoActionBtns_wrapper {
+  margin: 0;
+  display: flex;
+  /* gap: 0.5rem; */
+  /* background-color: cyan; */
+}
+.infoActionBtns_el,
+.switch-item_el {
+  /* text-wrap: nowrap; */
+  white-space: nowrap;
+  position: relative;
+}
+
+.infoActionBtns_el label {
+  padding: 0.5rem 1rem;
+  transition: all 0.15s ease-in;
+}
+.infoActionBtns_el label:hover {
+  cursor: pointer;
+  /* background-color: var(--bs-tertiary-bg); */
+  background-color: var(--bs-secondary-bg);
+}
+
+.infoActionBtns_el input[type="radio"],
+.switch-item_el input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+.item-location {
+  color: var(--bs-body-bg);
+  /* background-color: var(--bs-body-color); */
+  padding: 4px 10px;
+  border-radius: 16px;
+}
+.item-location_mark {
+  padding: 4px 10px;
+  border-radius: 16px;
+}
+.item-location_mark:hover {
+  border-radius: 16px !important;
+}
+.switch-item_el label {
+  border-radius: 16px;
+  transition: all 0.15s ease-in;
+  padding: 4px 10px;
+  /* border: 1px solid var(--bs-secondary-bg); */
+}
+.switch-item_el label:hover {
+  cursor: pointer;
+  color: var(--bs-body-bg);
+  background-color: var(--bs-body-color);
+  /* background-color: var(--bs-secondary-bg); */
+  /* background-color: var(--bs-tertiary-bg); */
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+
+.switch-item_el input[type="radio"]:checked + label {
+  /* border-radius: 16px; */
+  /* padding: 4px 10px; */
+  color: var(--bs-body-bg);
+  background-color: var(--bs-body-color);
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+
+.switch-item_el label:hover:after,
+.switch-item_el input[type="radio"]:checked + label:after {
+  content: "";
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: var(--bs-body-color);
+}
+
+.infoActionBtns_el input[type="radio"]:checked + label {
+  background-color: var(--bs-secondary-bg);
+  /* background-color: var(--bs-tertiary-bg); */
+}
+
+.table-by-available .item-table_header tr,
+.table-by-available .table-row_wrapper {
+  padding: 1rem;
+  display: grid;
+  grid-gap: 1rem;
+  align-items: center;
+  grid-template-columns: 50px 1fr 100px 1fr 1fr;
+}
+
+.table-by-available .item-table_header,
+.table-by-history .item-table_header {
+  border-bottom: 1px solid var(--bs-secondary-bg);
+  background-color: var(--bs-secondary-bg);
+}
+.table-by-history .table-row_wrapper:nth-child(odd),
+.table-by-available .table-row_wrapper:nth-child(odd) {
+  background-color: var(--bs-secondary-bg);
+}
+.table-by-available .item-table_header tr th:nth-last-child(2),
+.table-by-available .item-table_header tr th:nth-last-child(1),
+.table-by-available .table-row_wrapper td:nth-last-child(3),
+.table-by-available .table-row_wrapper td:nth-last-child(2),
+.table-by-history .item-table_header tr th:nth-last-child(1),
+.table-by-history .table-row_wrapper td:nth-last-child(1) {
+  justify-self: flex-end;
+}
+.table-by-available .item-table_header tr th:nth-child(3),
+.table-by-available .table-row_wrapper td:nth-child(3) {
+  justify-self: flex-end;
+}
+
+.table-by-history .item-table_header tr,
+.table-by-history .table-row_wrapper {
+  padding: 1rem;
+  display: grid;
+  grid-gap: 1rem;
+  align-items: center;
+  grid-template-columns: 200px 1fr 1fr;
+}
+
+.table-row_wrapper td.span-5 {
+  grid-column: span 5;
+}
+
+.item-location label,
+.expand-item_icon {
+  cursor: pointer;
+}
+label #expend-item {
+  display: none;
+}
+label #expend-item:checked + .expand-item_icon {
+  transform: rotate(180deg);
+}
+.expended-item {
+  display: none;
+}
+.expended-item_opened {
+  display: inline-block;
+  border: none;
+  margin-left: 4rem;
+}
+/* .expended-item_btns button span:hover {
+  color: var(--bs-primary);
+} */
+.expended-item_container {
+  justify-content: space-between;
+}
+.expended-item_content {
+  margin-top: 1rem;
+}
+.link_hover:hover {
+  color: var(--bs-primary);
+  cursor: pointer;
+}
+
+/* LABEL */
+.item-locations_block,
+.item-history_block {
+  /* padding: 1rem 0; */
+  background-color: var(--bs-tertiary-bg);
+}
+.table > :not(caption) > * > * {
+  padding: 0;
+  color: unset;
+  background-color: unset;
+  box-shadow: unset;
+  border: none;
+}
+.table .table-by-available {
+  background-color: blue;
+}
+.transaction_paragraph {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.transaction_path {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.transaction_athor_wrapper {
+  white-space: nowrap;
+}
+
+/* ********* itemLocations marks colorized ********* */
+/* MARK_PROJECT */
+.mark_project {
+  color: var(--bs-success);
+  background-color: var(--bs-success-bg-subtle);
+}
+.mark_project:hover {
+  color: var(--bs-success) !important;
+  background-color: var(--bs-success-bg-subtle) !important;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el input[type="radio"]:checked + label.mark_project {
+  color: var(--bs-success);
+  background-color: var(--bs-success-bg-subtle);
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el label.mark_project:hover:after,
+.switch-item_el input[type="radio"]:checked + label.mark_project:after {
+  background-color: var(--bs-success-bg-subtle);
+}
+
+/* MARK_SKLAAD */
+.mark_sklad {
+  color: var(--bs-dark) !important;
+  background-color: var(--bs-primary-bg-subtle);
+}
+.mark_sklad:hover {
+  color: var(--bs-dark) !important;
+  background-color: var(--bs-primary-bg-subtle) !important;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el input[type="radio"]:checked + label.mark_sklad {
+  /* color: #fff; */
+  background-color: var(--bs-primary-bg-subtle);
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el label.mark_sklad:hover:after,
+.switch-item_el input[type="radio"]:checked + label.mark_sklad:after {
+  background-color: var(--bs-primary-bg-subtle);
+}
+
+/* MARK_OFFICE */
+.mark_office {
+  color: var(--bs-dark) !important;
+  background-color: var(--bs-primary-bg-subtle);
+}
+.mark_office:hover {
+  color: var(--bs-dark) !important;
+  background-color: var(--bs-primary-bg-subtle) !important;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el input[type="radio"]:checked + label.mark_office {
+  /* color: #fff; */
+  background-color: var(--bs-primary-bg-subtle);
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el label.mark_office:hover:after,
+.switch-item_el input[type="radio"]:checked + label.mark_office:after {
+  background-color: var(--bs-primary-bg-subtle);
+}
+
+/* REPAIR */
+.mark_repair {
+  color: var(--bs-warning);
+  background-color: var(--bs-warning-bg-subtle);
+}
+.mark_repair:hover {
+  color: var(--bs-warning) !important;
+  background-color: var(--bs-warning-bg-subtle) !important;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el input[type="radio"]:checked + label.mark_repair {
+  color: var(--bs-warning);
+  background-color: var(--bs-warning-bg-subtle);
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+}
+.switch-item_el label.mark_repair:hover:after,
+.switch-item_el input[type="radio"]:checked + label.mark_repair:after {
+  background-color: var(--bs-warning-bg-subtle);
+}
+
+/* ARCHIVE */
+.mark_archive {
+  background-color: var(--bs-danger-bg-subtle);
+}
+.mark_deleted {
+  background-color: var(--bs-secondary-bg);
+}
+
+/* ********* history transactions marks colorized ********* */
+/* MARK_HISTORY_CREATED */
+.mark_history_created,
+.mark_history_add,
+.mark_history_sub,
+.mark_history_move_project,
+.mark_history_move_office,
+.mark_history_move_sklad,
+.mark_history_move_repair {
+  padding: 4px 10px;
+  border-radius: 16px;
+  white-space: nowrap;
+}
+
+.mark_history_created {
+  /* background-color: var(--bs-light-bg-subtle); */
+  color: var(--bs-success);
+}
+
+/* MARK_HISTORY_ADD */
+.mark_history_add {
+  /* background-color: var(--bs-light-bg-subtle); */
+  color: var(--bs-success);
+}
+
+/* MARK_HISTORY_SUB */
+.mark_history_sub {
+  /* background-color: var(--bs-light-bg-subtle); */
+  color: var(--bs-danger);
+}
+.mark_history_move_project {
+  color: var(--bs-success);
+  background-color: var(--bs-success-bg-subtle);
+}
+.mark_history_move_office {
+  color: var(--bs-dark);
+  background-color: var(--bs-primary-bg-subtle);
+}
+.mark_history_move_sklad {
+  color: var(--bs-dark);
+  background-color: var(--bs-primary-bg-subtle);
+}
+.mark_history_move_repair {
+  color: var(--bs-warning);
+  background-color: var(--bs-warning-bg-subtle);
+}
+
+.hide-575 {
+  display: none;
+}
+.hide-min-768 {
+  display: none;
+}
+.hide-max-575 {
+  display: none;
+}
+
+@media screen and (max-width: 575px) {
+  .hide-575 {
+    display: inline-block;
+  }
+  .hide-max-575 {
+    display: block;
+  }
+  .hide-min-575 {
+    display: none;
+  }
+  .page_header {
+    margin: 0 1rem;
+  }
+  /* .table-by-available .item-table_header tr, */
+  .table-by-history .item-table_header tr {
+    display: none;
+  }
+  .table-by-history .table-row_wrapper {
+    /* margin-top: 1rem; */
+    grid-template-columns: 1fr;
+  }
+  /* .table-by-available .item-table_header tr, */
+  .table-by-available .item-table_header tr,
+  .table-by-available .table-row_wrapper {
+    grid-template-columns: 30px 1fr 1fr;
+    grid-gap: unset;
+    /* gap: 1rem !important; */
+  }
+  .item-qty {
+    /* justify-self: flex-end; */
+    background-color: red;
+  }
+  .table-by-history .item-table_header tr th:nth-last-child(1),
+  .table-by-history .table-row_wrapper td:nth-last-child(1) {
+    justify-self: flex-start;
+  }
+  .table-by-available .item-table_header tr th:nth-last-child(1),
+  .table-by-available .table-row_wrapper td:nth-last-child(1) {
+    justify-self: flex-start;
+  }
+  .expended-item_opened {
+    margin-left: 2rem !important;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .item-table_header tr,
+  .table-row_wrapper {
+    grid-template-columns: 100px 1fr 100px!important;
+    gap: unset!important;
+  }
+  .table-by-history .item-table_header tr,
+  .table-by-history .table-row_wrapper {
+    grid-template-columns: 150px 1fr 150px;
+  }
+  .table-by-available .item-table_header tr,
+  .table-by-available .table-row_wrapper {
+    grid-template-columns: 30px 1fr 70px 1fr;
+    gap: 1rem !important;
+  }
+  .table-by-available .table-row_wrapper {
+    grid-gap: unset;
+  }
+  .transaction_path {
+  }
+  .expended-item_opened {
+    margin-left: 3rem !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  h1 {
+    margin-top: 4rem;
+  }
+  .hide-min-768 {
+    display: block;
+  }
+  .hide-max-767 {
+    display: none;
+  }
+  .transaction_paragraph {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .transaction_path {
+    font-size: 0.8rem
+  }
+  .transaction_athor_wrapper {
+    font-size: 0.8rem;
+    width: max-content;
+  }
+  .transaction_date {
+    font-size: 0.8rem;
+    width: max-content;
+  }
+  .mark_history_created,
+  .mark_history_add,
+  .mark_history_sub {
+    padding: unset;
+    border-radius: unset;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  h1 {
+    margin-top: 6rem;
+  }
+  /* .table-by-available .item-table_header tr,
+  .table-by-available .table-row_wrapper {
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr;
+  } */
+  .item-history_block,
+  .item-locations_block {
+    /* margin-top: 1rem; */
+    width: 100%;
+    /* background-color: red; */
+    /* position: relative; */
+  }
+  .hide-min-768 {
+    display: none;
+  }
+  .switch-item_wrapper {
+    /* display: flex;
+    flex-direction: row; */
+    /* position: absolute;
+    display: inline-block;
+    top: 100px;
+    left: 0;
+    padding: 100px 0 0 0;
+    max-height: 500px;
+    margin: 0;
+    transform: rotate(-90deg) translateY(-80px);
+    transform-origin: right top; */
+    /* width: 100%; */
+    /* 
+    overflow-y: auto;
+    overflow-x: scroll; */
+    /* background: #abc; */
+    /* overflow: scroll; */
+    /* white-space: nowrap; */
+    /* display: flex; */
+    /* flex-wrap: nowrap; */
+    /* overflow-x: auto; */
+  }
+  .switch-item_el {
+    /* flex: 0 0 auto; */
+    /* display: inline-block; */
+    /* width: 140px; */
+    /* height: 46px;
+    margin: 50px 10px;
+    padding: 5px; */
+    /* background: #cab; */
+    /* transform: rotate(90deg) translateY(80px); */
+    /* transform-origin: right top; */
+    /* display: inline-block; */
+  }
+  .switch-item_el:first-child {
+  }
+  .switch-item_el label {
+    /* white-space: nowrap; */
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  /* .table-by-available .item-table_header tr,
+  .table-by-available .table-row_wrapper {
+    grid-template-columns: 30px 1fr 1fr;
+  } */
+}
+
+/* .link {
+  text-wrap: nowrap;
+}
+.item-locations_block {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.item-locations_block::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.item-location_qty {
+  margin-left: 5px;
+  margin-right: -6px;
+  background-color: #fff;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  color: var(--bs-dark);
+} */
+/* .link-location {
+  padding: 4px 10px;
+  border-radius: 16px;
+} */
+/* .link-all_block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+/* .link-all {
+  padding: 0;
+  padding: 4px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--bs-dark-bg-subtle);
+} */
+/* .link-all_active {
+  color: #fff;
+  background-color: var(--bs-dark);
+}
+.link:hover {
+  cursor: pointer;
+} */
+/* .link_project {
+  color: var(--bs-success);
+  border: 1px solid var(--bs-success-bg-subtle);
+} */
+/* .link_sklad {
+  color: var(--bs-primary-bg-subtle);
+  border: 1px solid var(--bs-primary-bg-subtle);
+} */
+/* .link_office {
+  color: var(--bs-primary-bg-subtle);
+  border: 1px solid var(--bs-primary-bg-subtle);
+}
+.link_repair {
+  color: var(--bs-warning);
+  border: 1px solid var(--bs-warning-bg-subtle);
+}
+.link_archive {
+  color: var(--bs-dark-bg-subtle);
+  border: none;
+}
+.link_deleted {
+  color: var(--bs-danger-bg-subtle);
+  border: none;
+}
+.link_current-route {
+  color: red;
+} */
+/* .link_project.link_current-route {
+  color: #fff;
+  background-color: var(--bs-success);
+  border-color: var(--bs-success);
+}
+.link_sklad.link_current-route {
+  color: #fff;
+  background-color: var(--bs-primary);
+  border: none;
+}
+.link_office.link_current-route {
+  color: #fff;
+  background-color: var(--bs-primary);
+  border: none;
+}
+.link_repair.link_current-route {
+  color: #fff;
+  background-color: var(--bs-warning);
+  border: none;
+} */
+.table {
+}
+.item-table_header {
+}
+.table-row_wrapper {
+  /* background-color: rgba(0, 0, 0, 0.05); */
+}
+.table-row_wrapper td:hover {
+  /* background-color: red; */
+  /* cursor: pointer; */
+  /* background-color: rgba(0, 0, 0, 0.05); */
+}
+/* .hide-991 {
+} */
+
+@media screen and (max-width: 991px) {
+  .transaction_path {
+    margin-top: 0.5rem;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    /* gap: 0.1rem; */
+  }
+    .paragraph-move_wrapper {
+    display: block;
+  }
+}
+</style>
