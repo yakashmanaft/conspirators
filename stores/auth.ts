@@ -23,7 +23,6 @@ export const useAuthStore = defineStore('Auth', () => {
 
     const signIn = async (loggedUser: any) => {
 
-
         const { loadData } = useUsersStore();
         const { users } = storeToRefs(useUsersStore());
         await loadData()
@@ -31,6 +30,7 @@ export const useAuthStore = defineStore('Auth', () => {
 
         if (users.value && loggedUser) {
             let userObj = users.value.find(item => item.email === loggedUser.email && item.password === loggedUser.password)
+
             if(userObj) {
 
                 await $fetch('/api/auth/login', {

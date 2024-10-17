@@ -21,6 +21,8 @@ export default defineNuxtConfig({
   },
   css: [
     '@/assets/css/vanilla-calendar.min.css',
+    '@/assets/css/colors.css',
+    '@/assets/css/reset.css'
   ],
   // components: [
   //   {

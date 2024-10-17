@@ -23,7 +23,6 @@ useHead({
   ],
 });
 import { Container } from "@/shared/container";
-import { onBeforeMount } from "vue";
 
 // import { userToLog } from '@/stores/auth';
 
@@ -34,12 +33,10 @@ const { loggedIn, user, session, clear, fetch } = useUserSession();
 const router = useRouter();
 // import { useCurrentUserStore } from '@/stores/auth'
 
-// if (user.value) {
-//   router.push("/");
-// }
+
 const tempUser = ref({
-  email: "",
-  password: "",
+  email: null,
+  password: null,
 });
 
 const login = async () => {
@@ -52,9 +49,7 @@ const login = async () => {
 
     // Если пользваотель есть в БД - редиректим
     if (useAuthStore().loggedIn) {
-      // router.push("/dashboard");
-      // router.push("/calendar");
-      router.push("/wallet")
+      router.push("/wallet");
     }
   } 
   // Не вписан пароль
@@ -89,33 +84,72 @@ const onClickRegister = () => {
         justify-content: center;
       "
     >
-      <h1 style="margin-top: 5rem">Вход</h1>
 
-      <!-- <button @click="onClickRegister">Зарегистрироваться</button> -->
 
       <form
+        class="shadow p-3 mb-5 bg-body-tertiary rounded"
         style="
           display: flex;
           align-items: center;
           justify-content: center;
           flex-direction: column;
+          gap: 1rem;
         "
       >
-        <label for="login_email">Введите имейл
+        <!-- TITLE -->
+        <h1>Вход</h1>
 
-          <input id="login_email" v-model="tempUser.email" type="text" autocomplete/>
-        </label>
-        <label for="login_password">Введите пароль
+        <!-- EMAIL -->
+        <input 
+          v-model="tempUser.email" 
+          id="login_email"
+          type="email" 
+          class="form-control"
+          placeholder="name@example.com"
+        />
 
-          <input id="login_password" v-model="tempUser.password" type="password" autocomplete/>
-        </label>
-        <button @click="login">Войти</button>
+        <!-- PASSWORD -->
+        <input
+          v-model="tempUser.password"
+          id="login_password" 
+          type="password"
+          class="form-control"
+          placeholder="enter password"
+        />
+
+        <!-- SUBMIT BTNs -->
+        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem;">
+          <!-- login -->
+          <button @click.prevent="login">Войти</button>
+          <!-- register -->
+          <button disabled @click.prevent="onClickRegister">Создать аккаунт</button>
+        </div>
       </form>
-      <br />
+      
+      <router-link to="/">На главную</router-link>
 
 
     </div>
   </Container>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+  button {
+    background-color: var(--color-btn-bg);
+    color: var(--color-btn-text);
+    padding: 10px 24px;
+    border-radius: 100px; 
+    transition: all .2s ease-in
+  }
+  button:hover {
+    /* background-color: var(--color-btn-hover-bg); */
+    filter: brightness(70%)
+  }
+  button[disabled] {
+    /* background-color: var(--color-btn-disabled-bg); */
+    background-color: unset;
+    color: var(--color-btn-disabled-text);
+  }
+
+</style>

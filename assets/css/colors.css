@@ -1,0 +1,18 @@
+:root {
+    /* global text color */
+    --color-global-text: #1D1B20;
+
+    /* btn */
+    --color-btn-bg: #65558F;
+    --color-btn-text: #fff;
+
+    /* btn wo bg */
+    --color-btn-wo-bg: #9A979E;
+
+    /* btn hover */
+    --color-btn-hover-bg: #E8DEF8;
+
+    /* btn disabled */
+    --color-btn-disabled-bg: #DADCE0;
+    --color-btn-disabled-text: #9AA0A6;
+}

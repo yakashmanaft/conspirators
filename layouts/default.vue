@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100vh; display: grid;">
     <!--  -->
     <AppHeader />
 
@@ -10,9 +10,7 @@
     </div>
 
     <!--  -->
-    <div v-if="useAuthStore().loggedIn === true">
-      <AppFooter />
-    </div>
+    <AppFooter />
   </div>
 </template>
 

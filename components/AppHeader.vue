@@ -20,11 +20,11 @@ const featuresListAuth = ref([
   //   title: "Charts",
   //   auth: true,
   // },
-  {
-    path: "/dashboard",
-    title: "Доска",
-    auth: true,
-  },
+  // {
+  //   path: "/dashboard",
+  //   title: "Доска",
+  //   auth: true,
+  // },
   {
     path: "/projects",
     title: "Проекты",
@@ -40,11 +40,11 @@ const featuresListAuth = ref([
     title: "Заявки",
     auth: true,
   },
-  {
-    path: "/warehouse",
-    title: "ТМЦ",
-    auth: true,
-  },
+  // {
+  //   path: "/warehouse",
+  //   title: "ТМЦ",
+  //   auth: true,
+  // },
   // {
   //   path: "/bonds",
   //   title: "Бонды",
@@ -253,7 +253,7 @@ watch(
 </script>
 
 <template>
-  <div class="header-wrapper">
+  <div class="header-wrapper" v-if="route.path !== '/login'">
     <Container>
       <!-- <div class="burger" id="burger">
         <span></span>
@@ -283,7 +283,7 @@ watch(
             class="header-logo"
             @click="closeBurgerMenu"
           >
-            <span>stepbuild.ru</span>
+            <span>conspirators.su</span>
           </router-link>
         </div>
 
@@ -352,7 +352,7 @@ watch(
             <div class="login_wrapper">
               <!-- to login page if !loggin -->
               <router-link
-                v-if="!useAuthStore().loggedIn && route.name !== 'login'"
+                v-if="!useAuthStore().loggedIn && route.name !== 'login' && route.name === 'landing_crm'"
                 to="/login"
                 class="account-btn"
                 @click="closeBurgerMenu"
@@ -477,6 +477,7 @@ a:visited {
 }
 .header-logo {
   text-decoration: none;
+  margin-right: 1rem;
 }
 .links_container {
   /* flex: 1; */

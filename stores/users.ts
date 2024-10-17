@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 
 type User = {
     id: string;
-    uuid: string;
+    // uuid: string;
     email: string;
     password: string;
-    name: string;
-    middleName: string;
-    phone: string;
-    surname: string;
-    role: string
+        // name: string;
+        // middleName: string;
+        // phone: string;
+        // surname: string;
+        // role: string
 }
 
 export const useUsersStore = defineStore('Users', () => {

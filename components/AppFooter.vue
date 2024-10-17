@@ -64,12 +64,14 @@ watch(
 );
 </script>
 <template>
-  <div class="footer_container">
+  <div class="footer_container" v-if="route.path !== '/login'">
     <Container>
-      <!-- <div v-if="useAuthStore().user.favorite" class="footer_wrapper">
+      <!-- <div v-if="useAuthStore().user.favorite" class="footer_wrapper_loggedIn">
         {{ useAuthStore().user.favorite }} 
       </div> -->
-      <div class="footer_wrapper">
+
+      <!-- logged in -->
+      <div class="footer_wrapper_loggedIn" v-if="useAuthStore().loggedIn">
         <Icon
           @click="clickBy(el)"
           v-for="el in hotBtnList"
@@ -80,7 +82,21 @@ watch(
           color="var(--bs-primary)"
         />
       </div>
+
     </Container>
+  </div>
+  <!-- NO logged in -->
+  <div v-if="!useAuthStore().loggedIn" style="background-color: var(--color-global-text); color: var(--color-btn-text)">
+    <ul style="font-size: 0.8rem; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 0; padding: 1rem">
+      <li style="white-space: nowrap">О нас</li>
+      <li style="white-space: nowrap">Контакты</li>
+      <li style="white-space: nowrap">
+        <router-link to="/landing_crm">conspirators.CRM</router-link>
+      </li>
+      <li style="white-space: nowrap">Политика конфиденциальности</li>
+      <li style="white-space: nowrap">Соглашение</li>
+      <li style="white-space: nowrap">Оставить заявку</li>
+    </ul>
   </div>
 </template>
 
@@ -92,7 +108,7 @@ watch(
   width: 100%;
   box-shadow: -2px -2px 8px 0px rgba(0, 0, 0, 0.2);
 }
-.footer_wrapper {
+.footer_wrapper_loggedIn {
   padding: 0.5rem 0;
   display: flex;
   align-items: center;
@@ -100,7 +116,7 @@ watch(
   background-color: var(--bs-body-bg);
 }
 @media screen and (min-width: 769px) {
-  .footer_container {
+  .footer_wrapper_loggedIn {
     display: none;
   }
 }

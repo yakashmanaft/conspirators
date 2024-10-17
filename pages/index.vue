@@ -2,7 +2,7 @@
 import { Container } from "@/shared/container";
 
 useHead({
-  title: "Соучастники | Управление строительством",
+  title: "conspirators | Ваш отдел маркетинга",
   link: [
     {
       rel: "stylesheet",
@@ -32,54 +32,11 @@ const { loggedIn, user, session, clear } = useUserSession();
 </script>
 <template>
   <Container>
-    <!-- <div
-      style="display: flex; align-items: center; justify-content: space-between"
-    >
-      <div>
-        <h1>Users</h1>
 
-        <p>Manage users here</p>
-      </div>
-      <button @click="loadData">Load users</button>
-    </div>
-    <br /> -->
-    <h1 style="margin-top: 5rem">Landing page about "СОУЧАСТНИКИ"</h1>
-    <br />
-    <ul v-if="user">
-      <li>
 
-        <router-link to="/dashboard">Доска</router-link>
-      </li>
-      <li>
+    <h1 style="margin-top: 5rem">conspirators.su</h1><span>не ссы</span>
+    <h2>Ваш отдел маркетинга</h2>
 
-        <router-link to="/calendar">Календарь</router-link>
-      </li>
-    </ul>
-    <div v-else>
-      <router-link to="/login">Войти</router-link>
-    </div>
-    <!-- Show if no users loaded -->
-    <!-- <div v-if="!users.length">
-      <p>No users loaded</p>
-    </div> -->
-
-    <!-- Show when users are loaded -->
-    <!-- <div v-else>
-      <table>
-        <thead>
-          <tr>
-            <td v-for="h in headers">{{ h }}</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td><a :href="`mailto:${user.email}`">{{ user.email }}</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div> -->
   </Container>
 </template>
 
