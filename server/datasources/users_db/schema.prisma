@@ -1,0 +1,18 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "./generated"
+    // binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "mysql"
+    // url      = env("DATABASE_URL")
+    url      = "mysql://anfalofo_c_users:Kashmanaft123[eq@anfalofo.beget.tech/anfalofo_c_users"
+}
+
+model AnyModel {
+    id        String    @id @default(uuid())
+    name      String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+}
