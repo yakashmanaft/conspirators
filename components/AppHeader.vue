@@ -102,17 +102,17 @@ const closeBurgerMenu = () => {
 };
 
 // display link to modules if has access
-const userAccesedLink = (moduleName) => {
-  let userModulesArray = [];
-  if (useAuthStore().user) {
-    useAuthStore().user.accessModules.forEach((item) =>
-      userModulesArray.push(item.name)
-    );
+// const userAccesedLink = (moduleName) => {
+//   let userModulesArray = [];
+//   if (useAuthStore().user) {
+//     useAuthStore().user.accessModules.forEach((item) =>
+//       userModulesArray.push(item.name)
+//     );
 
-    return userModulesArray.includes(moduleName);
-  }
-  // return useAuthStore().user.id === 2
-};
+//     return userModulesArray.includes(moduleName);
+//   }
+//   // return useAuthStore().user.id === 2
+// };
 
 const toggleAccountMenu = () => {
   accountMenuIsOpened.value = !accountMenuIsOpened.value;
@@ -325,9 +325,9 @@ watch(
                 <router-link to="/wallet">Кошелек</router-link>
               </li>
 
-              <li v-if="userAccesedLink('banks')" @click="closeBurgerMenu">
+              <!-- <li v-if="userAccesedLink('banks')" @click="closeBurgerMenu">
                 <router-link to="/banks">Банк</router-link>
-              </li>
+              </li> -->
 
               <!-- ТМЦ -->
               <li @click="closeBurgerMenu">

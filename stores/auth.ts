@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('Auth', () => {
                     ),
                 })
             } else {
-                alert('Введенные данные неверны... auth.ts')
+                alert('Доступ не даем кому попало... auth.ts')
             }
             // console.log(userObj)
         }

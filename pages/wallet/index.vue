@@ -40,6 +40,8 @@ const wallet_sections = ref([
   }
 ])
 
+// data base
+
 useHead({
   title: "Мой кошелек",
   link: [

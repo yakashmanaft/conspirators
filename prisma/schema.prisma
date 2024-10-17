@@ -1,5 +1,6 @@
 // % npx prisma db pull 
 // npx prisma generate
+// https://www.programonaut.com/how-to-connect-to-two-databases-using-prisma/
 
 generator client {
   provider      = "prisma-client-js"
@@ -9,25 +10,25 @@ generator client {
 datasource db {
   provider = "mysql"
   // url      = env("DATABASE_URL")
-  url      = "mysql://caminipk_sb_2:Kashmanaft123[eq@caminipk.beget.tech/caminipk_sb_2"
+  // url      = "mysql://caminipk_sb_2:Kashmanaft123[eq@caminipk.beget.tech/caminipk_sb_2"
+  url      = "mysql://anfalofo_conspir:Kashmanaft123[eq@anfalofo.beget.tech/anfalofo_conspir"
 }
 
-model Users {
-  id            Int       @id @default(autoincrement())
-  uuid          String    @unique(map: "uuid") @db.VarChar(60)
-  email         String    @unique(map: "email") @db.VarChar(255)
-  password      String    @db.VarChar(255)
-  name          String?   @db.VarChar(255)
-  middleName    String?   @db.VarChar(255)
-  surname       String?   @db.VarChar(255)
-  phone         String?   @db.VarChar(15)
-  role          Role      @default(USER)
+model auth {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique(map: "email") @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  // name          String?   @db.VarChar(255)
+  // middleName    String?   @db.VarChar(255)
+  // surname       String?   @db.VarChar(255)
+  // phone         String?   @db.VarChar(15)
+  // role          Role      @default(USER)
   // groupID      Int?      @default(0)
   // groupStatus  String?   @db.VarChar(255)
-  accessModules Json?
-  favorites     Json?
-  created_at    DateTime  @default(now()) @db.DateTime(0)
-  update_at     DateTime? @updatedAt
+  // accessModules Json?
+  // favorites     Json?
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  update_at  DateTime? @updatedAt
 }
 
 enum Role {
@@ -38,211 +39,214 @@ enum Role {
   USER
 }
 
-model Organizations {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @unique(map: "uuid") @db.VarChar(60)
-  title      String    @db.VarChar(255)
-  ownerID    Int?      @default(0)
-  sharers    Json?
-  created_at DateTime  @default(now()) @db.DateTime(0)
-  update_at  DateTime? @updatedAt
-}
+// model Account {
+// }
 
-model WarehouseItems {
-  id             Int       @id @default(autoincrement())
-  uuid           String    @unique(map: "uuid") @db.VarChar(60)
-  title          String    @db.VarChar(255)
-  type           String    @db.VarChar(255)
-  qty            Int       @default(0)
-  price          Decimal?  @default(0)
-  measure        String    @db.VarChar(255)
-  location       String    @db.VarChar(255)
-  locationID     Int       @default(1)
-  position       String?   @db.VarChar(255)
-  serial         String?   @db.VarChar(255)
-  productionDate String?   @db.VarChar(255)
-  ownerID        Int       @default(1)
-  ownerType      String    @default("user") @db.VarChar(255)
-  responsible    Int       @default(1)
-  created_at     DateTime  @default(now()) @db.DateTime(0)
-  update_at      DateTime? @updatedAt
-  showToAll      Boolean?  @default(true)
-}
+// model Organizations {
+//   id         Int       @id @default(autoincrement())
+//   uuid       String    @unique(map: "uuid") @db.VarChar(60)
+//   title      String    @db.VarChar(255)
+//   ownerID    Int?      @default(0)
+//   sharers    Json?
+//   created_at DateTime  @default(now()) @db.DateTime(0)
+//   update_at  DateTime? @updatedAt
+// }
+
+// model WarehouseItems {
+//   id             Int       @id @default(autoincrement())
+//   uuid           String    @unique(map: "uuid") @db.VarChar(60)
+//   title          String    @db.VarChar(255)
+//   type           String    @db.VarChar(255)
+//   qty            Int       @default(0)
+//   price          Decimal?  @default(0)
+//   measure        String    @db.VarChar(255)
+//   location       String    @db.VarChar(255)
+//   locationID     Int       @default(1)
+//   position       String?   @db.VarChar(255)
+//   serial         String?   @db.VarChar(255)
+//   productionDate String?   @db.VarChar(255)
+//   ownerID        Int       @default(1)
+//   ownerType      String    @default("user") @db.VarChar(255)
+//   responsible    Int       @default(1)
+//   created_at     DateTime  @default(now()) @db.DateTime(0)
+//   update_at      DateTime? @updatedAt
+//   showToAll      Boolean?  @default(true)
+// }
 
 // transactionsTypes (created ok | add ok | sub ok | move ok | changeOwner | changeResponsible)
-model WarehouseItemsLedger {
-  id                   Int      @id @default(autoincrement())
-  created_at           DateTime @default(now()) @db.DateTime(0)
-  transactionType      String   @db.VarChar(255)
-  // itemID                Int       @default(0)
-  itemTitle            String   @db.VarChar(255)
-  authorID             Int      @default(0)
-  locationFrom         String?  @db.VarChar(255)
-  locationFromID       Int?     @default(0)
-  locationTo           String   @db.VarChar(255)
-  locationToID         Int      @default(0)
-  prevOwnerID          Int?     @default(0)
-  prevOwnerType        String?  @db.VarChar(255)
-  currentOwnerID       Int      @default(0)
-  currentOwnerType     String   @db.VarChar(255)
-  prevResponsibleID    Int?     @default(0)
-  currentResponsibleID Int      @default(0)
-  itemType             String?  @db.VarChar(255)
-  qty                  Int?     @default(0)
-  measure              String?  @db.VarChar(255)
-}
+// model WarehouseItemsLedger {
+//   id                   Int      @id @default(autoincrement())
+//   created_at           DateTime @default(now()) @db.DateTime(0)
+//   transactionType      String   @db.VarChar(255)
+//   // itemID                Int       @default(0)
+//   itemTitle            String   @db.VarChar(255)
+//   authorID             Int      @default(0)
+//   locationFrom         String?  @db.VarChar(255)
+//   locationFromID       Int?     @default(0)
+//   locationTo           String   @db.VarChar(255)
+//   locationToID         Int      @default(0)
+//   prevOwnerID          Int?     @default(0)
+//   prevOwnerType        String?  @db.VarChar(255)
+//   currentOwnerID       Int      @default(0)
+//   currentOwnerType     String   @db.VarChar(255)
+//   prevResponsibleID    Int?     @default(0)
+//   currentResponsibleID Int      @default(0)
+//   itemType             String?  @db.VarChar(255)
+//   qty                  Int?     @default(0)
+//   measure              String?  @db.VarChar(255)
+// }
 
-model Projects {
-  id          Int       @id @default(autoincrement())
-  uuid        String    @unique(map: "uuid") @db.VarChar(60)
-  title       String    @db.VarChar(255)
-  address     String    @db.VarChar(255)
-  partnerID   Int       @default(0)
-  partnerType String    @default("user") @db.VarChar(255)
-  creator     Int       @default(0)
-  bandID      Int?      @default(0)
-  curator     Int       @default(0)
-  curatorType String?   @db.VarChar(60)
-  workType    String    @db.VarChar(255)
-  completion  Float     @default(0.00)
-  sharers     Json?
-  stages      Json?
-  created_at  DateTime  @default(now()) @db.DateTime(0)
-  update_at   DateTime? @updatedAt
-}
+// model Projects {
+//   id          Int       @id @default(autoincrement())
+//   uuid        String    @unique(map: "uuid") @db.VarChar(60)
+//   title       String    @db.VarChar(255)
+//   address     String    @db.VarChar(255)
+//   partnerID   Int       @default(0)
+//   partnerType String    @default("user") @db.VarChar(255)
+//   creator     Int       @default(0)
+//   bandID      Int?      @default(0)
+//   curator     Int       @default(0)
+//   curatorType String?   @db.VarChar(60)
+//   workType    String    @db.VarChar(255)
+//   completion  Float     @default(0.00)
+//   sharers     Json?
+//   stages      Json?
+//   created_at  DateTime  @default(now()) @db.DateTime(0)
+//   update_at   DateTime? @updatedAt
+// }
 
-model Banks {
-  id         Int       @id @default(autoincrement())
-  title      String?   @db.VarChar(255)
-  creatorID  Int       @default(0)
-  users      Json
-  walletBank Json?
-  created_at DateTime  @default(now()) @db.DateTime(0)
-  update_at  DateTime? @updatedAt
-}
+// model Banks {
+//   id         Int       @id @default(autoincrement())
+//   title      String?   @db.VarChar(255)
+//   creatorID  Int       @default(0)
+//   users      Json
+//   walletBank Json?
+//   created_at DateTime  @default(now()) @db.DateTime(0)
+//   update_at  DateTime? @updatedAt
+// }
 
 // type: expense / income / invest
 // authorType: user / company
 // currency: 'RUB'
-model BanksLedger {
-  id                Int      @id @default(autoincrement())
-  type              String   @db.VarChar(60)
-  appointment       String   @db.VarChar(255)
-  appointmentTarget String?  @db.VarChar(255)
-  desc              String?  @db.VarChar(255)
-  authorID          Int      @default(0)
-  authorType        String   @db.VarChar(60)
-  bankID            Int      @default(0)
-  price             Float?   @default(0.00)
-  qty               Float?   @default(0.00)
-  currency          String?  @db.VarChar(60)
-  bet               Decimal? @default(0.00) @db.Decimal(3, 2)
-  walletBankID      Int?     @default(0)
-  sharerTargetID    Int?     @default(0)
-  sharerTargetType  String?  @db.VarChar(60)
-  created_at        DateTime @default(now()) @db.DateTime(0)
-}
+// model BanksLedger {
+//   id                Int      @id @default(autoincrement())
+//   type              String   @db.VarChar(60)
+//   appointment       String   @db.VarChar(255)
+//   appointmentTarget String?  @db.VarChar(255)
+//   desc              String?  @db.VarChar(255)
+//   authorID          Int      @default(0)
+//   authorType        String   @db.VarChar(60)
+//   bankID            Int      @default(0)
+//   price             Float?   @default(0.00)
+//   qty               Float?   @default(0.00)
+//   currency          String?  @db.VarChar(60)
+//   bet               Decimal? @default(0.00) @db.Decimal(3, 2)
+//   walletBankID      Int?     @default(0)
+//   sharerTargetID    Int?     @default(0)
+//   sharerTargetType  String?  @db.VarChar(60)
+//   created_at        DateTime @default(now()) @db.DateTime(0)
+// }
 
-model BanksStockInvestFunds {
-  id          Int       @id @default(autoincrement())
-  title       String    @db.VarChar(255)
-  creatorID   Int       @default(0)
-  partners    Json
-  stockBroker Json
-  accountType String    @db.VarChar(255)
-  assets      Json?
-  created_at  DateTime  @default(now()) @db.DateTime(0)
-  update_at   DateTime? @updatedAt
-}
+// model BanksStockInvestFunds {
+//   id          Int       @id @default(autoincrement())
+//   title       String    @db.VarChar(255)
+//   creatorID   Int       @default(0)
+//   partners    Json
+//   stockBroker Json
+//   accountType String    @db.VarChar(255)
+//   assets      Json?
+//   created_at  DateTime  @default(now()) @db.DateTime(0)
+//   update_at   DateTime? @updatedAt
+// }
 
 // type buy / sell
 // bonds
-model StockBondsLedger {
-  id                 Int      @id @default(autoincrement())
-  created_at         DateTime @default(now()) @db.DateTime(0)
-  created_AuthorID   Int      @default(0)
-  type               String   @db.VarChar(60)
-  paperType          String?  @db.VarChar(60)
-  ticker             String   @db.VarChar(60)
-  stock              String   @db.VarChar(60)
-  price              Float    @default(0.00)
-  qty                Float    @default(0.00)
-  fee                Float    @default(0.00)
-  accumulated_coupon Float    @default(0.00)
-  fundID             Int      @default(0)
-}
+// model StockBondsLedger {
+//   id                 Int      @id @default(autoincrement())
+//   created_at         DateTime @default(now()) @db.DateTime(0)
+//   created_AuthorID   Int      @default(0)
+//   type               String   @db.VarChar(60)
+//   paperType          String?  @db.VarChar(60)
+//   ticker             String   @db.VarChar(60)
+//   stock              String   @db.VarChar(60)
+//   price              Float    @default(0.00)
+//   qty                Float    @default(0.00)
+//   fee                Float    @default(0.00)
+//   accumulated_coupon Float    @default(0.00)
+//   fundID             Int      @default(0)
+// }
 
 // shares
 
 // fiatTransactions
-model StockShareLedger {
-  id               Int      @id @default(autoincrement())
-  created_at       DateTime @default(now()) @db.DateTime(0)
-  created_AuthorID Int      @default(0)
-  type             String   @db.VarChar(60)
-  paperType        String?  @db.VarChar(60)
-  ticker           String   @db.VarChar(60)
-  stock            String   @db.VarChar(60)
-  price            Float    @default(0.00)
-  qty              Float    @default(0.00)
-  fee              Float    @default(0.00)
-  fundID           Int      @default(0)
-}
+// model StockShareLedger {
+//   id               Int      @id @default(autoincrement())
+//   created_at       DateTime @default(now()) @db.DateTime(0)
+//   created_AuthorID Int      @default(0)
+//   type             String   @db.VarChar(60)
+//   paperType        String?  @db.VarChar(60)
+//   ticker           String   @db.VarChar(60)
+//   stock            String   @db.VarChar(60)
+//   price            Float    @default(0.00)
+//   qty              Float    @default(0.00)
+//   fee              Float    @default(0.00)
+//   fundID           Int      @default(0)
+// }
 
-model StockFiatLedger {
-  id               Int      @id @default(autoincrement())
-  created_at       DateTime @default(now()) @db.DateTime(0)
-  created_AuthorID Int      @default(0)
-  // dividends / coupons / withdraw / cashin
-  type             String   @db.VarChar(60)
-  currency         String   @db.VarChar(60)
-  qty              Float    @default(0.00)
-  fundID           Int      @default(0)
-}
+// model StockFiatLedger {
+//   id               Int      @id @default(autoincrement())
+//   created_at       DateTime @default(now()) @db.DateTime(0)
+//   created_AuthorID Int      @default(0)
+//   // dividends / coupons / withdraw / cashin
+//   type             String   @db.VarChar(60)
+//   currency         String   @db.VarChar(60)
+//   qty              Float    @default(0.00)
+//   fundID           Int      @default(0)
+// }
 
 // model StockShareLedger {}
 
 // accountType iia (individual investment account)) / ba (brokerage accounts)
 
 // места хранения компании (Склад, Офис, Ремонтные организации)
-model Locations {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @unique(map: "uuid") @db.VarChar(60)
-  title      String    @db.VarChar(255)
-  type       String    @default("office")
-  address    String    @db.VarChar(255)
-  ownerID    Int       @default(0)
-  ownerType  String?   @db.VarChar(255)
-  created_at DateTime  @default(now()) @db.DateTime(0)
-  update_at  DateTime? @updatedAt
-}
+// model Locations {
+//   id         Int       @id @default(autoincrement())
+//   uuid       String    @unique(map: "uuid") @db.VarChar(60)
+//   title      String    @db.VarChar(255)
+//   type       String    @default("office")
+//   address    String    @db.VarChar(255)
+//   ownerID    Int       @default(0)
+//   ownerType  String?   @db.VarChar(255)
+//   created_at DateTime  @default(now()) @db.DateTime(0)
+//   update_at  DateTime? @updatedAt
+// }
 
-model Salary {
-  id             Int       @id @default(autoincrement())
-  bandID         Int       @default(0)
-  periodStart    String    @db.VarChar(255)
-  periodEnd      String    @db.VarChar(255)
-  status         Json?
-  wageRate       Float     @default(0)
-  list           Json
-  listProduction Json?
-  created_at     DateTime  @default(now()) @db.DateTime(0)
-  update_at      DateTime? @updatedAt
-}
+// model Salary {
+//   id             Int       @id @default(autoincrement())
+//   bandID         Int       @default(0)
+//   periodStart    String    @db.VarChar(255)
+//   periodEnd      String    @db.VarChar(255)
+//   status         Json?
+//   wageRate       Float     @default(0)
+//   list           Json
+//   listProduction Json?
+//   created_at     DateTime  @default(now()) @db.DateTime(0)
+//   update_at      DateTime? @updatedAt
+// }
 
-model Demand {
-  id           Int       @id @default(autoincrement())
-  created_at   DateTime  @default(now()) @db.DateTime(0)
-  update_at    DateTime? @updatedAt
-  deadline     String    @db.VarChar(255)
-  type         String    @db.VarChar(255)
-  status       String    @default("research")
-  deliveryDate String    @db.VarChar(255)
-  creatorID    Int       @default(0)
-  responserID  Int       @default(0)
-  locationType String    @db.VarChar(255)
-  locationID   Int       @default(0)
-}
+// model Demand {
+//   id           Int       @id @default(autoincrement())
+//   created_at   DateTime  @default(now()) @db.DateTime(0)
+//   update_at    DateTime? @updatedAt
+//   deadline     String    @db.VarChar(255)
+//   type         String    @db.VarChar(255)
+//   status       String    @default("research")
+//   deliveryDate String    @db.VarChar(255)
+//   creatorID    Int       @default(0)
+//   responserID  Int       @default(0)
+//   locationType String    @db.VarChar(255)
+//   locationID   Int       @default(0)
+// }
 
 // generator client {
 //   provider = "prisma-client-js"

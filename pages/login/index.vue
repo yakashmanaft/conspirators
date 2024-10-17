@@ -43,90 +43,35 @@ const tempUser = ref({
 });
 
 const login = async () => {
-  const { loadData } = useUsersStore();
-  const { users } = storeToRefs(useUsersStore());
-  // Пользвоатель вводит данные в форму
-  // tempUser.value.email = "anfalov@camini-pk.ru";
-  // tempUser.value.password = "Anfalov123[eq";
-  // if (tempUser.value.password) {
-    // const hashedPassword = await bcrypt.hash(tempUser.password, 8);
 
-    // console.log(hashedPassword);
-  // }
+  // Данные введены
+  if (tempUser.value.email && tempUser.value.password) {
 
-  // Сравниваем с БД
-
-  // Если есть такой в БД - создаем объект уже с id user и передаем в signIn()
-  // Или в login post будем сравнивать пароли... потом надо думать как шифровать)
-  if (tempUser.value.email) {
+    // Закидываем введенные данные для поиска пользователя в БД
     await useAuthStore().signIn(tempUser.value);
+
+    // Если пользваотель есть в БД - редиректим
     if (useAuthStore().loggedIn) {
       // router.push("/dashboard");
-      router.push("/calendar");
+      // router.push("/calendar");
+      router.push("/wallet")
     }
-  } else {
+  } 
+  // Не вписан пароль
+  else if (tempUser.value.email && !tempUser.value.password) {
+    alert("Забыли про пароль");
+  } 
+  // Не вписан имейл
+  else if (!tempUser.value.email && tempUser.value.password) {
     alert("Вы не указали email");
+  } 
+  // Ничего не вписано
+  else {
+    alert('Укажите хоть какие-то данные :) ')
   }
 };
 
-onBeforeMount(() => {
-  // if(user.value) {
-  //   router.push("/dashboard");
-  // }
-});
-// const users = ref(null)
 
-// const store = useCurrentUserStore()
-// const { setCurrentUser, isAuthFunc, isAuth } = store
-
-// onMounted(async () => {
-//     users.value = await getUsers()
-
-// })
-
-// const login = (user) => {
-//     const { email, password } = user
-
-//     if(email && password) {
-
-//         if(users.value) {
-//             let user = users.value.find(item => {
-//                 if(item.email === tempUser.value.email) {
-//                     return item.password === tempUser.value.password
-//                 }
-//             })
-
-//             if(user) {
-
-//                 setCurrentUser(user)
-//                 isAuthFunc()
-//                 console.log(user)
-
-//             } else {
-//                 console.log(tempUser.value.email)
-//                 console.log(tempUser.value.password)
-//                 console.log('Пользователя с такими данными не сущействует')
-//             }
-//         }
-//     } else {
-//         console.log('Форма не может быть пустой')
-//     }
-
-// }
-// /**
-//  * @desc запрос к серверу
-//  */
-// async function getUsers() {
-//     return await $fetch('api/users')
-// }
-// const loginloggedIn = async () => {
-//   // if (tempUser.value.email && tempUser.value.email === user.value.email) {
-//   //   } else {
-//   //     alert('Пользователь не найден')
-//   // }
-//     await useAuthStore().signIn();
-//     router.push("/dashboard");
-// };
 const onClickRegister = () => {
   alert("В разработке");
 };
@@ -148,7 +93,7 @@ const onClickRegister = () => {
 
       <!-- <button @click="onClickRegister">Зарегистрироваться</button> -->
 
-      <div
+      <form
         style="
           display: flex;
           align-items: center;
@@ -156,23 +101,19 @@ const onClickRegister = () => {
           flex-direction: column;
         "
       >
-        <label for="login">Введите имейл</label>
-        <input id="login" v-model="tempUser.email" type="text" />
-        <input id="login" v-model="tempUser.password" type="text" />
-      </div>
+        <label for="login_email">Введите имейл
+
+          <input id="login_email" v-model="tempUser.email" type="text" autocomplete/>
+        </label>
+        <label for="login_password">Введите пароль
+
+          <input id="login_password" v-model="tempUser.password" type="password" autocomplete/>
+        </label>
+        <button @click="login">Войти</button>
+      </form>
       <br />
 
-      <!-- <button @click="loginloggedIn">Войти</button> -->
-      <button @click="login">Войти</button>
-      <!--
-            <div>
-                <label for="password">Введите пароль</label>
-                <input id='password' v-model="tempUser.password" type="password">
-            </div> -->
 
-      <!-- <button @click="$emit('loginUserEmit', tempUser)">LogIn</button> -->
-      <!-- <button @click="login(tempUser)">Login</button>
-            {{ tempUser }} -->
     </div>
   </Container>
 </template>
