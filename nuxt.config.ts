@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@pinia/nuxt', 'nuxt-auth-utils', 'nuxt-icon', '@kevinmarrec/nuxt-pwa'],
+  modules: ['@pinia/nuxt', 'nuxt-auth-utils', 'nuxt-icon', '@kevinmarrec/nuxt-pwa', '@nuxt/image'],
   pwa: {
     workbox: {
       enabled: true
@@ -37,4 +37,3 @@ export default defineNuxtConfig({
     }
   }
 })
-

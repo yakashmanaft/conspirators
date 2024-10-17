@@ -1,6 +1,7 @@
 :root {
     /* global text color */
     --color-global-text: #1D1B20;
+    --color-global-text_second: #9A979E;
 
     /* btn */
     --color-btn-bg: #65558F;

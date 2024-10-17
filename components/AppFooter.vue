@@ -93,7 +93,7 @@ watch(
       <li style="white-space: nowrap">
         <router-link to="/landing_crm">conspirators.CRM</router-link>
       </li>
-      <li style="white-space: nowrap">Политика конфиденциальности</li>
+      <li style="white-space: nowrap">Политика и соглашения</li>
       <li style="white-space: nowrap">Соглашение</li>
       <li style="white-space: nowrap">Оставить заявку</li>
     </ul>

@@ -2,7 +2,7 @@
 //
 // https://www.youtube.com/watch?v=pXBxTF_u-6c
 useHead({
-  title: "Login",
+  title: "Login in conspirator",
   link: [
     {
       rel: "stylesheet",
@@ -87,7 +87,7 @@ const onClickRegister = () => {
 
 
       <form
-        class="shadow p-3 mb-5 bg-body-tertiary rounded"
+        class="shadow py-4 px-5 mb-4 bg-body-tertiary rounded"
         style="
           display: flex;
           align-items: center;
@@ -118,11 +118,11 @@ const onClickRegister = () => {
         />
 
         <!-- SUBMIT BTNs -->
-        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem;">
+        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
           <!-- login -->
           <button @click.prevent="login">Войти</button>
           <!-- register -->
-          <button disabled @click.prevent="onClickRegister">Создать аккаунт</button>
+          <router-link to="/register">Создать аккаунт</router-link>
         </div>
       </form>
       

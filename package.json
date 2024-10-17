@@ -15,6 +15,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
     "@infectoone/vue-ganttastic": "^2.3.2",
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/axios": "^5.13.6",
     "@pinia/nuxt": "^0.5.1",
     "@prisma/client": "^5.10.1",

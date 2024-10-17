@@ -68,11 +68,11 @@ const featuresListNoAuth = ref([
     title: "Политика конфиденциальности",
     auth: false,
   },
-  {
-    path: "/contract",
-    title: "Соглашение",
-    auth: false,
-  },
+  // {
+  //   path: "/contract",
+  //   title: "Соглашение",
+  //   auth: false,
+  // },
 ]);
 
 //
@@ -253,7 +253,7 @@ watch(
 </script>
 
 <template>
-  <div class="header-wrapper" v-if="route.path !== '/login'">
+  <div class="header-wrapper" v-if="route.path !== '/login' && route.path !== '/register'">
     <Container>
       <!-- <div class="burger" id="burger">
         <span></span>
