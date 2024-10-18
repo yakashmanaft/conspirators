@@ -1,8 +1,13 @@
 <script lan="ts" setup>
+
+// components
+import { Button } from '@/components/button'
+
+// shared
 import { Container } from "@/shared/container";
 
 useHead({
-  title: "conspirators | Ваш отдел маркетинга",
+  title: "conspirators | Ваш crm отдел маркетинга ",
   link: [
     {
       rel: "stylesheet",
@@ -35,7 +40,8 @@ const { loggedIn, user, session, clear } = useUserSession();
 
 
     <h1 style="margin-top: 5rem">conspirators.su</h1><span>не ссы</span>
-    <h2>Ваш отдел маркетинга</h2>
+    <h2>INDEX PAGE</h2>
+    <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
 
   </Container>
 </template>

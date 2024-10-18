@@ -6,17 +6,29 @@ const route = useRoute();
 const currentRoute = ref("");
 // AUTH
 const hotBtnList = ref([
+  // {
+  //   name: "dashboard",
+  //   icon_name: "material-symbols-light:dashboard-outline-rounded",
+  //   icon_clicked_name: "material-symbols-light:dashboard-rounded",
+  //   target: "dashboard",
+  // },
   {
-    name: "dashboard",
-    icon_name: "material-symbols-light:dashboard-outline-rounded",
-    icon_clicked_name: "material-symbols-light:dashboard-rounded",
-    target: "dashboard",
+    name: 'demands',
+    icon_name: 'material-symbols-light:personal-places-outline-rounded',
+    icon_clicked_name: 'material-symbols-light:personal-places-rounded',
+    target: "demands",
   },
+  // {
+  //   name: "warehouse",
+  //   icon_name: "material-symbols-light:warehouse-outline-rounded",
+  //   icon_clicked_name: "material-symbols-light:warehouse-rounded",
+  //   target: "warehouse",
+  // },
   {
-    name: "warehouse",
-    icon_name: "material-symbols-light:warehouse-outline-rounded",
-    icon_clicked_name: "material-symbols-light:warehouse-rounded",
-    target: "warehouse",
+    name: "projects",
+    icon_name: "material-symbols-light:folder-managed-outline-sharp",
+    icon_clicked_name: "material-symbols-light:folder-managed-sharp",
+    target: "projects",
   },
   {
     name: "calendar",
@@ -43,6 +55,10 @@ const menuList = ref([
   {
     title: 'Контакты',
     path: '/about'
+  },
+  {
+    title: 'Услуги маркетинга',
+    path: '/landing_offer'
   },
   {
     title: 'conspirators.CRM',
@@ -97,7 +113,7 @@ watch(
             currentRoute === el.target ? el.icon_clicked_name : el.icon_name
           "
           size="32px"
-          color="var(--bs-primary)"
+          color="var(--color-global-text)"
         />
       </div>
 
@@ -123,6 +139,7 @@ watch(
   background-color: var(--bs-body-bg);
   width: 100%;
   box-shadow: -2px -2px 8px 0px rgba(0, 0, 0, 0.2);
+  z-index: 99;
 }
 .footer_wrapper_loggedIn {
   padding: 0.5rem 0;

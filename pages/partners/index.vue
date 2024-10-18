@@ -1,6 +1,9 @@
 <template>
   <!-- https://www.youtube.com/watch?v=3MPlTDgQaaE -->
   <Container style="padding-top: 5rem">
+
+    <DevModePlug/>
+
     <!-- Modal EDIT USER-->
     <!-- userEditModal -->
     <div
@@ -643,8 +646,12 @@
 </template>
 
 <script setup>
+
+// shared
 import { Container } from "@/shared/container";
-//
+// components
+import { DevModePlug } from '@/components/plug_dev_mode';
+// utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
 

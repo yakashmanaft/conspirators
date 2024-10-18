@@ -1,5 +1,8 @@
 <template>
   <Container>
+
+    <DevModePlug/>
+
     <!-- Modal show date details -->
     <div
       class="modal"
@@ -226,11 +229,14 @@
 </template>
 
 <script lang="ts" setup>
-// Components
+// Shared
 import { Container } from "@/shared/container";
+
+// Copmponents
 import { Tabs } from "@/components/tabs";
 import { chip } from "~/components/chip";
 import { GanttChart } from "~/components/ganttchart";
+import { DevModePlug } from "~/components/plug_dev_mode";
 
 // Plugins
 import VanillaCalendar from "vanilla-calendar-pro";

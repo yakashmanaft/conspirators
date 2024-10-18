@@ -1,5 +1,9 @@
 <template>
   <Container>
+
+    <DevModePlug/>
+
+
     <h1 style="margin-top: 5rem">Аккаунт</h1>
 
     <!-- fetch data is error -->
@@ -268,8 +272,14 @@
 </template>
 
 <script lang="ts" setup>
+
+// shared
 import { Container } from "@/shared/container";
 
+// components
+import { DevModePlug } from '@/components/plug_dev_mode'
+
+// utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
 

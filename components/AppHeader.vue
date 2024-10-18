@@ -1,5 +1,10 @@
 <script lang="ts" setup>
+
+// shared
 import { Container } from "@/shared/container";
+// components
+import { Button } from '@/components/button'
+// utils
 import { watch } from "vue";
 
 const route = useRoute();
@@ -57,23 +62,46 @@ const featuresListAuth = ref([
   // },
 ]);
 
+// const featuresListNoAuth = ref([
+//   {
+//     path: "/about",
+//     title: "Контакты",
+//     auth: false,
+//   },
+//   {
+//     path: "/policy",
+//     title: "Политика конфиденциальности",
+//     auth: false,
+//   },
+//   // {
+//   //   path: "/contract",
+//   //   title: "Соглашение",
+//   //   auth: false,
+//   // },
+// ]);
+// NO AUTH
 const featuresListNoAuth = ref([
   {
-    path: "/about",
-    title: "Контакты",
-    auth: false,
+    title: 'Услуги маркетинга',
+    path: '/landing_offer'
   },
   {
-    path: "/policy",
-    title: "Политика конфиденциальности",
-    auth: false,
+    title: 'conspirators.CRM',
+    path: 'landing_crm'
   },
-  // {
-  //   path: "/contract",
-  //   title: "Соглашение",
-  //   auth: false,
-  // },
-]);
+  {
+    title: 'Политика конфиденциальности',
+    path: '/policy'
+  },
+  {
+    title: 'Оставить заявку',
+    path: 'landing_offer'
+  },
+  {
+    title: 'Контакты',
+    path: '/about'
+  },
+])
 
 //
 onMounted(async () => {
@@ -198,6 +226,10 @@ const translateRoutePath = (path: string) => {
     let id = path.substr(startIndex + 1);
     return `Локация #${id}`;
   }
+  // LANDING CRM
+  else if (path = '/landing_crm') {
+    return 'conspirators.CRM'
+  }
   // ELSE
   else {
     return path;
@@ -272,7 +304,7 @@ watch(
               class="link"
               name="material-symbols-light:arrow-back-ios"
               size="24px"
-              color="var(--bs-primary)"
+              color="var(--color-global-text_second)"
             />
           </div>
           <!-- </div> -->
@@ -288,7 +320,7 @@ watch(
         </div>
 
         <!--  -->
-        <h1 class="current-route_container">
+        <h1 v-if="useAuthStore().loggedIn === true" class="current-route_container">
           {{ translateRoutePath(route.path) }}
         </h1>
 
@@ -351,14 +383,17 @@ watch(
             <!-- LOGIN -->
             <div class="login_wrapper">
               <!-- to login page if !loggin -->
-              <router-link
-                v-if="!useAuthStore().loggedIn && route.name !== 'login' && route.name === 'landing_crm'"
-                to="/login"
+
+              <Button 
+                v-if="!useAuthStore().loggedIn && route.name !== 'login' && route.name === 'landing_crm'" 
                 class="account-btn"
                 @click="closeBurgerMenu"
-              >
-                Войти
-              </router-link>
+                type="pseudo-btn" 
+                link="/login"
+                bg="bg-stroke"
+                :disabled="false"
+
+              >Войти</Button>
 
               <!-- IF LOGGED IN -->
               <div v-if="useAuthStore().loggedIn" class="account-container">
@@ -368,7 +403,7 @@ watch(
                     <Icon
                       name="material-symbols-light:account-circle"
                       size="42px"
-                      color="var(--bs-primary)"
+                      color="var(--color-global-text_second)"
                       class="user_icon"
                     />
                     <!-- <div class="account-user_info"><p>Анфалов С.В.</p></div> -->
@@ -399,16 +434,11 @@ watch(
                       <div class="line"></div>
 
                       <div class="user_list">
-                        <!--  -->
+                        <!-- settings -->
+                        <Button type="pseudo-btn" link="/account" :disabled="false" @click="closeBurgerMenu">Настройки аккаунта</Button>
                         <div>
-                          <router-link to="/account" @click="closeBurgerMenu">
-                            <span>Настройки аккаунта</span>
-                          </router-link>
-                        </div>
-                        <div>
-                          <router-link to="/help" @click="closeBurgerMenu">
-                            <span>Помощь</span>
-                          </router-link>
+                        <!-- help -->
+                         <Button type="pseudo-btn" link="/help" :disabled="false" @click="closeBurgerMenu">Помощь</Button>
                         </div>
                       </div>
                       <!--  -->
@@ -437,10 +467,10 @@ watch(
 </template>
 
 <style scoped>
-a,
+/* a,
 a:visited {
   color: var(--bs-primary);
-}
+} */
 .header-wrapper {
   position: fixed;
   top: 0;
@@ -549,6 +579,9 @@ a:visited {
 }
 
 @media screen and (max-width: 767px) {
+  .account-user_icon {
+    display: none;
+  }
   .header-container {
     /* padding: 0 1rem; */
     padding-left: 1rem;
@@ -622,6 +655,10 @@ a:visited {
     /* padding: 0.3rem!important; */
   }
 
+  .account-menu {
+    padding-left: 0.5rem;
+  }
+
   .account-menu_user .user_list a.router-link-exact-active {
     color: #fff !important;
     background-color: green !important;
@@ -659,7 +696,8 @@ a:visited {
     margin-left: 1rem;
   }
   .header-features__list li {
-    padding-left: 1rem;
+    /* margin-top: 1rem; */
+    padding-left: 1.5rem;
   }
   .header-features__list {
     margin-top: 1rem;
@@ -792,10 +830,10 @@ a:visited {
   cursor: pointer;
 }
 
-.account-btn {
+/* .account-btn {
   text-decoration: none;
   cursor: pointer;
-}
+} */
 .header-logo {
   /* z-index: 100; */
 }
@@ -829,7 +867,7 @@ label .hamburger {
   /* left: 50px; */
   width: 32px;
   height: 2px;
-  background: var(--bs-primary);
+  background: var(--color-global-text);
   display: block;
   -webkit-transform-origin: center;
   transform-origin: center;
@@ -846,7 +884,7 @@ label .hamburger:before {
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--bs-primary);
+  background: var(--color-global-text);
 }
 
 label .hamburger:before {

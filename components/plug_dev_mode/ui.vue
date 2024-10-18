@@ -1,12 +1,31 @@
 <template>
-    <div class="tab_wrapper">
+    <div class="plug_wrapper">
 
-        ----DevModePlug----
+        <article style="display: flex; align-items: center; gap: 3rem;">
+            <!-- IMG -->
+            <NuxtImg src="/img/feature_16993811.webp"/>
+
+            <!-- DESCRIPTION -->
+            <aside>
+                <!-- PATH -->
+                <p>Мы здесь: {{ route.path }}</p>
+                <!-- TITLE -->
+                <h3><span style="display: block;">Идеи варятся, блюдо</span> готовится :)</h3>
+
+                <!-- LINKS -->
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="" @click.prevent="router.go(-1)">Назад</a>
+                    <router-link to="/">На главную</router-link>
+                </div>
+            </aside>
+        </article>
     </div>
 </template>
 
 <script lang="ts" setup>
 
+const route = useRoute()
+const router = useRouter()
 // PROPS
 const props = defineProps({
     // tabs: Array,
@@ -29,12 +48,25 @@ const props = defineProps({
 </script>
   
 <style scoped>
-
+.plug_wrapper {
+    position: fixed;
+    z-index: 98;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    background-color: var(--color-btn-text)
+}
 @media screen and (max-width: 575px) {
 
 }
 
 @media screen and (max-width: 767px) {
-
+    article {
+        flex-direction: column;
+    }
 }
 </style>

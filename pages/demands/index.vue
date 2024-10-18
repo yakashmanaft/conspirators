@@ -1,6 +1,14 @@
 <script setup lang="ts">
+
+// shared
 import { Container } from "@/shared/container";
+
+// components
+import { DevModePlug } from "~/components/plug_dev_mode";
+
+// utils
 import { onBeforeMount } from "vue";
+
 useHead({
   title: "Заявки",
   link: [
@@ -241,6 +249,9 @@ const locationColorized = (location: string) => {
 </script>
 <template>
   <Container style="margin-top: 5rem">
+
+    <DevModePlug/>
+
     <h1 class="show-max-767">Заявки</h1>
 
     <!-- Фильтры -->

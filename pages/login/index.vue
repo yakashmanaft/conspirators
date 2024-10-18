@@ -26,6 +26,9 @@ useHead({
 import { Container } from "@/shared/container";
 import { Section } from "@/shared/section"
 
+// components
+import { Button } from "@/components/button"
+
 // import { userToLog } from '@/stores/auth';
 
 const { loggedIn, user, session, clear, fetch } = useUserSession();
@@ -106,6 +109,7 @@ const onClickRegister = () => {
       type="email" 
       class="form-control"
       placeholder="name@example.com"
+      autocomplete="username"
     />
     <!-- PASSWORD -->
     <input
@@ -114,17 +118,17 @@ const onClickRegister = () => {
       type="password"
       class="form-control"
       placeholder="enter password"
+      autocomplete="current-password"
     />
 
     <!-- SUBMIT BTNs -->
     <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
       <!-- login -->
-      <button @click.prevent="login">Войти</button>
+      <Button @click.prevent="login" type="original-btn" link="" bg="bg-full" :disabled="false">Войти</Button>
+
       <!-- register -->
-      <div class="pseudo-btn">
-  
-        <router-link to="/register">Создать аккаунт</router-link>
-      </div>
+      <Button type="pseudo-btn" link="/register" bg="bg-stroke" :disabled="false">Создать аккаунт</Button>
+
     </div>
     </form>
 
@@ -137,29 +141,10 @@ const onClickRegister = () => {
 
 <style scoped>
 
-  button {
-    background-color: var(--color-btn-bg);
-    color: var(--color-btn-text);
-    padding: 10px 24px;
-    border-radius: 100px; 
-    transition: all .2s ease-in
-  }
-  button:hover {
-    /* background-color: var(--color-btn-hover-bg); */
-    filter: brightness(70%)
-  }
-  button[disabled] {
-    /* background-color: var(--color-btn-disabled-bg); */
-    background-color: unset;
-    color: var(--color-btn-disabled-text);
-  }
+
 
   @media screen and (max-width: 767px) {
 
-    .pseudo-btn {
-      border-radius: 100px; 
-      padding: 10px 24px;
-      border: 1px solid var(--color-btn-wo-bg);
-    }
+
   }
 </style>

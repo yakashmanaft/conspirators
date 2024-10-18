@@ -2,10 +2,27 @@
   <Container>
     <h1 style="margin-top: 5rem">Помощь</h1>
 
+    <ul>
+      <li>
+        <nuxt-link to="/landing_crm">О проекте</nuxt-link>
+      </li>
+      <li>
+        <nuxt-link to="/policy">Политика конфиденциальности</nuxt-link>
+      </li>
+    </ul>
+
     <!--  -->
     <div>
       <h2>База знаний</h2>
 
+      <h3>For people</h3>
+      <p>Мой кошелек</p>
+      <p>Сводим в едином виде свободные средства, инвестированные деньги в различные инвестиционные темчики, а также осуществлякется учет долгов</p>
+
+      <h3>Development for marketing</h3>
+      <p></p>
+
+      <h3>development for builders</h3>
       <div
         class="article_wrapper"
         v-for="article in articles.sort((x, y) => {

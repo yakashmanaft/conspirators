@@ -1,6 +1,11 @@
 <script lang="ts" setup>
+// shared
 import { Container } from "@/shared/container";
 
+// components
+import { DevModePlug } from "~/components/plug_dev_mode";
+
+// utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
 
@@ -210,6 +215,12 @@ watch(project.value, () => {
 </script>
 <template>
   <Container style="padding-top: 5rem">
+
+
+    <DevModePlug/>
+
+
+
     <h1 class="show-max-767">Проекты</h1>
 
     <!-- fetch data is error -->

@@ -22,7 +22,12 @@ useHead({
     },
   ],
 });
+
+// shared
 import { Container } from "@/shared/container";
+
+// components
+import { DevModePlug } from "~/components/plug_dev_mode";
 
 // import { userToLog } from '@/stores/auth';
 
@@ -75,43 +80,13 @@ const route = useRoute()
 
 <template>
   <Container>
+      
+    <!-- ЗАГЛУШКА "В РАЗРАБОТКЕ..." -->
+    <!-- start plug code ************************** -->
+    <DevModePlug
+    />
+    <!-- end plug code ************************** -->
 
-      <!-- МОЖЕТ ДОЛЖНА БЫТЬ АБСОЛЮТОМ С ЗАТЕМНЕННЫМ ФОНОМ? -->
-      <!-- ЗАГЛУШКА "В РАЗРАБОТКЕ..." -->
-
-
-    <section
-      style="
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      "
-    >
-
-
-      {{ route.path }}
-    <article style="display: flex; align-items: center; gap: 3rem;">
-        <!-- IMG -->
-        <NuxtImg src="/img/feature_16993811.webp"/>
-
-        <!-- DESCRIPTION -->
-        <aside>
-            <!-- TITLE -->
-            <h3>Идеи варятся, блюдо готовится :)</h3>
-
-            <!-- LINKS -->
-            <div style="display: flex; gap: 0.5rem;">
-                <a href="" @click.prevent="router.go(-1)">Назад</a>
-                <router-link to="/">На главную</router-link>
-            </div>
-        </aside>
-    </article>
-
-
-    </section>
   </Container>
 </template>
 
