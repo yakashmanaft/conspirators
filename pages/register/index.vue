@@ -31,6 +31,7 @@ import { Container } from "@/shared/container";
 // const { userToLog } = setUserSession()
 
 const router = useRouter();
+const route = useRoute()
 // import { useCurrentUserStore } from '@/stores/auth'
 
 
@@ -77,6 +78,8 @@ const router = useRouter();
 
       <!-- МОЖЕТ ДОЛЖНА БЫТЬ АБСОЛЮТОМ С ЗАТЕМНЕННЫМ ФОНОМ? -->
       <!-- ЗАГЛУШКА "В РАЗРАБОТКЕ..." -->
+
+
     <section
       style="
         width: 100%;
@@ -89,7 +92,7 @@ const router = useRouter();
     >
 
 
-      
+      {{ route.path }}
     <article style="display: flex; align-items: center; gap: 3rem;">
         <!-- IMG -->
         <NuxtImg src="/img/feature_16993811.webp"/>

@@ -60,7 +60,7 @@ const featuresListAuth = ref([
 const featuresListNoAuth = ref([
   {
     path: "/about",
-    title: "О сервисе",
+    title: "Контакты",
     auth: false,
   },
   {

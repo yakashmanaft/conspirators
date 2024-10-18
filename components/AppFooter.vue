@@ -4,6 +4,7 @@ import { Container } from "@/shared/container";
 const router = useRouter();
 const route = useRoute();
 const currentRoute = ref("");
+// AUTH
 const hotBtnList = ref([
   {
     name: "dashboard",
@@ -37,6 +38,25 @@ const hotBtnList = ref([
     target: 'wallet'
   },
 ]);
+// NO AUTH
+const menuList = ref([
+  {
+    title: 'Контакты',
+    path: '/about'
+  },
+  {
+    title: 'conspirators.CRM',
+    path: 'landing_crm'
+  },
+  {
+    title: 'Политика конфиденциальности',
+    path: '/policy'
+  },
+  {
+    title: 'Оставить заявку',
+    path: 'landing_offer'
+  }
+])
 
 const clickBy = (el: any) => {
   console.log(`name: ${el.name}`);
@@ -64,11 +84,9 @@ watch(
 );
 </script>
 <template>
+  <!-- AUTH -->
   <div class="footer_container" v-if="route.path !== '/login'">
     <Container>
-      <!-- <div v-if="useAuthStore().user.favorite" class="footer_wrapper_loggedIn">
-        {{ useAuthStore().user.favorite }} 
-      </div> -->
 
       <!-- logged in -->
       <div class="footer_wrapper_loggedIn" v-if="useAuthStore().loggedIn">
@@ -85,18 +103,16 @@ watch(
 
     </Container>
   </div>
-  <!-- NO logged in -->
-  <div v-if="!useAuthStore().loggedIn" style="background-color: var(--color-global-text); color: var(--color-btn-text)">
-    <ul style="font-size: 0.8rem; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 0; padding: 1rem">
-      <li style="white-space: nowrap">О нас</li>
-      <li style="white-space: nowrap">Контакты</li>
-      <li style="white-space: nowrap">
-        <router-link to="/landing_crm">conspirators.CRM</router-link>
-      </li>
-      <li style="white-space: nowrap">Политика и соглашения</li>
-      <li style="white-space: nowrap">Соглашение</li>
-      <li style="white-space: nowrap">Оставить заявку</li>
-    </ul>
+  <!-- NO AUTH -->
+  <div v-if="!useAuthStore().loggedIn" class="footer-wrapper_wo-auth">
+    <Container>
+
+      <ul>
+        <li v-for="el in menuList" style="white-space: nowrap;">
+          <router-link :to="el.path">{{ el.title }}</router-link>
+        </li>
+      </ul>
+    </Container>
   </div>
 </template>
 
@@ -115,7 +131,25 @@ watch(
   justify-content: space-around;
   background-color: var(--bs-body-bg);
 }
-@media screen and (min-width: 769px) {
+.footer-wrapper_wo-auth {
+  background-color: var(--color-global-text); 
+  color: var(--color-btn-text)
+}
+.footer-wrapper_wo-auth ul {
+  font-size: 0.8rem; 
+  list-style: none; 
+  display: grid; 
+  gap: 1rem; 
+  margin: 0; 
+  padding: 1rem
+}
+@media screen and (max-width: 767px) {
+  .footer-wrapper_wo-auth ul{
+    grid-template-columns: 1fr;
+  }
+}
+@media screen and (min-width: 768px) {
+  /* With AUTH */
   .footer_wrapper_loggedIn {
     display: none;
   }

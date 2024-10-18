@@ -1,12 +1,12 @@
 <template>
     <Container>
-        <h1 style="margin-top: 5rem;">О сервисе</h1>
+        <h1 style="margin-top: 5rem;">Вот мы тут</h1>
     </Container>
 </template>
 
 <script lang="ts" setup>
     useHead({
-        title: "О сервисе   ",
+        title: "Кто? Где? Как?",
         link: [
             { 
                 rel: 'stylesheet', 

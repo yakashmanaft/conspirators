@@ -22,7 +22,9 @@ useHead({
     },
   ],
 });
+// shared
 import { Container } from "@/shared/container";
+import { Section } from "@/shared/section"
 
 // import { userToLog } from '@/stores/auth';
 
@@ -74,7 +76,8 @@ const onClickRegister = () => {
 
 <template>
   <Container>
-    <div
+
+    <div       
       style="
         width: 100%;
         height: 100vh;
@@ -82,54 +85,53 @@ const onClickRegister = () => {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-      "
-    >
+      ">
 
+      <Section>
+  <form         
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+    ">
+    <!-- TITLE -->
+    <h1>Вход</h1>
 
-      <form
-        class="shadow py-4 px-5 mb-4 bg-body-tertiary rounded"
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          gap: 1rem;
-        "
-      >
-        <!-- TITLE -->
-        <h1>Вход</h1>
+    <!-- EMAIL -->
+    <input 
+      v-model="tempUser.email" 
+      id="login_email"
+      type="email" 
+      class="form-control"
+      placeholder="name@example.com"
+    />
+    <!-- PASSWORD -->
+    <input
+      v-model="tempUser.password"
+      id="login_password" 
+      type="password"
+      class="form-control"
+      placeholder="enter password"
+    />
 
-        <!-- EMAIL -->
-        <input 
-          v-model="tempUser.email" 
-          id="login_email"
-          type="email" 
-          class="form-control"
-          placeholder="name@example.com"
-        />
-
-        <!-- PASSWORD -->
-        <input
-          v-model="tempUser.password"
-          id="login_password" 
-          type="password"
-          class="form-control"
-          placeholder="enter password"
-        />
-
-        <!-- SUBMIT BTNs -->
-        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
-          <!-- login -->
-          <button @click.prevent="login">Войти</button>
-          <!-- register -->
-          <router-link to="/register">Создать аккаунт</router-link>
-        </div>
-      </form>
-      
-      <router-link to="/">На главную</router-link>
-
-
+    <!-- SUBMIT BTNs -->
+    <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
+      <!-- login -->
+      <button @click.prevent="login">Войти</button>
+      <!-- register -->
+      <div class="pseudo-btn">
+  
+        <router-link to="/register">Создать аккаунт</router-link>
+      </div>
     </div>
+    </form>
+
+      </Section>
+      <router-link to="/">На главную</router-link>
+    </div>
+
   </Container>
 </template>
 
@@ -152,4 +154,12 @@ const onClickRegister = () => {
     color: var(--color-btn-disabled-text);
   }
 
+  @media screen and (max-width: 767px) {
+
+    .pseudo-btn {
+      border-radius: 100px; 
+      padding: 10px 24px;
+      border: 1px solid var(--color-btn-wo-bg);
+    }
+  }
 </style>
