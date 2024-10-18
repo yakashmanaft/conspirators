@@ -1,1 +1,1 @@
-export { default as chip } from './ui.vue'
+export { default as Chip } from './ui.vue'

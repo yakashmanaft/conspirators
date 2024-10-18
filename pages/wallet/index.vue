@@ -3,12 +3,14 @@
 import { Container } from "@/shared/container";
 
 // components
-import { chip } from "~/components/chip";
+import { Chip } from "~/components/chip";
 
 //
 const route = useRoute();
 // 
 const sessionUser = useUserSession().user;
+// useProfileStore().loadData()
+// const profiles = useProfileStore().profiles
 // = chip
 const choosenChip_bank = ref({
   title: 'Все',
@@ -161,7 +163,7 @@ const emittedChip_bank = (chip: any) => {
     <br>
     <h1 class="show-max-767" style="font-weight: bold; font-size: 48px;">Мой кошелек!!!!</h1>
 
-    <!--  -->
+    <!-- CHIPs -->
     <br>
     <chip
       :tabs="[
@@ -223,7 +225,11 @@ const emittedChip_bank = (chip: any) => {
     </div>
 
     <br>
-    {{ sessionUser }}
+    <p>session: {{ sessionUser }}</p>
+    <p>session_profile:</p>
+    <p>all profiles:</p>
+
+    
     <!-- <div>
       {{ computedFund }}
     </div> -->

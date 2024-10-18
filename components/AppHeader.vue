@@ -7,6 +7,14 @@ import { Button } from '@/components/button'
 // utils
 import { watch } from "vue";
 
+// PROPS
+const props = defineProps({
+  auth_user: {
+    type: Object,
+    default: {}
+  }
+});
+
 const route = useRoute();
 const router = useRouter();
 
@@ -89,10 +97,10 @@ const featuresListNoAuth = ref([
     title: 'conspirators.CRM',
     path: 'landing_crm'
   },
-  {
-    title: 'Политика конфиденциальности',
-    path: '/policy'
-  },
+  // {
+  //   title: 'Политика конфиденциальности',
+  //   path: '/policy'
+  // },
   {
     title: 'Оставить заявку',
     path: 'landing_offer'
@@ -105,7 +113,7 @@ const featuresListNoAuth = ref([
 
 //
 onMounted(async () => {
-  console.log(useAuthStore().user);
+
 });
 
 const logout = () => {
@@ -357,6 +365,11 @@ watch(
                 <router-link to="/wallet">Кошелек</router-link>
               </li>
 
+              <!-- HELP -->
+              <li @click="closeBurgerMenu">
+                <Button type="pseudo-btn" link="/help" :disabled="false" >Помощь</Button>
+              </li>
+
               <!-- <li v-if="userAccesedLink('banks')" @click="closeBurgerMenu">
                 <router-link to="/banks">Банк</router-link>
               </li> -->
@@ -431,19 +444,24 @@ watch(
                           </div>
                         </router-link>
                       </div>
-                      <div class="line"></div>
-
+                      
                       <div class="user_list">
+
                         <!-- settings -->
-                        <Button type="pseudo-btn" link="/account" :disabled="false" @click="closeBurgerMenu">Настройки аккаунта</Button>
-                        <div>
-                        <!-- help -->
-                         <Button type="pseudo-btn" link="/help" :disabled="false" @click="closeBurgerMenu">Помощь</Button>
-                        </div>
+                        <Button 
+                          @click="closeBurgerMenu" 
+                          type="pseudo-btn" 
+                          link="/account" 
+                          :disabled="false"
+                          ><span style="font-size: 2rem; font-weight: bold;">userId: </span>{{ props?.auth_user }}</Button>
+
                       </div>
+
+                      <!-- <div class="line"></div> -->
+
                       <!--  -->
                       <div class="user_logout">
-                        <span @click="logout()">Выйти</span>
+                        <span @click="logout()" style="color: var(--bs-danger)">Выйти</span>
                       </div>
                     </div>
                   </div>
@@ -700,7 +718,7 @@ a:visited {
     padding-left: 1.5rem;
   }
   .header-features__list {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
   .account-menu_user {
     margin-top: 1rem;
