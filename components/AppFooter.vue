@@ -65,13 +65,13 @@ const menuList = ref([
     path: 'landing_crm'
   },
   {
+    title: 'Оставить заявку',
+    path: 'landing_offer'
+  },
+  {
     title: 'Политика конфиденциальности',
     path: '/policy'
   },
-  {
-    title: 'Оставить заявку',
-    path: 'landing_offer'
-  }
 ])
 
 const clickBy = (el: any) => {
@@ -101,11 +101,11 @@ watch(
 </script>
 <template>
   <!-- AUTH -->
-  <div class="footer_container" v-if="route.path !== '/login'">
-    <Container>
+  <div class="footer_container" v-if="useAuthStore().loggedIn && route.path !== '/login'">
 
-      <!-- logged in -->
-      <div class="footer_wrapper_loggedIn" v-if="useAuthStore().loggedIn">
+
+      <!-- wrapper -->
+      <div class="footer_wrapper_loggedIn">
         <Icon
           @click="clickBy(el)"
           v-for="el in hotBtnList"
@@ -117,40 +117,50 @@ watch(
         />
       </div>
 
-    </Container>
+
   </div>
   <!-- NO AUTH -->
-  <div v-if="!useAuthStore().loggedIn" class="footer-wrapper_wo-auth">
-    <Container>
+  <div class="footer_container" style="background-color: var(--color-global-text); " v-if="!useAuthStore().loggedIn" >
 
-      <ul>
-        <li v-for="el in menuList" style="white-space: nowrap;">
-          <router-link :to="el.path">{{ el.title }}</router-link>
-        </li>
-      </ul>
-    </Container>
+      <!-- wrapper -->
+      <div class="footer-wrapper_wo-auth ">
+
+        <ul>
+          <li v-for="el in menuList" style="white-space: nowrap;">
+            <router-link :to="el.path">{{ el.title }}</router-link>
+          </li>
+        </ul>
+      </div>
+
   </div>
 </template>
 
 <style scoped>
 .footer_container {
-  position: fixed;
-  bottom: 0;
-  background-color: var(--bs-body-bg);
   width: 100%;
-  box-shadow: -2px -2px 8px 0px rgba(0, 0, 0, 0.2);
-  z-index: 99;
+}
+.footer_wrapper_loggedIn,
+.footer-wrapper_wo-auth {
+  max-width: 1399px;
+  margin: 0 auto;
 }
 .footer_wrapper_loggedIn {
+  z-index: 99;
+  box-shadow: -2px -2px 8px 0px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  bottom: 0;
   padding: 0.5rem 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
   background-color: var(--bs-body-bg);
 }
 .footer-wrapper_wo-auth {
+  width: 100%;
+  /* padding: 0.5rem 2rem; */
   background-color: var(--color-global-text); 
-  color: var(--color-btn-text)
+  color: var(--color-btn-text);
 }
 .footer-wrapper_wo-auth ul {
   font-size: 0.8rem; 
@@ -158,7 +168,7 @@ watch(
   display: grid; 
   gap: 1rem; 
   margin: 0; 
-  padding: 1rem
+  padding: 1rem;
 }
 @media screen and (max-width: 767px) {
   .footer-wrapper_wo-auth ul{
@@ -169,6 +179,10 @@ watch(
   /* With AUTH */
   .footer_wrapper_loggedIn {
     display: none;
+  }
+  /* NO AUTH */
+  .footer-wrapper_wo-auth ul {
+    padding: 1rem 2rem
   }
 }
 </style>

@@ -39,9 +39,13 @@ const { loggedIn, user, session, clear } = useUserSession();
   <Container>
 
 
-    <h1 style="margin-top: 5rem">conspirators.su</h1><span>не ссы</span>
+    <h1>conspirators.su</h1><span>не ссы</span>
     <h2>INDEX PAGE</h2>
-    <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
+    <div style="display: flex; gap: 1rem;">
+
+      <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
+      <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Узнать по услугам маркетинга</Button>
+    </div>
 
   </Container>
 </template>

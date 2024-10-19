@@ -40,14 +40,14 @@ const router = useRouter();
 
 
 const tempUser = ref({
-  email: null,
+  login: null,
   password: null,
 });
 
-const login = async () => {
+const loginFunc = async () => {
 
   // Данные введены
-  if (tempUser.value.email && tempUser.value.password) {
+  if (tempUser.value.login && tempUser.value.password) {
 
     // Закидываем введенные данные для поиска пользователя в БД
     await useAuthStore().signIn(tempUser.value);
@@ -58,12 +58,12 @@ const login = async () => {
     }
   } 
   // Не вписан пароль
-  else if (tempUser.value.email && !tempUser.value.password) {
+  else if (tempUser.value.login && !tempUser.value.password) {
     alert("Забыли про пароль");
   } 
   // Не вписан имейл
-  else if (!tempUser.value.email && tempUser.value.password) {
-    alert("Вы не указали email");
+  else if (!tempUser.value.login && tempUser.value.password) {
+    alert("Вы не указали логин");
   } 
   // Ничего не вписано
   else {
@@ -78,65 +78,61 @@ const onClickRegister = () => {
 </script>
 
 <template>
-  <Container>
-
-    <div       
-      style="
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      ">
-
-      <Section>
-  <form         
+  <div       
     style="
+      width: 100%;
+      height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      gap: 1rem;
     ">
-    <!-- TITLE -->
-    <h1>Вход</h1>
 
-    <!-- EMAIL -->
-    <input 
-      v-model="tempUser.email" 
-      id="login_email"
-      type="email" 
-      class="form-control"
-      placeholder="name@example.com"
-      autocomplete="username"
-    />
-    <!-- PASSWORD -->
-    <input
-      v-model="tempUser.password"
-      id="login_password" 
-      type="password"
-      class="form-control"
-      placeholder="enter password"
-      autocomplete="current-password"
-    />
+    <Section>
+<form         
+  style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+  ">
+  <!-- TITLE -->
+  <h1>Вход</h1>
 
-    <!-- SUBMIT BTNs -->
-    <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
-      <!-- login -->
-      <Button @click.prevent="login" type="original-btn" link="" bg="bg-full" :disabled="false">Войти</Button>
+  <!-- LOGIN -->
+  <input 
+    v-model="tempUser.login" 
+    id="login_login"
+    type="text" 
+    class="form-control"
+    placeholder="enter login"
+    autocomplete="username"
+  />
+  <!-- PASSWORD -->
+  <input
+    v-model="tempUser.password"
+    id="login_password" 
+    type="password"
+    class="form-control"
+    placeholder="enter password"
+    autocomplete="current-password"
+  />
 
-      <!-- register -->
-      <Button type="pseudo-btn" link="/register" bg="bg-stroke" :disabled="false">Создать аккаунт</Button>
+  <!-- SUBMIT BTNs -->
+  <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
+    <!-- login -->
+    <Button @click.prevent="loginFunc" type="original-btn" link="" bg="bg-full" :disabled="false">Войти</Button>
 
-    </div>
-    </form>
+    <!-- register -->
+    <Button type="pseudo-btn" link="/register" bg="bg-stroke" :disabled="false">Создать аккаунт</Button>
 
-      </Section>
-      <router-link to="/">На главную</router-link>
-    </div>
+  </div>
+  </form>
 
-  </Container>
+    </Section>
+    <router-link to="/">На главную</router-link>
+  </div>
 </template>
 
 <style scoped>

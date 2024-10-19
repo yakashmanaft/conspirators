@@ -137,20 +137,20 @@ const demdands = ref(null);
 // const userCreatorData = ref(null)
 
 onBeforeMount(async () => {
-  demands.value = await getDemands();
+  // demands.value = await getDemands();
 
   // BD
-  async function getDemands() {
-    return await $fetch("/api/demands/demand");
-  }
+  // async function getDemands() {
+  //   return await $fetch("/api/demands/demand");
+  // }
 });
 
-const { data: projects } = useLazyAsyncData("projects", () =>
-  $fetch("api/projects/projects")
-);
-const { data: locations } = useLazyAsyncData("locations", () =>
-  $fetch("api/locations/locations")
-);
+// const { data: projects } = useLazyAsyncData("projects", () =>
+//   $fetch("api/projects/projects")
+// );
+// const { data: locations } = useLazyAsyncData("locations", () =>
+//   $fetch("api/locations/locations")
+// );
 
 onMounted(async () => {
   users.value = await getUsers();
@@ -248,9 +248,9 @@ const locationColorized = (location: string) => {
 };
 </script>
 <template>
-  <Container style="margin-top: 5rem">
+  <Container>
 
-    <DevModePlug/>
+    <!-- <DevModePlug/> -->
 
     <h1 class="show-max-767">Заявки</h1>
 
@@ -273,6 +273,20 @@ const locationColorized = (location: string) => {
         </div>
       </fieldset>
     </div>
+
+    <!--  -->
+    <ul>
+      <li>Новый лид</li>
+      <li>Выявлен интерес</li>
+      <li>Проведена встреча</li>
+      <li>Согласована цена</li>
+      <li>Оформлены документы</li>
+      <li>Получена оплата</li>
+      <li>Выполняем работы</li>
+      <li>Сдали работу</li>
+      <li>Акт сдачи-приемки</li>
+      <li>Сделка успешна</li>
+    </ul>
 
     <!-- DEMANDS LIST -->
     <div class="demands_wrapper" v-if="computedDemands">

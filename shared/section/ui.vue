@@ -1,6 +1,6 @@
 <template>
     <div class="section-wrapper">
-        <div class="section shadow py-4 px-5 mb-4 bg-body-tertiary rounded">
+        <div class="section shadow py-4 px-4 mb-4 bg-body-tertiary rounded">
 
             <slot></slot>
         </div>
@@ -20,7 +20,7 @@
     /* width: 100%; */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
 }
 @media screen and (max-width: 575px) {

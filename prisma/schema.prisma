@@ -16,8 +16,8 @@ datasource db {
 
 model auth {
   id         Int       @id @default(autoincrement())
-  email      String    @unique(map: "email") @db.VarChar(255)
-  password   String    @db.VarChar(255)
+  login      String    @unique(map: "login") @db.VarChar(60)
+  password   String    @db.VarChar(60)
   // name          String?   @db.VarChar(255)
   // middleName    String?   @db.VarChar(255)
   // surname       String?   @db.VarChar(255)
@@ -33,9 +33,10 @@ model auth {
 }
 
 model Profile {
-  id     Int  @id @default(autoincrement())
-  user   auth @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id        Int     @id @default(autoincrement())
+  user      auth    @relation(fields: [userId], references: [id])
+  userId    Int     @unique
+  userEmail String? @unique(map: "email") @db.VarChar(60)
 }
 
 enum Role {

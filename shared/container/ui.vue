@@ -6,14 +6,21 @@
 
 <style scoped>
 .container {
-  /* max-width: 1208px; */
   max-width: 1399px;
   margin: 0 auto;
+  margin-bottom: 10rem;
 }
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 767px) {
   .container {
     padding: 0;
+    padding-top: 4rem;
     margin: 0;
+    margin-bottom: 5rem;
+  }
+}
+@media screen and (min-width: 768px) {
+  .container {
+    margin-top: 6rem;
   }
 }
 </style>

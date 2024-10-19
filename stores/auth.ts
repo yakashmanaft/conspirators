@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('Auth', () => {
 
 
         if (users.value && loggedUser) {
-            let userObj = users.value.find(item => item.email === loggedUser.email && item.password === loggedUser.password)
+            let userObj = users.value.find(item => item.login === loggedUser.login && item.password === loggedUser.password)
 
             if(userObj) {
 

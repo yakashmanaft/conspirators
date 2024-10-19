@@ -4,7 +4,7 @@ type Profile = {
     // id: string;
     // uuid: string;
     userId: number,
-    // email: string;
+    userEmail: string;
     // password: string;
     // name: string;
     // middleName: string;

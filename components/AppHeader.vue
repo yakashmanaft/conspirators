@@ -9,10 +9,14 @@ import { watch } from "vue";
 
 // PROPS
 const props = defineProps({
+  auth_user_profile: {
+    type: Object,
+    default: {}
+  },
   auth_user: {
     type: Object,
     default: {}
-  }
+  },
 });
 
 const route = useRoute();
@@ -293,194 +297,196 @@ watch(
 </script>
 
 <template>
-  <div class="header-wrapper" v-if="route.path !== '/login' && route.path !== '/register'">
-    <Container>
-      <!-- <div class="burger" id="burger">
-        <span></span>
-      </div> -->
-      <div class="header-container">
-        <div class="nav-block_left">
-          <!-- Back BTN -->
-          <div
-            class="back-btn"
-            v-if="
-              prevPage !== null && route.path !== '/' && route.path !== '/login'
-            "
-            @click="router.go(-1)"
-          >
-            <Icon
-              class="link"
-              name="material-symbols-light:arrow-back-ios"
-              size="24px"
-              color="var(--color-global-text_second)"
-            />
-          </div>
-          <!-- </div> -->
-          <!-- LOGO -->
-          <router-link
-            v-if="useAuthStore().loggedIn !== true"
-            to="/"
-            class="header-logo"
-            @click="closeBurgerMenu"
-          >
-            <span>conspirators.su</span>
-          </router-link>
-        </div>
+  <div class="header-container" v-if="route.path !== '/login' && route.path !== '/register'">
 
-        <!--  -->
-        <h1 v-if="useAuthStore().loggedIn === true" class="current-route_container">
-          {{ translateRoutePath(route.path) }}
-        </h1>
-
-        <!-- LIST of links -->
+    <div class="header-wrapper">
+      <div class="nav-block_left">
+        <!-- Back BTN -->
         <div
-          class="links_container"
-          :class="burgerIsOpened ? 'opacity-1-767' : 'opacity-0-767'"
+          class="back-btn"
+          v-if="
+            prevPage !== null && route.path !== '/' && route.path !== '/login'
+          "
+          @click="router.go(-1)"
         >
-          <div class="links_wrapper">
-            <!-- Auth -->
-            <ul
-              class="header-features__list"
-              v-if="useAuthStore().loggedIn === true"
+          <Icon
+            class="link"
+            name="material-symbols-light:arrow-back-ios"
+            size="24px"
+            color="var(--color-global-text_second)"
+          />
+        </div>
+        <!-- </div> -->
+        <!-- LOGO -->
+        <router-link
+          v-if="useAuthStore().loggedIn !== true"
+          to="/"
+          class="header-logo"
+          @click="closeBurgerMenu"
+        >
+          <span>conspirators.su</span>
+        </router-link>
+      </div>
+
+      <!--  -->
+      <h1 v-if="useAuthStore().loggedIn === true" class="current-route_container">
+        {{ translateRoutePath(route.path) }}
+      </h1>
+
+      <!-- LIST of links -->
+      <div
+        class="links_container"
+        :class="burgerIsOpened ? 'opacity-1-767' : 'opacity-0-767'"
+      >
+        <div class="links_wrapper">
+          <!-- Auth -->
+          <ul
+            class="header-features__list"
+            v-if="useAuthStore().loggedIn === true"
+          >
+            <!-- .current-feature -->
+            <!-- :class="{'current-feature': route.path === '/dashboard'}" -->
+            <li
+              v-for="(item, index) in featuresListAuth"
+              @click="closeBurgerMenu"
             >
-              <!-- .current-feature -->
-              <!-- :class="{'current-feature': route.path === '/dashboard'}" -->
-              <li
-                v-for="(item, index) in featuresListAuth"
-                @click="closeBurgerMenu"
+              <router-link
+                :to="`${item.path}`"
+                :class="{
+                  'current-feature':
+                    route.path === item.path &&
+                    route.path.includes('partners'),
+                }"
+                >{{ item.title }}</router-link
               >
-                <router-link
-                  :to="`${item.path}`"
-                  :class="{
-                    'current-feature':
-                      route.path === item.path &&
-                      route.path.includes('partners'),
-                  }"
-                  >{{ item.title }}</router-link
+            </li>
+
+            <!-- WALLET -->
+            <li @click="closeBurgerMenu">
+              <router-link to="/wallet">Кошелек</router-link>
+            </li>
+
+            <!-- HELP -->
+            <li @click="closeBurgerMenu">
+              <Button type="pseudo-btn" link="/help" :disabled="false" >Помощь</Button>
+            </li>
+
+            <!-- <li v-if="userAccesedLink('banks')" @click="closeBurgerMenu">
+              <router-link to="/banks">Банк</router-link>
+            </li> -->
+
+            <!-- ТМЦ -->
+            <li @click="closeBurgerMenu">
+              <router-link to="/about"></router-link>
+            </li>
+          </ul>
+
+          <!-- !Auth -->
+          <ul
+            class="header-features__list"
+            v-if="useAuthStore().loggedIn === false"
+          >
+            <li
+              v-for="(item, index) in featuresListNoAuth"
+              @click="closeBurgerMenu"
+            >
+              <router-link :to="`${item.path}`">{{ item.title }}</router-link>
+            </li>
+          </ul>
+
+          <!-- LOGIN -->
+          <div class="login_wrapper">
+            <!-- to login page if !loggin -->
+
+            <Button 
+              v-if="!useAuthStore().loggedIn && route.name !== 'login' && route.name === 'landing_crm'" 
+              class="account-btn"
+              @click="closeBurgerMenu"
+              type="pseudo-btn" 
+              link="/login"
+              bg="bg-stroke"
+              :disabled="false"
+
+            >Войти</Button>
+
+            <!-- IF LOGGED IN -->
+            <div v-if="useAuthStore().loggedIn" class="account-container">
+              <!-- ACCOUNT -->
+              <div class="account-menu">
+                <div class="account-user_icon" @click="toggleAccountMenu">
+                  <Icon
+                    name="material-symbols-light:account-circle"
+                    size="42px"
+                    color="var(--color-global-text_second)"
+                    class="user_icon"
+                  />
+                  <!-- <div class="account-user_info"><p>Анфалов С.В.</p></div> -->
+                </div>
+                <div
+                  class="account-menu_list"
+                  :class="
+                    accountMenuIsOpened ? 'display-block' : 'display-none'
+                  "
                 >
-              </li>
+                  <!-- ПОльзвоательские кнопки -->
+                  <div class="account-menu_user">
+                    <div class="user_info">
+                      <router-link
+                        :to="`/partners/${useAuthStore().user.id}`"
+                        @click="closeBurgerMenu"
+                      >
+                        <span style="font-weight: bold">{{
+                          useAuthStore().user.surname
+                        }}</span>
+                        <div class="user_name">
+                          <span>{{ useAuthStore().user.name }}</span>
 
-              <!-- WALLET -->
-              <li @click="closeBurgerMenu">
-                <router-link to="/wallet">Кошелек</router-link>
-              </li>
+                          <span>{{ useAuthStore().user.middleName }}</span>
+                        </div>
+                      </router-link>
+                    </div>
+                    
+                    <div class="user_list">
 
-              <!-- HELP -->
-              <li @click="closeBurgerMenu">
-                <Button type="pseudo-btn" link="/help" :disabled="false" >Помощь</Button>
-              </li>
-
-              <!-- <li v-if="userAccesedLink('banks')" @click="closeBurgerMenu">
-                <router-link to="/banks">Банк</router-link>
-              </li> -->
-
-              <!-- ТМЦ -->
-              <li @click="closeBurgerMenu">
-                <router-link to="/about"></router-link>
-              </li>
-            </ul>
-
-            <!-- !Auth -->
-            <ul
-              class="header-features__list"
-              v-if="useAuthStore().loggedIn === false"
-            >
-              <li
-                v-for="(item, index) in featuresListNoAuth"
-                @click="closeBurgerMenu"
-              >
-                <router-link :to="`${item.path}`">{{ item.title }}</router-link>
-              </li>
-            </ul>
-
-            <!-- LOGIN -->
-            <div class="login_wrapper">
-              <!-- to login page if !loggin -->
-
-              <Button 
-                v-if="!useAuthStore().loggedIn && route.name !== 'login' && route.name === 'landing_crm'" 
-                class="account-btn"
-                @click="closeBurgerMenu"
-                type="pseudo-btn" 
-                link="/login"
-                bg="bg-stroke"
-                :disabled="false"
-
-              >Войти</Button>
-
-              <!-- IF LOGGED IN -->
-              <div v-if="useAuthStore().loggedIn" class="account-container">
-                <!-- ACCOUNT -->
-                <div class="account-menu">
-                  <div class="account-user_icon" @click="toggleAccountMenu">
-                    <Icon
-                      name="material-symbols-light:account-circle"
-                      size="42px"
-                      color="var(--color-global-text_second)"
-                      class="user_icon"
-                    />
-                    <!-- <div class="account-user_info"><p>Анфалов С.В.</p></div> -->
-                  </div>
-                  <div
-                    class="account-menu_list"
-                    :class="
-                      accountMenuIsOpened ? 'display-block' : 'display-none'
-                    "
-                  >
-                    <!-- ПОльзвоательские кнопки -->
-                    <div class="account-menu_user">
-                      <div class="user_info">
-                        <router-link
-                          :to="`/partners/${useAuthStore().user.id}`"
-                          @click="closeBurgerMenu"
+                      <!-- settings -->
+                      <Button 
+                        @click="closeBurgerMenu" 
+                        type="pseudo-btn" 
+                        link="/account" 
+                        :disabled="false"
+                      >
+                        <span 
+                          style="font-size: 2rem; font-weight: bold;"
                         >
-                          <span style="font-weight: bold">{{
-                            useAuthStore().user.surname
-                          }}</span>
-                          <div class="user_name">
-                            <span>{{ useAuthStore().user.name }}</span>
+                          {{ props?.auth_user.login }}
+                        </span></Button>
 
-                            <span>{{ useAuthStore().user.middleName }}</span>
-                          </div>
-                        </router-link>
-                      </div>
-                      
-                      <div class="user_list">
+                    </div>
 
-                        <!-- settings -->
-                        <Button 
-                          @click="closeBurgerMenu" 
-                          type="pseudo-btn" 
-                          link="/account" 
-                          :disabled="false"
-                          ><span style="font-size: 2rem; font-weight: bold;">userId: </span>{{ props?.auth_user }}</Button>
+                    <!-- <div class="line"></div> -->
 
-                      </div>
-
-                      <!-- <div class="line"></div> -->
-
-                      <!--  -->
-                      <div class="user_logout">
-                        <span @click="logout()" style="color: var(--bs-danger)">Выйти</span>
-                      </div>
+                    <!--  -->
+                    <div class="user_logout">
+                      <span @click="logout()" style="color: var(--bs-danger)">Выйти</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- </div> -->
             </div>
+            <!-- </div> -->
           </div>
         </div>
-
-        <!-- BURGER -->
-        <label class="burger">
-          <input type="checkbox" v-model="burgerIsOpened" />
-          <span class="menu">
-            <span class="hamburger"></span>
-          </span>
-        </label>
       </div>
-    </Container>
+
+      <!-- BURGER -->
+      <label class="burger">
+        <input type="checkbox" v-model="burgerIsOpened" />
+        <span class="menu">
+          <span class="hamburger"></span>
+        </span>
+      </label>
+    </div>
+
   </div>
 </template>
 
@@ -489,7 +495,7 @@ watch(
 a:visited {
   color: var(--bs-primary);
 } */
-.header-wrapper {
+.header-container{
   position: fixed;
   top: 0;
   width: 100%;
@@ -499,7 +505,9 @@ a:visited {
   z-index: 99;
 }
 
-.header-container {
+.header-wrapper {
+  max-width: 1399px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -570,10 +578,16 @@ a:visited {
   display: flex;
   gap: 0.3rem;
 }
-@media screen and (max-width: 767px) and (max-height: 540px) {
-  .header-container {
-    padding-left: unset !important;
+@media screen and (max-width: 575px) {
+  .header_wrapper {
+    padding: 0;
+    margin: 0;
   }
+}
+@media screen and (max-width: 767px) and (max-height: 540px) {
+  /* .header-wrapper {
+    padding-left: unset !important;
+  } */
   .header-logo {
     /* background-color: red; */
   }
@@ -600,7 +614,7 @@ a:visited {
   .account-user_icon {
     display: none;
   }
-  .header-container {
+  .header-wrapper {
     /* padding: 0 1rem; */
     padding-left: 1rem;
   }
@@ -757,8 +771,8 @@ a:visited {
 }
 
 @media screen and (min-width: 768px) {
-  .header-container {
-    padding: 1rem 0;
+  .header-wrapper {
+    padding: 1rem;
   }
   .current-route_container {
     display: none;

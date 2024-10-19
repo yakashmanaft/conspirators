@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <h1 style="margin-top: 5rem">Помощь</h1>
+    <h1>Помощь</h1>
 
     <ul>
       <li>

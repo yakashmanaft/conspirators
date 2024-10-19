@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
     const user = {
         id: body.id,
-        email: body.email,
+        login: body.login,
         // Пароль не показываем...
         // password: body.password,
         // surname: body.surname,
