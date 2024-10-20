@@ -752,8 +752,8 @@ const tempModulesArray = ref([]);
 
 onMounted(() => {
   // users.value = await getUsers()
-  refresh();
-  refreshCompanies();
+  // refresh();
+  // refreshCompanies();
 
   // reset inputs in modals
   // companies
@@ -828,9 +828,9 @@ const {
   },
 });
 
-const { refresh: refreshCompanies, data: companies } = await useLazyFetch(
-  "api/organizations/organizations"
-);
+// const { refresh: refreshCompanies, data: companies } = await useLazyFetch(
+//   "api/organizations/organizations"
+// );
 // const { data: companies } = useFetch("api/organizations/organizations", {
 //   lazy: false,
 // });

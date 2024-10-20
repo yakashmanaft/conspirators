@@ -31,35 +31,37 @@ useHead({
   ],
 });
 
-const {
-  pending,
-  error,
-  refresh,
-  data: projects,
-  status,
-} = useFetch("api/projects/projects", {
-  lazy: false,
-  transform: (projects) => {
-    return projects.filter((el) => {
-      // CREATOR
-      if (el.creator === user.value.id) {
-        return el;
-      }
-      // PARTNER
-      else if (el.partnerType === 'user' && el.partnerID === user.value.id) {
-        return el
-      }
-      // SHARER in project
-      else if (el.sharers && el.sharers.find((item) => item.sharerType === 'user' && item.sharerID === user.value.id)) {
-        return el
-      }
-      // SHARER in band (by bandID in project)
-      else if (isRelated(el)){
-        return el
-      }
-    });
-  },
-});
+// const {
+//   pending,
+//   error,
+//   refresh,
+//   data: projects,
+//   status,
+// } = useFetch("api/projects/projects", {
+//   lazy: false,
+//   transform: (projects) => {
+//     return projects.filter((el) => {
+//       // CREATOR
+//       if (el.creator === user.value.id) {
+//         return el;
+//       }
+//       // PARTNER
+//       else if (el.partnerType === 'user' && el.partnerID === user.value.id) {
+//         return el
+//       }
+//       // SHARER in project
+//       else if (el.sharers && el.sharers.find((item) => item.sharerType === 'user' && item.sharerID === user.value.id)) {
+//         return el
+//       }
+//       // SHARER in band (by bandID in project)
+//       else if (isRelated(el)){
+//         return el
+//       }
+//     });
+//   },
+// });
+
+const projects:any[] = []
 
 // tmp project item
 const project = ref({
@@ -82,14 +84,14 @@ const { users } = storeToRefs(useUsersStore());
 const { loadData } = useUsersStore();
 const { user } = useUserSession();
 
-const { data: organizations } = useLazyAsyncData("organizations", () =>
-  $fetch("api/organizations/organizations")
-);
-const refreshOrganizations = () => refreshNuxtData("organizations");
+// const { data: organizations } = useLazyAsyncData("organizations", () =>
+//   $fetch("api/organizations/organizations")
+// );
+// const refreshOrganizations = () => refreshNuxtData("organizations");
 
 onMounted(async () => {
-  refresh();
-  await refreshOrganizations();
+  // refresh();
+  // await refreshOrganizations();
   await loadData();
 });
 

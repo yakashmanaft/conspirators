@@ -43,6 +43,11 @@ const featuresListAuth = ref([
   //   auth: true,
   // },
   {
+    path: "/landing_all",
+    title: 'Посадки',
+    auth: true
+  },
+  {
     path: "/projects",
     title: "Проекты",
     auth: true,
@@ -98,17 +103,17 @@ const featuresListNoAuth = ref([
     path: '/landing_offer'
   },
   {
-    title: 'conspirators.CRM',
+    title: 'CRM',
     path: 'landing_crm'
   },
   // {
   //   title: 'Политика конфиденциальности',
   //   path: '/policy'
   // },
-  {
-    title: 'Оставить заявку',
-    path: 'landing_offer'
-  },
+  // {
+  //   title: 'Оставить заявку',
+  //   path: 'landing_offer'
+  // },
   {
     title: 'Контакты',
     path: '/about'
@@ -404,7 +409,6 @@ watch(
               @click="closeBurgerMenu"
               type="pseudo-btn" 
               link="/login"
-              bg="bg-stroke"
               :disabled="false"
 
             >Войти</Button>

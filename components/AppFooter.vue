@@ -64,10 +64,10 @@ const menuList = ref([
     title: 'conspirators.CRM',
     path: 'landing_crm'
   },
-  {
-    title: 'Оставить заявку',
-    path: 'landing_offer'
-  },
+  // {
+  //   title: 'Оставить заявку',
+  //   path: 'landing_offer'
+  // },
   {
     title: 'Политика конфиденциальности',
     path: '/policy'

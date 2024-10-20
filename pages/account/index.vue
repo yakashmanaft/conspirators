@@ -309,15 +309,15 @@ useHead({
 const router = useRouter();
 
 // УПРАВЛЕНИЕ locations
-const {
-  pending,
-  error,
-  refresh,
-  data: locations,
-  status,
-} = useFetch("/api/locations/locations", {
-  laze: false,
-});
+// const {
+//   pending,
+//   error,
+//   refresh,
+//   data: locations,
+//   status,
+// } = useFetch("/api/locations/locations", {
+//   laze: false,
+// });
 
 const location = ref({
   uuid: null,
@@ -330,16 +330,16 @@ const location = ref({
 
 const { users } = storeToRefs(useUsersStore());
 const { loadData } = useUsersStore();
-const { data: organizations } = useLazyAsyncData("organizations", () =>
-  $fetch("/api/organizations/organizations")
-);
-const refreshOrganizations = () => refreshNuxtData("organizations");
+// const { data: organizations } = useLazyAsyncData("organizations", () =>
+//   $fetch("/api/organizations/organizations")
+// );
+// const refreshOrganizations = () => refreshNuxtData("organizations");
 
 onMounted(async () => {
-  refresh();
+  // refresh();
   // data from store
   await loadData();
-  refreshOrganizations();
+  // refreshOrganizations();
 });
 
 // Добавляем новый location

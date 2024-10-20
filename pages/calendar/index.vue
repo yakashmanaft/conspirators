@@ -234,7 +234,7 @@ import { Container } from "@/shared/container";
 
 // Copmponents
 import { Tabs } from "@/components/tabs";
-import { chip } from "~/components/chip";
+import { Chip } from "~/components/chip";
 import { GanttChart } from "~/components/ganttchart";
 import { DevModePlug } from "~/components/plug_dev_mode";
 
@@ -255,10 +255,10 @@ import { toFormWorkingHoursDataObject } from '@/utils/toFormObject'
 // = session user
 const { user } = useUserSession();
 // = session user projects
-const { loadProjectsData } = useProjectsStore();
-const { projects } = storeToRefs(useProjectsStore());
+// const { loadProjectsData } = useProjectsStore();
+// const { projects } = storeToRefs(useProjectsStore());
 // = organizations
-const { loadOrganizationsData }  = useOrganizationsStore()
+// const { loadOrganizationsData }  = useOrganizationsStore()
 
 // = titles
 const titles = ref([
@@ -378,8 +378,8 @@ const workingHoursData = ref([
 // On Mounted
 onMounted(async () => {
   // = тянем из стора, а там из БД
-  await loadProjectsData();
-  await loadOrganizationsData()
+  // await loadProjectsData();
+  // await loadOrganizationsData()
 
   // = Calendar
   setDateToday(null);
@@ -430,68 +430,74 @@ const scheduleTitle = (item: any): String => {
 // COMPUTED
 // = computed projects
 const computedProjects = computed(() => {
-  let result = [];
-  if (projects.value) {
-    result = [...projects.value];
-    return result;
-  }
+  let result: any[] = [];
+  // if (projects.value) {
+  //   result = [...projects.value];
+  //   return result;
+  // } else {
+  //   return [] 
+  // }
+  return result
 });
 // = sharers of project
 const computedProjectSharerList = computed(() => {
   //
   let result: any[] = [];
   //
-  if (projects.value) {
-    //
-    if (current_choosen_project.value.name === "all") {
-      projects.value.forEach((project) => {
-        if (project.sharers) {
-          project.sharers.forEach((sharer) => {
-            result.push(sharer);
-            //
-            workingHoursData.value = toFormWorkingHoursDataObject(result)
-            // workingHoursData.value = result.map((sharer) => {
-            //   return {
-            //     type: "normal",
-            //     color: "",
-            //     name: `${sharer.sharerType}-${sharer.sharerID}`,
-            //     schedule: [],
-            //     joined_date: sharer.joined_date,
-            //     exit_date: sharer.exit_date,
-            //   };
-            // });
-          });
-        }
-      });
-    }
-    //
-    else {
-      //
-      let current_project = [...projects.value].find(
-        (el) => el.id === current_choosen_project.value.id
-      );
-      //
-      if (current_project) {
-        if (current_project.sharers) {
-          result = [...current_project.sharers];
-          //
-          workingHoursData.value = toFormWorkingHoursDataObject(result)
-          // workingHoursData.value = result.map((sharer) => {
-          //   return {
-          //     type: "normal",
-          //     color: "",
-          //     name: `${sharer.sharerType}-${sharer.sharerID}-${translateSharersInProject()}`,
-          //     schedule: [],
-          //     joined_date: sharer.joined_date,
-          //     exit_date: sharer.exit_date,
-          //   };
-          // });
-        }
-      }
-    }
-    return result;
-    // { "sharerID": 31, "exit_date": "2024-10-15", "sharerType": "user", "joined_date": "2024-08-21" }
-  }
+  // if (projects.value) {
+  //   //
+  //   if (current_choosen_project.value.name === "all") {
+  //     projects.value.forEach((project) => {
+  //       if (project.sharers) {
+  //         project.sharers.forEach((sharer) => {
+  //           result.push(sharer);
+  //           //
+  //           workingHoursData.value = toFormWorkingHoursDataObject(result)
+  //           // workingHoursData.value = result.map((sharer) => {
+  //           //   return {
+  //           //     type: "normal",
+  //           //     color: "",
+  //           //     name: `${sharer.sharerType}-${sharer.sharerID}`,
+  //           //     schedule: [],
+  //           //     joined_date: sharer.joined_date,
+  //           //     exit_date: sharer.exit_date,
+  //           //   };
+  //           // });
+  //         });
+  //       }
+  //     });
+  //   }
+  //   //
+  //   else {
+  //     //
+  //     let current_project = [...projects.value].find(
+  //       (el) => el.id === current_choosen_project.value.id
+  //     );
+  //     //
+  //     if (current_project) {
+  //       if (current_project.sharers) {
+  //         result = [...current_project.sharers];
+  //         //
+  //         workingHoursData.value = toFormWorkingHoursDataObject(result)
+  //         // workingHoursData.value = result.map((sharer) => {
+  //         //   return {
+  //         //     type: "normal",
+  //         //     color: "",
+  //         //     name: `${sharer.sharerType}-${sharer.sharerID}-${translateSharersInProject()}`,
+  //         //     schedule: [],
+  //         //     joined_date: sharer.joined_date,
+  //         //     exit_date: sharer.exit_date,
+  //         //   };
+  //         // });
+  //       }
+  //     }
+  //   }
+  //   return result;
+  //   // { "sharerID": 31, "exit_date": "2024-10-15", "sharerType": "user", "joined_date": "2024-08-21" }
+  // } else {
+  //   return result
+  // }
+  return result
 });
 
 // = computed production
@@ -536,19 +542,19 @@ const emittedProject = (project: any) => {
 
 // DB
 // = salary
-const { data: salary } = await useFetch("/api/funds/salary", {
-  lazy: false,
-  transform: (salary) => {
-    return salary;
-  },
-});
+// const { data: salary } = await useFetch("/api/funds/salary", {
+//   lazy: false,
+//   transform: (salary) => {
+//     return salary;
+//   },
+// });
 // = organizations
-const { data: organizations } = await useFetch(
-  "/api/organizations/organizations",
-  {
-    lazy: false,
-  }
-);
+// const { data: organizations } = await useFetch(
+//   "/api/organizations/organizations",
+//   {
+//     lazy: false,
+//   }
+// );
 // = projects
 // const { data: projects } = await useFetch("/api/projects/projects", {
 //   lazy: false,
