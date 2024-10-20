@@ -9,14 +9,10 @@ import { watch } from "vue";
 
 // PROPS
 const props = defineProps({
-  auth_user_profile: {
-    type: Object,
-    default: {}
-  },
-  auth_user: {
-    type: Object,
-    default: {}
-  },
+    auth_user: {
+      type: Object,
+      default: {}
+    },
 });
 
 const route = useRoute();

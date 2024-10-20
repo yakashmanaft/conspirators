@@ -39,6 +39,14 @@ model Profile {
   userEmail String? @unique(map: "email") @db.VarChar(60)
 }
 
+model Landing {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(60)
+  sharers    Json
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  update_at  DateTime? @updatedAt
+}
+
 enum Role {
   SUPER_ADMIN
   ADMIN

@@ -10,6 +10,10 @@
     bg:
       1/ bg-full
       2/ bg-stroke
+
+    disabled 
+      1/ true
+      2/ false
   -->
       <div @click.prevent="counter">
         <!-- original-btn -->

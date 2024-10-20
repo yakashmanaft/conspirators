@@ -8,12 +8,14 @@ export default defineEventHandler(async (event) => {
     // create a list of endpoints that we want to protect
     const protectedRoutes = [
         // '/api/usersList/users',
+        // '/api/profile/profile',
         '/api/warehouse/item',
         '/api/warehouse',
         '/api/banks',
         '/api/projects/projects',
         '/api/locations/locations',
         '/api/locations/organizations',
+        'api/landing/landing'
     ];
 
     // check if th pathname is in the list of protected routes

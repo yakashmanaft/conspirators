@@ -1,16 +1,18 @@
 <template>
   <Container>
 
-    <DevModePlug/>
-
-
+    <!-- TITLE -->
     <h1 style="margin-top: 5rem">Аккаунт</h1>
 
+    <!-- <DevModePlug/> -->
+    {{ auth_user_profile }}
+
+
     <!-- fetch data is error -->
-    <div v-if="error">
+    <!-- <div v-if="error">
       <p>Error Code {{ error.statusCode }}</p>
       <p>Error Message {{ error.message }}</p>
-    </div>
+    </div> -->
 
     <div>
       <!-- MODALS -->
@@ -222,12 +224,12 @@
       </div>
 
       <!-- waiting for a data -->
-      <div v-if="pending">
+      <!-- <div v-if="pending">
         <p>Loading...</p>
-      </div>
+      </div> -->
 
       <!-- Data is fetched -->
-      <div v-else>
+      <div>
         <!-- список locations -->
         <div style="margin-top: 2rem">
           <h3>Locations</h3>
@@ -242,7 +244,7 @@
                 <th scope="col">Собственник</th>
               </tr>
             </thead>
-            <tbody>
+            <!-- <tbody>
               <tr v-for="(location, index) in locations" :key="index">
                 <td scope="col">{{ index + 1 }}</td>
                 <td scope="col">{{ location.title }}</td>
@@ -257,7 +259,7 @@
                   </span>
                 </td>
               </tr>
-            </tbody>
+            </tbody> -->
           </table>
         </div>
 
@@ -304,6 +306,14 @@ useHead({
     },
   ],
 });
+
+// PROPS
+const props = defineProps({
+    auth_user_profile: {
+        type: Object,
+        default: {}
+    },
+})
 
 //
 const router = useRouter();
@@ -367,7 +377,7 @@ async function addLocation(location) {
   clearModalInputs(location);
 
   // refetching
-  refresh();
+  // refresh();
 }
 
 const clearModalInputs = (location: any) => {

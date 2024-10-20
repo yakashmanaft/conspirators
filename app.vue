@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-// import IndexPage from '@/pages/index.vue'
-// import { useCurrentUserStore } from '@/stores/auth'
+
 const router = useRouter();
 const route = useRoute();
+
 const { loggedIn, user, session, clear, fetch } = useUserSession();
-// const store = useCurrentUserStore()
+
 
 const checkLocalStorage = () => {
   console.log("App is ready");
 };
+
 onMounted(() => {
   // checkLocalStorage()
   console.log(user.value);
@@ -18,7 +19,10 @@ onMounted(() => {
     route.name !== "index" &&
     route.name !== "about" &&
     route.name !== "policy" &&
-    route.name !== "contract"
+    route.name !== "contract" &&
+    // 
+    route.name !== "landing_crm" &&
+    route.name !== "landing_offer"
   ) {
     router.replace("/login");
   }
@@ -28,15 +32,51 @@ onMounted(() => {
   }, false);
 });
 
-watch(session, () => {
-  console.log(user.value);
+type Profile = {
+  id: number,
+  userId: number,
+  email: string
+}
+const profiles = ref([])
+const auth_user_profile = ref<Profile>()
+
+onBeforeMount(async () => {
+
+  await initUserSessionProfie()
+})
+
+// ****** FUNCs
+// init session user profile
+const initUserSessionProfie = async () => {
+  await useProfileStore().loadData()
+  profiles.value = useProfileStore().profiles
+  
+  if(user.value) {
+    
+    auth_user_profile.value = [...profiles.value].find(profile => profile.userId === user.value.id)
+    console.log(user.value)
+    console.log(auth_user_profile.value)
+  } else {
+    return
+  }
+}
+
+
+// ****** WATCHERS
+// session
+watch(session, async () => {
+
+  await initUserSessionProfie()
 });
 </script>
 
 <template>
   <NuxtLoadingIndicator />
   <NuxtLayout>
-    <NuxtPage />
+    <NuxtPage 
+      :auth_user_profile="auth_user_profile"
+      :auth_user="user"
+    />
   </NuxtLayout>
 </template>
 
