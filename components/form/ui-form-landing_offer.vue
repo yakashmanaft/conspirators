@@ -13,10 +13,11 @@
 <script lang="ts" setup>
 const mail = useMail()
 
-const testSend = () => {
-    mail.send({
+const testSend = async () => {
+    await mail.send({
         // config: 'main',
-        // from: '<maddison53@ethereal.email>', dont work at me
+        from: '<ya.kashmanaft@gmail.com>', //Всегда такой будет
+        to: '<palmers@yandex.ru>',
         // to: "bar@example.com, baz@example.com", dont work at me
         subject: 'Конспиратор, тебе заявка!',
         // text: `
@@ -25,12 +26,14 @@ const testSend = () => {
         //     This is an incredible test message
         // `,
         html: `
-            <b>Это тело письма</b><br/>
-            <a href='tel:+79617582573'>+79617582573</a><br/>
-            <a href="mailto:mail@htmlacademy.ru">dron@koni.ru</a>
+            <b>Откуда: </b><p>landing_offer</p><br/>
+            <b>Телефон: </b><a href='tel:+79617582573'>+79617582573</a><br/>
+            <b>Эл. почта: </b><a href="mailto:mail@htmlacademy.ru">dron@koni.ru</a>
         `
         
     })
+
+    console.log("Message was sent")
 }
 
 </script>

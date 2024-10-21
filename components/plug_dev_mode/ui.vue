@@ -5,8 +5,6 @@
             <!-- IMG -->
             <NuxtImg src="/img/feature_16993811.webp"/>
 
-            <NuxtImg src="~/assets/img/feature_16993811.webp"/>
-
             <!-- DESCRIPTION -->
             <aside>
                 <!-- PATH -->
