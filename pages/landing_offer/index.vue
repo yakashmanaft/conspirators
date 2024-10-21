@@ -5,6 +5,9 @@
         <p>Настроим связку взаимодействий Бизнес - Заказчик</p>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p>
         <p>Обсудим боли?</p>
+
+        <br>
+        <Form_landing_offer></Form_landing_offer>
     </Container>
 </template>
 
@@ -28,7 +31,12 @@
             }
         ]
     })
+
+    // shared
     import { Container } from '@/shared/container'
+
+    // components
+    import { Form_landing_offer } from '@/components/form'
 </script>
 
 <style scoped>

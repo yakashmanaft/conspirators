@@ -1,0 +1,1 @@
+export { default as Form_landing_offer } from './ui-form-landing_offer.vue'

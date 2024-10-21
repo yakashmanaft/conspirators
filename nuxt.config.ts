@@ -1,6 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@pinia/nuxt', 'nuxt-auth-utils', 'nuxt-icon', '@kevinmarrec/nuxt-pwa', '@nuxt/image'],
+  modules: [
+    '@pinia/nuxt',
+    'nuxt-auth-utils',
+    'nuxt-icon',
+    '@kevinmarrec/nuxt-pwa',
+    '@nuxt/image',
+    ["nuxt-mail", {
+      message: {
+        to: 'ya.kashmanaft@gmail.com'
+      },
+      smtp: {
+        host: "smtp.gmail.com",
+        port: 587,
+        auth: {
+          user: 'ya.kashmanaft@gmail.com',
+          pass: 'ukji ivny angq crwq'
+        },
+      },
+    }]
+  ],
   pwa: {
     workbox: {
       enabled: true

@@ -40,6 +40,7 @@
     "@kevinmarrec/nuxt-pwa": "^0.17.0",
     "@types/uuid": "^9.0.8",
     "nuxt-auth-utils": "^0.0.20",
-    "nuxt-icon": "^0.6.10"
+    "nuxt-icon": "^0.6.10",
+    "nuxt-mail": "^5.1.1"
   }
 }
