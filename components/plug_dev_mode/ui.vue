@@ -3,7 +3,8 @@
 
         <article style="display: flex; align-items: center; gap: 3rem;">
             <!-- IMG -->
-            <NuxtImg src="/img/feature_16993811.webp"/>
+            <!-- <NuxtImg src="/img/feature_16993811.webp"/> -->
+            <img width="256" height="256" alt="Страница на доработке..." src="@/assets/img/feature_16993811.webp"/>
 
             <!-- DESCRIPTION -->
             <aside>
