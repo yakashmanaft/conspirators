@@ -646,8 +646,8 @@ a:visited {
     top: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    /* display: flex !important; */
+    background: var(--color-bg-popup);
+    backdrop-filter: blur(2px);
     transition: opacity 0.3s ease-in;
   }
   .links_wrapper {

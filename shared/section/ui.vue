@@ -1,5 +1,5 @@
 <template>
-    <div class="section-wrapper">
+    <div class="section_wrapper">
         <div class="section shadow py-4 px-4 mb-4 bg-body-tertiary rounded">
 
             <slot></slot>
@@ -8,6 +8,7 @@
   </template>
   
   <style scoped>
+
   /* .section-wrapper {
     width: 100%;
     height: 100vh;

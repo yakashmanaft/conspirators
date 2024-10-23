@@ -16,4 +16,7 @@
     /* btn disabled */
     --color-btn-disabled-bg: #DADCE0;
     --color-btn-disabled-text: #9AA0A6;
+
+    /* background popup color */
+    --color-bg-popup: rgba(0, 0, 0, 0.5);  
 }
