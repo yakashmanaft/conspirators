@@ -12,6 +12,7 @@
 
         <!-- POPUP -->
         <DefaultPopup
+            id="popup-default-callback_offer"        
             v-if="popup_opened"
             popup_title="Форма обратной связи"
             @emitClosePopup="closePopup"

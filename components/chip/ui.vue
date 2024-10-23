@@ -74,12 +74,12 @@ onMounted(() => {
 
 <style scoped>
 .tab_wrapper {
-  width: 100%;
+  width: 100vw;
   display: flex;
   align-items: center;
   gap: 1rem;
   overflow-x: scroll;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
   /* border-bottom: 1px solid var(--bs-border-color); */
   /* padding-bottom: 1rem;  */
 }

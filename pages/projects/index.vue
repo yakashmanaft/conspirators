@@ -3,7 +3,7 @@
 import { Container } from "@/shared/container";
 
 // components
-import { DevModePlug } from "~/components/plug_dev_mode";
+import { DevModePlug } from "@/components/plug_dev_mode";
 
 // utils
 import { H3Error } from "h3";
@@ -226,10 +226,10 @@ watch(project.value, () => {
     <h1 class="show-max-767">Проекты</h1>
 
     <!-- fetch data is error -->
-    <div v-if="error">
+    <!-- <div v-if="error">
       <p>Error Code {{ error.statusCode }}</p>
       <p>Error Message {{ error.message }}</p>
-    </div>
+    </div> -->
 
     <!-- ADD NEW PROJECT MODAL -->
     <!-- Button trigger modal -->
@@ -387,11 +387,11 @@ watch(project.value, () => {
       </div>
     </div>
 
-    <div v-if="pending">
+    <!-- <div v-if="pending">
       <p>Loading...</p>
-    </div>
+    </div> -->
 
-    <div v-else class="projects_container">
+    <div class="projects_container">
       <div
         v-for="(project, index) in projects"
         :key="index"

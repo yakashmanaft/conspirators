@@ -14,6 +14,10 @@
     disabled 
       1/ true
       2/ false
+
+    wing
+      1/ true
+      2/ false  
   -->
       <div @click.prevent="counter">
         <!-- original-btn -->

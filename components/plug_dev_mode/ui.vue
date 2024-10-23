@@ -14,9 +14,11 @@
                 <h3><span style="display: block;">Идеи варятся, блюдо</span> готовится :)</h3>
 
                 <!-- LINKS -->
-                <div style="display: flex; gap: 0.5rem;">
-                    <a href="" @click.prevent="router.go(-1)">Назад</a>
-                    <router-link to="/">На главную</router-link>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+
+                    <Button @click.prevent="router.go(-1)" type="pseudo-btn" bg="bg-stroke" :wimg=true>Назад</Button>
+                    <Button type="pseudo-btn" link="/">На главную</Button>
+
                 </div>
             </aside>
         </article>
@@ -24,6 +26,9 @@
 </template>
 
 <script lang="ts" setup>
+
+// compponents
+import { Button } from '@/components/button'
 
 const route = useRoute()
 const router = useRouter()

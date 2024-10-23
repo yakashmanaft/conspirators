@@ -252,12 +252,16 @@ const translateRoutePath = (path: string) => {
 // WATCHERS
 watch(burgerIsOpened, () => {
   // console.log(`burgerIsOpened: ${burgerIsOpened.value}`);
+  let body = document.getElementsByTagName('body')[0]
   if (burgerIsOpened.value) {
     document.addEventListener("click", (e) => {
       if (e.target.classList.contains("links_container")) {
         burgerIsOpened.value = false;
       }
     });
+    body.style.position = 'fixed';
+  } else {
+    body.style.position = 'unset'
   }
 });
 watch(accountMenuIsOpened, () => {
@@ -298,7 +302,7 @@ watch(
 </script>
 
 <template>
-  <div class="header-container" v-if="route.path !== '/login' && route.path !== '/register'">
+  <div class="header-container" style="z-index: 100;" v-if="route.path !== '/login' && route.path !== '/register'">
 
     <div class="header-wrapper">
       <div class="nav-block_left">
@@ -313,7 +317,7 @@ watch(
           <Icon
             class="link"
             name="material-symbols-light:arrow-back-ios"
-            size="24px"
+            size="32px"
             color="var(--color-global-text_second)"
           />
         </div>
@@ -339,7 +343,7 @@ watch(
         class="links_container"
         :class="burgerIsOpened ? 'opacity-1-767' : 'opacity-0-767'"
       >
-        <div class="links_wrapper">
+        <div class="links_wrapper" style="position: relative;">
           <!-- Auth -->
           <ul
             class="header-features__list"
@@ -394,6 +398,9 @@ watch(
               <router-link :to="`${item.path}`">{{ item.title }}</router-link>
             </li>
           </ul>
+
+          <!-- !Auth -->
+          <span class="copyright_wrapper"><router-link to="/" @click="closeBurgerMenu">© conspirators</router-link></span>
 
           <!-- LOGIN -->
           <div class="login_wrapper">
@@ -458,7 +465,14 @@ watch(
                         <span 
                           style="font-size: 2rem; font-weight: bold;"
                         >
-                          {{ props?.auth_user.login }}
+                          {{ props?.auth_user.login }}           
+                          <Icon
+                            class="link"
+                            name="material-symbols-light:arrow-back-ios"
+                            size="32px"
+                            color="var(--color-global-text_second)"
+                            style="transform: rotate(180deg)"
+                          />
                         </span></Button>
 
                     </div>
@@ -495,7 +509,7 @@ watch(
 a:visited {
   color: var(--bs-primary);
 } */
-.header-container{
+.header-container {
   position: fixed;
   top: 0;
   width: 100%;
@@ -511,6 +525,7 @@ a:visited {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.5rem 0;
   /* padding: 1rem 0; */
   /* gap: 1rem; */
 }
@@ -578,6 +593,11 @@ a:visited {
   display: flex;
   gap: 0.3rem;
 }
+.copyright_wrapper {
+  position: absolute; 
+  bottom: 2rem; 
+  left: 1.5rem;
+}
 @media screen and (max-width: 575px) {
   .header_wrapper {
     padding: 0;
@@ -607,6 +627,12 @@ a:visited {
   .account-menu {
     /* margin-left: 1rem; */
     padding-left: 32px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .copyright_wrapper {
+    display: none
   }
 }
 

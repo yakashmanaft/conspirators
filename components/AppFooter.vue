@@ -112,7 +112,7 @@ watch(
           :name="
             currentRoute === el.target ? el.icon_clicked_name : el.icon_name
           "
-          size="32px"
+          size="48px"
           color="var(--color-global-text)"
         />
       </div>
@@ -163,7 +163,7 @@ watch(
   color: var(--color-btn-text);
 }
 .footer-wrapper_wo-auth ul {
-  font-size: 0.8rem; 
+  /* font-size: 0.8rem;  */
   list-style: none; 
   display: grid; 
   gap: 1rem; 
