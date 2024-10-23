@@ -735,7 +735,8 @@ a:visited {
     order: -1;
   }
   .account-btn {
-    margin-left: 1rem;
+    margin-left: 1.5rem;
+    margin-bottom: 2rem;
   }
   .account-container {
     flex-direction: row !important;

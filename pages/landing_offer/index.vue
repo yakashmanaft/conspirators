@@ -20,6 +20,8 @@
 
             <!-- this is a slot in popup -->
             <Form_landing_offer></Form_landing_offer>
+
+            <br>
         </DefaultPopup>
 
     </Container>
