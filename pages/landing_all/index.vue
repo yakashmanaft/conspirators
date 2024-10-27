@@ -1,7 +1,7 @@
 <template>
     <Container>
 
-        <h1>Мои посевы</h1>
+        <h1>Мои огород</h1>
 
         <p>{{ props?.auth_user_profile }}</p>
 
@@ -10,24 +10,29 @@
             <!--  -->
             <div class="canvas">
                 <!-- chart -->
-                <svg class="chart" width="450" height="350" >
+                <svg class="chart" width="450" height="350" viewBox="0 0 100 100">
                     <circle v-for="(el, index) in landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click="onClickEl(el, index)">
                         {{ el }}
                     </circle>
                 </svg>
                 <!-- legend -->
-                <!-- <div class="legend">
-                    <ul class="caption-list">
-                        <li class="caption-item" v-for="(el, index) in landing_list" :key="index">
-                            <div class="caption-item_title">{{ el.name }}</div>
-                            <div class="caption-item_value">{{ el.status}}</div>
-                        </li>
-                    </ul>
-                </div> -->
+                <div class="legend">
+                    <div class="legend_contant" v-if="choosenEl">
+                        <div >{{ choosenEl.name }}</div>
+                        <!-- <div>{{ choosenEl.status }}</div> -->
+                    </div>
+                    <div class="legend_contant" v-else>
+                        <div>Все</div>
+                        <!-- <div>Места</div> -->
+                    </div>
+                </div>
             </div>
             <div style="width: 100%; border-top: 1px solid gray;">
                 <div v-if="!choosenEl">
-                    Показываем весь огород
+                    <div v-for="el in landing_list">
+                        <Button type="pseudo-btn" :link="`/landing_${el.name}`">{{ el.name }}</Button>
+                        {{ el }}
+                    </div>
                 </div>
                 <div v-else>
                     {{choosenEl}}
@@ -35,7 +40,7 @@
             </div>
         </div>
 
-<!-- 
+<!--
         <div class="landing_container">
 
             <div v-for="page in landing_list" class="landing_wrapper">
@@ -95,6 +100,21 @@
     width: 100vw;
     /* overflow: hidden; */
     margin-top: 1rem;
+  }
+
+  .svg .chart {
+    /* position: relative; */
+  }
+  .legend {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .legend_contant {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .unit {
     fill: none;
@@ -230,9 +250,25 @@
     // ON MOUNTED
     onMounted(() => {
 
-        // setStrokeDashArrayAndOffset()
+        setStrokeDashArrayAndOffset()
     })
-    
+
+    let body = document.querySelector('body')
+
+    body?.addEventListener('click', (e) => {
+
+        // Убираем ховер на unit в диаграме
+        if(!e.target.classList.contains('unit')) {
+            const unitsList = document.querySelectorAll('.unit');
+            for(let i = 0; i <= unitsList.length; i++) {
+                choosenEl.value = null
+                if(unitsList[i] && unitsList[i].classList.contains('unit__hovered')) {
+                    unitsList[i].classList.remove('unit__hovered');
+                }
+            }
+        }
+
+    })
     
     // ******* DIAGRAM
     //= filters
@@ -275,15 +311,15 @@
         }
     }
 
+    // ******* ACTIONS ON PAGE
+
     const onClickEl = (el: any, index: number) => {
-        // 
+        //  
         // const captionList = document.querySelectorAll('.caption-item'), 
         const unitsList = document.querySelectorAll('.unit');
         
         // unitsList[index].classList.toggle('unit__hovered')
         // captionList[index].classList.toggle('visible');
-        
-        
         
         // Очищаем все элементы от класса 
         unitsList.forEach(item => item.classList.remove('unit__hovered'))
@@ -295,23 +331,6 @@
             unitsList[index].classList.add('unit__hovered');
             choosenEl.value = el
         }
-        unitsList[index].addEventListener('click', () => {
-            
-        })
-        // unitsList[index].classList.add('unit__hovered');
-        // captionList[index].classList.add('visible');
-
-        // unitsList[index].addEventListener('click', (e) => {
-        //     console.log(e)
-        //     if(e.target.classList.contains('caption-item') || e.target.classList.contains('caption-item') || e.target.classList.contains('caption-item_title') || e.target.classList.contains('caption-item_value')) {
-        //         unitsList[index].classList.remove('unit__hovered');
-        //         captionList[index].classList.remove('visible');
-        //     } 
-        //     else {
-        //         unitsList[index].classList.remove('unit__hovered');
-        //         captionList[index].classList.remove('visible')
-        //     }
-        // })
     }
 
     // ******* DB

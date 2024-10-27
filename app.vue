@@ -22,7 +22,8 @@ onMounted(() => {
     route.name !== "contract" &&
     // 
     route.name !== "landing_crm" &&
-    route.name !== "landing_offer"
+    route.name !== "landing_offer" &&
+    route.name !== "landing_unidrum"
   ) {
     router.replace("/login");
   }

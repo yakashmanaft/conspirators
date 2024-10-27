@@ -15,9 +15,9 @@ datasource db {
 }
 
 model auth {
-  id                  Int                   @id @default(autoincrement())
-  login               String                @unique(map: "login") @db.VarChar(60)
-  password            String                @db.VarChar(60)
+  id                Int                 @id @default(autoincrement())
+  login             String              @unique(map: "login") @db.VarChar(60)
+  password          String              @db.VarChar(60)
   // name          String?   @db.VarChar(255)
   // middleName    String?   @db.VarChar(255)
   // surname       String?   @db.VarChar(255)
@@ -27,10 +27,10 @@ model auth {
   // groupStatus  String?   @db.VarChar(255)
   // accessModules Json?
   // favorites     Json?
-  profile             Profile?
-  created_at          DateTime              @default(now()) @db.DateTime(0)
-  update_at           DateTime?             @updatedAt
-  LandingStatusLedger LandingStatusLedger[]
+  profile           Profile?
+  created_at        DateTime            @default(now()) @db.DateTime(0)
+  update_at         DateTime?           @updatedAt
+  LeadHistoryLedger LeadHistoryLedger[]
 }
 
 model Profile {
@@ -41,26 +41,35 @@ model Profile {
 }
 
 model Landing {
-  id                  Int                  @id @default(autoincrement())
-  name                String               @db.VarChar(60)
-  sharers             Json
-  created_at          DateTime             @default(now()) @db.DateTime(0)
-  update_at           DateTime?            @updatedAt
-  // current status
-  status              LandingStatus        @default(lead)
-  LandingStatusLedger LandingStatusLedger?
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(60)
+  sharers    Json
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  update_at  DateTime? @updatedAt
+  Lead       Lead?
 }
 
-model LandingStatusLedger {
+model Lead {
+  id                  Int                @id @default(autoincrement())
+  name                String             @db.VarChar(60)
+  landing             Landing            @relation(fields: [landingId], references: [id])
+  landingId           Int                @unique
+  status              LeadStatus         @default(lead)
+  created_at          DateTime           @default(now()) @db.DateTime(0)
+  update_at           DateTime?          @updatedAt
+  LandingStatusLedger LeadHistoryLedger?
+}
+
+model LeadHistoryLedger {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now()) @db.DateTime(0)
-  landing    Landing  @relation(fields: [landingId], references: [id])
-  landingId  Int      @unique
+  lead       Lead     @relation(fields: [leadId], references: [id])
+  leadId     Int      @unique
   author     auth     @relation(fields: [authorId], references: [id])
   authorId   Int      @default(0)
 }
 
-enum LandingStatus {
+enum LeadStatus {
   //1
   lead
   // 2
