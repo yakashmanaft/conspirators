@@ -4,14 +4,11 @@
 
         <div class="popup_wrapper" style="">
             <!-- header -->
-            <div style="position: absolute; top: 0; left: 0; padding: 1rem 0; background-color: var(--color-btn-hover-bg); width: 100%; border-radius: 1rem 1rem 0 0">
-                <h4 style="margin: 0 1rem;">{{ props?.popup_title }}</h4>
-            </div>
-            <br>
-            <br>
-            <br>        
+            <div class='popup_header'>
+                <h4>{{ props?.popup_title }}</h4>
+            </div>    
             <!-- content -->
-             <div class="popup_content" style="height: 85%; overflow-y: scroll;">
+             <div class="popup_content" style="padding-top: 4rem; height: 100%; overflow-y: scroll;">
 
                  <slot></slot>
              </div>
@@ -62,6 +59,15 @@ window.addEventListener('click', (e) => {
     position: relative; 
     border-radius: 1rem; 
     padding: .5rem 1rem;
+}
+.popup_header {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    padding: 1rem; 
+    background-color: var(--color-btn-text); 
+    width: 100%; 
+    border-radius: 1rem 1rem 0 0;
 }
 .popup_content::-webkit-scrollbar { 
     width: 0; 

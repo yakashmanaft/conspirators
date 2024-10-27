@@ -18,7 +18,7 @@
             @emitClosePopup="closePopup"
         >
 
-            <!-- this is a slot in popup -->
+
             <Form_landing_offer></Form_landing_offer>
 
             <br>
@@ -50,7 +50,7 @@
 
     // shared
     import { Container } from '@/shared/container'
-    import { DefaultPopup } from '@/shared/popup';
+    import { DefaultPopup } from '~/shared/popup';
 
     // components
     import { Button } from '@/components/button';

@@ -11,6 +11,8 @@
             <div>{{ page }}</div>
         </div>
 
+        {{ landing_list }}
+
         <h2>type: вид лида (возможно отдельный леджер)</h2>
 
         <pre>
