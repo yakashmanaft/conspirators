@@ -15,9 +15,9 @@ datasource db {
 }
 
 model auth {
-  id         Int       @id @default(autoincrement())
-  login      String    @unique(map: "login") @db.VarChar(60)
-  password   String    @db.VarChar(60)
+  id                  Int                   @id @default(autoincrement())
+  login               String                @unique(map: "login") @db.VarChar(60)
+  password            String                @db.VarChar(60)
   // name          String?   @db.VarChar(255)
   // middleName    String?   @db.VarChar(255)
   // surname       String?   @db.VarChar(255)
@@ -27,9 +27,10 @@ model auth {
   // groupStatus  String?   @db.VarChar(255)
   // accessModules Json?
   // favorites     Json?
-  profile    Profile?
-  created_at DateTime  @default(now()) @db.DateTime(0)
-  update_at  DateTime? @updatedAt
+  profile             Profile?
+  created_at          DateTime              @default(now()) @db.DateTime(0)
+  update_at           DateTime?             @updatedAt
+  LandingStatusLedger LandingStatusLedger[]
 }
 
 model Profile {
@@ -40,11 +41,38 @@ model Profile {
 }
 
 model Landing {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(60)
-  sharers    Json
-  created_at DateTime  @default(now()) @db.DateTime(0)
-  update_at  DateTime? @updatedAt
+  id                  Int                  @id @default(autoincrement())
+  name                String               @db.VarChar(60)
+  sharers             Json
+  created_at          DateTime             @default(now()) @db.DateTime(0)
+  update_at           DateTime?            @updatedAt
+  // current status
+  status              LandingStatus        @default(lead)
+  LandingStatusLedger LandingStatusLedger?
+}
+
+model LandingStatusLedger {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.DateTime(0)
+  landing    Landing  @relation(fields: [landingId], references: [id])
+  landingId  Int      @unique
+  author     auth     @relation(fields: [authorId], references: [id])
+  authorId   Int      @default(0)
+}
+
+enum LandingStatus {
+  //1
+  lead
+  // 2
+  blank
+  // 3
+  works
+  // 4
+  canceled
+  // 5
+  paused
+  // 6
+  finished
 }
 
 enum Role {

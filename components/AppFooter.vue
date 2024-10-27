@@ -36,11 +36,17 @@ const hotBtnList = ref([
     icon_clicked_name: "material-symbols-light:calendar-month-rounded",
     target: "calendar",
   },
+  // {
+  //   name: "partners",
+  //   icon_name: "material-symbols-light:group-outline-rounded",
+  //   icon_clicked_name: "material-symbols-light:group-rounded",
+  //   target: "partners",
+  // },
   {
-    name: "partners",
-    icon_name: "material-symbols-light:group-outline-rounded",
-    icon_clicked_name: "material-symbols-light:group-rounded",
-    target: "partners",
+    name: 'landing_all',
+    icon_name: 'material-symbols-light:action-key-outline-rounded',
+    icon_clicked_name: 'material-symbols-light:action-key-rounded',
+    target: "landing_all"
   },
   {
     name: "wallet",
@@ -75,8 +81,8 @@ const menuList = ref([
 ])
 
 const clickBy = (el: any) => {
-  console.log(`name: ${el.name}`);
-  console.log(`target: ${el.target}`);
+  // console.log(`name: ${el.name}`);
+  // console.log(`target: ${el.target}`);
   if (el) {
     if (el.name === el.target) {
       router.push(`/${el.target}`);
@@ -87,9 +93,9 @@ const clickBy = (el: any) => {
   }
 };
 
-onMounted(() => {
-  //   const { user } = useUserSession();
-});
+// onMounted(() => {
+//   //   const { user } = useUserSession();
+// });
 
 watch(
   () => route.path,

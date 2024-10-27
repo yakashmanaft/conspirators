@@ -5,13 +5,45 @@
 
         <p>{{ props?.auth_user_profile }}</p>
 
-        <div v-for="page in landing_list" style="border-bottom: 1px solid var(--color-global-text); margin-top: 1rem; display: flex; align-items: center; gap: 1rem; padding-bottom: 1rem;">
-            <Button type="pseudo-btn" :link="`/landing_${page.name}`">{{ page.name }}</Button>
-            
-            <div>{{ page }}</div>
+        <div class="diagram-wrapper">
+
+            <!--  -->
+            <div class="canvas">
+                <!-- chart -->
+                <svg class="chart" width="450" height="350" >
+                    <circle v-for="(el, index) in landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click="onClickEl(el, index)">
+                        {{ el }}
+                    </circle>
+                </svg>
+                <!-- legend -->
+                <!-- <div class="legend">
+                    <ul class="caption-list">
+                        <li class="caption-item" v-for="(el, index) in landing_list" :key="index">
+                            <div class="caption-item_title">{{ el.name }}</div>
+                            <div class="caption-item_value">{{ el.status}}</div>
+                        </li>
+                    </ul>
+                </div> -->
+            </div>
+            <div style="width: 100%; border-top: 1px solid gray;">
+                <div v-if="!choosenEl">
+                    Показываем весь огород
+                </div>
+                <div v-else>
+                    {{choosenEl}}
+                </div>
+            </div>
         </div>
 
-        {{ landing_list }}
+<!-- 
+        <div class="landing_container">
+
+            <div v-for="page in landing_list" class="landing_wrapper">
+                <Button type="pseudo-btn" :link="`/landing_${page.name}`">{{ page.name }}</Button>
+                
+                <div>{{ page }}</div>
+            </div>
+        </div> -->
 
         <h2>type: вид лида (возможно отдельный леджер)</h2>
 
@@ -31,7 +63,121 @@
     </Container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.landing_container {
+    /* ... */
+}
+.landing_wrapper {
+    background-color: var(--color-btn-disabled-bg);
+    border-bottom: 1px solid var(--color-global-text); 
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    padding: 1rem 0;
+}
+
+/*  */
+.diagram-wrapper {
+    display: flex;
+    /* position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 0; */
+    width: 100%;
+  }
+.canvas {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    width: 100vw;
+    /* overflow: hidden; */
+    margin-top: 1rem;
+  }
+  .unit {
+    fill: none;
+    stroke-width: 5;
+    transition: all 0.5s ease;
+  }
+  .unit:nth-child(1) {
+    /* stroke: #86cfa3; */
+    /* stroke: v-bind('colors.unit1'); */
+    stroke: v-bind('colors.unit1');
+    /* stroke-dasharray: 30 100; */
+    /* stroke-dashoffset: 0!important; */
+  }
+  .unit:nth-child(2) {
+    stroke: v-bind('colors.unit2');
+      /* stroke-dasharray: 22 100;  */
+      /* stroke-dashoffset: -14; */
+  }
+  .unit:nth-child(3) {
+      /* stroke: #ffc7ec; */
+      stroke: v-bind('colors.unit3');
+      /* stroke-dasharray: 25 100; */
+      /* stroke-dashoffset: -30; */
+  }
+  .unit:nth-child(4) {
+      /* stroke: #f8faa0; */
+      stroke: v-bind('colors.unit4');
+      /* stroke-dasharray: 14 100; */
+      /* stroke-dashoffset: -48; */
+  }
+  .unit:nth-child(5) {
+      /* stroke: #adffd8; */
+      stroke: v-bind('colors.unit5');
+      /* stroke-dasharray: 20 100; */
+      /* stroke-dashoffset: -81;    */
+  }
+  .unit:nth-child(6) {
+      /* stroke: #f2c48f; */
+      stroke: v-bind('colors.unit6');
+      /* stroke-dasharray: 5 100; */
+      /* stroke-dashoffset: -55 */
+  }
+  .unit:nth-child(7) {
+      /* stroke: #e3bfe2; */
+      stroke: v-bind('colors.unit7');
+      /* stroke-dasharray: 30 100; */
+      /* stroke-dashoffset: -60; */
+  }
+  .unit:nth-child(8) {
+      /* stroke: #6f75ad; */
+      stroke: v-bind('colors.unit8');
+      /* stroke-dasharray: 10 100; */
+      /* stroke-dashoffset: -60; */
+  }
+  .unit__hovered {
+    stroke-width: 8;
+  }
+  /* .caption-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .caption-item {
+    position: absolute;
+    z-index: 999999;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    padding: 2rem;
+  }
+  .caption-item_title {
+    font-weight: bold;
+  }
+  .caption-item_value {
+    margin-top: 10px;
+    font-size: 16px;
+  } */
+
+  /* .visible {
+    display: block!important;
+  }  */
+</style>
 
 <script lang="ts" setup>
     useHead({
@@ -54,6 +200,19 @@
         ]
     })
 
+    const choosenEl = ref()
+
+    const colors = ref({
+        unit1: '#86cfa3',
+        unit2: '#a2c6e0',
+        unit3: '#ffc7ec',
+        unit4: '#f8faa0',
+        unit5: '#adffd8',
+        unit6: '#f2c48f',
+        unit7: '#e3bfe2',
+        unit8: '#6f75ad',
+    },) 
+
     // shared
     import { Container } from '@/shared/container'
 
@@ -67,6 +226,93 @@
             default: {}
         },
     })
+
+    // ON MOUNTED
+    onMounted(() => {
+
+        // setStrokeDashArrayAndOffset()
+    })
+    
+    
+    // ******* DIAGRAM
+    //= filters
+    //  по текущему статусу... (вариант...)
+    //  разработать еще варианты...
+    const setStrokeDashArrayAndOffset = () => {
+
+        let chart = document.querySelector('.chart')
+
+        if(chart) {
+            setTimeout(() => {
+                let units = chart.querySelectorAll('.unit')
+
+                for(let i = 0; i <= landing_list.value?.length; i++) {
+
+                    if(landing_list.value?.[i]) {
+                        let ratio = 1 / landing_list.value?.length * 100;
+                        units[i].setAttribute('stroke-dasharray', `${ratio},100`)
+                        units[i].setAttribute('stroke-dashoffset', 0);
+
+                        if(i === 0) {
+                            units[i].setAttribute('stroke-dashoffset', 0);
+                        } else {
+                            // Получаем значение 'stroke-dasharray' предыдущего элемента
+                            let sdArrPrev = parseFloat(units[i - 1].getAttribute('stroke-dasharray')) * (-1);
+                            console.log(sdArrPrev)
+                             // Получаем значение 'stroke-dashoffset' предыдущего элемента
+                            let sdOffPrev = parseFloat(units[i - 1].getAttribute('stroke-dashoffset'));
+                            console.log(sdOffPrev);
+                            // Суммируем значения
+                            let sumParam = sdArrPrev + sdOffPrev;
+                            // console.log(sumParam );
+                            // Устанавливаем значения в текущий элемент
+                            units[i].setAttribute('stroke-dashoffset', sumParam);
+                        }
+                    }
+
+                }
+            },110)
+        }
+    }
+
+    const onClickEl = (el: any, index: number) => {
+        // 
+        // const captionList = document.querySelectorAll('.caption-item'), 
+        const unitsList = document.querySelectorAll('.unit');
+        
+        // unitsList[index].classList.toggle('unit__hovered')
+        // captionList[index].classList.toggle('visible');
+        
+        
+        
+        // Очищаем все элементы от класса 
+        unitsList.forEach(item => item.classList.remove('unit__hovered'))
+        // Действуем
+        if(unitsList[index].classList.contains('unit__hovered')) {
+            unitsList[index].classList.remove('unit__hovered');
+            choosenEl.value = null
+        } else if(!unitsList[index].classList.contains('unit__hovered')){
+            unitsList[index].classList.add('unit__hovered');
+            choosenEl.value = el
+        }
+        unitsList[index].addEventListener('click', () => {
+            
+        })
+        // unitsList[index].classList.add('unit__hovered');
+        // captionList[index].classList.add('visible');
+
+        // unitsList[index].addEventListener('click', (e) => {
+        //     console.log(e)
+        //     if(e.target.classList.contains('caption-item') || e.target.classList.contains('caption-item') || e.target.classList.contains('caption-item_title') || e.target.classList.contains('caption-item_value')) {
+        //         unitsList[index].classList.remove('unit__hovered');
+        //         captionList[index].classList.remove('visible');
+        //     } 
+        //     else {
+        //         unitsList[index].classList.remove('unit__hovered');
+        //         captionList[index].classList.remove('visible')
+        //     }
+        // })
+    }
 
     // ******* DB
     // *** GET
@@ -82,6 +328,10 @@
             })
         }
     })
+
+     watch(landing_list, () => {
+        setStrokeDashArrayAndOffset()
+     })
 
     
 </script>
