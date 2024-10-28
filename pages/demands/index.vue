@@ -157,6 +157,7 @@ const computedLead = computed(() => {
             lead_from_id: lead.landingId,
             lead_from_name: item.name,
             lead_status: lead.status,
+            lead_name: lead.name,
             lead_email: lead.email,
             lead_mobile: lead.mobile
           })
@@ -364,9 +365,14 @@ const { data: lead_list } = useFetch("/api/lead/lead", {
        <h3>Demands by landings</h3>
 
        <!--  -->
-       <div v-if="computedLead?.length">
+       <div class="computedLead_container" v-if="computedLead?.length">
         <Section v-for="item in computedLead">
-          {{ item }}
+          <p>Created: {{ item.created_at }}</p>
+          <p>From: {{ item.lead_from_name }} (id: {{ item.lead_from_id }})</p>
+          <p>Name: {{ item.lead_name }}</p>
+          <p style="white-space: nowrap;">Email: {{ item.lead_email }}</p>
+          <p>Phone: {{ item.lead_mobile }}</p>
+          <!-- {{ item }} -->
         </Section>
        </div>
        <!--  -->
@@ -500,6 +506,13 @@ const { data: lead_list } = useFetch("/api/lead/lead", {
   /* border-bottom-left-radius: unset;
   border-bottom-right-radius: unset; */
 }
+
+/* computedLead */
+.computedLead_container {
+  display: grid;
+  gap: 1rem;
+}
+
 @media screen and (max-width: 575px) {
   .filter-types_wrapper,
   .demands_wrapper {
@@ -508,16 +521,19 @@ const { data: lead_list } = useFetch("/api/lead/lead", {
   .demands_wrapper {
     grid-template-columns: 1fr;
   }
-  /* .demands_item div {
-    display: flex;
-  } */
-}
-@media screen and (max-width: 767px) {
-  /* h1 {
-      margin-top: 4rem;
-    } */
+  .computedLead_container {
+    grid-template-columns: 1fr;
+  }
   .show-max-767 {
     display: none;
+  }
+}
+@media screen and (min-width: 576px) and (max-width: 767px){
+  .show-max-767 {
+    display: none;
+  }
+  .computedLead_container {
+    grid-template-columns: 1fr;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -530,14 +546,23 @@ const { data: lead_list } = useFetch("/api/lead/lead", {
   .demands_wrapper {
     grid-template-columns: repeat(3, 1fr);
   }
+  .computedLead_container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   .demands_wrapper {
     grid-template-columns: repeat(4, 1fr);
   }
+  .computedLead_container {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 @media screen and (min-width: 1200px) {
   .demands_wrapper {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .computedLead_container {
     grid-template-columns: repeat(5, 1fr);
   }
 }

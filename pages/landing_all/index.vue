@@ -35,6 +35,7 @@
                     </div>
                 </div>
                 <div v-else>
+                <Button type="pseudo-btn" :link="`/landing_${choosenEl.name}`">{{ choosenEl.name }}</Button>
                     {{choosenEl}}
                 </div>
             </div>

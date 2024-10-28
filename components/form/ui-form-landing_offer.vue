@@ -67,7 +67,7 @@
                     <br>
                     <br>
 
-                    <Button @click.prevent="testSend" type="original-btn">Send request</Button>
+                    <Button @click.prevent="submitForm" type="original-btn">Send request</Button>
                 </form>
             </div>
 
@@ -91,7 +91,7 @@ const form_obj = ref<FormObj>({
     name: '',
     email: '',
     mobile: '',
-    landingId: 0,
+    landingId: 2,
     status: 'lead'
 })
 
@@ -107,34 +107,37 @@ const emit = defineEmits(['emitClosePopup'])
 
 const mail = useMail()
 
-const testSend = async () => {
-    // await mail.send({
-    //     // config: 'main',
-    //     from: '<ya.kashmanaft@gmail.com>', //Всегда такой будет
-    //     to: '<palmers@yandex.ru>',
-    //     // to: "bar@example.com, baz@example.com", dont work at me
-    //     subject: 'Конспиратор, тебе заявка!',
-    //     // text: `
-    //     //     From: John@mail.ru
-    //     //     Phone: +79617582573
-    //     //     This is an incredible test message
-    //     // `,
-    //     html: `
-    //         <b>Откуда: </b><p>landing_offer</p><br/>
-    //         <b>Телефон: </b><a href='tel:+79617582573'>+79617582573</a><br/>
-    //         <b>Эл. почта: </b><a href="mailto:mail@htmlacademy.ru">dron@koni.ru</a>
-    //     `
+const submitForm = () => {
+    
+    // landing_offer id === 2
+    // lead default status === 'lead'
+    // form_obj.value.landingId = 2
+    // form_obj.value.status = 'lead'
+    
+    addLeadToBD(form_obj.value)
+}
+
+// SMTP TO EMAIL
+const testSend = async (item: FormObj) => {
+    await mail.send({
+        // config: 'main',
+        from: '<ya.kashmanaft@gmail.com>', //Всегда такой будет
+        to: '<palmers@yandex.ru>',
+        // to: "bar@example.com, baz@example.com", dont work at me
+        subject: 'Конспиратор, тебе заявка!',
+        // text: `
+        //     From: John@mail.ru
+        //     Phone: +79617582573
+        //     This is an incredible test message
+        // `,
+        html: `
+            <b>Откуда: </b><p>${props?.path}</p><br/>
+            <b>Телефон: </b><a href='tel:${item.mobile}'>${item.mobile}</a><br/>
+            <b>Эл. почта: </b><a href="mailto:${item.email}">${item.email}</a>
+        `
         
-    // })
-
-
-    console.log("Message was sent")
-
-    form_obj.value.landingId = 1
-    form_obj.value.status = 'lead'
-
-    await addLeadToBD(form_obj.value)
-
+    })
+    console.log("testSend: Message was sent")
 }
 
 // BD
@@ -144,23 +147,38 @@ const addLeadToBD = async (item: FormObj) => {
         item.name !== '' &&
         item.email !== '' &&
         item.mobile !== '' &&
-        item.landingId === 1 &&
-        item.status !== ''
+        item.landingId !== 0 &&
+        item.status === 'lead'
     ){
-        // addedItem = await $fetch("/api/lead/lead", {
-        //     method: "POST",
-        //     body: {
-        //         name: item.name,
-        //         email: item.email,
-        //         mobile: item.mobile,
-        //         landingId: item.landingId,
-        //         status: item.status
-        //     }
-        // })
-        console.log(item)
+        addedItem = await $fetch("/api/lead/lead", {
+            method: "POST",
+            body: {
+                name: item.name,
+                email: item.email,
+                mobile: item.mobile,
+                landingId: item.landingId,
+                status: item.status
+            }
+        })
+        await testSend(item)
         emit('emitClosePopup')
     } else {
-        alert('Что-то не заполнили...')
+        if(item.name === '') {
+            alert('Пропустили имя...')
+        } 
+        else if (item.email === '') {
+            alert('Пропустили email...')
+        } 
+        else if (item.mobile === '') {
+            alert('Пропустили номер телефона')
+        }
+        else if (item.landingId !== 1) {
+            alert('косяк с landingId')
+        } else if (item.status !== 'lead') {
+            alert('косяк с status')
+        } else {
+            alert('Что-то не заполнили...')
+        }
     }
 }
 

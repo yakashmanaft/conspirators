@@ -22,7 +22,6 @@
 // props
 const props = defineProps({
     popup_title: String,
-    popup_opened: Boolean,
     id: String
 })
 
