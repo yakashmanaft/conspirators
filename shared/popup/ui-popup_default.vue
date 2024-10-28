@@ -8,7 +8,7 @@
                 <h4>{{ props?.popup_title }}</h4>
             </div>    
             <!-- content -->
-             <div class="popup_content" style="padding-top: 4rem; height: 100%; overflow-y: scroll;">
+             <div class="popup_content" style="padding-top: 3.2rem; padding-bottom: 0.5rem; height: 100%; overflow-y: scroll;">
 
                  <slot></slot>
              </div>
@@ -76,11 +76,13 @@ window.addEventListener('click', (e) => {
     -ms-overflow-style: none; 
 }
 
-@media screen and (max-width: 575px) {
-
+@media screen and (max-width: 575px){
+    .popup_wrapper {
+        width: 95%;
+    }
 } 
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 576px) and (max-width: 766px) {
     .popup_wrapper {
         width: 90%;
     }
