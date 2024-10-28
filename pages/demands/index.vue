@@ -2,6 +2,7 @@
 
 // shared
 import { Container } from "@/shared/container";
+import { Section } from '@/shared/section'
 
 // components
 import { DevModePlug } from "~/components/plug_dev_mode";
@@ -30,6 +31,14 @@ useHead({
     },
   ],
 });
+
+  // PROPS
+  const props = defineProps({
+      auth_user_profile: {
+          type: Object,
+          default: {}
+      },
+  })
 
 const demandStatusTypes = ref([
   {
@@ -132,8 +141,41 @@ const computedDemands = computed(() => {
   // }
 });
 
+// COMPUTED
+//= lead
+const computedLead = computed(() => {
+  // landing_list
+  // lead_list
+  if(landing_list.value) {
+
+    let merged = lead_list.value?.reduce((arr: {}[], lead) => {
+
+      landing_list.value?.forEach(item => {
+        if(item.id === lead.landingId) {
+          arr.push({
+            created_at: lead.created_at,
+            lead_from_id: lead.landingId,
+            lead_from_name: item.name,
+            lead_status: lead.status,
+            lead_email: lead.email,
+            lead_mobile: lead.mobile
+          })
+        }
+      })
+
+      return arr
+    }, [])
+
+    console.log(landing_list.value)
+    console.log(lead_list.value)
+    // return lead_list.value
+    return merged    
+  } else {
+    return null
+  }
+})
+
 const users = ref(null);
-const demdands = ref(null);
 // const userCreatorData = ref(null)
 
 onBeforeMount(async () => {
@@ -246,6 +288,32 @@ const locationColorized = (location: string) => {
     return `location_${location}`;
   }
 };
+
+
+
+// ******* DB
+// *** GET
+// landing
+const { data: landing_list } = useFetch("/api/landing/landing", {
+    lazy: false,
+    transform: (landing_list) => {
+        return landing_list.filter((el) => {
+            // session user is a sharer
+            if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+                return el
+            }
+        })
+    }
+})
+// leads
+const { data: lead_list } = useFetch("/api/lead/lead", {
+  lazy: false,
+  transform: (lead_list) => {
+    return lead_list
+  }
+})
+
+
 </script>
 <template>
   <Container>
@@ -253,7 +321,7 @@ const locationColorized = (location: string) => {
     <!-- <DevModePlug/> -->
 
     <h1 class="show-max-767">Заявки</h1>
-
+    <p>{{ props?.auth_user_profile }}</p>
     <!-- Фильтры -->
     <div v-if="demandFilterTypes.length">
       <fieldset id="demand-filter-types" class="filter-types_wrapper">
@@ -288,7 +356,29 @@ const locationColorized = (location: string) => {
       <li>Сделка успешна</li>
     </ul>
 
+
+
+
     <!-- DEMANDS LIST -->
+    <div>
+       <h3>Demands by landings</h3>
+
+       <!--  -->
+       <div v-if="computedLead?.length">
+        <Section v-for="item in computedLead">
+          {{ item }}
+        </Section>
+       </div>
+       <!--  -->
+       <div v-else>Нет лидов...</div>
+    </div>
+
+
+
+    <br>
+    <br>
+    <br>
+    <span>Demands in buildres:</span>
     <div class="demands_wrapper" v-if="computedDemands">
       <div
         class="demands_item"

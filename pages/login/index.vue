@@ -23,7 +23,7 @@ useHead({
   ],
 });
 // shared
-import { Container } from "@/shared/container";
+// import { Container } from "@/shared/container";
 import { Section } from "@/shared/section"
 
 // components

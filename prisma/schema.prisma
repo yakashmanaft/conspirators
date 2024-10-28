@@ -52,6 +52,8 @@ model Landing {
 model Lead {
   id                  Int                @id @default(autoincrement())
   name                String             @db.VarChar(60)
+  mobile              String             @db.VarChar(60)
+  email               String             @db.VarChar(255)
   landing             Landing            @relation(fields: [landingId], references: [id])
   landingId           Int                @unique
   status              LeadStatus         @default(lead)

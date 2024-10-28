@@ -20,14 +20,14 @@
         <!-- ADD NEW LOCATION MODAL -->
         <div>
           <!-- Button trigger modal -->
-          <button
+          <!-- <button
             type="button"
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#newLocationModal"
           >
             Создать location
-          </button>
+          </button> -->
 
           <!-- Modal -->
           <div
@@ -148,14 +148,14 @@
         <!-- ADD NEW WORK TYPE MODAL -->
         <div>
           <!-- Button trigger modal -->
-          <button
+          <!-- <button
             type="button"
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#newWorkTypeModal"
           >
             Добавить новый вид работ
-          </button>
+          </button> -->
 
           <!-- Modal -->
           <div
@@ -279,7 +279,7 @@
 import { Container } from "@/shared/container";
 
 // components
-import { DevModePlug } from '@/components/plug_dev_mode'
+// import { DevModePlug } from '@/components/plug_dev_mode'
 
 // utils
 import { H3Error } from "h3";

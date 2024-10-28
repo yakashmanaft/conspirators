@@ -5,7 +5,8 @@
         <div class="popup_wrapper" style="">
             <!-- header -->
             <div class='popup_header'>
-                <h4>{{ props?.popup_title }}</h4>
+                <h4 style="margin: 0;">{{ props?.popup_title }}</h4>
+                <div @click.prevent="emit('emitClosePopup')" class="close_btn"></div>
             </div>    
             <!-- content -->
              <div class="popup_content" style="padding-top: 3.2rem; padding-bottom: 0.5rem; height: 100%; overflow-y: scroll;">
@@ -64,10 +65,38 @@ window.addEventListener('click', (e) => {
     position: absolute; 
     top: 0; 
     left: 0; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 1rem; 
     background-color: var(--color-btn-text); 
     width: 100%; 
     border-radius: 1rem 1rem 0 0;
+}
+.popup_header .close_btn {
+    width: 32px;
+    height: 32px;
+    /* background-color: var(--color-global-text); */
+    position: relative;
+    cursor: pointer;
+}
+.popup_header .close_btn:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-global-text);
+}
+.popup_header .close_btn:before {
+    content: '';
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%) rotate(-45deg);
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-global-text);
 }
 .popup_content::-webkit-scrollbar { 
     width: 0; 
