@@ -4,10 +4,5 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async () => {
     // ... Do whatever you want here
 
-   return await prisma.landing.findMany({
-        select: {
-            id: true,
-            name: true
-        }
-   })
+   return await prisma.landing.findMany()
   })

@@ -42,7 +42,6 @@ const profiles = ref([])
 const auth_user_profile = ref<Profile>()
 
 onBeforeMount(async () => {
-
   await initUserSessionProfie()
 })
 
@@ -53,7 +52,9 @@ const initUserSessionProfie = async () => {
   profiles.value = useProfileStore().profiles
   
   if(user.value) {
-    
+    // // Тянем landing list from db
+    // await useLandingStore().loadLandingData()
+    // set auth user profile
     auth_user_profile.value = [...profiles.value].find(profile => profile.userId === user.value.id)
     console.log(user.value)
     console.log(auth_user_profile.value)

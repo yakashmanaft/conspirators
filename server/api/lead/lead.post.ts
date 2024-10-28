@@ -12,14 +12,14 @@ export default defineEventHandler(async (event) => {
 //   landingId: number,
 //   status: string
 
-  if (body.landingId)
+  if (body.name)
     await prisma.lead.create({
       data: {
         name: body.name,
         email: body.email,
         mobile: body.mobile,
         landingId: body.landingId,
-        status: body.status
+        status: "lead"
       },
     }).then((response) => {
       lead = response

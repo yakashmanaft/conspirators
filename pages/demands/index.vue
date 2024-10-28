@@ -108,6 +108,7 @@ const demandFilterTypes = ref([
     title: "Я исполнитель",
   },
 ]);
+
 // Фильтры
 const computedDemands = computed(() => {
   if (demands.value.length) {
@@ -164,7 +165,7 @@ const computedLead = computed(() => {
         }
       })
 
-      return arr
+      return arr.reverse()
     }, [])
 
     console.log(landing_list.value)
@@ -295,7 +296,7 @@ const locationColorized = (location: string) => {
 // ******* DB
 // *** GET
 // landing
-const { data: landing_list } = useFetch("/api/landing/landing", {
+const { data: landing_list } = useFetch("/api/landingGuarded/landing", {
     lazy: false,
     transform: (landing_list) => {
         return landing_list.filter((el) => {

@@ -46,27 +46,25 @@ model Landing {
   sharers    Json
   created_at DateTime  @default(now()) @db.DateTime(0)
   update_at  DateTime? @updatedAt
-  Lead       Lead?
+  lead       Lead[]
 }
 
 model Lead {
-  id                  Int                @id @default(autoincrement())
-  name                String             @db.VarChar(60)
-  mobile              String             @db.VarChar(60)
-  email               String             @db.VarChar(255)
-  landing             Landing            @relation(fields: [landingId], references: [id])
-  landingId           Int                @unique
-  status              LeadStatus         @default(lead)
-  created_at          DateTime           @default(now()) @db.DateTime(0)
-  update_at           DateTime?          @updatedAt
-  LandingStatusLedger LeadHistoryLedger?
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(60)
+  mobile     String     @db.VarChar(60)
+  email      String     @db.VarChar(255)
+  landing    Landing    @relation(fields: [landingId], references: [id])
+  landingId  Int
+  status     LeadStatus @default(lead)
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  update_at  DateTime?  @updatedAt
 }
 
 model LeadHistoryLedger {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now()) @db.DateTime(0)
-  lead       Lead     @relation(fields: [leadId], references: [id])
-  leadId     Int      @unique
+  leadId     Int      @default(0)
   author     auth     @relation(fields: [authorId], references: [id])
   authorId   Int      @default(0)
 }

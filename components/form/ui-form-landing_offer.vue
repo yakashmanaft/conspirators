@@ -8,10 +8,6 @@
 
                 <!--  -->
                 <h5>Данные к отправке:</h5>
-                <ul>
-
-                    <li>Грядка лида: {{ props?.path }}</li>
-                </ul>
                 <!--  -->
                 
                 <h5>Задачи</h5>
@@ -20,18 +16,8 @@
                     <li>OK 2. create lead el in BD Lead w status 'lead';</li>
                     <li>3. create lead note in BD LeadStatusLedger w status 'lead';</li>
                 </ul>
+
                 <!-- Форма обратной связи -->
-                <h5>Форма</h5>
-                <!--  -->
-                <ul>
-                    <!-- { "name": "", "email": "", "mobile": "", "landingId": 1, "status": "lead" } -->
-                    <li>{{ form_obj.name }}</li>
-                    <li>{{ form_obj.email }}</li>
-                    <li>{{ form_obj.mobile }}</li>
-                    <li>{{ form_obj.landingId }}</li>
-                    <li>{{ form_obj.status }}</li>
-                </ul>
-                <!--  -->
                 <form id="feedback-form">
 
                      <!-- NAME -->
@@ -91,19 +77,32 @@ const form_obj = ref<FormObj>({
     name: '',
     email: '',
     mobile: '',
-    landingId: 2,
+    landingId: 0,
     status: 'lead'
 })
 
-
 // PROPS
 const props = defineProps({
-    path: String
+    path: String,
+    list: Array
 })
 
 // EMITS
 const emit = defineEmits(['emitClosePopup'])
 
+// set current id of landing page
+const current_landing_id = () => {
+
+    let current_landing_name = props?.path?.split('/', 2)[1]
+    console.log(current_landing_name)
+    let current_landing_id = [...props?.list].filter((item) => {
+        if(item.name === current_landing_name) {
+            return item
+        }
+    })
+    console.log(current_landing_id[0])
+    return current_landing_id[0].id
+}
 
 const mail = useMail()
 
@@ -111,7 +110,7 @@ const submitForm = () => {
     
     // landing_offer id === 2
     // lead default status === 'lead'
-    // form_obj.value.landingId = 2
+    form_obj.value.landingId = current_landing_id()
     // form_obj.value.status = 'lead'
     
     addLeadToBD(form_obj.value)
@@ -140,7 +139,10 @@ const testSend = async (item: FormObj) => {
     console.log("testSend: Message was sent")
 }
 
-// BD
+// ****** BD
+// **** methods
+// ** POST
+// lead
 const addLeadToBD = async (item: FormObj) => {
     let addedItem = null
     if(
@@ -157,7 +159,7 @@ const addLeadToBD = async (item: FormObj) => {
                 email: item.email,
                 mobile: item.mobile,
                 landingId: item.landingId,
-                status: item.status
+                // status: item.status
             }
         })
         await testSend(item)
@@ -172,7 +174,7 @@ const addLeadToBD = async (item: FormObj) => {
         else if (item.mobile === '') {
             alert('Пропустили номер телефона')
         }
-        else if (item.landingId !== 1) {
+        else if (item.landingId === 0) {
             alert('косяк с landingId')
         } else if (item.status !== 'lead') {
             alert('косяк с status')
@@ -181,7 +183,6 @@ const addLeadToBD = async (item: FormObj) => {
         }
     }
 }
-
 
 
 </script>

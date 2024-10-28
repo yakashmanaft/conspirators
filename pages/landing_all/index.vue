@@ -7,10 +7,10 @@
 
         <div class="diagram-wrapper">
 
-            <!--  -->
+            <!-- Canvas -->
             <div class="canvas">
                 <!-- chart -->
-                <svg class="chart" width="450" height="350" viewBox="0 0 100 100">
+                <svg class="chart" viewBox="0 0 100 100">
                     <circle v-for="(el, index) in landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click="onClickEl(el, index)">
                         {{ el }}
                     </circle>
@@ -27,16 +27,26 @@
                     </div>
                 </div>
             </div>
-            <div style="width: 100%; border-top: 1px solid gray;">
+
+            <!-- Legend -->
+            <div style="width: 100%;">
                 <div v-if="!choosenEl">
                     <div v-for="el in landing_list">
-                        <Button type="pseudo-btn" :link="`/landing_${el.name}`">{{ el.name }}</Button>
-                        {{ el }}
+                        <Button type="pseudo-btn" :link="`/${el.name}`">{{ el.name }}</Button>
+
+                        <div>
+                            <p>created_at: {{ el.created_at }}</p>
+                            <!-- <p>{{ el }}</p> -->
+                        </div>
                     </div>
                 </div>
                 <div v-else>
-                <Button type="pseudo-btn" :link="`/landing_${choosenEl.name}`">{{ choosenEl.name }}</Button>
-                    {{choosenEl}}
+                    <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
+                    
+                    <div>
+                        <p>created_at: {{ choosenEl.created_at }}</p>
+                        <!-- <p>{{choosenEl}}</p> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,9 +87,11 @@
     background-color: var(--color-btn-disabled-bg);
     border-bottom: 1px solid var(--color-global-text); 
     display: flex; 
-    align-items: center; 
+    align-items: flex-start; 
+    justify-content: space-between;
     gap: 1rem; 
     padding: 1rem 0;
+    height: 100vh;
 }
 
 /*  */
@@ -118,6 +130,7 @@
     align-items: center;
   }
   .unit {
+    width: 300px;
     fill: none;
     stroke-width: 5;
     transition: all 0.5s ease;
@@ -335,7 +348,7 @@
     // ******* DB
     // *** GET
     // landing
-    const { data: landing_list } = useFetch("/api/landing/landing", {
+    const { data: landing_list } = useFetch("/api/landingGuarded/landing", {
         lazy: false,
         transform: (landing_list) => {
             return landing_list.filter((el) => {
