@@ -307,7 +307,7 @@ const { data: landing_list } = useFetch("/api/landing/landing", {
     }
 })
 // leads
-const { data: lead_list } = useFetch("/api/lead/lead", {
+const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   lazy: false,
   transform: (lead_list) => {
     return lead_list

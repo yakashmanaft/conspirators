@@ -19,7 +19,7 @@
                 @emitClosePopup="closePopup"
             /> -->
 
-             <DefaultPopup
+             <!-- <DefaultPopup
                 id="popup-default-callback_offer"  
                 popup_title="Форма обратной связи"
                 @emitClosePopup="closePopup"
@@ -27,12 +27,12 @@
              >
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores porro ad ea ipsam enim veniam quidem recusandae. Ipsum perspiciatis illo veritatis quis sequi quam tempore assumenda mollitia excepturi expedita officia neque labore, eum error dignissimos cumque repellendus temporibus. Dicta reprehenderit, assumenda fugiat libero aspernatur nulla numquam? Perspiciatis porro accusamus et laudantium quae. Maxime impedit necessitatibus sapiente, ullam molestias quam magni consequuntur maiores reiciendis accusamus facere. Enim nulla obcaecati quam deserunt dolorum sint quia ab officia deleniti. Accusamus voluptates, iste laudantium incidunt magnam quam ex quibusdam dignissimos ratione pariatur ipsa, dolorum architecto voluptatum provident sit soluta ullam repellendus temporibus laborum odio quod? Nihil laborum necessitatibus doloremque quia adipisci eius similique fuga temporibus, aliquid magnam ex dolore neque voluptatem corrupti autem debitis ea eaque consectetur totam excepturi rem id? Ipsa optio esse veniam molestias ab consequatur corrupti autem pariatur quia, eius quod voluptate, voluptatum cupiditate nostrum animi possimus dignissimos iste vitae incidunt. Qui praesentium voluptatibus saepe rem ullam deserunt autem, magni ipsam vel aspernatur eligendi molestiae? Suscipit nemo dolor dolorem quibusdam veritatis veniam perferendis reprehenderit qui? Culpa nisi asperiores vel, omnis dolorum perferendis distinctio, quia deserunt odit, ex aliquid iste. Earum rerum est quo reiciendis officia ea cumque praesentium, corporis obcaecati consequuntur.</p>
 
-                <Form_landing_offer
-                    :path="route.path"
-                    @emitClosePopup="closePopup"
-                ></Form_landing_offer>
-             </DefaultPopup>
-         </div>
+            </DefaultPopup> -->
+        </div>
+        <Form_landing_offer
+            :path="route.path"
+            @emitClosePopup="closePopup"
+        ></Form_landing_offer>
 
     </Container>
 </template>
@@ -60,7 +60,7 @@
 
     // shared
     import { Container } from '@/shared/container'
-    import { DefaultPopup } from '@/shared/popup';
+    // import { DefaultPopup } from '@/shared/popup';
 
     // components
     import { Button } from '@/components/button';

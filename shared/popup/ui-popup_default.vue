@@ -31,7 +31,7 @@ const emit = defineEmits(['emitClosePopup'])
 
 //
 window.addEventListener('click', (e) => {
-    if(e.target.id && e.target.id === props?.id) {
+    if(e.target && e.target?.id === props?.id) {
         emit('emitClosePopup')
     }
 })
