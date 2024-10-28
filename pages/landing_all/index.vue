@@ -294,10 +294,8 @@
                         } else {
                             // Получаем значение 'stroke-dasharray' предыдущего элемента
                             let sdArrPrev = parseFloat(units[i - 1].getAttribute('stroke-dasharray')) * (-1);
-                            console.log(sdArrPrev)
                              // Получаем значение 'stroke-dashoffset' предыдущего элемента
                             let sdOffPrev = parseFloat(units[i - 1].getAttribute('stroke-dashoffset'));
-                            console.log(sdOffPrev);
                             // Суммируем значения
                             let sumParam = sdArrPrev + sdOffPrev;
                             // console.log(sumParam );

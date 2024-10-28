@@ -4,7 +4,7 @@
         <!-- <h4>{{ props?.popup_title }}</h4> -->
         <div>
 
-            <div class="">
+            <div>
 
                 <!--  -->
                 <p>Начало</p>
@@ -15,10 +15,10 @@
                     <li>3. create lead note in BD LandingStatusLedger w status 'lead';</li>
                 </ul>
                 <!-- Форма обратной связи -->
-                <form id="feedback-form" action="">123
+                <!-- <form id="feedback-form" action="">123
 
-                    <Button @click="testSend" type="original-btn">Send request</Button>
-                </form>
+                    <Button @click.prevent="testSend" type="original-btn">Send request</Button>
+                </form> -->
             </div>
 
         </div>
