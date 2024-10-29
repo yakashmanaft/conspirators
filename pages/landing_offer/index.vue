@@ -23,12 +23,6 @@
         <!-- POPUP -->
          <div v-if="popup_opened">
 
-            <!-- <DefaultPopup
-                id="popup-default-callback_offer"  
-                popup_title="Форма обратной связи"
-                @emitClosePopup="closePopup"
-            /> -->
-
              <DefaultPopup
                 id="popup-default-callback_offer"  
                 popup_title="Форма обратной связи"
@@ -102,11 +96,11 @@
     const closePopup = () => {
         popup_opened.value = false
 
-        // TOAST OPENED
-        let toast = document.getElementById(`toast_${route.path}`)
-        if(toast) {
-            toast.style.display = 'block'
-        }
+        // // TOAST OPENED
+        // let toast = document.getElementById(`toast_${route.path}`)
+        // if(toast) {
+        //     toast.style.display = 'block'
+        // }
 
         // TOAST CLOSED
         setTimeout(() => {

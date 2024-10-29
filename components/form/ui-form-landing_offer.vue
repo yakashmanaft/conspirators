@@ -1,5 +1,5 @@
 <template>
-
+        <!-- <p>https://qna.habr.com/q/1163286</p> -->
 
         <!-- <h4>{{ props?.popup_title }}</h4> -->
         <div>
@@ -97,13 +97,14 @@ const emit = defineEmits(['emitClosePopup'])
 const current_landing_id = () => {
 
     let current_landing_name = props?.path?.split('/', 2)[1]
+
     console.log(current_landing_name)
-    let current_landing_id = [...props?.list].filter((item) => {
+    let current_landing_id = [...props?.list].filter((item: any) => {
         if(item.name === current_landing_name) {
             return item
         }
     })
-    console.log(current_landing_id[0])
+    // console.log(current_landing_id[0])
     return current_landing_id[0].id
 }
 
@@ -169,7 +170,11 @@ const addLeadToBD = async (item: FormObj) => {
         })
         await testSend(item)
         emit('emitClosePopup')
-        
+        // TOAST OPENED
+        let toast = document.getElementById(`toast_${props.path}`)
+        if(toast) {
+            toast.style.display = 'block'
+        }
     } else {
         if(item.name === '') {
             alert('Пропустили имя...')

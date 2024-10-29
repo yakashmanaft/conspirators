@@ -168,8 +168,8 @@ const computedLead = computed(() => {
       return arr.reverse()
     }, [])
 
-    console.log(landing_list.value)
-    console.log(lead_list.value)
+    // console.log(landing_list.value)
+    // console.log(lead_list.value)
     // return lead_list.value
     return merged    
   } else {
