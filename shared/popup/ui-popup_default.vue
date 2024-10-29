@@ -1,11 +1,11 @@
 
 <template>
-    <div class="popup_container" style="" :id="props?.id">
+    <div class="popup_container" style="" :id="props.id">
 
         <div class="popup_wrapper" style="">
             <!-- header -->
             <div class='popup_header'>
-                <h4 style="margin: 0;">{{ props?.popup_title }}</h4>
+                <h4 style="margin: 0;">{{ props.popup_title }}</h4>
                 <div @click.prevent="emit('emitClosePopup')" class="close_btn"></div>
             </div>    
             <!-- content -->
@@ -21,8 +21,14 @@
 
 // props
 const props = defineProps({
-    popup_title: String,
-    id: String
+    popup_title: {
+        type: String,
+        default: 'popup-default'
+    },
+    id: {
+        type: String,
+        default: 'Title'
+    }
 })
 
 // emits

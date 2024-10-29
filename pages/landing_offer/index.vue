@@ -1,5 +1,12 @@
 <template>
+    
+    <Toast
+        id="toast_callback_1"
+        :duration="100"
+    />
+
     <Container>
+
         <h1>landing offer</h1>
         <h2>Ваш отдел маркетинга</h2>
         <h3>Настроим связку взаимодействий Бизнес - Заказчик</h3>
@@ -26,12 +33,12 @@
                  
              >
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores porro ad ea ipsam enim veniam quidem recusandae. Ipsum perspiciatis illo veritatis quis sequi quam </p>
+                
                 <Form_landing_offer
                     :path="route?.path"
-                    :list="landing_list"
+                    :list="landing_list || []"
                     @emitClosePopup="closePopup"
                 />   
-
             </DefaultPopup>
         </div>
         <!-- <Form_landing_offer
@@ -44,7 +51,7 @@
 
 <script lang="ts" setup>
     useHead({
-        title: "offer",
+        title: "Landing offer",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -70,7 +77,19 @@
     // components
     import { Button } from '@/components/button';
     import { Form_landing_offer } from '@/components/form'
+    import { Toast } from '@/components/toast'
 
+    // PROPS
+    const props = defineProps({
+        auth_user_profile: {
+            type: Object,
+            default: {}
+        },
+        auth_user: {
+            type: Object,
+            default: {}
+        }
+    })
     //
     const route = useRoute()
 

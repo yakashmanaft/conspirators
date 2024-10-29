@@ -84,7 +84,10 @@ const form_obj = ref<FormObj>({
 // PROPS
 const props = defineProps({
     path: String,
-    list: Array
+    list: {
+        type: Array,
+        default: []
+    }
 })
 
 // EMITS
