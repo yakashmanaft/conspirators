@@ -1,8 +1,11 @@
 <template>
     
+    <!--  -->
     <Toast
-        id="toast_callback_1"
-        :duration="100"
+        :id="`toast_${route.path}`"
+        :duration="2000"
+        title="Заявка отправлена"
+        content="Придумываем варианты предложения :)"
     />
 
     <Container>
@@ -41,10 +44,6 @@
                 />   
             </DefaultPopup>
         </div>
-        <!-- <Form_landing_offer
-            :path="route.path"
-            @emitClosePopup="closePopup"
-        ></Form_landing_offer> -->
 
     </Container>
 </template>
@@ -102,6 +101,20 @@
     }
     const closePopup = () => {
         popup_opened.value = false
+
+        // TOAST OPENED
+        let toast = document.getElementById(`toast_${route.path}`)
+        if(toast) {
+            toast.style.display = 'block'
+        }
+
+        // TOAST CLOSED
+        setTimeout(() => {
+            let toast = document.getElementById(`toast_${route.path}`)
+            if(toast) {
+                toast.style.display = 'none'
+            }
+        }, 5000)
     }
 
     // form data

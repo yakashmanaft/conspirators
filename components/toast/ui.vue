@@ -1,6 +1,19 @@
 <template>
-    <div :id="props?.id" style="z-index: 100; position: fixed; top: 0;">
-        TOAST
+    <div :id="props?.id" style="display: none" class="toast_container">
+        
+        <div class="toast_wrapper shadow py-4 px-4 mb-4 rounded">
+            
+            <!-- {{ props?.id }} -->
+            <div style="font-weight: bold;">
+                {{ props?.title }}
+            </div>
+            <div>
+                {{ props?.content }}
+            </div>
+
+            <!-- btn close -->
+            <div class="toast_close-btn" @click="closeToast"></div>
+        </div>
     </div>
     <!-- <div class="tab_wrapper">
 
@@ -23,7 +36,15 @@ const props = defineProps({
     },
     duration: {
         type: Number,
-        default: 100
+        default: 1000
+    },
+    title: {
+        type: String,
+        default: 'This is title'
+    },
+    content: {
+        type: String,
+        default: 'This is notification'
     }
 })
 // const currentTitle = ref(props?.default)
@@ -39,58 +60,101 @@ const props = defineProps({
 //         // console.log(name)
 //     }
 // }
-const toast = document.getElementById(`${props?.id}`)
-console.log(toast)
+
 onMounted(() => {
-    setTimeout(() => {
-        
-    }, props?.duration)
+    const toast = document.getElementById(`${props?.id}`)
+    // if(toast) {
+
+    //     const close_btn = toast.querySelector('toast_close-btn')
+    //     close_btn?.addEventListener('click', () => {
+    //         if(toast) {
+    
+    //             console.log('clicked')
+    //         }
+    //     })
+    // }
+    // console.log(toast)
+    // setTimeout(() => {
+    //     if(toast?.style.display === 'none') {
+
+    //         // toast.style.display = 'block'
+    //     } else if(toast?.style.display) {
+    //         toast.style.display = 'none'
+    //     }
+    // }, props?.duration)
 })
 
+//
+const closeToast = () => {
+    const toast = document.getElementById(`${props?.id}`)
+    if(toast) {
+        toast.style.display = 'none';
+    }
+}
+
 // WATCHERS
-// = titles
+// = 
+
 </script>
   
 <style scoped>
-/* .tab_wrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    overflow-x: scroll;
-    scrollbar-width: none;
 
+
+.toast_container {
+    z-index: 111; 
+    position: fixed; 
+    top: 0; 
+    left: 50%;
+    transform: translateX(-50%); 
+    padding: 1rem;
 }
-.tab_wrapper::-webkit-scrollbar {
-  display: none;
+
+.toast_wrapper {
+    background-color: var(--color-global-text_second);
+    color: #fff;
+    position: relative;
 }
-.tab input[type="radio"] {
-    opacity: 0;
+
+.toast_close-btn {
+    width: 24px;
+    height: 24px;
+    /* background-color: var(--color-global-text);  */
+    top: 1.5rem;
+    right: 1.5rem;
     position: fixed;
-    width: 0;
 }
-.tab label h2 {
-  color: var(--bs-tertiary-color);
-  white-space: nowrap;
+.toast_close-btn:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 3px;
+    transform: translateY(-50%) rotate(45deg);
+    background-color: #fff;
 }
-.tab label h2:hover {
-  cursor: pointer;
-}
-
-.tab input[type="radio"]:checked + label h2 {
-  color: unset;
+.toast_close-btn:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 3px;
+    transform: translateY(-50%) rotate(-45deg);
+    background-color: #fff;
 }
 
 @media screen and (max-width: 575px) {
-    .tab_wrapper {
-
-    }
 }
 
 @media screen and (max-width: 767px) {
-    .tab_wrapper {
-        border: unset;
-        padding-bottom: unset;
+    .toast_container  {
+        width: 100%;
+        left: 0;
+        transform: unset;
     }
-} */
+
+} 
+
+@media scren and (min-width: 768px) {
+
+}
 </style>

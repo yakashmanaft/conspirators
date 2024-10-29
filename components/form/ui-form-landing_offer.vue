@@ -117,6 +117,7 @@ const submitForm = () => {
     // form_obj.value.status = 'lead'
     
     addLeadToBD(form_obj.value)
+
 }
 
 // SMTP TO EMAIL
@@ -134,6 +135,7 @@ const testSend = async (item: FormObj) => {
         // `,
         html: `
             <b>Откуда: </b><p>${props?.path}</p><br/>
+            <b>Имя: ${item.name}</b>
             <b>Телефон: </b><a href='tel:${item.mobile}'>${item.mobile}</a><br/>
             <b>Эл. почта: </b><a href="mailto:${item.email}">${item.email}</a>
         `
@@ -167,6 +169,7 @@ const addLeadToBD = async (item: FormObj) => {
         })
         await testSend(item)
         emit('emitClosePopup')
+        
     } else {
         if(item.name === '') {
             alert('Пропустили имя...')
