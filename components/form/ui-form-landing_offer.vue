@@ -52,8 +52,11 @@
 
                     <br>
                     <br>
-
-                    <Button @click.prevent="submitForm" type="original-btn">Send request</Button>
+                    
+                    <div>
+                        <div v-if="loadSubmit">...</div>
+                        <Button v-else @click.prevent="submitForm" type="original-btn">Send request</Button>
+                    </div>
                 </form>
             </div>
 
@@ -93,6 +96,9 @@ const props = defineProps({
 // EMITS
 const emit = defineEmits(['emitClosePopup'])
 
+// VARIABLES
+const loadSubmit = ref(false)
+
 // set current id of landing page
 const current_landing_id = () => {
 
@@ -116,9 +122,7 @@ const submitForm = () => {
     // lead default status === 'lead'
     form_obj.value.landingId = current_landing_id()
     // form_obj.value.status = 'lead'
-    
     addLeadToBD(form_obj.value)
-
 }
 
 // SMTP TO EMAIL
@@ -168,6 +172,7 @@ const addLeadToBD = async (item: FormObj) => {
                 // status: item.status
             }
         })
+        loadSubmit.value = true
         await testSend(item)
         emit('emitClosePopup')
         // TOAST OPENED
@@ -175,6 +180,7 @@ const addLeadToBD = async (item: FormObj) => {
         if(toast) {
             toast.style.display = 'block'
         }
+        loadSubmit.value = false
     } else {
         if(item.name === '') {
             alert('Пропустили имя...')

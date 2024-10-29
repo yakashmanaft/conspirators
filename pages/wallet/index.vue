@@ -170,7 +170,7 @@ const emittedChip_bank = (chip: any) => {
     <h1 class="show-max-767" style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
 
     <!-- CHIPs -->
-    <chip
+    <!-- <chip
       :tabs="[
         {
           title: 'Личный',
@@ -200,7 +200,7 @@ const emittedChip_bank = (chip: any) => {
       }" 
       :btn_all_exist="true"
       @changed="emittedChip_bank"
-    />
+    /> -->
 
     <br>
 
@@ -315,15 +315,23 @@ const emittedChip_bank = (chip: any) => {
 }
 
 /*  */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 575px) {
   .show-max-767 {
     display: none;
   }
   .wallet-section_container {
-
+    padding: 0 0.5rem;
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .show-max-767 {
+    display: none;
+  }
+  .wallet-section_container {
+    padding: 0 1rem;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
   .wallet-section_container {
     grid-template-columns: repeat(2, 1fr)
   }

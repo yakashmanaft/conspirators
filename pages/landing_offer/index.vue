@@ -25,7 +25,7 @@
 
              <DefaultPopup
                 id="popup-default-callback_offer"  
-                popup_title="Форма обратной связи"
+                popup_title="Форма обратной связи" 
                 @emitClosePopup="closePopup"
                  
              >

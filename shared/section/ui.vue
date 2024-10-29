@@ -29,10 +29,9 @@
 
 @media screen and (max-width: 767px) {
     .section {
-        /* height: 100vh; */
-        background-color: unset!important;
+        /* background-color: unset!important;
         padding: unset!important;
-        box-shadow: unset!important;
+        box-shadow: unset!important; */
     }
     
 }

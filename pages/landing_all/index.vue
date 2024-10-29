@@ -1,7 +1,7 @@
 <template>
     <Container>
 
-        <h1>Мои огород</h1>
+        <h1>Мой огород</h1>
 
         <p>{{ props?.auth_user_profile }}</p>
 
@@ -28,10 +28,11 @@
             </div>
 
             <!-- DESC (RIGHT SIDE)-->
-            <div>
+             
+            <div class="list_container">
                 <!-- SHOW ALL -->
                 <div v-if="!choosenEl">
-                    <div v-for="(el, index) in computed_landing_list" style="margin-bottom: 1rem; border: 1px solid gray;" @click="onClickDescItem(el, index)">
+                    <div class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)" style="margin-bottom: 1rem;background-color: var(--color-btn-disabled-bg)">
                         <Button type="pseudo-btn" :link="`/${el.name}`">{{ el.name }}</Button> 
                         <p style="margin: 0;">landing_id: {{ el.id }}</p>
                         <p style="margin: 0;">leads({{ el.leads.length }})</p>
@@ -39,18 +40,37 @@
                     </div>
                 </div>
                 <!-- SHOW CURRENT -->
-                <div v-else style="border: 1px solid gray;">
-                    <div @click="choosenEl = null">К списку</div>
-                    <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
-                    <p style="margin: 0;">landing_id: {{ choosenEl.id }}</p>
-                    <p style="margin: 0;">leads({{ choosenEl.leads.length }})</p>
-                    <p style="margin: 0;">created_at: {{ choosenEl.created_at }}</p>
+                <div v-else class="landing-list_wrapper" style="background-color: var(--color-btn-hover-bg);">
+                    <!-- HEADER -->
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <!-- К списку -->
+                        <div @click.stop="resetChoosenEl(null)" style="display: flex; align-items: center;">
+                            <Icon
+                                class="link"
+                                name="material-symbols-light:arrow-back-ios"
+                                size="16px"
+                                color="var(--color-global-text_second)"
+                            />
+                            <span style="color: var(--color-global-text_second)">К списку</span>
+                        </div>
 
+                        <!-- Перейти на landing -->
+                        <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
+                    </div>
+
+                    <!-- BODY -->
                     <div>
+                        <p style="margin: 0;">landing_id: {{ choosenEl.id }}</p>
+                        <p style="margin: 0;">leads({{ choosenEl.leads.length }})</p>
+                        <p style="margin: 0;">created_at: {{ choosenEl.created_at }}</p>
                         <p>update_at: {{ choosenEl.update_at }}</p>
                         <p>{{  choosenEl.sharers  }}</p>
                         <p>{{ choosenEl.leads }}</p>
                     </div>
+
+                    <!-- <br>
+                    <div>
+                    </div> -->
                 </div>
 
                 <!-- IMITATION -->
@@ -65,15 +85,17 @@
 .landing_container {
     /* ... */
 }
-.landing_wrapper {
+/* .landing_wrapper {
     background-color: var(--color-btn-disabled-bg);
     border-bottom: 1px solid var(--color-global-text); 
     display: flex; 
     align-items: flex-start; 
     justify-content: space-between;
     gap: 1rem; 
-    /* padding: 1rem 0; */
-    /* height: 100vh; */
+} */
+
+.landing-list-el_wrapper {
+    
 }
 
 /*  */
@@ -145,6 +167,12 @@
   .unit__hovered {
     stroke-width: 8;
   }
+
+  @media screen and (max-width: 767px) {
+    .diagram-wrapper {
+        grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <script lang="ts" setup>
@@ -211,16 +239,19 @@
     body?.addEventListener('click', (e) => {
 
         // Убираем ховер на unit в диаграме
-        if(!e.target.classList.contains('unit')) {
+        if(
+            !e.target.classList.contains('unit') &&
+            !e.target.parentNode.parentNode.classList.contains('list_container') && 
+            !e.target.parentNode.parentNode.classList.contains('landing-list_wrapper')
+        ) {
             const unitsList = document.querySelectorAll('.unit');
+            choosenEl.value = null
             for(let i = 0; i <= unitsList.length; i++) {
-                choosenEl.value = null
                 if(unitsList[i] && unitsList[i].classList.contains('unit__hovered')) {
                     unitsList[i].classList.remove('unit__hovered');
                 }
             }
         }
-
     })
 
     // ******* COMPUTED
@@ -259,7 +290,7 @@
                 })
             });
             
-            console.log(result)
+            // console.log(result)
             return result
         }
     })
@@ -344,11 +375,27 @@
         }
     }
 
-    // onClick in desc section item 
-    const onClickDescItem = (el: any, index: number) => {
+    //
+    const resetChoosenEl = (el: {} | null) => {
+        // на входе el = null
         choosenEl.value = el
-        console.log(choosenEl.value)
+        const unitsList = document.querySelectorAll('.unit');
+        unitsList.forEach(item => item.classList.remove('unit__hovered'))
+    }
 
+    // onClick in desc section item 
+    const chooseCurrentLanding = (el: any, index: number) => {
+        choosenEl.value = el
+        const unitsList = document.querySelectorAll('.unit');
+
+        // Действуем
+        if(unitsList[index].classList.contains('unit__hovered')) {
+            unitsList[index].classList.remove('unit__hovered');
+            choosenEl.value = null
+        } else if(!unitsList[index].classList.contains('unit__hovered')){
+            unitsList[index].classList.add('unit__hovered');
+            choosenEl.value = el
+        }
     }
 
     // ******* DB
@@ -374,9 +421,16 @@
     }
     })
 
-     watch(landing_list, () => {
+    // WATHERS
+    //= landing_list
+    watch(landing_list, () => {
         setStrokeDashArrayAndOffset()
-     })
+    })
+
+    //= choosenEl
+    // watch(choosenEl, () => {
+    //     console.log(choosenEl.value)
+    // })
 
     
 </script>

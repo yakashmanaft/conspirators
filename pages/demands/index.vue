@@ -154,6 +154,7 @@ const computedLead = computed(() => {
       landing_list.value?.forEach(item => {
         if(item.id === lead.landingId) {
           arr.push({
+            id: lead.id,
             created_at: lead.created_at,
             lead_from_id: lead.landingId,
             lead_from_name: item.name,
@@ -367,12 +368,13 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 
        <!--  -->
        <div class="computedLead_container" v-if="computedLead?.length">
-        <Section v-for="item in computedLead">
+        <Section v-for="item in computedLead" @click="$router.push(`demands/${item.id}`)">
           <p>Created: {{ item.created_at }}</p>
           <p>From: {{ item.lead_from_name }} (id: {{ item.lead_from_id }})</p>
-          <p>Name: {{ item.lead_name }}</p>
+          <!-- <p>Name: {{ item.lead_name }}</p>
           <p style="white-space: nowrap;">Email: {{ item.lead_email }}</p>
-          <p>Phone: {{ item.lead_mobile }}</p>
+          <p>Phone: {{ item.lead_mobile }}</p> -->
+          <p>Status: {{ item.lead_status }}</p>
           <!-- {{ item }} -->
         </Section>
        </div>
@@ -515,15 +517,17 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 }
 
 @media screen and (max-width: 575px) {
-  .filter-types_wrapper,
+  /* .filter-types_wrapper,
   .demands_wrapper {
     padding: 0 0.5rem;
-  }
+  } */
   .demands_wrapper {
     grid-template-columns: 1fr;
   }
   .computedLead_container {
     grid-template-columns: 1fr;
+    padding: 0 0.5rem;
+    gap: 0.5rem;
   }
   .show-max-767 {
     display: none;
@@ -535,6 +539,7 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   }
   .computedLead_container {
     grid-template-columns: 1fr;
+    padding: 0 1rem;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {

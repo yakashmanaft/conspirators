@@ -24,7 +24,7 @@ useHead({
 });
 // shared
 // import { Container } from "@/shared/container";
-import { Section } from "@/shared/section"
+// import { Section } from "@/shared/section"
 
 // components
 import { Button } from "@/components/button"
@@ -87,60 +87,71 @@ const onClickRegister = () => {
       align-items: center;
       justify-content: center;
     ">
-
-    <Section>
-<form         
-  style="
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1rem;
-  ">
-  <!-- TITLE -->
-  <h1>Вход</h1>
-
-  <!-- LOGIN -->
-  <input 
-    v-model="tempUser.login" 
-    id="login_login"
-    type="text" 
-    class="form-control"
-    placeholder="enter login"
-    autocomplete="username"
-  />
-  <!-- PASSWORD -->
-  <input
-    v-model="tempUser.password"
-    id="login_password" 
-    type="password"
-    class="form-control"
-    placeholder="enter password"
-    autocomplete="current-password"
-  />
-
-  <!-- SUBMIT BTNs -->
-  <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
-    <!-- login -->
-    <Button @click.prevent="loginFunc" type="original-btn" link="" bg="bg-full" :disabled="false">Войти</Button>
-
-    <!-- register -->
-    <Button type="pseudo-btn" link="/register" bg="bg-stroke" :disabled="false">Создать аккаунт</Button>
-
-  </div>
-  </form>
-
-    </Section>
+    
+    <div class="section_wrapper">
+      
+      <div class="section shadow py-4 px-4 mb-4 bg-body-tertiary rounded">
+        <form         
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+          ">
+          <!-- TITLE -->
+          <h1>Вход</h1>
+    
+          <!-- LOGIN -->
+          <input 
+            v-model="tempUser.login" 
+            id="login_login"
+            type="text" 
+            class="form-control"
+            placeholder="enter login"
+            autocomplete="username"
+          />
+          <!-- PASSWORD -->
+          <input
+            v-model="tempUser.password"
+            id="login_password" 
+            type="password"
+            class="form-control"
+            placeholder="enter password"
+            autocomplete="current-password"
+          />
+    
+          <!-- SUBMIT BTNs -->
+          <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1rem;">
+            <!-- login -->
+            <Button @click.prevent="loginFunc" type="original-btn" link="" bg="bg-full" :disabled="false">Войти</Button>
+    
+            <!-- register -->
+            <Button type="pseudo-btn" link="/register" bg="bg-stroke" :disabled="false">Создать аккаунт</Button>
+    
+          </div>
+          </form>
+  
+      </div>
+    </div>
     <router-link to="/">На главную</router-link>
   </div>
 </template>
 
 <style scoped>
-
+  .section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 
   @media screen and (max-width: 767px) {
-
+    .section {
+        background-color: unset!important;
+        padding: unset!important;
+        box-shadow: unset!important;
+    }
 
   }
 </style>

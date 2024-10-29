@@ -21,6 +21,18 @@ useHead({
         ]
     })
 
+    // PROPS
+    const props = defineProps({
+        auth_user_profile: {
+            type: Object,
+            default: {}
+        },
+        auth_user: {
+            type: Object,
+            default: {}
+        }
+    })
+
     // const listItemType = ref([])
 
     // Инструмент
@@ -83,26 +95,72 @@ useHead({
             }
         ]
     }
+
+    const route = useRoute()
+
+    // COMPUTED
+    //= current lead
+    const current_lead = computed(() => {
+        if(lead_list.value && landing_list.value) {
+            landing_list.value.forEach(el => {
+
+                if(lead_list.value.landingId === el.id) {
+
+                    // ДОБАВИЛИ ИМЯ ИЗ ДРУГОЙ БД
+                    lead_list.value.landing_name = el.name
+                }
+            })
+        }
+        return lead_list.value
+    })
+
+    // ******* DB
+    // *** GET
+
+    // landing
+    const { data: landing_list } = useFetch("/api/landingGuarded/landing", {
+        lazy: false,
+        transform: (landing_list) => {
+            return landing_list.filter((el) => {
+                // session user is a sharer
+                if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+                    return el
+                }
+            })
+        }
+    })
+
+    // leads
+    const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
+    lazy: false,
+    transform: (lead_list) => {
+        return lead_list.find(el => el.id === +route.params.id)
+    }
+    })
 </script>
 
 
 <template>
-    <Container style="margin-top: 5rem;">
+    <Container>
 
         <h1 class="show-max-767">Заявка #{{ $route.params.id  }}</h1> 
 
-        <div>
+        <div v-if="current_lead">
 
-            <p>Дата создания</p>
-            <p>Deadline</p>
-            <p>Автор</p>
-            <p>Контроль реализации</p>
+            <p>Дата создания: {{ current_lead.created_at }}</p> 
+            <p>Статус: {{  current_lead.status  }}</p>
+            <!-- <p>Deadline: xxx</p>
+            <p>Автор: xxx</p>
+            <p>Контроль реализации: xxx</p>-->
+            <h2>This is a lead from: {{ current_lead.landing_name }}</h2>
         </div>
 
-        <h2></h2>
-        <div v-for="(item, index) in currentDemand.itemsList">
+        {{ current_lead  }}
+        <!-- <div v-for="(item, index) in currentDemand.itemsList">
             <p>{{index + 1 }}.{{ item }}</p>
-        </div>
+        </div> -->
+        <!-- <br>
+        {{ landing_list }} -->
     </Container>
 </template>
 
