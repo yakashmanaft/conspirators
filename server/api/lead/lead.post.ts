@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
         email: body.email,
         mobile: body.mobile,
         landingId: body.landingId,
-        status: "lead"
+        status: "lead",
+        urgency: "low"
       },
     }).then((response) => {
       lead = response

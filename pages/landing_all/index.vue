@@ -28,53 +28,98 @@
             </div>
 
             <!-- DESC (RIGHT SIDE)-->
-             
+
+            <!--  -->
             <div class="list_container">
+
                 <!-- SHOW ALL -->
-                <div v-if="!choosenEl">
-                    <div class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)" style="margin-bottom: 1rem;background-color: var(--color-btn-disabled-bg)">
-                        <Button type="pseudo-btn" :link="`/${el.name}`">{{ el.name }}</Button> 
-                        <p style="margin: 0;">landing_id: {{ el.id }}</p>
-                        <p style="margin: 0;">leads({{ el.leads.length }})</p>
-                        <p style="margin: 0;">created_at: {{ el.created_at }}</p>
-                    </div>
-                </div>
-                <!-- SHOW CURRENT -->
-                <div v-else class="landing-list_wrapper" style="background-color: var(--color-btn-hover-bg);">
-                    <!-- HEADER -->
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <!-- К списку -->
-                        <div @click.stop="resetChoosenEl(null)" style="display: flex; align-items: center;">
-                            <Icon
-                                class="link"
-                                name="material-symbols-light:arrow-back-ios"
-                                size="16px"
-                                color="var(--color-global-text_second)"
-                            />
-                            <span style="color: var(--color-global-text_second)">К списку</span>
+                <div>
+                    <!-- SECTION -->
+                    <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)" style="margin-bottom: 1rem;background-color: var(--color-btn-disabled-bg); cursor:pointer;">
+
+                        <!-- SECTION HEADER -->
+                        <div @click="resetChoosenEl(el, index)" style="gap: 1rem; display: flex; align-items: center; justify-content: space-between;">
+
+                            <!-- LEADS QTY GROUP -->
+                            <div>
+                                <p style="margin: 0; font-size: 32px; font-weight: normal;">{{ el.leads.length }}</p>
+                            </div>
+
+                            <!-- GROUP CONTENT -->
+                            <div style="flex: 1 0">
+                                <p style="margin: 0;">{{ el.name }}</p>
+                                <!-- <p style="margin: 0;">{{ el.created_at }}</p> -->
+                            </div>
+                            
+                            <!-- ROUTER BTN GROUP-->
+                             <div class="router-btn_group">
+
+                                 <Icon
+                                     class="link"
+                                     name="material-symbols-light:arrow-back-ios"
+                                     size="32px"
+                                     color="var(--color-global-text_second)"
+                                     :style="choosenEl && choosenEl.id === el.id ? 'transform: rotate(-90deg)' : 'transform: rotate(180deg)'"
+                                 />
+                             </div>
                         </div>
 
-                        <!-- Перейти на landing -->
-                        <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
-                    </div>
+                        <!--  -->
+                        <div style="margin-top: 1rem;" v-if="choosenEl && choosenEl.id === el.id">
+                            
+                            <!-- leads -->
+                            <div class="leads_container">
+                                <!-- LENGTH > 0 -->
+                                <div v-if="el.leads.length">
+                                    <ul style="list-style: none; padding: 0;">
+                                        <li style="display: grid; grid-template-columns: 2rem 6rem 6rem 1fr; color: var(--color-global-text_second); font-size: 0.8rem; padding-bottom: 0.5rem">
+                                            <div>#</div>
+                                            <div>Статус</div>
+                                            <div>Важность</div>
+                                            <div>Дата заявки</div>
+                                        </li>
+                                        <li 
+                                            v-for="(item, index) in el.leads.reverse()" style="margin-top: 0.5rem; display: grid; grid-template-columns: 2rem 6rem 6rem 1fr"
+                                            @click="$router.push(`/demands/${item.lead_id}`)"
+                                            class="lead-item_wrapper"    
+                                        >
+                                            <div>
+                                                {{ index + 1 }}
+                                            </div>
+                                            <div>
+                                                {{ item.status }}
+                                            </div>
+                                            <div>
+                                                {{ item.urgency }}
+                                            </div>
+                                            <div style="white-space: nowrap;">
+                                                {{ item.created_at }}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- LENGTH === 0 -->
+                                <div v-else>
+                                    <p>Нет лидов...</p>
+                                </div>
+                            </div>
 
-                    <!-- BODY -->
-                    <div>
-                        <p style="margin: 0;">landing_id: {{ choosenEl.id }}</p>
-                        <p style="margin: 0;">leads({{ choosenEl.leads.length }})</p>
-                        <p style="margin: 0;">created_at: {{ choosenEl.created_at }}</p>
-                        <p>update_at: {{ choosenEl.update_at }}</p>
-                        <p>{{  choosenEl.sharers  }}</p>
-                        <p>{{ choosenEl.leads }}</p>
-                    </div>
-
-                    <!-- <br>
-                    <div>
-                    </div> -->
+                            <!-- Перейти на landing -->
+                             <div style="display: flex; align-items: center;">
+                                 <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
+                                 <div>
+                                    <Icon
+                                     class="link"
+                                     name="material-symbols-light:arrow-back-ios"
+                                     size="24px"
+                                     color="var(--color-global-text_second)"
+                                     style="transform: rotate(-180deg)"
+                                 />
+                                 </div>
+                             </div>
+                        </div>
+                    </Section>
                 </div>
-
-                <!-- IMITATION -->
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis blanditiis fugit suscipit maxime aut quidem sapiente ratione repellendus unde sed labore illum, non repellat expedita incidunt doloribus officia voluptatem odit et doloremque quibusdam sit ea. Odio cum asperiores optio minima at molestiae eum itaque atque, culpa, id porro? At voluptatum ab quibusdam culpa fugiat maiores. Odio quis rem optio iste vel dolor suscipit alias qui perferendis asperiores, perspiciatis ea nisi commodi consectetur neque mollitia sequi quaerat id animi cum nesciunt? Molestiae, omnis obcaecati. Iste suscipit fuga nihil, doloremque ut recusandae ipsam expedita a exercitationem enim vero at voluptatem soluta quae magni atque reiciendis, ullam deleniti quo iusto? Sunt blanditiis animi sapiente vitae rerum odit atque ullam eius, labore voluptatem delectus! Repellendus, distinctio, mollitia, nobis laborum saepe enim asperiores est facere ex vero minus deserunt vitae quae sunt explicabo officia optio recusandae iusto quisquam? Earum doloremque reiciendis quasi, porro velit ipsam officia rerum laudantium omnis voluptates consequuntur numquam enim possimus laborum ab molestias? Architecto obcaecati aliquid aut non aperiam ipsum ullam laboriosam alias minima a hic cumque incidunt ipsa sit, accusamus nobis asperiores numquam aspernatur corporis fugit est? Laboriosam tenetur blanditiis ad! Facilis voluptate, eligendi consequuntur similique in voluptates unde illo soluta debitis cum aut adipisci numquam! Et expedita eligendi, sunt amet temporibus, rerum molestias ea laborum saepe, magnam porro? Aliquam in dolor deserunt aliquid illum, iure natus! Adipisci, eos odio magnam quibusdam corrupti illo cumque. Porro, totam. Pariatur architecto sequi atque, dicta beatae, at minus vel ad possimus veritatis ex? Ad odio id perferendis dolor! Consequuntur quidem dicta ab tenetur, illum aut. Natus doloribus non, voluptatibus voluptatem quia similique praesentium tempora voluptatum, eveniet delectus corporis neque velit possimus. Deserunt quaerat perspiciatis iure nulla natus, illo velit doloribus quia possimus quam, repudiandae libero? Porro perferendis error, vel delectus veniam quibusdam natus dolores commodi repellat quaerat deserunt tempore quisquam, soluta ut, facere exercitationem officia et tempora consequuntur nam. Adipisci similique quidem totam nihil magnam nulla cum autem libero nobis laboriosam, impedit commodi alias quae consectetur placeat maiores cumque! Commodi laboriosam facere mollitia. Autem necessitatibus, voluptatem molestias quae enim totam alias delectus, labore, minus esse ipsa recusandae nesciunt harum saepe vel facere? Ipsum, accusamus ex. Suscipit commodi perferendis veritatis beatae eum accusamus est magni vel provident odio? Fuga itaque voluptatem hic. Molestias perspiciatis ullam optio debitis nostrum natus aliquid molestiae! Ratione excepturi hic voluptatibus iusto velit quisquam nobis aliquam sint totam odio perspiciatis officia voluptate ab rem animi dolores tenetur omnis impedit, dicta quibusdam sapiente fuga aliquid harum. Laborum ratione iste commodi blanditiis corporis officiis, quae corrupti impedit, minus debitis sed. Architecto, culpa amet quae pariatur esse eius quasi doloribus provident ea placeat quod dolor deleniti quidem delectus rerum nobis omnis qui, illo ab, minima facere a et. Quidem incidunt reprehenderit quis excepturi voluptatum animi consequatur accusantium reiciendis possimus suscipit sunt aut cumque distinctio eaque eligendi, exercitationem omnis veritatis similique officiis iusto nobis tempora voluptate odit corrupti. Nihil possimus laudantium molestias voluptatibus nemo nobis, corrupti, quidem laborum error voluptates alias enim consequuntur vero. Repellat fugiat in ratione doloremque maxime molestias minima. Asperiores, quibusdam fugit quod, id autem, odit atque ea repellat excepturi repellendus minus pariatur! Ad minus cupiditate culpa. Facere aliquid labore a officia nihil voluptatum rem, harum ipsam necessitatibus quasi sit! Dolores saepe error enim quia natus illo veniam hic porro perspiciatis vero adipisci iusto ab aliquid asperiores possimus, quae sint, minus dolore a id voluptatibus provident neque dignissimos harum. Hic, iusto. Quaerat doloribus iste quae illo, natus molestias porro sunt quidem excepturi eius nihil ea, omnis illum sequi non animi, aspernatur qui voluptate nesciunt facere? Magnam esse placeat repellendus. Eligendi, esse dolorum voluptatem totam neque, obcaecati odit laboriosam error cupiditate tempora cumque, vero consequatur. Eligendi labore recusandae excepturi laudantium qui commodi reprehenderit perferendis voluptatem soluta, accusantium ducimus delectus quasi unde, officia neque voluptas odio deserunt, ex repellendus voluptatibus officiis quos. Porro, tempore labore earum unde, laborum accusantium praesentium quae reiciendis omnis molestiae ea suscipit? Esse odio nulla facilis. Voluptas est magni eveniet alias optio consequatur voluptatum deleniti a, ab numquam, necessitatibus minima quasi sunt vitae voluptatem aspernatur, assumenda eius. Enim dolor, consequatur earum tempore numquam animi sunt error vel recusandae, dolorum quod ex iste, ea unde et magnam nulla laborum? Dolore ullam, reiciendis tempora inventore ut a voluptatum aspernatur nulla officiis maxime eius. Atque beatae ut est vitae! Aliquam velit, ut eveniet quam sint doloremque vitae! Modi animi reiciendis in quaerat facere architecto nihil sit obcaecati neque dolor saepe distinctio ea veritatis magni eos dignissimos ab soluta ipsam eaque numquam ipsa, tempora quia pariatur nesciunt. Veritatis suscipit facere recusandae sint ratione incidunt necessitatibus repellat cumque in? Qui pariatur iste natus ab iusto repudiandae consequatur et, voluptate obcaecati delectus voluptatum, dignissimos mollitia dolorem eveniet eum labore veritatis laudantium in unde maiores eligendi suscipit vel recusandae sequi? Molestiae aut perferendis totam facilis vel minus minima. Atque, consequatur ad unde voluptas dolor eaque tempora ut velit corporis sequi hic tempore. Perspiciatis distinctio ratione assumenda ut repudiandae quia dolore. Ut obcaecati ullam tempora esse amet iure dolorum placeat sequi explicabo eius quibusdam fuga error sit doloribus ipsum accusantium suscipit reprehenderit ducimus temporibus, enim minima voluptatum tenetur facere dolores? Voluptas quos, voluptatum commodi beatae quisquam quo aperiam, fuga optio ab cum, sapiente eveniet repellendus soluta! Ipsam hic vel accusamus rerum nesciunt asperiores dolores ad pariatur ipsa, iste eum, est sit tenetur id error libero dolorem earum repudiandae! At harum hic tenetur minus facere sunt expedita veniam asperiores saepe nisi cumque nam consequatur, reprehenderit ducimus, architecto quas repudiandae suscipit qui consectetur! Accusantium veniam sint quasi possimus aut dicta minima delectus iusto repudiandae, doloremque amet at soluta pariatur voluptatibus iste similique optio fugit odio autem nostrum quas magni exercitationem sapiente. Repellendus iusto reprehenderit facere inventore suscipit ab eum blanditiis odit autem sint modi dignissimos, dolorum pariatur ipsum minima vitae doloremque maiores commodi quibusdam. Repudiandae architecto dolor nisi doloremque aperiam magni in? Sunt iure minus vitae culpa ut corrupti unde, at laboriosam hic fugit aspernatur tenetur rem porro recusandae, ullam ratione dignissimos architecto, eligendi corporis doloremque explicabo? Doloribus, minus.</p>
             </div>
         </div>
 
@@ -123,6 +168,13 @@
   .svg .chart {
     /* position: relative; */
   }
+svg.icon    {
+    /* background-color: red; */
+    padding-left: 0.5rem;
+  }
+  /* svg.icon path {
+    color :black!important
+  } */
   .caption {
     /* position: absolute; */
     /* top: 0; */
@@ -138,6 +190,7 @@
     fill: none;
     stroke-width: 5;
     transition: all 0.5s ease;
+    cursor: pointer;
   }
   .unit:nth-child(1) {
     stroke: v-bind('colors.unit1');
@@ -166,6 +219,23 @@
   }
   .unit__hovered {
     stroke-width: 8;
+  }
+
+  .lead-item_wrapper:hover {
+    background-color: var(--color-btn-hover-bg)
+  }
+
+
+  @media screen and (max-width: 575px) {
+    .list_container {
+        padding: 0 1rem;
+    }
+  }
+
+  @media screen and (min-width: 576px) and (max-width: 767px) {
+    .list_container {
+        padding: 0 1rem;
+    }
   }
 
   @media screen and (max-width: 767px) {
@@ -211,9 +281,11 @@
 
     // shared
     import { Container } from '@/shared/container'
+    import { Section } from '@/shared/section'
 
     // components
     import { Button } from '@/components/button'
+import { routerKey } from 'vue-router';
 
     // PROPS
     const props = defineProps({
@@ -272,7 +344,9 @@
                     if(lead.landingId === landing.id) {
                         arr.push({
                             lead_id: lead.id,
-                            created_at: lead.created_at
+                            created_at: lead.created_at,
+                            status: lead.status,
+                            urgency: lead.urgency
                             // landing_id: lead.landingId
                         })
                     }
@@ -283,7 +357,6 @@
                 result.push({
                     id: landing.id,
                     name: landing.name,
-                    sharers: landing.sharers,
                     leads: leads,
                     created_at: landing.created_at,
                     update_at: landing.update_at
@@ -376,21 +449,33 @@
     }
 
     //
-    const resetChoosenEl = (el: {} | null) => {
-        // на входе el = null
-        choosenEl.value = el
-        const unitsList = document.querySelectorAll('.unit');
-        unitsList.forEach(item => item.classList.remove('unit__hovered'))
+    const resetChoosenEl = (el: {} | null, index: number) => {
+        // const unitsList = document.querySelectorAll('.unit');
+        console.log('clicked')
+        // unitsList[index].classList.toggle('unit__hovered')
+        // captionList[index].classList.toggle('visible');
+        
+        // Очищаем все элементы от класса 
+        // unitsList.forEach(item => item.classList.remove('unit__hovered'))
+        // // Действуем
+        // if(unitsList[index].classList.contains('unit__hovered')) {
+        //     unitsList[index].classList.remove('unit__hovered');
+        //     choosenEl.value = null
+        // } else if(!unitsList[index].classList.contains('unit__hovered')){
+        //     unitsList[index].classList.add('unit__hovered');
+        //     choosenEl.value = el
+        // }
     }
 
     // onClick in desc section item 
     const chooseCurrentLanding = (el: any, index: number) => {
         choosenEl.value = el
         const unitsList = document.querySelectorAll('.unit');
-
+        // Очищаем все элементы от класса 
+        unitsList.forEach(item => item.classList.remove('unit__hovered'))
         // Действуем
         if(unitsList[index].classList.contains('unit__hovered')) {
-            unitsList[index].classList.remove('unit__hovered');
+            unitsList[index].classList?.remove('unit__hovered');
             choosenEl.value = null
         } else if(!unitsList[index].classList.contains('unit__hovered')){
             unitsList[index].classList.add('unit__hovered');

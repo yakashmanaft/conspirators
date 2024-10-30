@@ -74,14 +74,16 @@ type FormObj = {
     email: string,
     mobile: string,
     landingId: number,
-    status: string
+    status: string,
+    urgency: string
 }
 const form_obj = ref<FormObj>({
     name: '',
     email: '',
     mobile: '',
     landingId: 0,
-    status: 'lead'
+    status: 'lead',
+    urgency: 'low'
 })
 
 // PROPS
@@ -160,7 +162,8 @@ const addLeadToBD = async (item: FormObj) => {
         item.email !== '' &&
         item.mobile !== '' &&
         item.landingId !== 0 &&
-        item.status === 'lead'
+        item.status === 'lead' &&
+        item.urgency === 'low'
     ){
         addedItem = await $fetch("/api/lead/lead", {
             method: "POST",
