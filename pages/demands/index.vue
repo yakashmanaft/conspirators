@@ -293,6 +293,19 @@ const locationColorized = (location: string) => {
     return `location_${location}`;
   }
 };
+//= lead from
+// const set_lead_from_bgColor = (lead: any) => {
+//   let color;
+
+//   if(lead.lead_status === 'paused') {
+//     color = `unset`
+//   } else {
+//     color = `var(--color-btn-text)`
+//   }
+
+//   return color
+// }
+
 //= urgency
 const set_bgColor_by_Urgency = (lead: any) => {
 
@@ -320,12 +333,23 @@ const set_bgColor_by_Urgency = (lead: any) => {
   // ****** STATUS 
   if(lead.lead_status) {
 
-    // LEAD && STATUS
-    // if(lead.lead_status === 'lead' && lead.lead_urgency === 'hig')
-
+    // BLANK
+    if(lead.lead_status === 'blank') {
+      color = 'var(--color-status-canceled)'
+    }
+    // PAUSED
+    if(lead.lead_status === 'paused') {
+      // color = 'var(--color-bg-popup)'
+      color = 'var(--color-status-canceled)'
+    }
     // CANCELED
     if(lead.lead_status === 'canceled') {
       color = 'var(--color-status-canceled)'
+    }
+    // PAUSED
+    // FINISHED
+    if(lead.lead_status === 'finished') {
+      color = 'var(--color-btn-text)'
     }
   }
 
@@ -387,16 +411,12 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 
     <!--  -->
     <ul>
-      <li>Новый лид</li>
-      <li>Выявлен интерес</li>
-      <li>Проведена встреча</li>
-      <li>Согласована цена</li>
-      <li>Оформлены документы</li>
-      <li>Получена оплата</li>
-      <li>Выполняем работы</li>
-      <li>Сдали работу</li>
-      <li>Акт сдачи-приемки</li>
-      <li>Сделка успешна</li>
+      <li>lead</li>
+      <li>blank</li>
+      <li>works</li>
+      <li>canceled</li>
+      <li>paused</li>
+      <li>finished</li>
     </ul>
 
 
@@ -415,14 +435,28 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
           :bg="set_bgColor_by_Urgency(item)" 
           v-for="item in computedLead" 
           @click="$router.push(`demands/${item.id}`)"
-          style="cursor: pointer;"
+          style="cursor: pointer; position: relative;"
         >
-          <p>Created: {{ item.created_at }}</p>
-          <p>From: {{ item.lead_from_name }} (id: {{ item.lead_from_id }})</p>
-          <!-- <p>Name: {{ item.lead_name }}</p>
-          <p style="white-space: nowrap;">Email: {{ item.lead_email }}</p>
-          <p>Phone: {{ item.lead_mobile }}</p> -->
-          <p>Status: {{ item.lead_status }}</p>
+          <!-- LEAD is a NEW (absolute) -->
+          <div v-if="item.lead_status === 'lead'" style="position: absolute; top: 0; left: 0; font-weight: bold; background-color: black; color: var(--color-btn-text); font-size: 1rem;">
+            New
+          </div>
+
+          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+          <div v-if="item.lead_status === 'paused'" style="position: absolute; top: 0; left: 0; background-color: var(--color-paused-wrapper-bg); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;" class="rounded">
+            <div style="color: #fff;">ПАУЗА</div>
+          </div>  
+
+          <!-- CREATED DATE -->
+          <div>
+            <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
+          </div>
+
+          <!-- FROM  -->
+          <div>
+            <span>Грядка: {{ item.lead_from_name }}</span>
+          </div>
+          <p style="margin: 0; font-size: 0.8rem;">{{ item.lead_status }}</p>
 
         </Section>
        </div>
@@ -575,7 +609,7 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   .computedLead_container {
     grid-template-columns: 1fr;
     padding: 0 0.5rem;
-    gap: 0.5rem;
+    gap: 1rem;
   }
   .show-max-767 {
     display: none;
@@ -592,6 +626,9 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
   .demands_wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .computedLead_container {
     grid-template-columns: repeat(2, 1fr);
   }
 }

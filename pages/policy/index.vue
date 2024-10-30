@@ -1,17 +1,6 @@
 <template>
     <Container>
         <h1 style="margin-top: 5rem;">Политика конфидценциальности</h1>
-
-        <p>Использованы иконки следующих авторов:</p>
-        <ul>
-            <li>
-                <nuxt-link to="https://ru.freepik.com/icon/feature_16993811#fromView=keyword&page=1&position=50&uuid=5381befd-cda2-46de-bc16-3d8fd1409101" target="_blank">sonnycandra</nuxt-link>
-                <!-- https://ru.freepik.com/author/sonnycandra/icons -->
-            </li>
-        </ul>
-        <p>Взято в качестве примера с сайта: 
-            <nuxt-link to="https://texterra.ru/privacy-policy/" target="_blank">https://texterra.ru/privacy-policy/</nuxt-link>
-        </p>
         <p>Политика конфиденциальности
             1. Общие положения
             Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. №152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных и меры по обеспечению их безопасности, предпринимаемые администрацией сайта https://texterra.ru/ (далее – Оператор).

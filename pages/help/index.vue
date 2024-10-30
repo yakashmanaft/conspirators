@@ -11,6 +11,21 @@
       </li>
     </ul>
 
+    <div>
+      <h2>Авторские права</h2>
+      <p>founder: <span><nuxt-link to="tg://resolve?domain=Kashmanaft">@Kashmanaft</nuxt-link></span></p>
+      <p>
+        Использованы иконки следующих авторов: 
+        <span>
+          <nuxt-link to="https://ru.freepik.com/icon/feature_16993811#fromView=keyword&page=1&position=50&uuid=5381befd-cda2-46de-bc16-3d8fd1409101" target="_blank">sonnycandra</nuxt-link>
+        <!-- https://ru.freepik.com/author/sonnycandra/icons -->
+        </span>
+      </p>
+      <p>references: 
+        <span><nuxt-link to="https://texterra.ru/privacy-policy/" target="_blank">https://texterra.ru/privacy-policy/</nuxt-link></span>
+      </p>
+    </div>
+
     <!--  -->
     <div>
       <h2>База знаний</h2>

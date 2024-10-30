@@ -77,7 +77,7 @@
                         </div>
 
                         <!--  -->
-                        <div style="margin-top: 1rem;" v-if="choosenEl && choosenEl.id === el.id">
+                        <div style="margin-top: 1rem; border-top: 1px solid var(--color-btn-disabled-bg); padding-top: 1rem;" v-if="choosenEl && choosenEl.id === el.id" >
                             
                             <!-- leads -->
                             <div class="leads_container">
@@ -102,7 +102,7 @@
                                                 {{ item.status }}
                                             </div>
                                             <div>
-                                                {{ item.urgency }}
+                                                <span :style="`background-color: ${set_bgColor_by_Urgency(item)}`">{{ item.urgency }}</span>
                                             </div>
                                             <div style="white-space: nowrap;">
                                                 {{ item.created_at }}
@@ -450,6 +450,35 @@ import { routerKey } from 'vue-router';
         } else {
             return leads.length
         }
+    }
+
+    // ******* COLORIZED
+    // set_bgColor_by_Urgency(item)
+    const set_bgColor_by_Urgency = (lead: any) => {
+        console.log(lead.urgency)
+        let color;
+
+        // ****** URGENCY ******
+        if(lead.urgency) {
+
+            // LOW
+            if(lead.urgency === 'low') {
+                color = `var(--color-urgency-low)`
+            } 
+            // MIDDLE
+            else if (lead.urgency === 'middle') {
+                color = `var(--color-urgency-middle)`
+            }
+            // HIGH
+            else if (lead.urgency === 'high') {
+                color = `var(--color-urgency-high)`
+            }
+            else {
+            // color = null
+            }
+        }
+
+        return color
     }
 
     // ******* ACTIONS ON PAGE

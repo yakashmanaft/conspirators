@@ -1,6 +1,6 @@
 <template>
     <div class="section_wrapper">
-        <div class="section shadow mb-4 rounded" :class="[props.padding ? 'py-4 px-4' : '', props.bg ? 'backgroundUrgencyColor' : '']" >
+        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '', props.bg ? 'backgroundUrgencyColor' : '']" >
 
             <slot></slot>
         </div>
