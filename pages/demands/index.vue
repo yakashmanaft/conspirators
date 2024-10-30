@@ -5,7 +5,7 @@ import { Container } from "@/shared/container";
 import { Section } from '@/shared/section'
 
 // components
-import { DevModePlug } from "~/components/plug_dev_mode";
+// import { DevModePlug } from "~/components/plug_dev_mode";
 
 // utils
 import { onBeforeMount } from "vue";
@@ -159,6 +159,7 @@ const computedLead = computed(() => {
             lead_from_id: lead.landingId,
             lead_from_name: item.name,
             lead_status: lead.status,
+            lead_urgency: lead.urgency,
             lead_name: lead.name,
             lead_email: lead.email,
             lead_mobile: lead.mobile
@@ -286,11 +287,50 @@ const translateType = (type: string) => {
 };
 
 // Раскраски
+//= location
 const locationColorized = (location: string) => {
   if (location) {
     return `location_${location}`;
   }
 };
+//= urgency
+const set_bgColor_by_Urgency = (lead: any) => {
+
+  let color;
+
+  // ****** URGENCY ******
+  if(lead.lead_urgency) {
+
+    // LOW
+    if(lead.lead_urgency === 'low') {
+      color = `var(--color-urgency-low)`
+    } 
+    // MIDDLE
+    else if (lead.lead_urgency === 'middle') {
+      color = `var(--color-urgency-middle)`
+    }
+    // HIGH
+    else if (lead.lead_urgency === 'high') {
+      color = `var(--color-urgency-high)`
+    }
+    else {
+      // color = null
+    }
+  }
+  // ****** STATUS 
+  if(lead.lead_status) {
+
+    // LEAD && STATUS
+    // if(lead.lead_status === 'lead' && lead.lead_urgency === 'hig')
+
+    // CANCELED
+    if(lead.lead_status === 'canceled') {
+      color = 'var(--color-status-canceled)'
+    }
+  }
+
+  return color
+}
 
 
 
@@ -365,17 +405,25 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
     <!-- DEMANDS LIST -->
     <div>
        <h3>Demands by landings</h3>
+       {{ computedLead?.length }}
 
        <!--  -->
        <div class="computedLead_container" v-if="computedLead?.length">
-        <Section v-for="item in computedLead" @click="$router.push(`demands/${item.id}`)">
+         <!-- :bg="'var(--color-urgency-low)'" -->
+        <Section 
+          :padding="true" 
+          :bg="set_bgColor_by_Urgency(item)" 
+          v-for="item in computedLead" 
+          @click="$router.push(`demands/${item.id}`)"
+          style="cursor: pointer;"
+        >
           <p>Created: {{ item.created_at }}</p>
           <p>From: {{ item.lead_from_name }} (id: {{ item.lead_from_id }})</p>
           <!-- <p>Name: {{ item.lead_name }}</p>
           <p style="white-space: nowrap;">Email: {{ item.lead_email }}</p>
           <p>Phone: {{ item.lead_mobile }}</p> -->
           <p>Status: {{ item.lead_status }}</p>
-          <!-- {{ item }} -->
+
         </Section>
        </div>
        <!--  -->

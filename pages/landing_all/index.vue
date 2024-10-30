@@ -35,20 +35,32 @@
                 <!-- SHOW ALL -->
                 <div>
                     <!-- SECTION -->
-                    <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)" style="margin-bottom: 1rem;background-color: var(--color-btn-disabled-bg); cursor:pointer;">
+                    <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
 
                         <!-- SECTION HEADER -->
-                        <div @click="resetChoosenEl(el, index)" style="gap: 1rem; display: flex; align-items: center; justify-content: space-between;">
+                        <div class="landing-list-el_header" @click="resetChoosenEl" style="position: relative;">
 
                             <!-- LEADS QTY GROUP -->
-                            <div>
+                            <div 
+                                style="
+                                    width: 3rem; 
+                                    height: 100%; 
+                                    /* background-color:red;  */
+                                    position: absolute; 
+                                    margin-left: -0.5rem;
+                                    top: 0;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                "
+                            >
                                 <p style="margin: 0; font-size: 32px; font-weight: normal;">{{ el.leads.length }}</p>
                             </div>
 
                             <!-- GROUP CONTENT -->
-                            <div style="flex: 1 0">
+                            <div style="flex: 1 0; margin-left: 3rem;">
                                 <p style="margin: 0;">{{ el.name }}</p>
-                                <!-- <p style="margin: 0;">{{ el.created_at }}</p> -->
+                                <p style="margin: 0;">999999999.99 руб.</p>
                             </div>
                             
                             <!-- ROUTER BTN GROUP-->
@@ -140,7 +152,15 @@
 } */
 
 .landing-list-el_wrapper {
-    
+    margin-bottom: 1rem;
+    /* background-color: var(--color-btn-disabled-bg);  */
+    cursor:pointer; 
+}
+.landing-list-el_header {
+    gap: 1rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
 }
 
 /*  */
@@ -242,6 +262,14 @@ svg.icon    {
     .diagram-wrapper {
         grid-template-columns: 1fr;
     }
+    .landing-list-el_wrapper {
+        width: 100%;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .landing-list-el_wrapper {
+        width: 480px;
+    }
   }
 </style>
 
@@ -312,9 +340,7 @@ import { routerKey } from 'vue-router';
 
         // Убираем ховер на unit в диаграме
         if(
-            !e.target.classList.contains('unit') &&
-            !e.target.parentNode.parentNode.classList.contains('list_container') && 
-            !e.target.parentNode.parentNode.classList.contains('landing-list_wrapper')
+            !e.target.classList.contains('unit')
         ) {
             const unitsList = document.querySelectorAll('.unit');
             choosenEl.value = null
@@ -449,22 +475,28 @@ import { routerKey } from 'vue-router';
     }
 
     //
-    const resetChoosenEl = (el: {} | null, index: number) => {
+    const resetChoosenEl = (e: any) => {
+        if(e.target.parentNode.parentNode.classList.contains('landing-list-el_header')) {
+            console.log(e.target.parentNode.parentNode)
+            
+        }
         // const unitsList = document.querySelectorAll('.unit');
-        console.log('clicked')
+        // if(choosenEl.value && choosenEl.value.id === el.id) {
+
+        //     console.log(unitsList[index])
+        // }
         // unitsList[index].classList.toggle('unit__hovered')
         // captionList[index].classList.toggle('visible');
-        
         // Очищаем все элементы от класса 
         // unitsList.forEach(item => item.classList.remove('unit__hovered'))
         // // Действуем
-        // if(unitsList[index].classList.contains('unit__hovered')) {
-        //     unitsList[index].classList.remove('unit__hovered');
-        //     choosenEl.value = null
-        // } else if(!unitsList[index].classList.contains('unit__hovered')){
-        //     unitsList[index].classList.add('unit__hovered');
-        //     choosenEl.value = el
-        // }
+            // if(unitsList[index].classList.contains('unit__hovered')) {
+            //     unitsList[index].classList.remove('unit__hovered');
+            //     choosenEl.value = null
+            // } else if(!unitsList[index].classList.contains('unit__hovered')){
+            //     unitsList[index].classList.add('unit__hovered');
+            //     choosenEl.value = el
+            // }
     }
 
     // onClick in desc section item 
