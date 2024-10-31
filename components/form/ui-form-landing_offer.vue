@@ -41,15 +41,18 @@
                     />
 
                      <!-- MOBILE -->
+                      <!-- {{ form_obj.mobile }} -->
                      <input 
                         v-model="form_obj.mobile"
                         id="form_mobile"
                         type="text" 
                         class="form-control"
-                        placeholder="enter mobile"
-                        autocomplete="mobile"
+                        placeholder="+7 (___) ___ __ __"
+                        autocomplete="true"
+                        @blur="splitNumber"
+                        v-maska="'+7 (###) ###-##-##'"
                     />
-
+<!-- https://beholdr.github.io/maska/v3/#/options?id=number-mask -->
                     <br>
                     <br>
                     
@@ -65,6 +68,9 @@
 
 <script lang="ts" setup>
 
+
+//
+import { vMaska } from "maska/vue"
 // components
 import { Button } from '@/components/button'
 
@@ -125,6 +131,11 @@ const submitForm = () => {
     form_obj.value.landingId = current_landing_id()
     // form_obj.value.status = 'lead'
     addLeadToBD(form_obj.value)
+}
+
+const splitNumber = () => {
+    // form_obj.value.mobile = form_obj.value.mobile.replace(/[-+()\s]/g, '');
+    console.log(form_obj.value)
 }
 
 // SMTP TO EMAIL
