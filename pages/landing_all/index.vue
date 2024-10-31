@@ -84,14 +84,14 @@
                                 <!-- LENGTH > 0 -->
                                 <div v-if="el.leads.length">
                                     <ul style="list-style: none; padding: 0;">
-                                        <li style="display: grid; grid-template-columns: 2rem 6rem 6rem 1fr; color: var(--color-global-text_second); font-size: 0.8rem; padding-bottom: 0.5rem">
+                                        <li class="lead-item-header_wrapper">
                                             <div>#</div>
                                             <div>Статус</div>
                                             <div>Важность</div>
                                             <div>Дата заявки</div>
                                         </li>
                                         <li 
-                                            v-for="(item, index) in el.leads.reverse()" style="margin-top: 0.5rem; display: grid; grid-template-columns: 2rem 6rem 6rem 1fr"
+                                            v-for="(item, index) in el.leads.reverse()"
                                             @click="$router.push(`/demands/${item.lead_id}`)"
                                             class="lead-item_wrapper"    
                                         >
@@ -105,7 +105,7 @@
                                                 <span :style="`background-color: ${set_bgColor_by_Urgency(item)}`">{{ item.urgency }}</span>
                                             </div>
                                             <div style="white-space: nowrap;">
-                                                {{ item.created_at }}
+                                                {{ item.created_at.split('T')[0] }}
                                             </div>
                                         </li>
                                     </ul>
@@ -177,12 +177,13 @@
     /* position: relative; */
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
+    justify-content: center;
     align-items: center;
     /* max-width: 100%; */
     /* width: 100vw; */
     /* overflow: hidden; */
     /* margin-top: 1rem; */
+    /* height: 100vh; */
   }
 
   .svg .chart {
@@ -241,20 +242,56 @@ svg.icon    {
     stroke-width: 8;
   }
 
+  .lead-item-header_wrapper,
+  .lead-item_wrapper {
+    display: grid; 
+    /* grid-template-columns: 2rem 6rem 6rem 1fr */
+  }
+
+  .lead-item-header_wrapper {
+    /* display: grid;  */
+    /* grid-template-columns: 2rem 6rem 6rem 1fr;  */
+    color: var(--color-global-text_second); 
+    font-size: 0.8rem; 
+    padding-bottom: 0.5rem
+  }
+
+  .lead-item_wrapper {
+    margin-top: 0.5rem; 
+    /* display: grid;  */
+    /* grid-template-columns: 2rem 6rem 6rem 1fr */
+  }
+
   .lead-item_wrapper:hover {
     background-color: var(--color-btn-hover-bg)
   }
+  
 
 
   @media screen and (max-width: 575px) {
+    .canvas {
+        /* height: 100vh; */
+    }
+    .unit__hovered {
+        stroke-width: 7;
+    }
     .list_container {
         padding: 0 1rem;
+    }
+    .lead-item-header_wrapper,
+    .lead-item_wrapper {
+        grid-template-columns: 2rem 5rem 5rem 1fr
     }
   }
 
   @media screen and (min-width: 576px) and (max-width: 767px) {
     .list_container {
         padding: 0 1rem;
+    }
+    .lead-item-header_wrapper,
+    .lead-item_wrapper {
+        display: grid; 
+        grid-template-columns: 2rem 5rem 1fr 1fr
     }
   }
 
@@ -269,6 +306,11 @@ svg.icon    {
   @media screen and (min-width: 768px) {
     .landing-list-el_wrapper {
         width: 480px;
+    }
+    .lead-item-header_wrapper,
+    .lead-item_wrapper {
+        display: grid; 
+        grid-template-columns: 2rem 6rem 6rem 1fr
     }
   }
 </style>

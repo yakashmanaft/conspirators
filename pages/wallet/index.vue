@@ -161,6 +161,26 @@ const emittedChip_bank = (chip: any) => {
 //     }
 //   }
 // }
+
+// Colorized
+//= set_bgColor
+const set_bgColor = (section: any) => {
+  let color;
+
+  // ****** Title ******
+  if(section.title) {
+
+    // Свободные средства
+    if(section.title === 'Свободные средства') {
+      color = `var(--color-urgency-low)`
+    } 
+    else {
+      // color = null
+    }
+  }
+
+  return color
+}
 </script>
 
 <template>
@@ -212,12 +232,12 @@ const emittedChip_bank = (chip: any) => {
     <!-- === WALLET SECTIONS === -->
     <div class="wallet-section_container">
 
-      <Section v-for="section in wallet_sections">
+      <Section v-for="section in wallet_sections" :bg="set_bgColor(section)">
         
         <!-- section header -->
-        <header>
+        <header class="section-header_wrapper">
           <h2 style="font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-          <p style="font-size: 36px; font-weight: bold;">{{ section.total }} P</p>
+          <p>{{ section.total }} P</p>
         </header>
 
         <!-- section articles -->
@@ -314,6 +334,11 @@ const emittedChip_bank = (chip: any) => {
   gap: 0.5rem;
 }
 
+.section-header_wrapper p{
+  font-size: 36px; 
+  font-weight: bold;
+}
+
 /*  */
 @media screen and (max-width: 575px) {
   .show-max-767 {
@@ -321,6 +346,10 @@ const emittedChip_bank = (chip: any) => {
   }
   .wallet-section_container {
     padding: 0 0.5rem;
+    grid-template-columns: repeat(2, 1fr)
+  }
+  .section-header_wrapper p {
+    font-size: 16px;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -329,6 +358,10 @@ const emittedChip_bank = (chip: any) => {
   }
   .wallet-section_container {
     padding: 0 1rem;
+    grid-template-columns: repeat(2, 1fr)
+  }
+  .section-header_wrapper p {
+    font-size: 32px;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {

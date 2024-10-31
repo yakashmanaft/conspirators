@@ -36,7 +36,7 @@
                         id="form_email"
                         type="text" 
                         class="form-control"
-                        placeholder="enter email"
+                        placeholder="your@email.ru"
                         autocomplete="email"
                     />
 
@@ -47,9 +47,9 @@
                         id="form_mobile"
                         type="text" 
                         class="form-control"
-                        placeholder="+7 (___) ___ __ __"
-                        autocomplete="tels"
-                        v-maska="'# ### ### ## ##'"
+                        placeholder="+7( . . ."
+                        autocomplete="tel"
+                        v-maska=options
                     />
 <!-- https://beholdr.github.io/maska/v3/#/options?id=number-mask -->
                     <br>
@@ -67,7 +67,7 @@
 
 <script lang="ts" setup>
 
-
+const options = { mask: '+7(###)###-##-##' };
 //
 import { vMaska } from "maska/vue"
 // components
@@ -85,7 +85,7 @@ type FormObj = {
 const form_obj = ref<FormObj>({
     name: '',
     email: '',
-    mobile: '',
+    mobile: '+7',
     landingId: 0,
     status: 'lead',
     urgency: 'high'
@@ -172,6 +172,7 @@ const addLeadToBD = async (item: FormObj) => {
         item.name !== '' &&
         item.email !== '' &&
         item.mobile !== '' &&
+        item.mobile !== '+7' &&
         item.landingId !== 0 &&
         item.status === 'lead' &&
         item.urgency === 'high'
@@ -204,6 +205,9 @@ const addLeadToBD = async (item: FormObj) => {
             alert('Пропустили email...')
         } 
         else if (item.mobile === '') {
+            alert('Пропустили номер телефона')
+        }
+        else if (item.mobile === '+7') {
             alert('Пропустили номер телефона')
         }
         else if (item.landingId === 0) {
