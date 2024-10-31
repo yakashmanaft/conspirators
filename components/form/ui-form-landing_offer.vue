@@ -48,9 +48,8 @@
                         type="text" 
                         class="form-control"
                         placeholder="+7 (___) ___ __ __"
-                        autocomplete="true"
-                        @blur="splitNumber"
-                        v-maska="'+7 (###) ###-##-##'"
+                        autocomplete="tels"
+                        v-maska="'# ### ### ## ##'"
                     />
 <!-- https://beholdr.github.io/maska/v3/#/options?id=number-mask -->
                     <br>
@@ -133,10 +132,11 @@ const submitForm = () => {
     addLeadToBD(form_obj.value)
 }
 
-const splitNumber = () => {
-    // form_obj.value.mobile = form_obj.value.mobile.replace(/[-+()\s]/g, '');
-    console.log(form_obj.value)
-}
+// @blur on input
+// const splitNumber = () => {
+//     form_obj.value.mobile = form_obj.value.mobile.replace(/[-+()\s]/g, '');
+//     console.log(form_obj.value)
+// }
 
 // SMTP TO EMAIL
 const testSend = async (item: FormObj) => {
