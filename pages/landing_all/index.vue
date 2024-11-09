@@ -10,7 +10,7 @@
         <!-- SLOT -->
         <!-- Перейти на landing -->
         <div style="display: flex; align-items: center;">
-            <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
+            <Button type="pseudo-btn" :link="`/${choosenEl?.name}`">{{ choosenEl?.name }}</Button>
             <div>
             <Icon
                 class="link"
@@ -26,7 +26,7 @@
         <div class="leads_container" style="margin-top: 1rem;">
             
             <!-- LENGTH > 0 -->
-            <div v-if="choosenEl.leads.length">
+            <div v-if="choosenEl?.leads.length">
                 <ul style="list-style: none; padding: 0;">
                     <li class="lead-item-header_wrapper">
                         <div>id</div>
@@ -152,91 +152,67 @@
 </template>
 
 <style scoped>
-.landing_container {
-    /* ... */
-}
-/* .landing_wrapper {
-    background-color: var(--color-btn-disabled-bg);
-    border-bottom: 1px solid var(--color-global-text); 
-    display: flex; 
-    align-items: flex-start; 
-    justify-content: space-between;
-    gap: 1rem; 
-} */
+    .landing_container {
+        /* ... */
+    }
 
-.landing-list-el_wrapper {
-    margin-bottom: 1rem;
-    /* background-color: var(--color-btn-disabled-bg);  */
-    cursor:pointer; 
-}
-.landing-list-el_header {
-    gap: 1rem; 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between;
-}
+    .landing-list-el_wrapper {
+        margin-bottom: 1rem;
+        /* background-color: var(--color-btn-disabled-bg);  */
+        cursor:pointer; 
+    }
+    .landing-list-el_header {
+        gap: 1rem; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+    }
 
-/*  */
-.diagram-wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-.canvas {
-    /* position: relative; */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
+    /*  */
+    .diagram-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-svg.icon    {
-    padding-left: 0.5rem;
-  }
-  .caption {
-    /* position: absolute; */
-    /* top: 0; */
-    /* transform: translateY(-50%); */
-  }
-  .caption_content {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-  }
-  .unit {
-    fill: none;
-    stroke-width: 5;
-    transition: all 0.5s ease;
-    cursor: pointer;
-  }
-  .unit:nth-child(1) {
-    stroke: v-bind('colors.unit1');
-  }
-  .unit:nth-child(2) {
-    stroke: v-bind('colors.unit2');
-  }
-  .unit:nth-child(3) {
-      /* stroke: #ffc7ec; */
-      stroke: v-bind('colors.unit3');
-  }
-  .unit:nth-child(4) {
-      stroke: v-bind('colors.unit4');
-  }
-  .unit:nth-child(5) {
-      stroke: v-bind('colors.unit5');
-  }
-  .unit:nth-child(6) {
-      stroke: v-bind('colors.unit6');
-  }
-  .unit:nth-child(7) {
-      stroke: v-bind('colors.unit7');
-  }
-  .unit:nth-child(8) {
-      stroke: v-bind('colors.unit8');
-  }
-  .unit__hovered {
-    stroke-width: 8;
-  }
+
+    svg.icon   {
+        padding-left: 0.5rem;
+    }
+
+    .unit {
+        fill: none;
+        stroke-width: 5;
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
+    .unit:nth-child(1) {
+        stroke: v-bind('colors.unit1');
+    }
+    .unit:nth-child(2) {
+        stroke: v-bind('colors.unit2');
+    }
+    .unit:nth-child(3) {
+        /* stroke: #ffc7ec; */
+        stroke: v-bind('colors.unit3');
+    }
+    .unit:nth-child(4) {
+        stroke: v-bind('colors.unit4');
+    }
+    .unit:nth-child(5) {
+        stroke: v-bind('colors.unit5');
+    }
+    .unit:nth-child(6) {
+        stroke: v-bind('colors.unit6');
+    }
+    .unit:nth-child(7) {
+        stroke: v-bind('colors.unit7');
+    }
+    .unit:nth-child(8) {
+        stroke: v-bind('colors.unit8');
+    }
+    .unit__hovered {
+        stroke-width: 8;
+    }
 
   .lead-item-header_wrapper,
   .lead-item_wrapper {
@@ -299,11 +275,39 @@ svg.icon    {
     .diagram-wrapper {
         grid-template-columns: 1fr;
     }
+    .canvas {
+        position: relative;
+    }
+    .caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     .landing-list-el_wrapper {
         width: 100%;
     }
   }
   @media screen and (min-width: 768px) {
+    .canvas {
+        display: flex;
+        flex-direction: column;
+    }
+    .caption {
+        margin: 0 auto;
+    }
+  }
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    .diagram-wrapper {
+        justify-content: space-between;
+    }
+    .lead-item-header_wrapper,
+    .lead-item_wrapper {
+        display: grid; 
+        grid-template-columns: 3rem 1fr 1fr 1fr
+    }
+  }
+  @media screen and (min-width: 992px) {
     .landing-list-el_wrapper {
         width: 480px;
     }
@@ -393,7 +397,7 @@ svg.icon    {
             !e.target.classList.contains('unit') && !e.target.parentNode.classList?.contains('popup_wrapper')
         ) {
             const unitsList = document.querySelectorAll('.unit');
-            // choosenEl.value = null
+            choosenEl.value = null
             for(let i = 0; i <= unitsList.length; i++) {
                 if(unitsList[i] && unitsList[i].classList.contains('unit__hovered')) {
                     unitsList[i].classList.remove('unit__hovered');

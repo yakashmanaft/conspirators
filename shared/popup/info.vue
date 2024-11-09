@@ -84,6 +84,7 @@ window.addEventListener('click', (e) => {
         background-color: var(--color-btn-text); 
         width: 100%; 
         border-radius: 1rem 1rem 0 0;
+        z-index: 1;
     }
     .popup_header .close_btn {
         width: 32px;

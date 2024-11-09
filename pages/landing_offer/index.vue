@@ -65,7 +65,7 @@
 
     // shared
     import { Container } from '@/shared/container'
-    import { DefaultPopup } from '@/shared/popup';
+    import { DefaultPopup } from '~/shared/popup';
 
     // components
     import { Button } from '@/components/button';
