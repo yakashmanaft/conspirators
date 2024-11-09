@@ -1,9 +1,77 @@
 <template>
+
+    <!-- POPUP -->
+     <InfoPopup
+        v-if="popup_opened"
+        id="popup-info_landing_all" 
+        popup_title="Грядка" 
+        @emitClosePopup="closePopup"
+     >
+        <!-- SLOT -->
+        <!-- Перейти на landing -->
+        <div style="display: flex; align-items: center;">
+            <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
+            <div>
+            <Icon
+                class="link"
+                name="material-symbols-light:arrow-back-ios"
+                size="24px"
+                color="var(--color-global-text_second)"
+                style="transform: rotate(-180deg)"
+            />
+            </div>
+        </div>
+
+        <!-- leads -->
+        <div class="leads_container" style="margin-top: 1rem;">
+            
+            <!-- LENGTH > 0 -->
+            <div v-if="choosenEl.leads.length">
+                <ul style="list-style: none; padding: 0;">
+                    <li class="lead-item-header_wrapper">
+                        <div>id</div>
+                        <div>Статус</div>
+                        <div>Важность</div>
+                        <div>Дата заявки</div>
+                    </li>
+                    <li 
+                        v-for="(item, index) in reversedArray(choosenEl.leads)"
+                        @click="$router.push(`/demands/${item.lead_id}`)"
+                        class="lead-item_wrapper"    
+                    >
+                        <div>
+                            {{ index + 1 }}
+                        </div>
+                        <div>
+                            {{ item.status }}
+                        </div>
+                        <div>
+                            <span :style="`background-color: ${set_bgColor_by_Urgency(item)}`">{{ item.urgency }}</span>
+                        </div>
+                        <div style="white-space: nowrap;">
+                            {{ item.created_at.split('T')[0] }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- LENGTH === 0 -->
+            <div v-else>
+                <p>Нет лидов...</p>
+            </div>
+        </div>
+
+    </InfoPopup>
+
     <Container>
 
         <h1>Мой огород</h1>
 
-        <p>{{ props?.auth_user_profile }}</p>
+        <!-- <p>{{ props?.auth_user_profile }}</p> -->
+
+        <ul style="list-style: none; padding: 0; display: flex; align-items: center; margin-left: 1rem; gap: 1rem;">
+            <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Лиды</li>
+            <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Деньги</li>
+        </ul>
 
         <div class="diagram-wrapper">
 
@@ -12,7 +80,7 @@
             <div class="canvas">
                 <!-- chart -->
                 <svg class="chart" viewBox="0 0 60 40">
-                    <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click="onClickEl(el, index)">
+                    <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="onClickEl(el, index)">
                         {{ el }}
                     </circle>
                 </svg>
@@ -38,7 +106,7 @@
                     <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
 
                         <!-- SECTION HEADER -->
-                        <div class="landing-list-el_header" @click="resetChoosenEl" style="position: relative;">
+                        <div class="landing-list-el_header" style="position: relative;">
 
                             <!-- LEADS QTY GROUP -->
                             <div 
@@ -71,63 +139,8 @@
                                      name="material-symbols-light:arrow-back-ios"
                                      size="32px"
                                      color="var(--color-global-text_second)"
-                                     :style="choosenEl && choosenEl.id === el.id ? 'transform: rotate(-90deg)' : 'transform: rotate(180deg)'"
+                                     style="transform: rotate(180deg)"
                                  />
-                             </div>
-                        </div>
-
-                        <!--  -->
-                        <div style="margin-top: 1rem; border-top: 1px solid var(--color-btn-disabled-bg); padding-top: 1rem;" v-if="choosenEl && choosenEl.id === el.id" >
-                            
-                            <!-- leads -->
-                            <div class="leads_container">
-                                <!-- LENGTH > 0 -->
-                                <div v-if="el.leads.length">
-                                    <ul style="list-style: none; padding: 0;">
-                                        <li class="lead-item-header_wrapper">
-                                            <div>#</div>
-                                            <div>Статус</div>
-                                            <div>Важность</div>
-                                            <div>Дата заявки</div>
-                                        </li>
-                                        <li 
-                                            v-for="(item, index) in el.leads.reverse()"
-                                            @click="$router.push(`/demands/${item.lead_id}`)"
-                                            class="lead-item_wrapper"    
-                                        >
-                                            <div>
-                                                {{ index + 1 }}
-                                            </div>
-                                            <div>
-                                                {{ item.status }}
-                                            </div>
-                                            <div>
-                                                <span :style="`background-color: ${set_bgColor_by_Urgency(item)}`">{{ item.urgency }}</span>
-                                            </div>
-                                            <div style="white-space: nowrap;">
-                                                {{ item.created_at.split('T')[0] }}
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- LENGTH === 0 -->
-                                <div v-else>
-                                    <p>Нет лидов...</p>
-                                </div>
-                            </div>
-
-                            <!-- Перейти на landing -->
-                             <div style="display: flex; align-items: center;">
-                                 <Button type="pseudo-btn" :link="`/${choosenEl.name}`">{{ choosenEl.name }}</Button>
-                                 <div>
-                                    <Icon
-                                     class="link"
-                                     name="material-symbols-light:arrow-back-ios"
-                                     size="24px"
-                                     color="var(--color-global-text_second)"
-                                     style="transform: rotate(-180deg)"
-                                 />
-                                 </div>
                              </div>
                         </div>
                     </Section>
@@ -167,35 +180,18 @@
 .diagram-wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* position: fixed;
-    top: 50%;
-    transform: translate(0, -50%);
-    left: 0; */
-    /* width: 100vw; */
   }
 .canvas {
     /* position: relative; */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    /* max-width: 100%; */
-    /* width: 100vw; */
-    /* overflow: hidden; */
-    /* margin-top: 1rem; */
-    /* height: 100vh; */
   }
 
-  .svg .chart {
-    /* position: relative; */
-  }
 svg.icon    {
-    /* background-color: red; */
     padding-left: 0.5rem;
   }
-  /* svg.icon path {
-    color :black!important
-  } */
   .caption {
     /* position: absolute; */
     /* top: 0; */
@@ -263,7 +259,8 @@ svg.icon    {
   }
 
   .lead-item_wrapper:hover {
-    background-color: var(--color-btn-hover-bg)
+    background-color: var(--color-btn-hover-bg);
+    cursor: pointer;
   }
   
 
@@ -280,7 +277,7 @@ svg.icon    {
     }
     .lead-item-header_wrapper,
     .lead-item_wrapper {
-        grid-template-columns: 2rem 5rem 5rem 1fr
+        grid-template-columns: 2rem 1fr 1fr 1fr   
     }
   }
 
@@ -291,11 +288,14 @@ svg.icon    {
     .lead-item-header_wrapper,
     .lead-item_wrapper {
         display: grid; 
-        grid-template-columns: 2rem 5rem 1fr 1fr
+        grid-template-columns: 3rem 1fr 1fr 1fr
     }
   }
 
   @media screen and (max-width: 767px) {
+    h1 {
+        margin-left: 1rem;
+    }
     .diagram-wrapper {
         grid-template-columns: 1fr;
     }
@@ -310,7 +310,7 @@ svg.icon    {
     .lead-item-header_wrapper,
     .lead-item_wrapper {
         display: grid; 
-        grid-template-columns: 2rem 6rem 6rem 1fr
+        grid-template-columns: 3rem 1fr 1fr 1fr
     }
   }
 </style>
@@ -336,6 +336,7 @@ svg.icon    {
         ]
     })
 
+    // VARIABLES
     const choosenEl = ref()
 
     const colors = ref({
@@ -349,13 +350,16 @@ svg.icon    {
         unit8: '#6f75ad',
     },) 
 
+    // trigger popup
+    const popup_opened = ref(false)
+
     // shared
     import { Container } from '@/shared/container'
     import { Section } from '@/shared/section'
+    import { InfoPopup } from '~/shared/popup';
 
     // components
     import { Button } from '@/components/button'
-import { routerKey } from 'vue-router';
 
     // PROPS
     const props = defineProps({
@@ -363,14 +367,19 @@ import { routerKey } from 'vue-router';
             type: Object,
             default: {}
         },
+        auth_user: {
+            type: Object,
+            default: {}
+        }
     })
-
-    // VARIABLES
-    // const sumQtyLandingLeads
 
     // ON MOUNTED
     onMounted(() => {
-
+        // на всякий случай сбрасываем фиксацию при открытой модалке...
+        let body = document.getElementsByTagName('body')[0]
+        body.style.margin = 'unset'
+        body.style.height = 'unset'
+        body.style.overflow = 'unset'
         // Рисуем диаграмму
         setStrokeDashArrayAndOffset()
     })
@@ -379,13 +388,12 @@ import { routerKey } from 'vue-router';
 
     // BODY LISTENER CLICK
     body?.addEventListener('click', (e) => {
-
-        // Убираем ховер на unit в диаграме
+        // Убираем ховер на unit в диаграме (если нету класс unit + если попап не открыт)
         if(
-            !e.target.classList.contains('unit')
+            !e.target.classList.contains('unit') && !e.target.parentNode.classList?.contains('popup_wrapper')
         ) {
             const unitsList = document.querySelectorAll('.unit');
-            choosenEl.value = null
+            // choosenEl.value = null
             for(let i = 0; i <= unitsList.length; i++) {
                 if(unitsList[i] && unitsList[i].classList.contains('unit__hovered')) {
                     unitsList[i].classList.remove('unit__hovered');
@@ -497,7 +505,7 @@ import { routerKey } from 'vue-router';
     // ******* COLORIZED
     // set_bgColor_by_Urgency(item)
     const set_bgColor_by_Urgency = (lead: any) => {
-        console.log(lead.urgency)
+        // console.log(lead.urgency)
         let color;
 
         // ****** URGENCY ******
@@ -526,6 +534,10 @@ import { routerKey } from 'vue-router';
     // ******* ACTIONS ON PAGE
     // onClick diagram by unit
     const onClickEl = (el: any, index: number) => {
+
+        if(!popup_opened.value) {
+            popup_opened.value = true
+        }
         //  
         // const captionList = document.querySelectorAll('.caption-item'), 
         const unitsList = document.querySelectorAll('.unit');
@@ -546,33 +558,37 @@ import { routerKey } from 'vue-router';
     }
 
     //
-    const resetChoosenEl = (e: any) => {
-        if(e.target.parentNode.parentNode.classList.contains('landing-list-el_header')) {
-            console.log(e.target.parentNode.parentNode)
+    // const resetChoosenEl = (e: any) => {
+    //     if(e.target.parentNode.parentNode.classList.contains('landing-list-el_header')) {
+    //         console.log(e.target.parentNode.parentNode)
             
-        }
-        // const unitsList = document.querySelectorAll('.unit');
-        // if(choosenEl.value && choosenEl.value.id === el.id) {
+    //     }
+    //     // const unitsList = document.querySelectorAll('.unit');
+    //     // if(choosenEl.value && choosenEl.value.id === el.id) {
 
-        //     console.log(unitsList[index])
-        // }
-        // unitsList[index].classList.toggle('unit__hovered')
-        // captionList[index].classList.toggle('visible');
-        // Очищаем все элементы от класса 
-        // unitsList.forEach(item => item.classList.remove('unit__hovered'))
-        // // Действуем
-            // if(unitsList[index].classList.contains('unit__hovered')) {
-            //     unitsList[index].classList.remove('unit__hovered');
-            //     choosenEl.value = null
-            // } else if(!unitsList[index].classList.contains('unit__hovered')){
-            //     unitsList[index].classList.add('unit__hovered');
-            //     choosenEl.value = el
-            // }
-    }
+    //     //     console.log(unitsList[index])
+    //     // }
+    //     // unitsList[index].classList.toggle('unit__hovered')
+    //     // captionList[index].classList.toggle('visible');
+    //     // Очищаем все элементы от класса 
+    //     // unitsList.forEach(item => item.classList.remove('unit__hovered'))
+    //     // // Действуем
+    //         // if(unitsList[index].classList.contains('unit__hovered')) {
+    //         //     unitsList[index].classList.remove('unit__hovered');
+    //         //     choosenEl.value = null
+    //         // } else if(!unitsList[index].classList.contains('unit__hovered')){
+    //         //     unitsList[index].classList.add('unit__hovered');
+    //         //     choosenEl.value = el
+    //         // }
+    // }
 
     // onClick in desc section item 
     const chooseCurrentLanding = (el: any, index: number) => {
         choosenEl.value = el
+        if(!popup_opened.value) {
+
+            popup_opened.value = true
+        }
         const unitsList = document.querySelectorAll('.unit');
         // Очищаем все элементы от класса 
         unitsList.forEach(item => item.classList.remove('unit__hovered'))
@@ -580,10 +596,20 @@ import { routerKey } from 'vue-router';
         if(unitsList[index].classList.contains('unit__hovered')) {
             unitsList[index].classList?.remove('unit__hovered');
             choosenEl.value = null
+            if(popup_opened.value) {
+                popup_opened.value = false
+            }
         } else if(!unitsList[index].classList.contains('unit__hovered')){
             unitsList[index].classList.add('unit__hovered');
             choosenEl.value = el
         }
+    }
+
+    // HELPERS
+    // reverse array
+    const reversedArray = (arr: []) => {
+        let tempArray = [...arr]
+        return tempArray.reverse()
     }
 
     // ******* DB
@@ -609,16 +635,33 @@ import { routerKey } from 'vue-router';
     }
     })
 
+    // POPUP FUNCs
+    const closePopup = () => {
+
+        //
+        popup_opened.value = false
+    }
+
     // WATHERS
     //= landing_list
     watch(landing_list, () => {
         setStrokeDashArrayAndOffset()
     })
 
-    //= choosenEl
-    // watch(choosenEl, () => {
-    //     console.log(choosenEl.value)
-    // })
+    //= popup_opened
+    watch(popup_opened, () => {
+        let body = document.getElementsByTagName('body')[0]
+        if(popup_opened.value) {
 
+            body.style.margin = '0'
+            body.style.height = '100%'
+            body.style.overflow = 'hidden'
+
+        } else {
+            body.style.margin = 'unset'
+            body.style.height = 'unset'
+            body.style.overflow = 'unset'
+        }
+    })
     
 </script>

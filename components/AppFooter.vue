@@ -120,6 +120,7 @@ watch(
           "
           size="48px"
           color="var(--color-global-text)"
+          style="cursor: pointer;"
         />
       </div>
 

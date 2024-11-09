@@ -2,7 +2,7 @@
 <template>
     <div class="popup_container" style="" :id="props.id">
 
-        <div class="popup_wrapper" style="">
+        <div class="popup_wrapper">
             <!-- header -->
             <div class='popup_header'>
                 <h4 style="margin: 0;">{{ props.popup_title }}</h4>
