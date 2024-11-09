@@ -149,7 +149,7 @@ useHead({
 
             <p>Дата создания: {{ current_lead.created_at }}</p> 
             <p>Статус: {{  current_lead.status  }}</p>
-            <p>Связать с клиентом</p>
+            <p>Связать с заказчиком</p>
             <!-- <p>Deadline: xxx</p>
             <p>Автор: xxx</p>
             <p>Контроль реализации: xxx</p>-->

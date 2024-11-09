@@ -55,7 +55,7 @@ const featuresListAuth = ref([
   },
   {
     path: "/demands",
-    title: "Заявки",
+    title: "Дела",
     auth: true,
   },
   // {

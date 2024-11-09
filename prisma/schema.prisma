@@ -47,6 +47,8 @@ model Landing {
   created_at DateTime  @default(now()) @db.DateTime(0)
   update_at  DateTime? @updatedAt
   lead       Lead[]
+  partner    Partner   @relation(fields: [partnerId], references: [id])
+  partnerId  Int       @default(0)
 }
 
 model Lead {
@@ -60,6 +62,34 @@ model Lead {
   urgency    Urgency    @default(low)
   created_at DateTime   @default(now()) @db.DateTime(0)
   update_at  DateTime?  @updatedAt
+}
+
+model Project {
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(60)
+  partner   Partner @relation(fields: [partnerId], references: [id])
+  partnerId Int
+  task      Task[]
+}
+
+model Partner {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(60)
+  landing    Landing[]
+  project    Project[]
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  update_at  DateTime? @updatedAt
+}
+
+model Task {
+  id         Int        @id @default(autoincrement())
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  update_at  DateTime?  @updatedAt
+  project    Project    @relation(fields: [projectId], references: [id])
+  projectId  Int
+  status     TaskStatus @default(waiting)
+  urgency    Urgency    @default(low)
+  desc       String?    @db.VarChar(255)
 }
 
 model LeadHistoryLedger {
@@ -81,8 +111,15 @@ enum LeadStatus {
   lead
   // 2
   blank
-  // 3
+}
+
+enum TaskStatus {
+  // 1
+  waiting
+  // 2
   works
+  // 3
+  agreement
   // 4
   canceled
   // 5

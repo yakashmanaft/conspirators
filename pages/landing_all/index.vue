@@ -10,7 +10,7 @@
         <!-- SLOT -->
         <!-- Перейти на landing -->
         <div style="display: flex; align-items: center;">
-            <Button type="pseudo-btn" :link="`/${choosenEl?.name}`">{{ choosenEl?.name }}</Button>
+            <Button type="pseudo-btn" :link="`${generateLandingLink(choosenEl?.name)}`">{{ choosenEl?.name }}</Button>
             <div>
             <Icon
                 class="link"
@@ -63,90 +63,93 @@
     </InfoPopup>
 
     <Container>
-
         <h1>Мой огород</h1>
 
-        <!-- <p>{{ props?.auth_user_profile }}</p> -->
+        <div v-if="computed_landing_list?.length">
 
-        <ul style="list-style: none; padding: 0; display: flex; align-items: center; margin-left: 1rem; gap: 1rem;">
-            <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Лиды</li>
-            <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Деньги</li>
-        </ul>
-
-        <div class="diagram-wrapper">
-
-            <!-- Canvas -->
-            <!-- DIAGRAM (LEFT SIDE) -->
-            <div class="canvas">
-                <!-- chart -->
-                <svg class="chart" viewBox="0 0 60 40">
-                    <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="onClickEl(el, index)">
-                        {{ el }}
-                    </circle>
-                </svg>
-                <!-- caption -->
-                <div class="caption">
-                    <div class="caption_content" v-if="choosenEl">
-                        <div >{{ choosenEl.name }}</div>
-                    </div>
-                    <div class="caption_content" v-else>
-                        <div>Все</div>
+            <ul style="list-style: none; padding: 0; display: flex; align-items: center; margin-left: 1rem; gap: 1rem;">
+                <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Лиды</li>
+                <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Деньги</li>
+            </ul>
+    
+            <div class="diagram-wrapper">
+    
+                <!-- Canvas -->
+                <!-- DIAGRAM (LEFT SIDE) -->
+                <div class="canvas">
+                    <!-- chart -->
+                    <svg class="chart" viewBox="0 0 60 40">
+                        <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="onClickEl(el, index)">
+                            {{ el }}
+                        </circle>
+                    </svg>
+                    <!-- caption -->
+                    <div class="caption">
+                        <div class="caption_content" v-if="choosenEl">
+                            <div >{{ choosenEl.name }}</div>
+                        </div>
+                        <div class="caption_content" v-else>
+                            <div>Все</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- DESC (RIGHT SIDE)-->
-
-            <!--  -->
-            <div class="list_container">
-
-                <!-- SHOW ALL -->
-                <div>
-                    <!-- SECTION -->
-                    <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
-
-                        <!-- SECTION HEADER -->
-                        <div class="landing-list-el_header" style="position: relative;">
-
-                            <!-- LEADS QTY GROUP -->
-                            <div 
-                                style="
-                                    width: 3rem; 
-                                    height: 100%; 
-                                    /* background-color:red;  */
-                                    position: absolute; 
-                                    margin-left: -0.5rem;
-                                    top: 0;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                "
-                            >
-                                <p style="margin: 0; font-size: 32px; font-weight: normal;">{{ el.leads.length }}</p>
+    
+                <!-- DESC (RIGHT SIDE)-->
+    
+                <!--  -->
+                <div class="list_container">
+    
+                    <!-- SHOW ALL -->
+                    <div>
+                        <!-- SECTION -->
+                        <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
+    
+                            <!-- SECTION HEADER -->
+                            <div class="landing-list-el_header" style="position: relative;">
+    
+                                <!-- LEADS QTY GROUP -->
+                                <div 
+                                    style="
+                                        width: 3rem; 
+                                        height: 100%; 
+                                        /* background-color:red;  */
+                                        position: absolute; 
+                                        margin-left: -0.5rem;
+                                        top: 0;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                    "
+                                >
+                                    <p style="margin: 0; font-size: 32px; font-weight: normal;">{{ el.leads.length }}</p>
+                                </div>
+    
+                                <!-- GROUP CONTENT -->
+                                <div style="flex: 1 0; margin-left: 3rem;">
+                                    <p style="margin: 0;">{{ el.name }}</p>
+                                    <p style="margin: 0;">999999999.99 руб.</p>
+                                </div>
+                                
+                                <!-- ROUTER BTN GROUP-->
+                                 <div class="router-btn_group">
+    
+                                     <Icon
+                                         class="link"
+                                         name="material-symbols-light:arrow-back-ios"
+                                         size="32px"
+                                         color="var(--color-global-text_second)"
+                                         style="transform: rotate(180deg)"
+                                     />
+                                 </div>
                             </div>
-
-                            <!-- GROUP CONTENT -->
-                            <div style="flex: 1 0; margin-left: 3rem;">
-                                <p style="margin: 0;">{{ el.name }}</p>
-                                <p style="margin: 0;">999999999.99 руб.</p>
-                            </div>
-                            
-                            <!-- ROUTER BTN GROUP-->
-                             <div class="router-btn_group">
-
-                                 <Icon
-                                     class="link"
-                                     name="material-symbols-light:arrow-back-ios"
-                                     size="32px"
-                                     color="var(--color-global-text_second)"
-                                     style="transform: rotate(180deg)"
-                                 />
-                             </div>
-                        </div>
-                    </Section>
+                        </Section>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div v-else>На вашем огороде нет посадок...</div>
+
 
     </Container>
 </template>
@@ -282,7 +285,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
     }
     .landing-list-el_wrapper {
         width: 100%;
@@ -614,6 +617,10 @@
     const reversedArray = (arr: []) => {
         let tempArray = [...arr]
         return tempArray.reverse()
+    }
+    // landing links
+    const generateLandingLink = (name: string) => {
+        return `/${name}`
     }
 
     // ******* DB

@@ -156,13 +156,13 @@ const computedLead = computed(() => {
           arr.push({
             id: lead.id,
             created_at: lead.created_at,
-            lead_from_id: lead.landingId,
-            lead_from_name: item.name,
-            lead_status: lead.status,
-            lead_urgency: lead.urgency,
-            lead_name: lead.name,
-            lead_email: lead.email,
-            lead_mobile: lead.mobile
+            from_id: lead.landingId,
+            from_name: item.name,
+            status: lead.status,
+            urgency: lead.urgency,
+            name: lead.name,
+            email: lead.email,
+            mobile: lead.mobile
           })
         }
       })
@@ -174,6 +174,14 @@ const computedLead = computed(() => {
     // console.log(lead_list.value)
     // return lead_list.value
     return merged    
+  } else {
+    return null
+  }
+})
+//= task
+const computedTask = computed(() => {
+  if(task_list.value) {
+    return task_list.value
   } else {
     return null
   }
@@ -202,6 +210,13 @@ onMounted(async () => {
   users.value = await getUsers();
   refreshProjects();
   refreshLocations();
+
+  const scrollContainer = document.getElementById("lead-block");
+
+  scrollContainer?.addEventListener("wheel", (evt) => {
+      evt.preventDefault();
+      scrollContainer.scrollLeft += evt.deltaY;
+  });
 });
 
 /**
@@ -312,18 +327,18 @@ const set_bgColor_by_Urgency = (lead: any) => {
   let color;
 
   // ****** URGENCY ******
-  if(lead.lead_urgency) {
+  if(lead.urgency) {
 
     // LOW
-    if(lead.lead_urgency === 'low') {
+    if(lead.urgency === 'low') {
       color = `var(--color-urgency-low)`
     } 
     // MIDDLE
-    else if (lead.lead_urgency === 'middle') {
+    else if (lead.urgency === 'middle') {
       color = `var(--color-urgency-middle)`
     }
     // HIGH
-    else if (lead.lead_urgency === 'high') {
+    else if (lead.urgency === 'high') {
       color = `var(--color-urgency-high)`
     }
     else {
@@ -331,24 +346,24 @@ const set_bgColor_by_Urgency = (lead: any) => {
     }
   }
   // ****** STATUS 
-  if(lead.lead_status) {
+  if(lead.status) {
 
     // BLANK
-    if(lead.lead_status === 'blank') {
+    if(lead.status === 'blank') {
       color = 'var(--color-status-canceled)'
     }
     // PAUSED
-    if(lead.lead_status === 'paused') {
+    if(lead.status === 'paused') {
       // color = 'var(--color-bg-popup)'
       color = 'var(--color-status-canceled)'
     }
     // CANCELED
-    if(lead.lead_status === 'canceled') {
+    if(lead.status === 'canceled') {
       color = 'var(--color-status-canceled)'
     }
     // PAUSED
     // FINISHED
-    if(lead.lead_status === 'finished') {
+    if(lead.status === 'finished') {
       color = 'var(--color-btn-text)'
     }
   }
@@ -379,6 +394,13 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
     return lead_list
   }
 })
+// tasks
+const { data: task_list } = useFetch("/api/task/task", {
+  lazy: false,
+  transform: (task_list) => {
+    return task_list
+  }
+})
 
 
 </script>
@@ -387,10 +409,10 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 
     <!-- <DevModePlug/> -->
 
-    <h1 class="show-max-767">Заявки</h1>
-    <p>{{ props?.auth_user_profile }}</p>
+    <h1 class="show-max-767">Дела</h1>
+    <!-- <p>{{ props?.auth_user_profile }}</p> -->
     <!-- Фильтры -->
-    <div v-if="demandFilterTypes.length">
+    <!-- <div v-if="demandFilterTypes.length">
       <fieldset id="demand-filter-types" class="filter-types_wrapper">
         <div
           class="filter-types_el"
@@ -407,29 +429,24 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
           <label :for="element.name">{{ element.title }}</label>
         </div>
       </fieldset>
-    </div>
+    </div> -->
 
-    <!--  -->
-    <ul>
-      <li>lead</li>
-      <li>blank</li>
-      <li>works</li>
-      <li>canceled</li>
-      <li>paused</li>
-      <li>finished</li>
-    </ul>
-
-
-
-
+    
+    
+    
+    
     <!-- DEMANDS LIST -->
     <div>
-       <h3>Demands by landings</h3>
-       {{ computedLead?.length }}
+      <h2>Лиды</h2>
+      <!--  -->
+      <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;">
+        <li>lead</li>
+        <li>blank</li>
+      </ul>
 
        <!--  -->
-       <div class="computedLead_container" v-if="computedLead?.length">
-         <!-- :bg="'var(--color-urgency-low)'" -->
+        <div id="lead-block" class="computedLead_container" v-if="computedLead?.length">
+          <!-- :bg="'var(--color-urgency-low)'" -->
         <Section 
           :padding="true" 
           :bg="set_bgColor_by_Urgency(item)" 
@@ -438,12 +455,12 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
           style="cursor: pointer; position: relative;"
         >
           <!-- LEAD is a NEW (absolute) -->
-          <div v-if="item.lead_status === 'lead'" style="position: absolute; top: 0; left: 0; font-weight: bold; background-color: black; color: var(--color-btn-text); font-size: 1rem;">
+          <div v-if="item.status === 'lead'" class="ticket_new">
             New
           </div>
 
           <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-          <div v-if="item.lead_status === 'paused'" style="position: absolute; top: 0; left: 0; background-color: var(--color-paused-wrapper-bg); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;" class="rounded">
+          <div v-if="item.status === 'paused'" class="rounded ticket_paused">
             <div style="color: #fff;">ПАУЗА</div>
           </div>  
 
@@ -454,19 +471,61 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 
           <!-- FROM  -->
           <div>
-            <span>Грядка: {{ item.lead_from_name }}</span>
+            <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
           </div>
-          <p style="margin: 0; font-size: 0.8rem;">{{ item.lead_status }}</p>
+          <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
 
         </Section>
-       </div>
-       <!--  -->
-       <div v-else>Нет лидов...</div>
+        </div>
+        <!--  -->
+        <div v-else>Ваш огород еще не дал плоды...</div>
     </div>
 
+    <!-- TASKS LIST -->
+     <div>
+       <h2>Задачи</h2>
+       <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;">
+         <li>waiting</li>
+         <li>works</li>
+         <li>canceled</li>
+         <li>paused</li>
+         <li>finished</li>
+       </ul>
+
+       <!--  -->
+      <div class="computedTask_container" v-if="computedTask?.length">
+
+        <Section
+         :padding="true" 
+         :bg="set_bgColor_by_Urgency(item)" 
+         v-for="item in computedTask" 
+         @click="$router.push(`task/${item.id}`)"
+         style="cursor: pointer; position: relative;"
+        >
+          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+          <div v-if="item.status === 'paused'" class="rounded ticket_paused">
+            <div style="color: #fff;">ПАУЗА</div>
+          </div>  
+         <!-- CREATED DATE -->
+         <div>
+           <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
+         </div>
+
+         <!-- FROM  -->
+         <div>
+           <span>Проект: {{ item.projectId }}</span>
+         </div>
+         <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
+        </Section>
+      </div>
+      <div v-else>Что-то у вас нет задач...</div>
+       <!--  -->
+   
+
+     </div>
 
 
-    <br>
+    <!-- <br>
     <br>
     <br>
     <span>Demands in buildres:</span>
@@ -498,7 +557,7 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
     </div>
     <div v-else style="margin: 0; padding: 1rem">
       <p>А ничего нет...</p>
-    </div>
+    </div> -->
   </Container>
 </template>
 
@@ -594,8 +653,46 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
 
 /* computedLead */
 .computedLead_container {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 2rem;
+  overflow: scroll; 
+  max-width: 100vw!important;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none; 
+}
+.computedLead_container:-webkit-scrollbar {
+  display: none;
+}
+
+.computedTask_container{
   display: grid;
   gap: 1rem;
+}
+
+/* TICKETS */
+.ticket_new {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  font-weight: bold; 
+  background-color: black; 
+  color: var(--color-btn-text); 
+  font-size: 1rem;
+  border-top-left-radius: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.ticket_paused {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  background-color: var(--color-paused-wrapper-bg); 
+  width: 100%; 
+  height: 100%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
 }
 
 @media screen and (max-width: 575px) {
@@ -606,7 +703,11 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   .demands_wrapper {
     grid-template-columns: 1fr;
   }
-  .computedLead_container {
+  .computedLead_container  {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .computedTask_container{
     grid-template-columns: 1fr;
     padding: 0 0.5rem;
     gap: 1rem;
@@ -619,25 +720,33 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   .show-max-767 {
     display: none;
   }
-  .computedLead_container {
+  .computedLead_container  {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .computedTask_container{
     grid-template-columns: 1fr;
     padding: 0 1rem;
   }
-}
-@media screen and (min-width: 576px) and (max-width: 767px) {
   .demands_wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
-  .computedLead_container {
+  .computedTask_container{
     grid-template-columns: repeat(2, 1fr);
   }
-}
+} 
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .demands_wrapper {
     grid-template-columns: repeat(3, 1fr);
   }
-  .computedLead_container {
+  .computedLead_container  {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .computedTask_container{
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -645,7 +754,13 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   .demands_wrapper {
     grid-template-columns: repeat(4, 1fr);
   }
-  .computedLead_container {
+  .computedLead_container  {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .computedTask_container {
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -653,7 +768,13 @@ const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   .demands_wrapper {
     grid-template-columns: repeat(5, 1fr);
   }
-  .computedLead_container {
+  .computedLead_container  {
+    margin-left: -1rem;
+    margin-right: -2rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
+  }
+  .computedTask_container{
     grid-template-columns: repeat(5, 1fr);
   }
 }
