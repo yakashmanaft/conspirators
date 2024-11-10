@@ -62,6 +62,7 @@
 
     </InfoPopup>
 
+    <!-- Content of the page -->
     <Container>
         <h1>Мой огород</h1>
 

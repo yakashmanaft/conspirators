@@ -6,6 +6,7 @@ import { Section } from '@/shared/section'
 
 // components
 // import { DevModePlug } from "~/components/plug_dev_mode";
+import { Button } from '~/components/button'
 
 // utils
 import { onBeforeMount } from "vue";
@@ -372,6 +373,12 @@ const set_bgColor_by_Urgency = (lead: any) => {
 }
 
 
+// ADD/CREATE
+//= task
+const addNewTask = () => {
+  alert('В разработке...')
+}
+
 
 // ******* DB
 // *** GET
@@ -409,7 +416,8 @@ const { data: task_list } = useFetch("/api/task/task", {
 
     <!-- <DevModePlug/> -->
 
-    <h1 class="show-max-767">Дела</h1>
+    <h1 class="show-max-767">Доска дел</h1>
+
     <!-- <p>{{ props?.auth_user_profile }}</p> -->
     <!-- Фильтры -->
     <!-- <div v-if="demandFilterTypes.length">
@@ -435,9 +443,26 @@ const { data: task_list } = useFetch("/api/task/task", {
     
     
     
-    <!-- DEMANDS LIST -->
-    <div>
-      <h2>Лиды</h2>
+    <!-- LEAD SECTION -->
+    <div style="margin-top: 1rem;">
+
+      <!-- header of section -->
+      <div class="header-section_container">
+        <h2>Лиды</h2>
+        <div style="display: flex; align-items: center;">
+            <Button type="pseudo-btn" :link="`landing_all`">К огороду</Button>
+            <div>
+            <Icon
+                class="link"
+                name="material-symbols-light:arrow-back-ios"
+                size="24px"
+                color="var(--color-global-text_second)"
+                style="transform: rotate(-180deg)"
+            />
+            </div>
+        </div>
+      </div>
+
       <!--  -->
       <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;">
         <li>lead</li>
@@ -481,9 +506,16 @@ const { data: task_list } = useFetch("/api/task/task", {
         <div v-else>Ваш огород еще не дал плоды...</div>
     </div>
 
-    <!-- TASKS LIST -->
+    <!-- TASKS SECTION -->
      <div>
-       <h2>Задачи</h2>
+      
+      <!-- haeder of the section -->
+      <div class="header-section_container">
+         <h2>Задачи</h2>
+         <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
+      </div>
+
+      <!-- cheap filters of the section -->
        <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;">
          <li>waiting</li>
          <li>works</li>
@@ -562,6 +594,11 @@ const { data: task_list } = useFetch("/api/task/task", {
 </template>
 
 <style scoped>
+.header-section_container {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
 .demands_wrapper {
   display: grid;
   gap: 1rem;
@@ -700,6 +737,9 @@ const { data: task_list } = useFetch("/api/task/task", {
   .demands_wrapper {
     padding: 0 0.5rem;
   } */
+  .header-section_container {
+    margin: 0 .5rem;
+  }
   .demands_wrapper {
     grid-template-columns: 1fr;
   }
@@ -720,8 +760,11 @@ const { data: task_list } = useFetch("/api/task/task", {
   .show-max-767 {
     display: none;
   }
+  .header-section_container {
+    margin: 0 1rem;
+  }
   .computedLead_container  {
-    padding-left: 0.5rem;
+    padding-left: 1rem;
     padding-right: 0.5rem;
   }
   .computedTask_container{
