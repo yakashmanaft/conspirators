@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Container } from "@/shared/container";
 
+import { DevModePlug } from '@/components/plug_dev_mode'
 /*
 *
     временно
@@ -522,6 +523,8 @@ const createMyNewBand = () => {
 
 <template>
   <Container v-if="user">
+
+    <DevModePlug/>
     <!-- PAGE TITLE -->
     <div class="page-title">
       <h1>

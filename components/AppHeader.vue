@@ -195,19 +195,25 @@ const translateRoutePath = (path: string) => {
   }
   // PARTNERS
   else if (path === "/partners") {
-    return "Соучастники";
+    return "Контакты";
   } else if (path.includes("/partners/")) {
     let startIndex = path.lastIndexOf("/");
     let id = path.substr(startIndex + 1);
-    return `Cоучастник #${id}`;
+    return `Контакт #${id}`;
   }
   // DEMANDS
   else if (path === "/demands") {
-    return "Заявки";
+    return "Дела";
   } else if (path.includes("/demands/")) {
     let startIndex = path.lastIndexOf("/");
     let id = path.substr(startIndex + 1);
     return `Заявка #${id}`;
+  }
+  // TASKS
+  else if (path.includes("/task/")) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Задача #${id}`;
   }
   // BANKS
   else if (path === "/banks") {

@@ -1,12 +1,12 @@
 <template>
   <!-- https://www.youtube.com/watch?v=3MPlTDgQaaE -->
-  <Container style="padding-top: 5rem">
+  <Container>
 
-    <DevModePlug/>
+    <!-- <DevModePlug/> -->
 
     <!-- Modal EDIT USER-->
     <!-- userEditModal -->
-    <div
+    <!-- <div
       class="modal fade"
       id="userEditModal"
       tabindex="-1"
@@ -25,7 +25,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <!-- SURNAME -->
+
             <div class="mb-3">
               <label for="editedUserSurname" class="form-label">Фамилия</label>
               <input
@@ -36,7 +36,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- NAME -->
+
             <div class="mb-3">
               <label for="editedUserName" class="form-label">Имя</label>
               <input
@@ -47,7 +47,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- Отчество -->
+
             <div class="mb-3">
               <label for="editedUserMiddleName" class="form-label"
                 >Отчество</label
@@ -60,7 +60,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- Телефон -->
+
             <div class="mb-3">
               <label for="editedUserPhone" class="form-label">Мобильный</label>
               <input
@@ -71,7 +71,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- Role -->
+
             <div class="mb-3">
               <label for="editedUserRole" class="form-label"
                 >Role в сервисе</label
@@ -84,27 +84,11 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- User Status In Group -->
-            <!-- <div class="mb-3">
-              <label for="editedUserStatusInGroup" class="form-label"
-                >Status in Group (foreman - бригадир, sectionForeman - начальник
-                участка, worker - рабочий, leader - лидер), projectManager -
-                менеджер проекта (снабжение), hrOfficer (Кадровик), accountant -
-                бухгалтер, marketolog - маркетолог</label
-              >
-              <input
-                v-model="editedUser.groupStatus"
-                type="text"
-                class="form-control"
-                id="editedUserStatusInGroup"
-                aria-describedby="nameHelp"
-              />
-            </div> -->
-            <!--  -->
+
             <div class="mb-3">
               <label class="form-label">Модули</label>
               <div class="access-module_container">
-                <!-- Подключены соучастнику -->
+    
                 <div
                   class="access-module_el"
                   v-for="(item, idx) in editedUser.accessModules"
@@ -121,7 +105,7 @@
                   </label>
                 </div>
 
-                <!-- Какие еще есть в сервисе и не подключены у соучастника -->
+
                 <div
                   class="access-module_el"
                   v-for="(el, id) in accessModulesArray.filter((el) => {
@@ -153,7 +137,7 @@
                   </label>
                 </div>
               </div>
-              <!-- {{ editedUser.accessModules }} -->
+
             </div>
           </div>
           <div class="modal-footer">
@@ -175,11 +159,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- MODAL CREATE USER -->
     <!-- userCreateModal -->
-    <div
+    <!-- <div
       class="modal fade"
       id="userCreateModal"
       tabindex="-1"
@@ -199,7 +183,7 @@
           <div class="modal-body">
             <h1 id="userCreateModalLabel">Добавить соучастника</h1>
 
-            <!-- Фамилия -->
+      
             <div class="mb-3">
               <label for="userSurname" class="form-label">Фамилия</label>
               <input
@@ -210,7 +194,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- ИМЯ -->
+     
             <div class="mb-3">
               <label for="userName" class="form-label">Имя</label>
               <input
@@ -221,7 +205,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- Отчество -->
+ 
             <div class="mb-3">
               <label for="userMiddleName" class="form-label">Отчество</label>
               <input
@@ -232,7 +216,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- ТЕЛЕФОН -->
+    
             <div class="mb-3">
               <label for="userPhone" class="form-label">Мобильный</label>
               <input
@@ -244,7 +228,7 @@
               />
             </div>
 
-            <!-- Role in WEB SERVICE -->
+
             <div class="mb-3">
               <label for="userRole" class="form-label">Role в сервисе</label>
               <input
@@ -255,23 +239,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- USER STATUS IN GROUP -->
-            <!-- <div class="mb-3">
-              <label for="userStatusInGroup" class="form-label"
-                >Status in Group (foreman - бригадир, sectionForeman - начальник
-                участка, worker - рабочий, leader - лидер), projectManager -
-                менеджер проекта (снабжение), hrOfficer (Кадровик), accountant -
-                бухгалтер, marketolog - маркетолог</label
-              >
-              <input
-                v-model="user.groupStatus"
-                type="text"
-                class="form-control"
-                id="userStatusInGroup"
-                aria-describedby="nameHelp"
-              />
-            </div> -->
-            <!--  -->
+
             <div class="mb-3">
               <label class="form-label">Модули</label>
               <div class="access-module_container">
@@ -294,9 +262,9 @@
                 </div>
               </div>
 
-              <!-- {{ user.accessModules }} -->
+      
             </div>
-            <!-- EMAIL -->
+  
             <div class="mb-3">
               <label for="userEmail" class="form-label">Email</label>
               <input
@@ -307,7 +275,7 @@
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- PASSWORD -->
+   
             <div class="mb-3">
               <label for="userEmail" class="form-label">Password</label>
               <input
@@ -339,11 +307,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- MODAL CREATE COMPANY -->
     <!-- companyCreateModal -->
-    <div
+    <!-- <div
       class="modal fade createModal"
       id="companyCreateModal"
       tabindex="-1"
@@ -393,7 +361,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- РАЗОБРАТЬСЯ КАК РЕНДЕРИТЬ ОШИБКУ ЧТО ЛИ... -->
     <!-- <div
@@ -412,7 +380,7 @@
     </div> -->
 
     <!-- TOGGLE TITLE -->
-    <div class="toggle-title">
+    <!-- <div class="toggle-title">
       <div v-for="(title, i) in titles" class="switch-title_el">
         <input
           type="radio"
@@ -424,7 +392,7 @@
           ><h1>{{ title.title }}</h1></label
         >
       </div>
-    </div>
+    </div> -->
 
     <!-- BTNS OPEN MODAL CREATE -->
     <div class="add-btn_container">
@@ -475,14 +443,15 @@
 
     <!-- data is loaded -->
     <div v-else>
-      <!-- USERS -->
-      <div v-if="currentTitle === 'sharers'" class="partners_container">
+
+      <!-- PARTNERS -->
+      <div class="partners_container">
         <!-- Search -->
         <div class="partners-search_wrapper">
           <input
             type="text"
             class="form-control"
-            placeholder="Поиск по фамилии"
+            placeholder="Поиск"
             v-model="searchInput"
           />
           <Icon
@@ -496,45 +465,46 @@
         <div class="partners-list_wrapper">
           <!-- Если ничего не найдено -->
           <div>
-            <div v-if="searchInput && !computedUsers.length">
+            <div v-if="searchInput && !computedPartners.length">
               По запросу ничего не найдено
             </div>
           </div>
 
           <!-- Список пользователей -->
+
           <div
             class="list_item"
-            v-for="(user, index) in computedUsers"
+            v-for="(partner, index) in computedPartners"
             :key="index"
           >
-            <!--  -->
+            <!--  -->       
             <div>
               <!-- ФИО -->
               <div class="item_name">
                 <p
                   class="link"
                   style="margin: 0"
-                  @click="$router.push(`/partners/${user.id}`)"
+                  @click="$router.push(`/partners/${partner.id}`)"
                 >
-                  <span style="font-weight: bold">{{ user.surname }}</span>
-                  {{ user.name }} {{ user.middleName }}
+                  <span style="font-weight: bold">{{ partner.surname }}</span>
+                  {{ partner.name }} {{ partner.middleName }}
                 </p>
                 <!-- accessed modules fo users -->
-                <div style="display: flex; flex-direction: column">
+                <!-- <div style="display: flex; flex-direction: column">
                   <div
-                    v-for="moduleObj in user.accessModules"
+                    v-for="moduleObj in partners.accessModules"
                     style="font-size: 0.8rem"
                     v-if="sessionUser.role === 'SUPER_ADMIN'"
                   >
                     {{ moduleObj }}
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
 
             <!-- ATCTION ICONS -->
-            <div class="item_icons" v-if="sessionUser.role === 'SUPER_ADMIN'">
-              <!-- EDIT -->
+            <!-- <div class="item_icons" v-if="sessionUser.role === 'SUPER_ADMIN'">
+
               <button
                 type="button"
                 data-bs-toggle="modal"
@@ -551,14 +521,14 @@
                   }
                 "
               >
-                <!-- editedUser.groupStatus = user.groupStatus; -->
+
                 <Icon
                   class="item_icon icon_edit"
                   name="material-symbols-light:edit-note-outline-rounded"
                   size="28px"
                 />
               </button>
-              <!-- DELETE -->
+
               <button type="button" @click="deleteUser(user.id)">
                 <Icon
                   class="item_icon icon_delete"
@@ -566,14 +536,13 @@
                   size="28px"
                 />
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
 
       <!-- ORGANIZATIONS -->
-      <div v-if="currentTitle === 'organizations'" class="partners_container">
-        <!-- Search -->
+      <!-- <div v-if="currentTitle === 'organizations'" class="partners_container">
         <div class="partners-search_wrapper">
           <input
             type="text"
@@ -588,9 +557,7 @@
           />
         </div>
 
-        <!-- LIST -->
         <div class="partners-list_wrapper">
-          <!-- Если ничего не найдено -->
           <div>
             <div
               v-if="searchOrganizationsInput && !computedOrganizations.length"
@@ -599,12 +566,10 @@
             </div>
           </div>
 
-          <!-- Список -->
           <div
             v-for="(companyItem, index) in computedOrganizations"
             class="list_item"
           >
-            <!-- Наименование -->
             <div class="org_label">
               <p @click="$router.push(`/organizations/${companyItem.id}`)">
                 {{ companyItem.title }}
@@ -612,7 +577,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- <table v-if="currentTitle === 'organizations'" class="table">
         <thead>
           <tr>
@@ -793,10 +758,7 @@ onMounted(() => {
 //     return await $fetch('api/users')
 // }
 const {
-  pending,
-  refresh,
   data: users,
-  error,
 } = useFetch("api/usersList/users", {
   lazy: false,
   transform: (users) => {
@@ -828,6 +790,41 @@ const {
   },
 });
 
+/**
+ * @desc Get partnrs
+ */
+ const {
+  pending,
+  refresh,
+  data: partners,
+  error,
+} = useFetch("api/partner/partner", {
+  lazy: false,
+  transform: (partners) => {
+    return partners
+      .sort((x, y) => {
+        if (x.surname < y.surname) {
+          return -1;
+        }
+
+        if (x.surname > y.surname) {
+          return 1;
+        }
+      })
+      .map((partner) => {
+        return {
+          id: partner.id,
+          email: partner.email,
+          name: partner.name,
+          middleName: partner.middleName,
+          surname: partner.surname,
+          phone: partner.phone,
+        };
+      });
+  },
+});
+
+
 // const { refresh: refreshCompanies, data: companies } = await useLazyFetch(
 //   "api/organizations/organizations"
 // );
@@ -838,18 +835,52 @@ const {
 //   console.log(newData);
 // });
 
+
 // COMPUTED
-const computedUsers = computed(() =>
-  // {
-  searchInput.value === ""
-    ? users.value
-    : users.value.filter((user) =>
-        user.surname
+//= partners
+const computedPartners = computed(() => {
+
+  if(searchInput.value === "") {
+
+    return partners.value
+  } else {
+    return partners.value.filter((partner) =>
+
+        partner.name
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+        ||
+        partner.surname
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+        ||  
+        partner.middleName
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+        ||  
+        partner.phone
           .toLowerCase()
           .replace(/\s+/g, "")
           .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
       )
-);
+  }
+})
+
+//=
+// const computedUsers = computed(() =>
+//   // {
+//   searchInput.value === ""
+//     ? users.value
+//     : users.value.filter((user) =>
+//         user.surname
+//           .toLowerCase()
+//           .replace(/\s+/g, "")
+//           .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+//       )
+// );
 const computedOrganizations = computed(() =>
   searchOrganizationsInput.value === ""
     ? companies.value
@@ -1053,7 +1084,7 @@ watch(editedUser.value, () => {
 });
 
 useHead({
-  title: "Соучастники",
+  title: "Контакты",
   link: [
     {
       rel: "stylesheet",
@@ -1083,6 +1114,9 @@ useHead({
   cursor: pointer;
 }
 .link:hover {
+  color: var(--bs-primary);
+}
+.link:hover span{
   color: var(--bs-primary);
 }
 .mt-1rem {
@@ -1169,6 +1203,7 @@ useHead({
 }
 .list_item:hover {
   background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 .item_name {
 }

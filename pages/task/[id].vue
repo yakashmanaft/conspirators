@@ -102,9 +102,9 @@ useHead({
         <div v-if="current_task">
 
             <p>Дата создания: {{ current_task.created_at }}</p> 
+            <p>Deadline: {{ current_task.deadline }}</p>
             <p>Статус: {{  current_task.status  }}</p>
-            <!-- <p>Deadline: xxx</p>
-            <p>Автор: xxx</p>
+            <!-- <p>Автор: xxx</p>
             <p>Контроль реализации: xxx</p>-->
             <!-- <h2>This is a lead from: {{ current_task.landing_name }}</h2> -->
         </div>

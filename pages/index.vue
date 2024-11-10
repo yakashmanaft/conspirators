@@ -41,7 +41,7 @@ const { loggedIn, user, session, clear } = useUserSession();
 
     <h1>conspirators.su</h1><span>не ссы</span>
     <h2>INDEX PAGE</h2>
-    <div style="display: flex; gap: 1rem;">
+    <div class="buttons-container">
 
       <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
       <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Узнать по услугам маркетинга</Button>
@@ -56,4 +56,14 @@ const { loggedIn, user, session, clear } = useUserSession();
     width:100vw;
     overflow-x:hidden;
 } */
+.buttons-container {
+  display: flex; 
+  gap: 1rem;
+}
+@media screen and (max-width: 767px) {
+  .buttons-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
 </style>
