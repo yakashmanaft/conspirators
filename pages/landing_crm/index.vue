@@ -1,6 +1,11 @@
 <template>
     <Container>
-        <h1>conspirators.CRM</h1>
+
+        <!-- TITLE PAGE SECTION -->
+        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+            <BreadCrumbs/>
+            <h1 style="margin: 0;">conspirators.CRM</h1> 
+        </div>
 
         <Button v-if="useAuthStore().loggedIn !== true" type="pseudo-btn" link="/login" bg="bg-stroke" :disabled="false" style="margin-top: 2rem;">Войти</Button>
 
@@ -35,6 +40,8 @@
 
     // components
     import { Button } from '@/components/button';
+    import { BreadCrumbs } from '~/components/breadcrumbs';
+
 </script>
 
 <style scoped>

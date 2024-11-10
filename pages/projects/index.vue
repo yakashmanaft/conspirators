@@ -4,6 +4,7 @@ import { Container } from "@/shared/container";
 
 // components
 import { DevModePlug } from "@/components/plug_dev_mode";
+import { BreadCrumbs } from "~/components/breadcrumbs";
 
 // utils
 import { H3Error } from "h3";
@@ -216,14 +217,18 @@ watch(project.value, () => {
 });
 </script>
 <template>
-  <Container style="padding-top: 5rem">
+  <Container>
 
 
-    <DevModePlug/>
+    <!-- <DevModePlug/> -->
 
 
+    <!-- TITLE PAGE SECTION -->
+    <div class="show-max-767" style="margin-bottom: 0.5rem;">
 
-    <h1 class="show-max-767">Проекты</h1>
+      <BreadCrumbs/>
+      <h1 style="margin: 0;">Проекты</h1>
+    </div>
 
     <!-- fetch data is error -->
     <!-- <div v-if="error">

@@ -77,7 +77,7 @@ const menuList = ref([
   {
     title: 'Политика конфиденциальности',
     path: '/policy'
-  },
+  }
 ])
 
 const clickBy = (el: any) => {
@@ -135,6 +135,13 @@ watch(
         <ul>
           <li v-for="el in menuList" style="white-space: nowrap;">
             <router-link :to="el.path">{{ el.title }}</router-link>
+          </li>
+          <li style="margin-top: 2rem;">
+            <router-link to="/">© conspirators <span style="font-size: 0.6rem; color: unset;">2024 - 2025</span></router-link>
+            <!--   {
+    title: '© conspirators, 2024 - 2025',
+    path: '/'
+  } -->
           </li>
         </ul>
       </div>

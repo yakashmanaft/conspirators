@@ -1,5 +1,9 @@
 <script setup>
+// shared
 import {Container} from '@/shared/container'
+
+//components
+import { BreadCrumbs } from '~/components/breadcrumbs';
 
 useHead({
         title: "Проект - ",
@@ -143,7 +147,10 @@ useHead({
 <template>
     <Container>
 
-        <h1 class="show-max-767">Заявка #{{ $route.params.id  }}</h1> 
+        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+            <BreadCrumbs/>
+            <h1 style="margin: 0;">Заявка #{{ $route.params.id  }}</h1> 
+        </div>
 
         <div v-if="current_lead">
 

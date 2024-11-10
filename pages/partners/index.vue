@@ -2,6 +2,7 @@
   <!-- https://www.youtube.com/watch?v=3MPlTDgQaaE -->
   <Container>
 
+    <h1 class="show-max-767">Контакты</h1>
     <!-- <DevModePlug/> -->
 
     <!-- Modal EDIT USER-->
@@ -457,7 +458,7 @@
           <Icon
             name="ic:baseline-search"
             size="24px"
-            color="var(--bs-body-color)"
+            color="var(--color-global-text_second)"
           />
         </div>
 
@@ -1176,6 +1177,10 @@ useHead({
   border-bottom: 1px solid var(--bs-border-color);
 }
 
+.partners-search_wrapper input::placeholder {
+  color :var(--color-global-text_second);
+}
+
 .partners-search_wrapper svg {
   position: absolute;
   top: 50%;
@@ -1186,8 +1191,6 @@ useHead({
 /* PARTNERS LIST */
 .partners_container {
   margin-top: 1rem;
-}
-.partners-search_wrapper {
 }
 .partners-list_wrapper {
   margin-top: 1rem;
@@ -1299,6 +1302,9 @@ useHead({
   .partners-search_wrapper {
     margin: 0.5rem;
   }
+  /* .partners-search_wrapper > svg > path {
+    fill: red!important;
+  } */
   .toggle-title {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
@@ -1337,10 +1343,25 @@ useHead({
     display: block !important;
     color: var(--bs-body-bg) !important;
   }
+  .partners-search_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .partners-search_wrapper > input {
+    background-color: var(--color-btn-disabled-bg);
+    border-radius: 0.5rem;
+  }
+  .partners-list_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 }
 @media screen and (min-width: 768px) {
   .toggle-title {
     margin-top: 1rem;
+  }
+  .list_item {
+    border: unset;
   }
 }
 </style>

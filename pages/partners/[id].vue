@@ -256,24 +256,24 @@ const items = ref([]);
 // console.log(btnPrev)
 onMounted(async () => {
   // console.log(organizations.value)
-  users.value = await getUsers();
-  user.value = [...users.value]
-    .map((user) => {
-      return {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        middleName: user.middleName,
-        surname: user.surname,
-        // "password": "Anfalov123[eq",
-        phone: user.phone,
-        role: user.role,
-        groupStatus: user.groupStatus,
-        created_at: user.created_at,
-        update_at: user.update_at,
-      };
-    })
-    .find((item) => item.id === +route.params.id);
+  // users.value = await getUsers();
+  // user.value = [...users.value]
+  //   .map((user) => {
+  //     return {
+  //       id: user.id,
+  //       email: user.email,
+  //       name: user.name,
+  //       middleName: user.middleName,
+  //       surname: user.surname,
+  //       // "password": "Anfalov123[eq",
+  //       phone: user.phone,
+  //       role: user.role,
+  //       groupStatus: user.groupStatus,
+  //       created_at: user.created_at,
+  //       update_at: user.update_at,
+  //     };
+  //   })
+  //   .find((item) => item.id === +route.params.id);
 
   // if (users.value.indexOf(user.value) === 0) {
   //   isFlipperPrevUserBtnExist.value = false;
@@ -285,40 +285,40 @@ onMounted(async () => {
   productionFund.value = sumUserProductionSalary() + rest.value;
 
   //
-  items.value = await getItems();
-  items.value = items.value.filter(
-    (el) => el.ownerType === "user" && el.ownerID === user.value.id
-  );
+  // items.value = await getItems();
+  // items.value = items.value.filter(
+  //   (el) => el.ownerType === "user" && el.ownerID === user.value.id
+  // );
 });
 
-const computedSharerOrganizations = computed(() => {
-  if (organizations.value) {
-    let organizationsArrayWhereUserIs = [];
+// const computedSharerOrganizations = computed(() => {
+//   if (organizations.value) {
+//     let organizationsArrayWhereUserIs = [];
 
-    organizations.value.forEach((organization) => {
-      if (organization.sharers.length) {
-        organization.sharers.forEach((sharer) => {
-          if (
-            sharer.userType === "user" &&
-            sharer.userID === +route.params.id
-          ) {
-            organizationsArrayWhereUserIs.push(organization);
-          }
-        });
-      }
-    });
-    return organizationsArrayWhereUserIs;
-  }
-  // sharers = [
-  //  {
-  //    userID: number
-  //    userType: string
-  //  }
-  // ]
+//     organizations.value.forEach((organization) => {
+//       if (organization.sharers.length) {
+//         organization.sharers.forEach((sharer) => {
+//           if (
+//             sharer.userType === "user" &&
+//             sharer.userID === +route.params.id
+//           ) {
+//             organizationsArrayWhereUserIs.push(organization);
+//           }
+//         });
+//       }
+//     });
+//     return organizationsArrayWhereUserIs;
+//   }
+//   // sharers = [
+//   //  {
+//   //    userID: number
+//   //    userType: string
+//   //  }
+//   // ]
 
-  // Users - id
-  // organizations.value.sharers
-});
+//   // Users - id
+//   // organizations.value.sharers
+// });
 // const computedMyOrganizations = computed(() => {
 //   if (organizations.value) {
 //     return [...organizations.value].filter((organization) => {
@@ -328,21 +328,21 @@ const computedSharerOrganizations = computed(() => {
 //     });
 //   }
 // });
-const { data: organizations } = await useFetch(
-  "/api/organizations/organizations",
-  {
-    lazy: false,
-  }
-);
+// const { data: organizations } = await useFetch(
+//   "/api/organizations/organizations",
+//   {
+//     lazy: false,
+//   }
+// );
 /**
  * @desc Get users
  */
-async function getUsers() {
-  return await $fetch("/api/usersList/users");
-}
-async function getItems() {
-  return await $fetch("/api/warehouse/item");
-}
+// async function getUsers() {
+//   return await $fetch("/api/usersList/users");
+// }
+// async function getItems() {
+//   return await $fetch("/api/warehouse/item");
+// }
 
 /**
  * @desc Users flipper
@@ -522,20 +522,20 @@ const createMyNewBand = () => {
 </script>
 
 <template>
-  <Container v-if="user">
+  <Container>
 
     <DevModePlug/>
     <!-- PAGE TITLE -->
-    <div class="page-title">
+    <!-- <div class="page-title">
       <h1>
         <span style="font-weight: bold">{{ user.surname }} </span><br />
         {{ user.name }} {{ user.middleName }}
       </h1>
-    </div>
+    </div> -->
 
     <!-- SHARER INFO -->
-    <div v-if="user.phone !== ''" class="sharer-info_wrapper">
-      <!-- PHONE -->
+    <!-- <div v-if="user.phone !== ''" class="sharer-info_wrapper">
+
       <div class="item_phone">
         <nuxt-link :to="`tel:${user.phone}`">
           <Icon name="ic:round-call" size="24px" />
@@ -543,7 +543,7 @@ const createMyNewBand = () => {
         </nuxt-link>
       </div>
 
-      <!-- EMAIL -->
+
       <div v-if="user.email !== ''" class="item_email">
         <nuxt-link :to="`mailto:${user.email}`">
           <Icon name="ic:outline-email" size="24px" />
@@ -551,16 +551,16 @@ const createMyNewBand = () => {
         </nuxt-link>
       </div>
 
-      <!-- ROLE -->
+
       <div class="item_role" v-if="sessionUser.role === 'SUPER_ADMIN'">
         <span>role: {{ user.role }}</span>
       </div>
 
-      <!-- user obj -->
+
       <div v-if="sessionUser.role === 'SUPER_ADMIN'">
         <span>{{ user }}</span>
       </div>
-    </div>
+    </div> -->
 
     <!-- Заголовок - Переключатель -->
     <!-- TOGGLE TITLE -->
@@ -588,11 +588,11 @@ const createMyNewBand = () => {
     </div>
 
     <!-- Demands -->
-    <div v-if="currentTitle === 'demands'">
+    <!-- <div v-if="currentTitle === 'demands'">
       <div class="demands_container">
         <div>Ничего нет</div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Projects -->
     <div v-if="currentTitle === 'projects'">
@@ -603,20 +603,18 @@ const createMyNewBand = () => {
     </div>
 
     <!-- ORGANIZATIONS -->
-    <div v-if="currentTitle === 'organizations'">
+    <!-- <div v-if="currentTitle === 'organizations'">
       <div v-if="computedSharerOrganizations.length">
-        <!-- Titie -->
-        <!-- <p class="org_title"><span>Соучастник в бандах:</span></p> -->
 
         <div class="org_container">
-          <!-- List -->
+
           <div
             v-for="organization in computedSharerOrganizations"
             class="org_wrapper"
           >
-            <!-- ORG HEADER -->
+
             <div class="org_header">
-              <!-- ORG TITLE -->
+
               <div
                 class="org_title link"
                 @click="$router.push(`/organizations/${organization.id}`)"
@@ -624,9 +622,9 @@ const createMyNewBand = () => {
                 <span style="font-weight: bold">{{ organization.title }}</span>
               </div>
 
-              <!-- ACTION BTN -->
+
               <div>
-                <!-- DISSOLVE -->
+
                 <span
                   v-if="organization.ownerID === sessionUser.id"
                   class="link"
@@ -634,7 +632,7 @@ const createMyNewBand = () => {
                   >Распустить</span
                 >
 
-                <!-- EXIT-->
+
                 <span
                   v-if="
                     +route.params.id === sessionUser.id &&
@@ -647,9 +645,9 @@ const createMyNewBand = () => {
               </div>
             </div>
 
-            <!-- ORG BODY -->
+
             <div class="org_body">
-              <!-- ORG INFO -->
+
               <div class="org_info">
                 <Icon
                   name="material-symbols-light:group"
@@ -659,23 +657,14 @@ const createMyNewBand = () => {
                 <p style="margin: 0">x</p>
                 <p style="margin: 0">{{ organization.sharers.length }}</p>
               </div>
-              <!-- ORG LEADER ICON -->
+
               <div v-if="organization.ownerID === sessionUser.id">
                 <Icon name="mdi:crown" size="24px" color="var(--bs-warning)" />
               </div>
             </div>
 
-            <!-- <p>
-            <span>{{ organization }}</span>
-            <span
-              @click="leaveCurrentBand(organization.id)"
-              v-if="+route.params.id === sessionUser.id"
-              style="font-weight: bold"
-              >Выйти из банды</span
-            >
-          </p> -->
           </div>
-          <!-- Создать банду-->
+
           <button
             v-if="+route.params.id === sessionUser.id"
             type="button"
@@ -696,7 +685,7 @@ const createMyNewBand = () => {
         </div>
       </div>
 
-      <!-- else -->
+
       <div v-else style="margin-top: 1rem">
         <p>
           Пока ничего нет. Сколотите свою
@@ -707,10 +696,10 @@ const createMyNewBand = () => {
           >.
         </p>
       </div>
-    </div>
+    </div> -->
 
-    <!-- ФОНДЫ соучастника или банды, к которым допущен соучастник -->
-    <div v-if="currentTitle === 'funds'">
+
+    <!-- <div v-if="currentTitle === 'funds'">
       <div class="funds_container">
         <router-link to="/fundsharers/1">Фонд</router-link>
         <br />
@@ -725,23 +714,21 @@ const createMyNewBand = () => {
         <br />
         <div>Нет фондов</div>
       </div>
-    </div>
+    </div> -->
 
     <!-- ТМЦ соучастника-->
-    <div v-if="currentTitle === 'warehouse-items'">
+    <!-- <div v-if="currentTitle === 'warehouse-items'">
       <div class="warehouse-items_container">
-        <!--  -->
         <div v-if="items.length">
           <div v-for="(item, index) in items" :key="index">
             {{ item }}
           </div>
         </div>
-        <!-- { "id": 159, "uuid": "ac07b3c9-c0f2-45dc-a400-b6005d70c098", "title": "Щит опалубочный 1200х3000", "type": "stuff", "qty": 1, "measure": "шт.", "location": "project", "locationID": 1, "position": null, "serial": null, "productionDate": null, "ownerID": 1, "ownerType": "company", "responsible": 1, "created_at": "2024-05-29T04:46:12.000Z", "update_at": "2024-05-29T04:46:11.784Z" } -->
         <div v-else>
           <p style="margin: 0">Ничего нет</p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <br />
     <br />

@@ -1,5 +1,9 @@
 <script setup>
+// shared
 import {Container} from '@/shared/container'
+
+// components
+import { BreadCrumbs } from '~/components/breadcrumbs';
 
 useHead({
         title: "Задача - ",
@@ -32,21 +36,6 @@ useHead({
             default: {}
         }
     })
-
-    // const listItemType = ref([])
-
-    // Инструмент
-    // tools
-
-    // Расходники
-    // consumables
-
-    // Техника
-    // technic
-
-    // Материалы
-    // stuff
-
 
     const route = useRoute()
 
@@ -83,21 +72,18 @@ useHead({
             return task_list.find(el => el.id === +route.params.id)
         }
     })
-
-    // leads
-    // const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
-    // lazy: false,
-    // transform: (lead_list) => {
-    //     return lead_list.find(el => el.id === +route.params.id)
-    // }
-    // })
 </script>
 
 
 <template>
     <Container>
 
-        <h1 class="show-max-767">Задача #{{ $route.params.id  }}</h1> 
+        <!-- TITLE PAGE SECTION -->
+        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+            <BreadCrumbs/>
+            <h1 style="margin: 0;">Задача #{{ $route.params.id  }}</h1> 
+        </div>
+
 
         <div v-if="current_task">
 

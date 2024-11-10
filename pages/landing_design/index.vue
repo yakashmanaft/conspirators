@@ -10,7 +10,11 @@
 
     <Container>
 
-        <h1>landing design</h1>
+        <!-- TITLE PAGE SECTION -->
+        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+            <BreadCrumbs/>
+            <h1 style="margin: 0;">Дизайн</h1> 
+        </div>
         <h2>Дизайним до предела</h2>
         <h3>Дизайним макеты под сайты/приложения</h3>
         <h3>Дизайним полиграфию</h3>
@@ -74,6 +78,7 @@
     import { Button } from '@/components/button';
     import { Form_landing_offer } from '@/components/form'
     import { Toast } from '@/components/toast'
+    import { BreadCrumbs } from '~/components/breadcrumbs';
 
     // PROPS
     const props = defineProps({

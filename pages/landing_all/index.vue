@@ -64,7 +64,11 @@
 
     <!-- Content of the page -->
     <Container>
-        <h1>Мой огород</h1>
+
+        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+            <BreadCrumbs/>
+            <h1 style="margin: 0;">Мой огород</h1> 
+        </div>
 
         <div v-if="computed_landing_list?.length">
 
@@ -273,8 +277,8 @@
   }
 
   @media screen and (max-width: 767px) {
-    h1 {
-        margin-left: 1rem;
+    .show-max-767 {
+        display: none;
     }
     .diagram-wrapper {
         grid-template-columns: 1fr;
@@ -288,6 +292,9 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
+    .list_container {
+        margin-top: 1rem;
+    }
     .landing-list-el_wrapper {
         width: 100%;
     }
@@ -296,15 +303,20 @@
     .canvas {
         display: flex;
         flex-direction: column;
+        width: 50%;
+        position: fixed;
     }
     .caption {
         margin: 0 auto;
     }
+    .diagram-wrapper {
+        display: unset;
+    }   
+    .list_container {
+        margin-left: 50vw;
+    }
   }
   @media screen and (min-width: 768px) and (max-width: 991px) {
-    .diagram-wrapper {
-        justify-content: space-between;
-    }
     .lead-item-header_wrapper,
     .lead-item_wrapper {
         display: grid; 
@@ -368,6 +380,7 @@
 
     // components
     import { Button } from '@/components/button'
+    import { BreadCrumbs } from '~/components/breadcrumbs';
 
     // PROPS
     const props = defineProps({

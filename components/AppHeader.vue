@@ -245,9 +245,22 @@ const translateRoutePath = (path: string) => {
     let id = path.substr(startIndex + 1);
     return `Локация #${id}`;
   }
-  // LANDING CRM
-  else if (path = '/landing_crm') {
+  // LANDINGs
+  //= LANDING CRM
+  else if (path === '/landing_crm') {
     return 'conspirators.CRM'
+  }
+  //= LANDING DESIGN
+  else if (path === '/landing_design') {
+    return 'Подельники дизайна'
+  }
+  //= LANDING ALL
+  else if (path === '/landing_all') {
+    return 'Мой огород'
+  }
+  //= LANDING OFFER
+  else if (path === '/landing_offer') {
+    return 'Ваш отдел маркетинга'
   }
   // ELSE
   else {
@@ -406,7 +419,7 @@ watch(
           </ul>
 
           <!-- !Auth -->
-          <span class="copyright_wrapper"><router-link to="/" @click="closeBurgerMenu">© conspirators</router-link></span>
+          <span class="copyright_wrapper"><router-link to="/" @click="closeBurgerMenu">© conspirators <span style="color: unset; font-weight: normal;font-size: 0.6rem;">2024-2025</span></router-link></span>
 
           <!-- LOGIN -->
           <div class="login_wrapper">
