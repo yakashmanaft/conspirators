@@ -136,9 +136,13 @@
     watch(popup_opened, () => {
         let body = document.getElementsByTagName('body')[0]
         if(popup_opened.value) {
-            body.style.position = 'fixed';
+            body.style.margin = '0'
+            body.style.height = '100%'
+            body.style.overflow = 'hidden'
         } else {
-            body.style.position = 'unset'
+            body.style.margin = 'unset'
+            body.style.height = 'unset'
+            body.style.overflow = 'unset'
         }
     })
 

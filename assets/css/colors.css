@@ -28,4 +28,5 @@
 
     /* status colors */
     --color-paused-wrapper-bg: rgba(189, 186, 189, 0.9);
+    --color-item-hover-bg: rgba(0, 0, 0, 0.05);
 }

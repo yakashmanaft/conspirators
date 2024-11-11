@@ -16,10 +16,10 @@
             <h1 style="margin: 0;">Дизайн</h1> 
         </div>
         <h2>Дизайним до предела</h2>
-        <h3>Дизайним макеты под сайты/приложения</h3>
-        <h3>Дизайним полиграфию</h3>
+        <h3>Дизайним web (сайты, приложения, имейлы)</h3>
+        <h3>Дизайним полиграфию (буклеты, листовки и другое)</h3>
         <h3>Дизайним логотипы</h3>
-        <h3>Дизайним всю айдентику</h3>
+        <h3>Дизайним всю айдентику (фирменный стиль)</h3>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p>
 
         <Button @click.prevent="openPopup" type="original-btn">Хочу дизайн</Button>
@@ -138,9 +138,13 @@
     watch(popup_opened, () => {
         let body = document.getElementsByTagName('body')[0]
         if(popup_opened.value) {
-            body.style.position = 'fixed';
+            body.style.margin = '0'
+            body.style.height = '100%'
+            body.style.overflow = 'hidden'
         } else {
-            body.style.position = 'unset'
+            body.style.margin = 'unset'
+            body.style.height = 'unset'
+            body.style.overflow = 'unset'
         }
     })
 

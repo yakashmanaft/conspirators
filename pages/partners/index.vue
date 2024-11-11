@@ -1205,7 +1205,7 @@ useHead({
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .list_item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--color-item-hover-bg);
   cursor: pointer;
 }
 .item_name {

@@ -9,7 +9,7 @@
      >
         <!-- SLOT -->
         <!-- Перейти на landing -->
-        <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: center; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
             <Button type="pseudo-btn" :link="`${generateLandingLink(choosenEl?.name)}`">{{ choosenEl?.name }}</Button>
             <div>
             <Icon
@@ -79,8 +79,7 @@
     
             <div class="diagram-wrapper">
     
-                <!-- Canvas -->
-                <!-- DIAGRAM (LEFT SIDE) -->
+                <!-- Canvas (DIAGRAM)-->
                 <div class="canvas">
                     <!-- chart -->
                     <svg class="chart" viewBox="0 0 60 40">
@@ -94,60 +93,54 @@
                             <div >{{ choosenEl.name }}</div>
                         </div>
                         <div class="caption_content" v-else>
-                            <div>Все</div>
+                            <div>Все грядки</div>
                         </div>
                     </div>
                 </div>
     
-                <!-- DESC (RIGHT SIDE)-->
-    
+                <!-- LEGEND (FOR diagram) -->
                 <!--  -->
                 <div class="list_container">
     
                     <!-- SHOW ALL -->
                     <div>
-                        <!-- SECTION -->
-                        <Section class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
-    
+
+                        <!-- SECTION ГРЯДКА -->
+                        <div class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
                             <!-- SECTION HEADER -->
                             <div class="landing-list-el_header" style="position: relative;">
-    
+                                
                                 <!-- LEADS QTY GROUP -->
                                 <div 
-                                    style="
-                                        width: 3rem; 
-                                        height: 100%; 
-                                        /* background-color:red;  */
-                                        position: absolute; 
-                                        margin-left: -0.5rem;
-                                        top: 0;
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                    "
+                                    class="leads-qty_wrapper"
                                 >
                                     <p style="margin: 0; font-size: 32px; font-weight: normal;">{{ el.leads.length }}</p>
                                 </div>
-    
+
                                 <!-- GROUP CONTENT -->
                                 <div style="flex: 1 0; margin-left: 3rem;">
                                     <p style="margin: 0;">{{ el.name }}</p>
-                                    <p style="margin: 0;">999999999.99 руб.</p>
+                                    <p 
+                                        style="margin: 0; color: var(--color-global-text_second); font-size: 0.8rem;"
+                                    >
+                                        Всего: 
+                                        <span style="color: var(--color-global-text_second)">999999999.99 руб.</span>
+                                    </p>
                                 </div>
                                 
                                 <!-- ROUTER BTN GROUP-->
-                                 <div class="router-btn_group">
-    
-                                     <Icon
-                                         class="link"
-                                         name="material-symbols-light:arrow-back-ios"
-                                         size="32px"
-                                         color="var(--color-global-text_second)"
-                                         style="transform: rotate(180deg)"
-                                     />
-                                 </div>
+                                <div class="router-btn_group">
+
+                                    <Icon
+                                        class="link"
+                                        name="material-symbols-light:arrow-back-ios"
+                                        size="32px"
+                                        color="var(--color-global-text_second)"
+                                        style="transform: rotate(180deg)"
+                                    />
+                                </div>
                             </div>
-                        </Section>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,8 +158,9 @@
     }
 
     .landing-list-el_wrapper {
-        margin-bottom: 1rem;
-        /* background-color: var(--color-btn-disabled-bg);  */
+        padding: 1rem;
+    }
+    .landing-list-el_wrapper:hover {
         cursor:pointer; 
     }
     .landing-list-el_header {
@@ -193,30 +187,62 @@
         transition: all 0.5s ease;
         cursor: pointer;
     }
+    /* #1 */
     .unit:nth-child(1) {
         stroke: v-bind('colors.unit1');
     }
+    .landing-list-el_wrapper:nth-child(1) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit1');
+    }
+    /* #2 */
     .unit:nth-child(2) {
         stroke: v-bind('colors.unit2');
     }
+    .landing-list-el_wrapper:nth-child(2) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit2');
+    }
+    /* #3 */
     .unit:nth-child(3) {
         /* stroke: #ffc7ec; */
         stroke: v-bind('colors.unit3');
     }
+    .landing-list-el_wrapper:nth-child(3) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit3');
+    }
+    /* #4 */
     .unit:nth-child(4) {
         stroke: v-bind('colors.unit4');
     }
+    .landing-list-el_wrapper:nth-child(4) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit4');
+    }
+    /* 5 */
     .unit:nth-child(5) {
         stroke: v-bind('colors.unit5');
     }
+    .landing-list-el_wrapper:nth-child(5) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit5');
+    }
+    /* #6 */
     .unit:nth-child(6) {
         stroke: v-bind('colors.unit6');
     }
+    .landing-list-el_wrapper:nth-child(6) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit6');
+    }
+    /* #7 */
     .unit:nth-child(7) {
         stroke: v-bind('colors.unit7');
     }
+    .landing-list-el_wrapper:nth-child(7) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit7');
+    }
+    /* #8 */
     .unit:nth-child(8) {
         stroke: v-bind('colors.unit8');
+    }
+    .landing-list-el_wrapper:nth-child(8) .leads-qty_wrapper {
+        background-color: v-bind('colors.unit8');
     }
     .unit__hovered {
         stroke-width: 8;
@@ -247,7 +273,17 @@
     cursor: pointer;
   }
   
-
+  .leads-qty_wrapper {
+    width: 3rem; 
+    height: 100%; 
+    position: absolute; 
+    margin-left: -0.5rem;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+  }
 
   @media screen and (max-width: 575px) {
     .canvas {
@@ -307,7 +343,8 @@
         position: fixed;
     }
     .caption {
-        margin: 0 auto;
+        /* margin: 0 auto; */
+        display: none; 
     }
     .diagram-wrapper {
         display: unset;
@@ -375,7 +412,7 @@
 
     // shared
     import { Container } from '@/shared/container'
-    import { Section } from '@/shared/section'
+    // import { Section } from '@/shared/section'
     import { InfoPopup } from '~/shared/popup';
 
     // components
@@ -396,13 +433,45 @@
 
     // ON MOUNTED
     onMounted(() => {
-        // на всякий случай сбрасываем фиксацию при открытой модалке...
+        // на всякий случай сбрасываем фиксацию прокрутки страницы при открытой модалке...
         let body = document.getElementsByTagName('body')[0]
         body.style.margin = 'unset'
         body.style.height = 'unset'
         body.style.overflow = 'unset'
         // Рисуем диаграмму
         setStrokeDashArrayAndOffset()
+        // mouse actions on legend of unit
+        const legendItems = document.querySelectorAll('.landing-list-el_wrapper')
+        legendItems.forEach((el, index) => {
+
+            const unitsList = document.querySelectorAll('.unit');
+            
+            el.addEventListener('mouseenter', (e) => {
+                unitsList[index].classList.toggle('unit__hovered')
+                legendItems[index].style.backgroundColor = 'var(--color-item-hover-bg)'
+                legendItems[index].style.transition = 'background-color .3s'
+            })
+            el.addEventListener('mouseleave', (e) => {
+                unitsList[index].classList.remove('unit__hovered');
+                legendItems[index].style.backgroundColor = 'unset'
+            })
+        })
+        const unitItems = document.querySelectorAll('.unit')
+        unitItems.forEach((el, index) => {
+            
+            const unitsList = document.querySelectorAll('.unit');
+            const legendItems = document.querySelectorAll('.landing-list-el_wrapper')
+            
+            el.addEventListener('mouseenter', (e) => {
+                unitsList[index].classList.toggle('unit__hovered')
+                legendItems[index].style.backgroundColor = 'var(--color-item-hover-bg)'
+                legendItems[index].style.transition = 'background-color .3s'
+            })
+            el.addEventListener('mouseleave', (e) => {
+                unitsList[index].classList.remove('unit__hovered');
+                legendItems[index].style.backgroundColor = 'unset'
+            })
+        })
     })
 
     let body = document.querySelector('body')
@@ -567,41 +636,19 @@
         // captionList[index].classList.toggle('visible');
         
         // Очищаем все элементы от класса 
-        unitsList.forEach(item => item.classList.remove('unit__hovered'))
+        // unitsList.forEach(item => item.classList.remove('unit__hovered'))
         // Действуем
-        if(unitsList[index].classList.contains('unit__hovered')) {
-            unitsList[index].classList.remove('unit__hovered');
-            choosenEl.value = null
-        } else if(!unitsList[index].classList.contains('unit__hovered')){
-            unitsList[index].classList.add('unit__hovered');
-            choosenEl.value = el
+        if(unitsList) {
+
+            if(unitsList[index].classList.contains('unit__hovered')) {
+                unitsList[index].classList.remove('unit__hovered');
+                choosenEl.value = null
+            } else if(!unitsList[index].classList.contains('unit__hovered')){
+                unitsList[index].classList.add('unit__hovered');
+                choosenEl.value = el
+            }
         }
     }
-
-    //
-    // const resetChoosenEl = (e: any) => {
-    //     if(e.target.parentNode.parentNode.classList.contains('landing-list-el_header')) {
-    //         console.log(e.target.parentNode.parentNode)
-            
-    //     }
-    //     // const unitsList = document.querySelectorAll('.unit');
-    //     // if(choosenEl.value && choosenEl.value.id === el.id) {
-
-    //     //     console.log(unitsList[index])
-    //     // }
-    //     // unitsList[index].classList.toggle('unit__hovered')
-    //     // captionList[index].classList.toggle('visible');
-    //     // Очищаем все элементы от класса 
-    //     // unitsList.forEach(item => item.classList.remove('unit__hovered'))
-    //     // // Действуем
-    //         // if(unitsList[index].classList.contains('unit__hovered')) {
-    //         //     unitsList[index].classList.remove('unit__hovered');
-    //         //     choosenEl.value = null
-    //         // } else if(!unitsList[index].classList.contains('unit__hovered')){
-    //         //     unitsList[index].classList.add('unit__hovered');
-    //         //     choosenEl.value = el
-    //         // }
-    // }
 
     // onClick in desc section item 
     const chooseCurrentLanding = (el: any, index: number) => {
