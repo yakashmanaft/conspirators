@@ -1,17 +1,30 @@
 <script setup>
-import { ref } from "vue";
+
+// shared
 import { Container } from "@/shared/container";
 
-import { DevModePlug } from '@/components/plug_dev_mode'
+// components
+import { AccessDeniedPlug } from "~/components/plug_access_denied";
 /*
 *
     временно
 */
 import { v4 as uuidv4 } from "uuid";
-/*
-*
-    убрать
-*/
+
+
+// PROPS
+const props = defineProps({
+    auth_user_profile: {
+        type: Object,
+        default: {}
+    },
+    auth_user: {
+        type: Object,
+        default: {}
+    }
+})
+
+const accessPlug = ref(false)
 
 const route = useRoute();
 const router = useRouter();
@@ -291,6 +304,11 @@ onMounted(async () => {
   // );
 });
 
+
+// COMPUTED
+const computedPartner = computed(() => {
+  return partner_list.value 
+})
 // const computedSharerOrganizations = computed(() => {
 //   if (organizations.value) {
 //     let organizationsArrayWhereUserIs = [];
@@ -343,6 +361,22 @@ onMounted(async () => {
 // async function getItems() {
 //   return await $fetch("/api/warehouse/item");
 // }
+const { data: partner_list } = useFetch("/api/partnerGuarded/partner", {
+    lazy: false,
+    transform: (partner_list) => {
+      
+      let partner = partner_list.filter(el => el.id === +route.params.id)
+      let sharerExist = partner[0].sharers.filter(el => el.userId === props.auth_user_profile.userId && el.userType === 'conspirator')
+      
+      if(sharerExist[0]) {
+
+        return partner[0]
+      } else {
+        accessPlug.value = true
+      }
+
+    }
+})
 
 /**
  * @desc Users flipper
@@ -433,7 +467,7 @@ const leaveCurrentBand = (organizationID) => {
 };
 
 useHead({
-  title: `Соучастники`,
+  title: `Партнеры`,
   meta: [
     {
       name: "description",
@@ -524,7 +558,11 @@ const createMyNewBand = () => {
 <template>
   <Container>
 
-    <DevModePlug/>
+    <AccessDeniedPlug v-if="accessPlug === true"/>
+
+    <div v-if="accessPlug === false">
+      {{ computedPartner }}
+    </div>
     <!-- PAGE TITLE -->
     <!-- <div class="page-title">
       <h1>
@@ -564,7 +602,7 @@ const createMyNewBand = () => {
 
     <!-- Заголовок - Переключатель -->
     <!-- TOGGLE TITLE -->
-    <div class="toggle-title">
+    <!-- <div class="toggle-title">
       <div
         v-for="(title, index) in titles.filter((el) => {
           if (el.guard && +route.params.id === sessionUser.id) {
@@ -585,7 +623,7 @@ const createMyNewBand = () => {
           ><h2>{{ title.title }}</h2></label
         >
       </div>
-    </div>
+    </div> -->
 
     <!-- Demands -->
     <!-- <div v-if="currentTitle === 'demands'">
@@ -595,12 +633,12 @@ const createMyNewBand = () => {
     </div> -->
 
     <!-- Projects -->
-    <div v-if="currentTitle === 'projects'">
-      <!--  -->
+    <!-- <div v-if="currentTitle === 'projects'">
+
       <div class="projects_container">
         <div>Ничего нет (в разработке...)</div>
       </div>
-    </div>
+    </div> -->
 
     <!-- ORGANIZATIONS -->
     <!-- <div v-if="currentTitle === 'organizations'">
@@ -730,8 +768,6 @@ const createMyNewBand = () => {
       </div>
     </div> -->
 
-    <br />
-    <br />
   </Container>
 </template>
 

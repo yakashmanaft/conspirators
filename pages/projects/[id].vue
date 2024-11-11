@@ -1,6 +1,7 @@
 <script setup>
 // shared
 import { Container } from "@/shared/container";
+import { AccessDeniedPlug } from "~/components/plug_access_denied";
 
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
@@ -55,6 +56,8 @@ const band = ref(null);
 //     item.location === 'project' && item.locationID === project.value.id
 // );
 
+const accessPlug = ref(false)
+
 // toggle title data
 const titles = ref([
   {
@@ -96,17 +99,19 @@ const schedules = ref([
 // COMPUTED
 //= project
 const computedProject = computed(() => {
-    return project_list.value
-          // .filter((el) => {
-      //     // session user is a sharer
-      //     if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
-      //         return el
-      //     }
-      // })
+
+    return project_list.value    
 })
 // tasks
 const computedTasks = computed(() => {
-    return task_list.value
+
+    // return task_list.value
+    if(task_list.value) {
+
+      return task_list.value.filter(
+        el => project_list.value ? el.projectId === project_list.value.id  : []
+      )
+    }
 })
 
 // ******* DB
@@ -116,9 +121,18 @@ const computedTasks = computed(() => {
 const { data: project_list } = useFetch("/api/projectGuarded/project", {
     lazy: false,
     transform: (project_list) => {
-        return project_list
-        .find(el => el.id === +route.params.id)
 
+      // return project_list.find(el => el.id === +route.params.id) 
+
+      let project = project_list.filter(el => el.id === +route.params.id)
+      let sharerExist = project[0].sharers.filter(el => el.userId === props.auth_user_profile.userId && el.userType === 'conspirator')
+      
+      if(sharerExist[0]) {
+
+        return project[0]
+      } else {
+        accessPlug.value = true
+      }
     }
 })
 
@@ -126,9 +140,15 @@ const { data: project_list } = useFetch("/api/projectGuarded/project", {
 const { data: task_list } = useFetch("/api/taskGuarded/task", {
   lazy: false,
   transform: (task_list) => {
-    return task_list.filter(
-      el => project_list?.value ? el.projectId === project_list?.value.id  : []
-    )
+    return task_list
+    // if(project_list.value) {
+
+    //   return task_list.filter(
+    //     el => project_list.value ? el.projectId === project_list.value.id  : []
+    //   )
+    // } else {
+    //   return []
+    // }
   }
 })
 
@@ -212,8 +232,10 @@ onMounted(async () => {
 
 <template>
   <Container>
-
-    <div>
+    <!-- Псевдо защита... -->
+    <AccessDeniedPlug v-if="accessPlug === true"/>
+    <!-- {{props.auth_user_profile}} -->
+    <div v-if="computedProject && !accessPlug">
       
     <!-- TITLE PAGE SECTION -->
     <div class="show-max-767" style="margin-bottom: 0.5rem;">
@@ -226,7 +248,7 @@ onMounted(async () => {
       {{ computedProject }}
       <p>{{ computedProject?.name }}</p>
       <br>
-      Задачи ({{ task_list?.length }})
+      Задачи ({{ computedTasks?.length }})
       <div>
         <ul v-if="task_list?.length">
           
@@ -237,6 +259,8 @@ onMounted(async () => {
         <div v-else>У вас нет задач по данному проекту</div>
       </div>
     </div>
+
+    <!--  -->
     <div >
       <!-- <h1 style="margin-top: 5rem">{{ project.title }}</h1>
       <p>

@@ -1,0 +1,1 @@
+export { default as AccessDeniedPlug } from './ui.vue'

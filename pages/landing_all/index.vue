@@ -446,7 +446,10 @@
         body.style.height = 'unset'
         body.style.overflow = 'unset'
         // Рисуем диаграмму
-        setStrokeDashArrayAndOffset()
+        setTimeout(() => {
+
+            setStrokeDashArrayAndOffset()
+        }, 160)
         // mouse actions on legend of unit
         const legendItems = document.querySelectorAll('.landing-list-el_wrapper')
         legendItems.forEach((el, index) => {
@@ -487,7 +490,7 @@
     body?.addEventListener('click', (e) => {
         // Убираем ховер на unit в диаграме (если нету класс unit + если попап не открыт)
         if(
-            !e.target.classList.contains('unit') && !e.target.parentNode.classList?.contains('popup_wrapper')
+            !e.target.classList?.contains('unit') && !e.target.parentNode.classList?.contains('popup_wrapper')
         ) {
             const unitsList = document.querySelectorAll('.unit');
             choosenEl.value = null
