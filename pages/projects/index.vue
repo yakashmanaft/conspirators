@@ -5,6 +5,7 @@ import { Container } from "@/shared/container";
 // components
 import { DevModePlug } from "@/components/plug_dev_mode";
 import { BreadCrumbs } from "~/components/breadcrumbs";
+import { Button } from "@/components/button";
 
 // utils
 import { H3Error } from "h3";
@@ -257,6 +258,12 @@ onMounted(async () => {
 //     createNewProjectBtnIsDisabled.value = true;
 //   }
 // });
+
+// CREATE
+//= new project
+const addNewProject = () => {
+  alert('В разработке...')
+}
 </script>
 <template>
   <Container>
@@ -271,8 +278,6 @@ onMounted(async () => {
       <BreadCrumbs/>
       <h1 style="margin: 0;">Проекты</h1>
     </div>
-
-    {{ props.auth_user_profile }}
 
     <!-- fetch data is error -->
     <!-- <div v-if="error">
@@ -292,7 +297,7 @@ onMounted(async () => {
     </button> -->
 
     <!-- Modal -->
-    <div
+    <!-- <div
       class="modal fade"
       id="newProjectModal"
       tabindex="-1"
@@ -313,7 +318,7 @@ onMounted(async () => {
             ></button>
           </div>
           <div class="modal-body">
-            <!-- TITLE -->
+
             <div class="mb-3">
               <label for="projectTitle" class="form-label"
                 >Название проекта</label
@@ -326,7 +331,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- ADDRESS -->
+
             <div class="mb-3">
               <label for="projectAddress" class="form-label">Address</label>
               <input
@@ -337,7 +342,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- PARTNER TYPE-->
+
             <div class="mb-3">
               <label for="projectPartnerType" class="form-label"
                 >Partner Type (user | company)</label
@@ -350,7 +355,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- PARTNER ID -->
+
             <div class="mb-3">
               <label for="projectPartnerID" class="form-label">PartnerID</label>
               <input
@@ -361,7 +366,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- CREATOR -->
+
             <div class="mb-3">
               <label for="projectCreator" class="form-label">Creator</label>
               <input
@@ -372,7 +377,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- CURATOR -->
+
             <div class="mb-3">
               <label for="projectCurator" class="form-label"
                 >Curator (user id)</label
@@ -385,7 +390,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- WORK TYPE -->
+
             <div class="mb-3">
               <label for="projectWorkType" class="form-label">Work Type</label>
               <input
@@ -396,7 +401,7 @@ onMounted(async () => {
                 aria-describedby="nameHelp"
               />
             </div>
-            <!-- COMPLETION -->
+
             <div class="mb-3">
               <label for="projectCompletion" class="form-label"
                 >Completion</label
@@ -411,7 +416,7 @@ onMounted(async () => {
             </div>
           </div>
 
-          <!-- MODAL FOOTER -->
+
           <div class="modal-footer">
             <button
               type="button"
@@ -434,11 +439,9 @@ onMounted(async () => {
           </div>
         </form>
       </div>
-    </div>
-
-    <!-- <div v-if="pending">
-      <p>Loading...</p>
     </div> -->
+
+
 
     <div class="projects_container">
       <div
@@ -472,8 +475,9 @@ onMounted(async () => {
       </div>
 
       <!--  -->
-      <div v-if="!computedProjects?.length">
-        У вас нет проектов...
+      <div class="no-project_warapper" v-if="!computedProjects?.length">
+        <p>У вас нет проектов...</p>
+        <Button type="pseudo-btn" link="" @click="addNewProject">Создать</Button>
       </div>
     </div>
 
@@ -527,6 +531,19 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media screen and (max-width: 575px) {
+  .no-project_warapper {
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+
+  .no-project_warapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 }
 @media screen and (max-width: 767px) {
   .project-item_container {

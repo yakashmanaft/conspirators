@@ -2,7 +2,12 @@
   <!-- https://www.youtube.com/watch?v=3MPlTDgQaaE -->
   <Container>
 
-    <h1 class="show-max-767">Контакты</h1>
+    <!-- TITLE PAGE SECTION -->
+    <div class="show-max-767" style="margin-bottom: 0.5rem;">
+
+      <BreadCrumbs/>
+      <h1 style="margin: 0;">Контакты</h1>
+    </div>
     <!-- <DevModePlug/> -->
 
     <!-- Modal EDIT USER-->
@@ -464,7 +469,7 @@
 
         <!-- list -->
         <div class="partners-list_wrapper">
-          <!-- Если ничего не найдено -->
+          <!-- Если ничего не найдено в поиске-->
           <div>
             <div v-if="searchInput && !computedPartners.length">
               По запросу ничего не найдено
@@ -472,7 +477,6 @@
           </div>
 
           <!-- Список пользователей -->
-
           <div
             class="list_item"
             v-for="(partner, index) in computedPartners"
@@ -539,6 +543,11 @@
               </button>
             </div> -->
           </div>
+
+          <!-- Если вообще нет контактов -->
+          <div v-if="searchInput === '' && !computedPartners.length">
+            <p>У вас нет контактов. <Button link="" type="pseudo-btn" @click="addNewPartner">Добавить</Button></p>
+          </div>
         </div>
       </div>
 
@@ -603,10 +612,6 @@
         </tbody>
       </table> -->
 
-      <br />
-      <br />
-      <br />
-      <br />
     </div>
   </Container>
 </template>
@@ -617,11 +622,22 @@
 import { Container } from "@/shared/container";
 // components
 import { DevModePlug } from '@/components/plug_dev_mode';
+import { BreadCrumbs } from "~/components/breadcrumbs";
+import { Button } from "@/components/button";
 // utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
 
+// PROPS
+const props = defineProps({
+    auth_user_profile: {
+        type: Object,
+        default: {}
+    },
+})
+
 const sessionUser = useUserSession().user;
+
 const router = useRouter();
 
 //
@@ -763,6 +779,7 @@ const {
 } = useFetch("api/usersList/users", {
   lazy: false,
   transform: (users) => {
+
     return users
       .sort((x, y) => {
         if (x.surname < y.surname) {
@@ -803,6 +820,15 @@ const {
   lazy: false,
   transform: (partners) => {
     return partners
+      .filter((partner) => {
+        // session user is a sharer
+
+        if(partner.sharers && partner.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+          console.log(partner)
+            return partner
+        } 
+
+      })
       .sort((x, y) => {
         if (x.surname < y.surname) {
           return -1;
@@ -1047,6 +1073,12 @@ const translateModuleName = (name) => {
     return name;
   }
 };
+
+// CREATE
+//= new contact
+const addNewPartner = () => {
+  alert('В разработке...')
+}
 
 // WATHERS
 

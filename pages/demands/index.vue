@@ -495,7 +495,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
       </div>
 
       <!--  -->
-      <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;">
+      <ul v-if="computedLead?.length" style="list-style: none; padding: unset; display: flex; gap: 1rem;">
         <li>lead</li>
         <li>blank</li>
       </ul>
@@ -534,7 +534,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
         </Section>
         </div>
         <!--  -->
-        <div style="margin-bottom: 2rem;" v-else>Ваш огород еще не дал плоды...</div>
+        <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
     </div>
 
     <!-- TASKS SECTION -->
@@ -547,7 +547,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
       </div>
 
       <!-- cheap filters of the section -->
-       <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;">
+       <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;" v-if="computedTask?.length">
          <li>waiting</li>
          <li>works</li>
          <li>canceled</li>
@@ -585,7 +585,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
          <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
         </Section>
       </div>
-      <div v-else>Что-то у вас нет задач...</div>
+      <div class="no-task_wrapper" v-else>Что-то у вас нет задач...</div>
        <!--  -->
    
 
@@ -742,6 +742,10 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   gap: 1rem;
 }
 
+.no-computed-lead_wrapper {
+  margin-bottom: 2rem;
+}
+
 /* TICKETS */
 .ticket_new {
   position: absolute; 
@@ -751,7 +755,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   background-color: black; 
   color: var(--color-btn-text); 
   font-size: 1rem;
-  border-top-left-radius: 0.25rem;
+  border-top-left-radius: 0.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
@@ -775,8 +779,8 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   background-color: black; 
   color: var(--color-btn-text); 
   font-size: 0.6rem;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
@@ -792,6 +796,8 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   .demands_wrapper {
     grid-template-columns: 1fr;
   }
+  .no-task_wrapper,
+  .no-computed-lead_wrapper,
   .computedLead_container  {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -811,6 +817,11 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   }
   .header-section_container {
     margin: 0 1rem;
+  }
+  .no-task_wrapper,
+  .no-computed-lead_wrapper  {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .computedLead_container  {
     padding-left: 1rem;

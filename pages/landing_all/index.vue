@@ -146,7 +146,7 @@
             </div>
         </div>
 
-        <div v-else>На вашем огороде нет посадок...</div>
+        <div class="no-landing_wrapper" v-else>На вашем огороде нет посадок...</div>
 
 
     </Container>
@@ -156,7 +156,6 @@
     .landing_container {
         /* ... */
     }
-
     .landing-list-el_wrapper {
         padding: 1rem;
     }
@@ -299,6 +298,10 @@
     .lead-item_wrapper {
         grid-template-columns: 2rem 1fr 1fr 1fr   
     }
+    .no-landing_wrapper {
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
   }
 
   @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -309,6 +312,10 @@
     .lead-item_wrapper {
         display: grid; 
         grid-template-columns: 3rem 1fr 1fr 1fr
+    }
+    .no-landing_wrapper {
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
   }
 
