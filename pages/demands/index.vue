@@ -171,9 +171,6 @@ const computedLead = computed(() => {
       return arr.reverse()
     }, [])
 
-    // console.log(landing_list.value)
-    // console.log(lead_list.value)
-    // return lead_list.value
     return merged    
   } else {
     return null
@@ -181,8 +178,30 @@ const computedLead = computed(() => {
 })
 //= task
 const computedTask = computed(() => {
-  if(task_list.value) {
-    return task_list.value
+  // project_list
+  // task_list
+  if(project_list.value) {
+    let merged = task_list.value?.reduce((arr: {}[], task) => {
+
+      project_list.value?.forEach(item => {
+        if(item.id === task.projectId) {
+          arr.push({
+            id: task.id,
+            created_at: task.created_at,
+            // project_id: task.projectId,
+            project_name: item.name,
+            status: task.status,
+            urgency: task.urgency,
+            deadline: task.deadline,
+            // desc: task.desc
+          })
+        }
+      })
+
+      return arr.reverse()
+    }, [])
+
+    return merged
   } else {
     return null
   }
@@ -382,7 +401,7 @@ const addNewTask = () => {
 
 // ******* DB
 // *** GET
-// landing
+//= landing
 const { data: landing_list } = useFetch("/api/landingGuarded/landing", {
     lazy: false,
     transform: (landing_list) => {
@@ -394,15 +413,27 @@ const { data: landing_list } = useFetch("/api/landingGuarded/landing", {
         })
     }
 })
-// leads
+//= leads
 const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
   lazy: false,
   transform: (lead_list) => {
     return lead_list
   }
 })
-// tasks
-const { data: task_list } = useFetch("/api/task/task", {
+//= projects
+const { data: project_list } = useFetch("/api/projectGuarded/project", {
+    lazy: false,
+    transform: (project_list) => {
+        return project_list.filter((el) => {
+            // session user is a sharer
+            if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+                return el
+            }
+        })
+    }
+})
+//= tasks
+const { data: task_list } = useFetch("/api/taskGuarded/task", {
   lazy: false,
   transform: (task_list) => {
     return task_list
@@ -503,7 +534,7 @@ const { data: task_list } = useFetch("/api/task/task", {
         </Section>
         </div>
         <!--  -->
-        <div v-else>Ваш огород еще не дал плоды...</div>
+        <div style="margin-bottom: 2rem;" v-else>Ваш огород еще не дал плоды...</div>
     </div>
 
     <!-- TASKS SECTION -->
@@ -534,6 +565,10 @@ const { data: task_list } = useFetch("/api/task/task", {
          @click="$router.push(`task/${item.id}`)"
          style="cursor: pointer; position: relative;"
         >
+          <!-- LEAD is a NEW (absolute) -->
+          <div v-if="item.deadline" class="ticket_deadline">
+            deadline: {{ item.deadline }}
+          </div>
           <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
           <div v-if="item.status === 'paused'" class="rounded ticket_paused">
             <div style="color: #fff;">ПАУЗА</div>
@@ -545,7 +580,7 @@ const { data: task_list } = useFetch("/api/task/task", {
 
          <!-- FROM  -->
          <div>
-           <span>Проект: {{ item.projectId }}</span>
+           <span>Проект: {{ item.project_name }}</span>
          </div>
          <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
         </Section>
@@ -730,6 +765,20 @@ const { data: task_list } = useFetch("/api/task/task", {
   display: flex; 
   align-items: center; 
   justify-content: center;
+}
+.ticket_deadline {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%;
+  /* font-weight: bold;  */
+  background-color: black; 
+  color: var(--color-btn-text); 
+  font-size: 0.6rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 @media screen and (max-width: 575px) {

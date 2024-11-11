@@ -32,58 +32,101 @@ useHead({
   ],
 });
 
-// const {
-//   pending,
-//   error,
-//   refresh,
-//   data: projects,
-//   status,
-// } = useFetch("api/projects/projects", {
-//   lazy: false,
-//   transform: (projects) => {
-//     return projects.filter((el) => {
-//       // CREATOR
-//       if (el.creator === user.value.id) {
-//         return el;
-//       }
-//       // PARTNER
-//       else if (el.partnerType === 'user' && el.partnerID === user.value.id) {
-//         return el
-//       }
-//       // SHARER in project
-//       else if (el.sharers && el.sharers.find((item) => item.sharerType === 'user' && item.sharerID === user.value.id)) {
-//         return el
-//       }
-//       // SHARER in band (by bandID in project)
-//       else if (isRelated(el)){
-//         return el
-//       }
-//     });
-//   },
-// });
+  // PROPS
+  const props = defineProps({
+      auth_user_profile: {
+          type: Object,
+          default: {}
+      },
+  })
 
-const projects:any[] = []
 
-// tmp project item
-const project = ref({
-  uuid: null,
-  title: null,
-  address: null,
-  bandID: null,
-  partnerID: null,
-  partnerType: null,
-  creator: null,
-  curator: null,
-  curatorType: null,
-  workType: null,
-  completion: 0,
-  sharers: null,
-  stages: null
-});
+  
+  const projects:any[] = []
+  
+  // tmp project item
+  const project = ref({
+    id: null,
+    name: null,
+    prtnerId: null,
+    sharers: null
+    // uuid: null,
+    // title: null,
+    // address: null,
+    // bandID: null,
+    // partnerID: null,
+    // partnerType: null,
+    // creator: null,
+    // curator: null,
+    // curatorType: null,
+    // workType: null,
+    // completion: 0,
+    // sharers: null,
+    // stages: null
+  });
+  
+  // COMPUTED
+  //= projects
+  const computedProjects = computed(() => {
+    if(project_list.value) {
 
-const { users } = storeToRefs(useUsersStore());
-const { loadData } = useUsersStore();
-const { user } = useUserSession();
+      return project_list.value
+    } else {
+      return []
+    }
+  }) 
+  
+  // ******* DB *******
+  //= project_list
+  const { pending, error, data: project_list } = useFetch("/api/projectGuarded/project", {
+    lazy: false,
+    transform: (project_list) => {
+      // session user is a sharer
+      return project_list.filter((el) => {
+        if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+          return el
+        }
+      })
+    }
+    // transform: (landing_list) => {
+    //     return landing_list.filter((el) => {
+    //         if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+    //             return el
+    //         }
+    //     })
+  })
+  // const {
+  //   pending,
+  //   error,
+  //   refresh,
+  //   data: projects,
+  //   status,
+  // } = useFetch("api/projects/projects", {
+  //   lazy: false,
+  //   transform: (projects) => {
+  //     return projects.filter((el) => {
+  //       // CREATOR
+  //       if (el.creator === user.value.id) {
+  //         return el;
+  //       }
+  //       // PARTNER
+  //       else if (el.partnerType === 'user' && el.partnerID === user.value.id) {
+  //         return el
+  //       }
+  //       // SHARER in project
+  //       else if (el.sharers && el.sharers.find((item) => item.sharerType === 'user' && item.sharerID === user.value.id)) {
+  //         return el
+  //       }
+  //       // SHARER in band (by bandID in project)
+  //       else if (isRelated(el)){
+  //         return el
+  //       }
+  //     });
+  //   },
+  // });
+  // const { users } = storeToRefs(useUsersStore());
+// const { loadData } = useUsersStore();
+// const { user } = useUserSession();
 
 // const { data: organizations } = useLazyAsyncData("organizations", () =>
 //   $fetch("api/organizations/organizations")
@@ -93,128 +136,127 @@ const { user } = useUserSession();
 onMounted(async () => {
   // refresh();
   // await refreshOrganizations();
-  await loadData();
+  // await loadData();
 });
 
 // CHECK
-const isRelated = (obj) => {
-  if(obj.bandID) {
+// const isRelated = (obj) => {
+//   if(obj.bandID) {
     
-    if(organizations.value) {
+//     if(organizations.value) {
       
-      let band = organizations.value.find(band => band.id === obj.bandID)
+//       let band = organizations.value.find(band => band.id === obj.bandID)
       
-      if(band && band.sharers.find(el => el.userType === 'user' && el.userID === user.value.id)) {
-        return true
-      } else {
-        return false
-      }
+//       if(band && band.sharers.find(el => el.userType === 'user' && el.userID === user.value.id)) {
+//         return true
+//       } else {
+//         return false
+//       }
 
-    }
-  }
-}
+//     }
+//   }
+// }
 
 // *********** ДОБАВЛЯЕМ New Project newProjectModal ***********
 // флаг disabled для кнопки submit
-const createNewProjectBtnIsDisabled = ref(true);
+// const createNewProjectBtnIsDisabled = ref(true);
 
-async function addProject(project: any) {
-  let addedProject = null;
+// async function addProject(project: any) {
+//   let addedProject = null;
 
-  if (
-    project.title &&
-    project.address &&
-    project.partnerID &&
-    project.partnerType &&
-    project.creator &&
-    project.curator &&
-    project.workType
-    // project.completion
-  ) {
-    addedProject = await $fetch("api/projects/projects", {
-      method: "POST",
-      body: {
-        uuid: uuidv4(),
-        title: project.title,
-        address: project.address,
-        partnerID: project.partnerID,
-        partnerType: project.partnerType,
-        creator: project.creator,
-        curator: project.curator,
-        workType: project.workType,
-        completion: project.completion,
-      },
-    });
+//   if (
+//     project.title &&
+//     project.address &&
+//     project.partnerID &&
+//     project.partnerType &&
+//     project.creator &&
+//     project.curator &&
+//     project.workType
+//     project.completion
+//   ) {
+//     addedProject = await $fetch("api/projects/projects", {
+//       method: "POST",
+//       body: {
+//         uuid: uuidv4(),
+//         title: project.title,
+//         address: project.address,
+//         partnerID: project.partnerID,
+//         partnerType: project.partnerType,
+//         creator: project.creator,
+//         curator: project.curator,
+//         workType: project.workType,
+//         completion: project.completion,
+//       },
+//     });
 
-    // clear all inputs in modal
-    clearModalInputs(project);
 
-    // refetching
-    refresh();
-  }
-}
+//     clearModalInputs(project);
 
-//
-const clearModalInputs = (project: any) => {
-  project.uuid = null;
-  project.title = null;
-  project.address = null;
-  project.partnerID = null;
-  project.partnerType = null;
-  project.creator = null;
-  project.curator = null;
-  project.workType = null;
-  project.completion = 0;
-};
+//     refresh();
+//   }
+// }
 
 //
-const translateCurator = (curatorID: number, curatorType: string) => {
-  if (curatorID && curatorType) {
-    if (curatorType === "user") {
-      let curator = [...users.value].find((user) => user.id === curatorID);
-      return `${curator?.surname} ${curator?.name[0]}. ${curator?.middleName[0]}`;
-    } else if (curatorType === "company") {
-      if (organizations.value) {
-        let curator = [...organizations.value].find(
-          (company) => company.id === curatorID
-        );
-        return `${curator?.title}`;
-      }
-    }
-  }
-};
+// const clearModalInputs = (project: any) => {
+//   project.uuid = null;
+//   project.title = null;
+//   project.address = null;
+//   project.partnerID = null;
+//   project.partnerType = null;
+//   project.creator = null;
+//   project.curator = null;
+//   project.workType = null;
+//   project.completion = 0;
+// };
 
-const translatePartner = (partnerID, partnerType) => {
-  if (partnerID) {
-    if (partnerType === "user") {
-      let userItem = users.value.find((item) => item.id === partnerID);
-      return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
-    } else if (partnerType === "company" && organizations.value) {
-      let organizationItem = organizations.value.find(
-        (item) => item.id === partnerID
-      );
-      return `${organizationItem.title}`;
-    }
-  }
-};
+
+// const translateCurator = (curatorID: number, curatorType: string) => {
+//   if (curatorID && curatorType) {
+//     if (curatorType === "user") {
+//       let curator = [...users.value].find((user) => user.id === curatorID);
+//       return `${curator?.surname} ${curator?.name[0]}. ${curator?.middleName[0]}`;
+//     } else if (curatorType === "company") {
+//       if (organizations.value) {
+//         let curator = [...organizations.value].find(
+//           (company) => company.id === curatorID
+//         );
+//         return `${curator?.title}`;
+//       }
+//     }
+//   }
+// };
+
+// const translatePartner = (partnerID, partnerType) => {
+//   if (partnerID) {
+//     if (partnerType === "user") {
+//       let userItem = users.value.find((item) => item.id === partnerID);
+//       return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
+//     } else if (partnerType === "company" && organizations.value) {
+//       let organizationItem = organizations.value.find(
+//         (item) => item.id === partnerID
+//       );
+//       return `${organizationItem.title}`;
+//     }
+//   }
+// };
 
 // Check before submit creating new project
-watch(project.value, () => {
-  if (
-    project.value.title &&
-    project.value.address &&
-    project.value.partnerID &&
-    project.value.partnerType &&
-    project.value.creator &&
-    project.value.curator &&
-    project.value.workType
-    // project.value.completion
-  ) {
-    createNewProjectBtnIsDisabled.value = false;
-  } else {
-    createNewProjectBtnIsDisabled.value = true;
-  }
-});
+// watch(project.value, () => {
+//   if (
+//     project.value.title &&
+//     project.value.address &&
+//     project.value.partnerID &&
+//     project.value.partnerType &&
+//     project.value.creator &&
+//     project.value.curator &&
+//     project.value.workType
+//     project.value.completion
+//   ) {
+//     createNewProjectBtnIsDisabled.value = false;
+//   } else {
+//     createNewProjectBtnIsDisabled.value = true;
+//   }
+// });
 </script>
 <template>
   <Container>
@@ -230,6 +272,8 @@ watch(project.value, () => {
       <h1 style="margin: 0;">Проекты</h1>
     </div>
 
+    {{ props.auth_user_profile }}
+
     <!-- fetch data is error -->
     <!-- <div v-if="error">
       <p>Error Code {{ error.statusCode }}</p>
@@ -238,14 +282,14 @@ watch(project.value, () => {
 
     <!-- ADD NEW PROJECT MODAL -->
     <!-- Button trigger modal -->
-    <button
+    <!-- <button
       type="button"
       class="btn btn-primary"
       data-bs-toggle="modal"
       data-bs-target="#newProjectModal"
     >
       Создать
-    </button>
+    </button> -->
 
     <!-- Modal -->
     <div
@@ -398,12 +442,13 @@ watch(project.value, () => {
 
     <div class="projects_container">
       <div
-        v-for="(project, index) in projects"
+        v-for="(project, index) in computedProjects"
         :key="index"
         class="project-item_container"
         @click="$router.push(`/projects/${project.id}`)"
       >
-        <div class="project-item_left">
+      {{ project }}
+        <!-- <div class="project-item_left">
           <div class="project-completion">
             <span>{{ (project.completion * 100).toFixed(0) }}%</span>
           </div>
@@ -413,8 +458,8 @@ watch(project.value, () => {
               >{{ project.address }} | {{ project.workType }}</span
             >
           </div>
-        </div>
-        <div class="project-item_right">
+        </div> -->
+        <!-- <div class="project-item_right">
           <span
             >Куратор:
             {{ translateCurator(project.curator, project.curatorType) }}</span
@@ -423,19 +468,15 @@ watch(project.value, () => {
             >Заказчик:
             {{ translatePartner(project.partnerID, project.partnerType) }}</span
           >
-        </div>
+        </div> -->
       </div>
 
       <!--  -->
-      <div v-if="!projects.length">
+      <div v-if="!computedProjects?.length">
         У вас нет проектов...
       </div>
     </div>
 
-    <br />
-    <br />
-    <br />
-    <br />
   </Container>
 </template>
 

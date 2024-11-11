@@ -67,6 +67,7 @@ model Lead {
 model Project {
   id        Int     @id @default(autoincrement())
   name      String  @db.VarChar(60)
+  sharers   Json?
   partner   Partner @relation(fields: [partnerId], references: [id])
   partnerId Int
   task      Task[]

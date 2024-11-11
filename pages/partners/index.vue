@@ -799,7 +799,7 @@ const {
   refresh,
   data: partners,
   error,
-} = useFetch("api/partner/partner", {
+} = useFetch("api/partnerGuarded/partner", {
   lazy: false,
   transform: (partners) => {
     return partners
