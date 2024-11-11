@@ -1,5 +1,9 @@
 <script setup>
+// shared
 import { Container } from "@/shared/container";
+
+//components
+import { BreadCrumbs } from "~/components/breadcrumbs";
 
 useHead({
   title: "Проект # ",
@@ -22,6 +26,18 @@ useHead({
     },
   ],
 });
+
+// PROPS
+const props = defineProps({
+    auth_user_profile: {
+        type: Object,
+        default: {}
+    },
+    auth_user: {
+        type: Object,
+        default: {}
+    }
+})
 
 //
 const route = useRoute();
@@ -76,106 +92,153 @@ const schedules = ref([
     a: 1,
   },
 ]);
-// DB PROJECTS
-const { data: projects } = await useFetch("/api/projects/projects", {
+
+// COMPUTED
+//= project
+const computedProject = computed(() => {
+    return project_list.value
+          // .filter((el) => {
+      //     // session user is a sharer
+      //     if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+      //         return el
+      //     }
+      // })
+})
+// tasks
+const computedTasks = computed(() => {
+    return task_list.value
+})
+
+// ******* DB
+// *** GET
+
+//= project
+const { data: project_list } = useFetch("/api/projectGuarded/project", {
+    lazy: false,
+    transform: (project_list) => {
+        return project_list
+        .find(el => el.id === +route.params.id)
+
+    }
+})
+
+// tasks
+const { data: task_list } = useFetch("/api/taskGuarded/task", {
   lazy: false,
-});
+  transform: (task_list) => {
+    return task_list.filter(
+      el => project_list?.value ? el.projectId === project_list?.value.id  : []
+    )
+  }
+})
+
+
+// const { data: projects } = await useFetch("/api/projects/projects", {
+//   lazy: false,
+// });
 // DB BANDS
-const { data: bands } = await useFetch("/api/organizations/organizations", {
-  lazy: false,
-});
+// const { data: bands } = await useFetch("/api/organizations/organizations", {
+//   lazy: false,
+// });
 // DB WAREHOUSE ITEMS
-const { data: items } = await useFetch("/api/warehouse/item", {
-  laze: false,
-  transform: (items) => {
-    return items.filter(
-      (el) => el.location === "project" && el.locationID === +route.params.id
-    );
-  },
-});
+// const { data: items } = await useFetch("/api/warehouse/item", {
+//   laze: false,
+//   transform: (items) => {
+//     return items.filter(
+//       (el) => el.location === "project" && el.locationID === +route.params.id
+//     );
+//   },
+// });
 
 // CHECK FUNC
-const isRelated = (obj) => {
-  // console.log(band.value);
-  if (sessionUser && obj) {
-    // console.log(obj)
-    // console.log(sessionUser)
-    if (
-      obj.creator === sessionUser.value.id ||
-      (obj.curatorType === "user" && obj.curator === sessionUser.value.id) ||
-      (obj.partnerType === "user" && obj.partnerID === sessionUser.value.id) ||
-      (band.value &&
-        band.value.sharers.find(
-          (el) => el.userType === "user" && el.userID === sessionUser.value.id
-        ))
-    ) {
-      return true;
-    }
-    // session user in the band
-    else if (
-      obj.sharers &&
-      obj.sharers.find(
-        (el) => el.sharerType === "user" && el.sharerID === sessionUser.value.id
-      )
-    ) {
-      return true;
-    }
-    // session user is a part of band, which is a sharer in the main band
-    // else if (
-    //   obj.sharers &&
-    //   obj.sharers.find(
-    //     (el) => el.sharerType === "company" && el.sharerID === 2
-    //   )
-    // ) {
-    //   return true
-    // }
-    // else if (band.value && band.value.sharers.find(el => el.userType === 'user' && el.userID === sessionUser.value.id)) {
-    //   console.log(band.value)
-    //   return true
-    // }
-    else if (sessionUser.value.role === "SUPER_ADMIN") {
-      return true;
-    } else {
-      currentTitle.value = "";
-      return false;
-    }
-  }
-};
+// const isRelated = (obj) => {
+//   if (sessionUser && obj) {
+//     if (
+//       obj.creator === sessionUser.value.id ||
+//       (obj.curatorType === "user" && obj.curator === sessionUser.value.id) ||
+//       (obj.partnerType === "user" && obj.partnerID === sessionUser.value.id) ||
+//       (band.value &&
+//         band.value.sharers.find(
+//           (el) => el.userType === "user" && el.userID === sessionUser.value.id
+//         ))
+//     ) {
+//       return true;
+//     }
+//     else if (
+//       obj.sharers &&
+//       obj.sharers.find(
+//         (el) => el.sharerType === "user" && el.sharerID === sessionUser.value.id
+//       )
+//     ) {
+//       return true;
+//     }
+//     else if (sessionUser.value.role === "SUPER_ADMIN") {
+//       return true;
+//     } else {
+//       currentTitle.value = "";
+//       return false;
+//     }
+//   }
+// };
 
 onBeforeMount(async () => {
   // PROJECTS
-  project.value = projects.value.find((item) => item.id == route.params.id);
+  // project.value = projects.value.find((item) => item.id == route.params.id);
   // BANDS
-  band.value = bands.value.find((band) => band.id === project.value.bandID);
+  // band.value = bands.value.find((band) => band.id === project.value.bandID);
 });
 
 onMounted(async () => {
   // CHECK if session user is not ine the band, but is a sharer of project...
-  if (
-    band.value &&
-    band.value.sharers.find(
-      (el) => el.userType === "user" && el.userID === sessionUser.value.id
-    )
-  ) {
-    return;
-  } else {
-    if (
-      project.value.sharers &&
-      project.value.sharers.find(
-        (el) => el.sharerType === "user" && el.sharerID === sessionUser.value.id
-      )
-    ) {
-      titles.value = [...titles.value].filter((el) => !(el.name === "balance"));
-    }
-  }
+  // if (
+  //   band.value &&
+  //   band.value.sharers.find(
+  //     (el) => el.userType === "user" && el.userID === sessionUser.value.id
+  //   )
+  // ) {
+  //   return;
+  // } else {
+  //   if (
+  //     project.value.sharers &&
+  //     project.value.sharers.find(
+  //       (el) => el.sharerType === "user" && el.sharerID === sessionUser.value.id
+  //     )
+  //   ) {
+  //     titles.value = [...titles.value].filter((el) => !(el.name === "balance"));
+  //   }
+  // }
 });
 </script>
 
 <template>
   <Container>
-    <div v-if="project">
-      <!-- <h1 style="margin-top: 5rem;">Проект {{ $route.params.id }}</h1> -->
-      <h1 style="margin-top: 5rem">{{ project.title }}</h1>
+
+    <div>
+      
+    <!-- TITLE PAGE SECTION -->
+    <div class="show-max-767" style="margin-bottom: 0.5rem;">
+      <BreadCrumbs/>
+      <h1 style="margin: 0;"> Проект {{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
+    </div>
+
+
+      проект:
+      {{ computedProject }}
+      <p>{{ computedProject?.name }}</p>
+      <br>
+      Задачи ({{ task_list?.length }})
+      <div>
+        <ul v-if="task_list?.length">
+          
+          <li v-for="(task, index) in computedTasks">
+            {{ task }}
+          </li>
+        </ul>
+        <div v-else>У вас нет задач по данному проекту</div>
+      </div>
+    </div>
+    <div >
+      <!-- <h1 style="margin-top: 5rem">{{ project.title }}</h1>
       <p>
         Вид работ: <span>{{ project.workType }}</span>
       </p>
@@ -186,9 +249,9 @@ onMounted(async () => {
       <div>
         Проект:
         <p>{{ project }}</p>
-      </div>
+      </div> -->
       <!-- Заголовок - переключатель / toggle title-->
-      <div class="toggle-title">
+      <!-- <div class="toggle-title">
         <div
           v-for="(title, index) in titles.filter((el) => {
             if (el.guard && isRelated(project)) {
@@ -209,10 +272,10 @@ onMounted(async () => {
             <h2>{{ title.title }}</h2>
           </label>
         </div>
-      </div>
+      </div> -->
 
       <!-- SCHEDULE -->
-      <div v-if="currentTitle === 'schedule'">
+      <!-- <div v-if="currentTitle === 'schedule'">
         <div class="schedule_container">
           <div v-if="schedules.length">
             <div v-for="schedule in schedules">
@@ -237,34 +300,34 @@ onMounted(async () => {
           </div>
           <div v-else>Ничего нет</div>
         </div>
-      </div>
+      </div> -->
 
       <!-- DEMANDS -->
-      <div v-if="currentTitle === 'demands'">
+      <!-- <div v-if="currentTitle === 'demands'">
         <div class="demands_container">
           <div>Ничего нет</div>
         </div>
-      </div>
+      </div> -->
 
       <!-- SHARERS -->
-      <div v-if="currentTitle === 'sharers'">
-        <!-- container -->
+      <!-- <div v-if="currentTitle === 'sharers'">
+
         <div class="sharers_container">
-          <!-- project.sharers -->
+
           <div v-if="project.sharers">
-            <!-- sharer -->
+
             <div v-for="sharer in project.sharers">
               {{ sharer }}
             </div>
           </div>
-          <!-- else -->
+
           <div v-else>Ничего нет</div>
         </div>
-      </div>
+      </div> -->
 
       <!-- ТМЦ на проекте -->
-      <div v-if="currentTitle === 'warehouse-items'">
-        <!-- container -->
+      <!-- <div v-if="currentTitle === 'warehouse-items'">
+
         <div class="warehouse-items_container">
           <div v-if="items.length">
             <div v-for="(item, index) in items" :key="index">
@@ -275,15 +338,14 @@ onMounted(async () => {
             <p style="margin: 0">Ничего нет</p>
           </div>
         </div>
-        <!-- { "id": 159, "uuid": "ac07b3c9-c0f2-45dc-a400-b6005d70c098", "title": "Щит опалубочный 1200х3000", "type": "stuff", "qty": 1, "measure": "шт.", "location": "project", "locationID": 1, "position": null, "serial": null, "productionDate": null, "ownerID": 1, "ownerType": "company", "responsible": 1, "created_at": "2024-05-29T04:46:12.000Z", "update_at": "2024-05-29T04:46:11.784Z" } -->
-      </div>
+      </div> -->
 
       <!-- BALANCE -->
-      <div v-if="currentTitle === 'balance'">
+      <!-- <div v-if="currentTitle === 'balance'">
         <div class="balance_container">
           <div>Ничего нет</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </Container>
 </template>

@@ -29,7 +29,7 @@
             <div v-if="choosenEl?.leads.length">
                 <ul style="list-style: none; padding: 0;">
                     <li class="lead-item-header_wrapper">
-                        <div>id</div>
+                        <div>#</div>
                         <div>Статус</div>
                         <div>Важность</div>
                         <div>Дата заявки</div>
@@ -83,7 +83,7 @@
                 <div class="canvas">
                     <!-- chart -->
                     <svg class="chart" viewBox="0 0 60 40">
-                        <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="onClickEl(el, index)">
+                        <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="chooseCurrentLanding(el, index)">
                             {{ el }}
                         </circle>
                     </svg>
@@ -630,32 +630,26 @@
 
     // ******* ACTIONS ON PAGE
     // onClick diagram by unit
-    const onClickEl = (el: any, index: number) => {
+    // const onClickEl = (el: any, index: number) => {
 
-        if(!popup_opened.value) {
-            popup_opened.value = true
-        }
-        //  
-        // const captionList = document.querySelectorAll('.caption-item'), 
-        const unitsList = document.querySelectorAll('.unit');
-        
-        // unitsList[index].classList.toggle('unit__hovered')
-        // captionList[index].classList.toggle('visible');
-        
-        // Очищаем все элементы от класса 
-        // unitsList.forEach(item => item.classList.remove('unit__hovered'))
-        // Действуем
-        if(unitsList) {
+    //     if(!popup_opened.value) {
+    //         popup_opened.value = true
+    //     }
 
-            if(unitsList[index].classList.contains('unit__hovered')) {
-                unitsList[index].classList.remove('unit__hovered');
-                choosenEl.value = null
-            } else if(!unitsList[index].classList.contains('unit__hovered')){
-                unitsList[index].classList.add('unit__hovered');
-                choosenEl.value = el
-            }
-        }
-    }
+    //     const unitsList = document.querySelectorAll('.unit');
+        
+
+    //     if(unitsList) {
+
+    //         if(unitsList[index].classList.contains('unit__hovered')) {
+    //             unitsList[index].classList.remove('unit__hovered');
+    //             choosenEl.value = null
+    //         } else if(!unitsList[index].classList.contains('unit__hovered')){
+    //             unitsList[index].classList.add('unit__hovered');
+    //             choosenEl.value = el
+    //         }
+    //     }
+    // }
 
     // onClick in desc section item 
     const chooseCurrentLanding = (el: any, index: number) => {
