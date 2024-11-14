@@ -99,6 +99,10 @@ const featuresListNoAuth = ref([
     path: '/landing_offer'
   },
   {
+    title: 'Дизайним',
+    path: '/landing_design'
+  },
+  {
     title: 'CRM',
     path: 'landing_crm'
   },

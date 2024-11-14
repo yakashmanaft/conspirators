@@ -151,6 +151,8 @@ watch(
 
 <style scoped>
 .footer_container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   width: 100%;
 }
 .footer_wrapper_loggedIn,

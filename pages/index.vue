@@ -44,7 +44,7 @@ const { loggedIn, user, session, clear } = useUserSession();
     <div class="buttons-container">
 
       <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
-      <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Узнать по услугам маркетинга</Button>
+      <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Ваш отдел маркетинга</Button>
       <Button type="pseudo-btn" link="/landing_design" bg="bg-stroke" :disabled="false">Дизайним</Button>
     </div>
 

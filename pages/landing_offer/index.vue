@@ -7,49 +7,89 @@
         title="Заявка отправлена"
         content="Придумываем варианты предложения :)"
     />
+    
+    <div class="gradient-box_container" >
 
-    <Container>
 
-        <!-- TITLE PAGE SECTION -->
-        <div class="show-max-767" style="margin-bottom: 0.5rem;">
-            <BreadCrumbs/>
-            <h1 style="margin: 0;">Ваш отдел маркетинга</h1> 
+        <div class="gradient-box_wrapper">
+
+            <!-- TITLE PAGE SECTION -->
+            <div class="show-max-767" style="margin-bottom: 0.5rem;">
+                <BreadCrumbs style="background-color: #fff; width: fit-content; padding: 2px 4px;"/>
+                <!--  -->
+                <h1 style="padding: 2px 4px; margin: 0; margin-top: 1rem; background-color: #fff; width: fit-content">Ваш отдел маркетинга</h1> 
+                <!--  -->
+                <h2 style="padding: 2px 4px; margin-top: 1rem; background-color: #fff; width: fit-content;">по цене специалиста</h2>
+            </div>
+    
+            <div>
+                <p>"Умеет человек объяснять, 100%"</p>
+                <p>Светлана Тарасова - ученица авторского курса <a rel="nofollow" href="https://vk.com/mikolenko_max">Максима Миколенко</a> по таргетированной рекламе</p>
+            </div>
+
+            <div class="block-offer_container">
+                <h3>Организация маркетинга в бизнесе</h3>
+                <Button @click.prevent="openPopup" type="original-btn">Обсудим боли?</Button>
+            </div>  
+    
         </div>
+        
+    </div>
+    <div class="block-about_wrapper">
 
-        <h2>по цене специалиста</h2>
-        <h3>Настроим связку взаимодействий Бизнес - Заказчик</h3>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p>
+        <h2 style="background-color: rgba(84, 184, 82, .8); padding: 2px 4px; width: fit-content; color: #fff;">Привет, мы Максим и Сергей</h2>
+        <h2 style="background-color: rgba(84, 184, 82, .8); padding: 2px 4px; width: fit-content; color: #fff;">- основатели агентства Conspirators</h2>
+        <h3>Мы ваш отдел маркетинга по дизайну и продвижению бизнеса на рынке</h3>
+        <p>“Три причины почему не работает маркетинг”</p>
+        <div style="background-color: var(--color-urgency-low); width: 400px; height: 200px;">
 
-        <Button @click.prevent="openPopup" type="original-btn">Хочу лиды</Button>
+        </div>
+        <p>Что мы умеем:</p>
+        <ul>
+            <li>Оценка эффективности действующих каналов коммуникации или отдела продаж</li>
+            <li>Определение вектора развития бизнеса на основании оценки текущих показателей</li>
+            <li>Создание контента для вашего маркетинга(для онлайн или оффлайн концепций)</li>
+            <li>Помощь в создании отдела продаж / маркетинга</li>
+            <li>Подключение и сопровождение каналов коммуникации (WEB, SMM, Директ, Таргеты)</li>
+            <li>Обучение персонала</li>
+        </ul>
+    </div>
 
-        <h4 style="margin-top: 1rem;" >LLorem</h4>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea eos quae expedita odit. s mollitia voluptate vitae error ex blanditiis quidem, excepturi quas tenetur maiores facere ratione, tempora aut! Pariatur, quisquam? Quos, facere officiis fuga nisi cupiditate, provident nulla facilis id ad, eos vel. Quis ipsum rem minus dignissimos tempore ab optio pariatur natus nisi magni molestias sint asperiores sequi, voluptatibus esse eveniet! Delectus ratione, ducimus earum voluptate officiis iste rerum voluptatum necessitatibus tempore debitis mollitia, molestiae minima id accusamus voluptatibus exercitationem? Neque totam vel quae isi illo repellendus fugiat, id repudiandae temporibus autem neque sint facere repellat provident molestias inventore mpedit. Nesciunt voluptatem praesentium laudantium rerum quibusdam soluta. Recusandae fugit eligendi delectus explicabo error impedit esse iusto, aliquam perferendis non. Dolore, inventore! Ratione nobis architecto expedita iste veniam voluptatem modi sapiente!</p>
+    <!-- POPUP -->
+     <div v-if="popup_opened">
 
-        <!-- POPUP -->
-         <div v-if="popup_opened">
-
-             <DefaultPopup
-                id="popup-default-callback_offer"  
-                popup_title="Форма обратной связи" 
+         <DefaultPopup
+            id="popup-default-callback_offer"  
+            popup_title="Форма обратной связи" 
+            @emitClosePopup="closePopup"
+             
+         >
+            <p>А чем вы занимаетесь?</p>
+            <input type="text" placeholder="Укажите сферу деятельности"/>
+            <br/>
+            <p>У вас был опыт работы с таргетированной рекламой?</p>
+            <p>Да / Нет</p>
+            <br/>
+            <p>Для первого знакомства не хватает способа с вами связаться:</p>
+            <input type="text" placeholder="Вы берите вариант для связи"/>
+            <br/>
+            <p>Благодарим за интерес, значит нам с вами по пути. Мы записали созвон с вами в свой ежедневник. Нам необходимо некоторое время, дабы подобрать наиболее актуальное для вашей сферы</p>
+            <p>С уважением, ваш отдел маркетинга</p>
+            <br/>
+            <p>А пока, предлагаем поглядеть наши кейсы: BUTTON</p>
+            
+            <Form_landing_offer
+                :path="route?.path"
+                :list="landing_list || []"
                 @emitClosePopup="closePopup"
-                 
-             >
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores porro ad ea ipsam enim veniam quidem recusandae. Ipsum perspiciatis illo veritatis quis sequi quam </p>
-                
-                <Form_landing_offer
-                    :path="route?.path"
-                    :list="landing_list || []"
-                    @emitClosePopup="closePopup"
-                />   
-            </DefaultPopup>
-        </div>
-
-    </Container>
+            />   
+        </DefaultPopup>
+    </div>
 </template>
 
 <script lang="ts" setup>
     useHead({
-        title: "Landing offer",
+        title: "Ваш отдел маркeтинга",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -69,8 +109,8 @@
     })
 
     // shared
-    import { Container } from '@/shared/container'
     import { DefaultPopup } from '~/shared/popup';
+    import { Container } from '~/shared/container';
 
     // components
     import { Button } from '@/components/button';
@@ -150,5 +190,67 @@
 </script>
 
 <style scoped>
+.gradient-box_container {
+    position: relative;
+    background-image: linear-gradient(90deg, rgba(84, 184, 82, 100) 10%, rgba(0,0,0,0)); 
+    height: 100vh; 
+}
+.block-about_wrapper,
+.gradient-box_wrapper {
+    max-width: 1399px;
+    margin: 0 auto; 
+}
+.block-offer_container {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background-color: #fff;
+}
 
+@media screen and (max-width: 575px) {
+    .gradient-box_container {
+        padding-top: 6rem;
+    }
+    .block-about_wrapper {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+@media screen and (min-width: 576px) and (max-width: 767px){
+    .gradient-box_container {
+        padding-top: 6rem;
+    }
+    .block-about_wrapper {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .gradient-box_container {
+        padding-top: 6rem;
+    }
+    .block-about_wrapper {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .gradient-box_container {
+        padding-top: 6rem;
+    }
+    .block-about_wrapper {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .gradient-box_container {
+        padding-top: 6rem;
+    }
+    .block-about_wrapper {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
 </style>
