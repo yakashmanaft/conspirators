@@ -22,14 +22,14 @@
                 <h2 style="padding: 2px 4px; margin-top: 1rem; background-color: #fff; width: fit-content;">по цене специалиста</h2>
             </div>
     
-            <div>
+            <div class="comment-main_wrapper">
                 <p>"Умеет человек объяснять, 100%"</p>
-                <p>Светлана Тарасова - ученица авторского курса <a rel="nofollow" href="https://vk.com/mikolenko_max">Максима Миколенко</a> по таргетированной рекламе</p>
+                <p>Светлана Тарасова - ученица авторского курса <a target="_blank" rel="nofollow" href="https://vk.com/mikolenko_max">Максима Миколенко</a> по таргетированной рекламе</p>
             </div>
 
             <div class="block-offer_container">
                 <h3>Организация маркетинга в бизнесе</h3>
-                <Button @click.prevent="openPopup" type="original-btn">Обсудим боли?</Button>
+                <Button @click.prevent="openPopup" bg="bg-stroke" type="pseudo-btn">Обсудим боли?</Button>
             </div>  
     
         </div>
@@ -37,22 +37,51 @@
     </div>
     <div class="block-about_wrapper">
 
-        <h2 style="background-color: rgba(84, 184, 82, .8); padding: 2px 4px; width: fit-content; color: #fff;">Привет, мы Максим и Сергей</h2>
-        <h2 style="background-color: rgba(84, 184, 82, .8); padding: 2px 4px; width: fit-content; color: #fff;">- основатели агентства Conspirators</h2>
-        <h3>Мы ваш отдел маркетинга по дизайну и продвижению бизнеса на рынке</h3>
-        <p>“Три причины почему не работает маркетинг”</p>
-        <div style="background-color: var(--color-urgency-low); width: 400px; height: 200px;">
+        <div>
 
+            <h2 style="background-color: rgba(84, 184, 82, .8); padding: 2px 4px; width: fit-content; color: #fff;">Привет, мы Максим и Сергей</h2>
+            <h2 style="background-color: rgba(84, 184, 82, .8); padding: 2px 4px; width: fit-content; color: #fff;">- основатели агентства Conspirators</h2>
         </div>
-        <p>Что мы умеем:</p>
-        <ul>
-            <li>Оценка эффективности действующих каналов коммуникации или отдела продаж</li>
-            <li>Определение вектора развития бизнеса на основании оценки текущих показателей</li>
-            <li>Создание контента для вашего маркетинга(для онлайн или оффлайн концепций)</li>
-            <li>Помощь в создании отдела продаж / маркетинга</li>
-            <li>Подключение и сопровождение каналов коммуникации (WEB, SMM, Директ, Таргеты)</li>
-            <li>Обучение персонала</li>
-        </ul>
+
+        <div class="contact-block_wrapper" style="margin-top: 2rem;">
+            <ul>
+                <li>
+                    <p><span><nuxt-link to="tg://resolve?domain=Kashmanaft">Сергей Анфалов</nuxt-link></span></p>
+                </li>
+                <li>
+                    <p><span><nuxt-link to="https://vk.com/mikolenko_max">Максим Миколенко</nuxt-link></span></p>
+                </li>
+            </ul>
+        </div>
+
+        <section class="section-video_wrapper" style="margin-top: 2rem; display: flex; gap: 2rem;">
+            
+            
+            <video id="aboutVideo" style="width: 50%;" controls="controls" src="@/assets/video/01_three-reasons.mp4"></video>
+            
+            <div class="video_desc" style="width: 50%; display: flex; flex-direction: column; align-items: flex-end">
+
+                <h3 style="background-color: var(--color-status-canceled); padding: 2px 4px; text-align: right;">Три причины почему не работает маркетинг</h3>
+                <p style="background-color: var(--color-status-canceled); padding: 2px 4px;">по версии <a rel="nofollow" target="blank" href="https://vk.com/mikolenko_max">Максима Миколенко</a></p>
+            </div>
+        </section>
+
+        <!--  -->
+        <section style="margin-top: 2rem;">
+
+            <h3>Мы ваш отдел маркетинга по дизайну и упаковке бизнеса на рынке</h3>
+            <ul style="margin-top: 2rem;">
+                <li><p>Оценка эффективности действующих каналов коммуникации или отдела продаж</p></li>
+                <li><p>Определение вектора развития бизнеса на основании оценки текущих показателей</p></li>
+                <li><p>Создание контента для вашего маркетинга(для онлайн или оффлайн концепций)</p></li>
+                <li><p>Помощь в создании отдела продаж / маркетинга</p></li>
+                <li><p>Подключение и сопровождение каналов коммуникации (WEB, SMM, Директ, Таргеты)</p></li>
+                <li><p>Обучение персонала</p></li>
+            </ul>
+            <div style="margin-top: 3rem; margin-bottom: 2rem;">
+                <Button @click.prevent="openPopup" bg="bg-stroke" type="pseudo-btn">Обсудим?</Button>
+            </div>
+        </section>
     </div>
 
     <!-- POPUP -->
@@ -208,6 +237,31 @@
     background-color: #fff;
 }
 
+.comment-main_wrapper {
+    position: absolute;
+    bottom: 2rem;
+    right: 0;
+    background-color: var(--color-btn-disabled-bg);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    margin-top: 0.2rem;
+    padding-left: 2rem;
+    position: relative;
+}
+ul li:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgba(84, 184, 82, .8);
+}
+
 @media screen and (max-width: 575px) {
     .gradient-box_container {
         padding-top: 6rem;
@@ -215,6 +269,24 @@
     .block-about_wrapper {
         padding-top: 2rem;
         padding-bottom: 2rem;
+    }
+    .contact-block_wrapper,
+    section {
+        padding: 0 0.5rem;
+    }
+    .section-video_wrapper {
+        flex-direction: column;
+        gap: 1rem!important;
+    }
+    .section-video_wrapper video {
+        width: 100%!important;
+    }
+    .section-video_wrapper .video_desc {
+        width: 100%!important;
+        align-items: flex-start!important;
+    }
+    .section-video_wrapper .video_desc h3 {
+        text-align: unset!important;
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
@@ -225,6 +297,20 @@
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
+    .contact-block_wrapper,
+    section {
+        padding: 0 1rem;
+    }
+    .section-video_wrapper {
+        flex-direction: column;
+        gap: 1rem!important;
+    }
+    .section-video_wrapper video {
+        width: 100%!important
+    }
+    .section-video_wrapper .video_desc {
+        width: 100%!important;
+    }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
     .gradient-box_container {
@@ -234,6 +320,20 @@
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
+    .contact-block_wrapper,
+    section {
+        padding: 0 2rem;
+    }
+    .section-video_wrapper {
+        flex-direction: column;
+        gap: 1rem!important;
+    }
+    .section-video_wrapper video {
+        width: 100%!important
+    }
+    .section-video_wrapper .video_desc {
+        width: 100%!important;
+    }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
     .gradient-box_container {
@@ -242,6 +342,10 @@
     .block-about_wrapper {
         padding-top: 2rem;
         padding-bottom: 2rem;
+    }
+    .contact-block_wrapper,
+    section {
+        padding: 0 2rem;
     }
 }
 @media screen and (min-width: 1200px) {
