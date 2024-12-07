@@ -13,7 +13,7 @@
 
     <div>
       <h2>Авторские права</h2>
-      <p>founder: <span><nuxt-link to="tg://resolve?domain=Kashmanaft">@Kashmanaft</nuxt-link></span></p>
+      <p>founders of conspirators: <span><nuxt-link to="tg://resolve?domain=Kashmanaft">@Kashmanaft</nuxt-link></span></p>
       <p>
         Использованы иконки следующих авторов: 
         <span>

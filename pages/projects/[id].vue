@@ -265,8 +265,12 @@ onMounted(async () => {
           
           <li v-for="(task, index) in computedTasks" style="border-bottom: 1px solid gray;">
             <!-- {{ task }} -->
-            <div style="display: flex; gap: 1rem;">
-              <Button type="pseudo-btn" :link="`/task/${task.id}`">{{ task.desc }}</Button>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+
+              <div>
+                <Button type="pseudo-btn" :link="`/task/${task.id}`">{{ task.name }}</Button>
+                <div>{{ task.desc }}</div>
+              </div>
               <div>{{ task.created_at }}</div>
               <div>{{ task.deadline }}</div>
               <div>{{ task.ended_at }}</div>
