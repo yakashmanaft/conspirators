@@ -4,6 +4,7 @@ import {Container} from '@/shared/container'
 
 // components
 import { BreadCrumbs } from '~/components/breadcrumbs';
+import { Button } from '~/components/button';
 
 useHead({
         title: "Задача - ",
@@ -39,6 +40,11 @@ useHead({
 
     const route = useRoute()
 
+    // CLICK
+    const addTaskLedgerItem = () => {
+        alert('В разработке')
+    }
+
     // COMPUTED
     //= current lead
     const current_task = computed(() => {
@@ -59,8 +65,8 @@ useHead({
     // ******* DB
     // *** GET
 
-    // landing
-    const { data: task_list } = useFetch("/api/task/task", {
+    // task list
+    const { data: task_list } = useFetch("/api/taskGuarded/task", {
         lazy: false,
         transform: (task_list) => {
             // return landing_list.filter((el) => {
@@ -72,6 +78,18 @@ useHead({
             return task_list.find(el => el.id === +route.params.id)
         }
     })
+
+    // task ledger item
+    const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
+        lazy: false,
+        transform: (task_ledger) => {
+
+            if(current_task.value) {
+
+                return task_ledger.filter(el => el.taskId === current_task.value.id)
+            }
+        }
+    }) 
 </script>
 
 
@@ -81,7 +99,9 @@ useHead({
         <!-- TITLE PAGE SECTION -->
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
-            <h1 style="margin: 0;">Задача #{{ $route.params.id  }}</h1> 
+            <h1 style="margin: 0;">{{ current_task?.desc  }}</h1> 
+
+            <Button type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">Проект: {{ current_task?.projectId }}</Button>
         </div>
 
 
@@ -90,12 +110,22 @@ useHead({
             <p>Дата создания: {{ current_task.created_at }}</p> 
             <p>Deadline: {{ current_task.deadline }}</p>
             <p>Статус: {{  current_task.status  }}</p>
+            <p>Важность: {{ current_task.urgency }}</p>
             <!-- <p>Автор: xxx</p>
             <p>Контроль реализации: xxx</p>-->
             <!-- <h2>This is a lead from: {{ current_task.landing_name }}</h2> -->
         </div>
 
-        {{ current_task  }}
+        <div v-if="task_ledger?.length">
+            <h2>Выполнение:</h2>
+
+            <ul>
+                <li v-for="item in task_ledger">{{ item }}</li>
+            </ul>
+        </div>
+        <div>
+            <Button type="pseudo-btn" @click="addTaskLedgerItem">Добавить выполнение</Button>
+        </div>
         <!-- <div v-for="(item, index) in currentDemand.itemsList">
             <p>{{index + 1 }}.{{ item }}</p>
         </div> -->

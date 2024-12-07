@@ -477,7 +477,7 @@ const addNewProject = () => {
       <!--  -->
       <div class="no-project_warapper" v-if="!computedProjects?.length">
         <p>У вас нет проектов...</p>
-        <Button type="pseudo-btn" link="" @click="addNewProject">Создать</Button>
+        <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
       </div>
     </div>
 

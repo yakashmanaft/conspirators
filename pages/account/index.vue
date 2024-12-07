@@ -5,7 +5,7 @@
     <h1 style="margin-top: 5rem">Аккаунт</h1>
 
     <!-- <DevModePlug/> -->
-    {{ auth_user_profile }}
+    {{ $props.auth_user_profile }}
 
 
     <!-- fetch data is error -->

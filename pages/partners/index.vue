@@ -546,7 +546,8 @@
 
           <!-- Если вообще нет контактов -->
           <div v-if="searchInput === '' && !computedPartners.length">
-            <p>У вас нет контактов. <Button link="" type="pseudo-btn" @click="addNewPartner">Добавить</Button></p>
+            <p>У вас нет контактов</p>
+            <Button link="" type="pseudo-btn" bg="bg-full" @click="addNewPartner">Добавить</Button>
           </div>
         </div>
       </div>
@@ -849,7 +850,6 @@ const {
       });
   },
 });
-
 
 // const { refresh: refreshCompanies, data: companies } = await useLazyFetch(
 //   "api/organizations/organizations"

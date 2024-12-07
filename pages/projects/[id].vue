@@ -5,6 +5,7 @@ import { AccessDeniedPlug } from "~/components/plug_access_denied";
 
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
+import { Button } from "~/components/button";
 
 useHead({
   title: "Проект # ",
@@ -110,7 +111,9 @@ const computedTasks = computed(() => {
 
       return task_list.value.filter(
         el => project_list.value ? el.projectId === project_list.value.id  : []
-      )
+      ).sort((a,b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      })
     }
 })
 
@@ -149,6 +152,14 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
     // } else {
     //   return []
     // }
+  }
+})
+
+// tasks ledger items
+const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
+  lazy: false,
+  transform: (task_ledger) => {
+    return task_ledger
   }
 })
 
@@ -240,7 +251,7 @@ onMounted(async () => {
     <!-- TITLE PAGE SECTION -->
     <div class="show-max-767" style="margin-bottom: 0.5rem;">
       <BreadCrumbs/>
-      <h1 style="margin: 0;"> Проект {{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
+      <h1 style="margin: 0;">{{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
     </div>
 
 
@@ -252,8 +263,42 @@ onMounted(async () => {
       <div>
         <ul v-if="task_list?.length">
           
-          <li v-for="(task, index) in computedTasks">
-            {{ task }}
+          <li v-for="(task, index) in computedTasks" style="border-bottom: 1px solid gray;">
+            <!-- {{ task }} -->
+            <div style="display: flex; gap: 1rem;">
+              <Button type="pseudo-btn" :link="`/task/${task.id}`">{{ task.desc }}</Button>
+              <div>{{ task.created_at }}</div>
+              <div>{{ task.deadline }}</div>
+              <div>{{ task.ended_at }}</div>
+              <div>{{ task.status }}</div>
+              <div>{{ task.urgency }}</div>
+            </div>
+
+            <ul v-if=" task_ledger?.length" style="padding: 0;">
+              <!-- task ledger el -->
+              <li v-for="(task_el) in  task_ledger.filter(el => el.taskId === task.id).sort((a,b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      })" >
+                <!-- {{ task_el }} -->
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div>
+                    <div v-if="task_el.created_at === task_el.ended_at">Нет даты завершения</div>
+                    <div v-else>
+                      {{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) }}
+                    </div>
+                  </div>
+                  <div>{{ task_el.subject }}</div>
+                  <div>taskId: {{ task_el.taskId }}</div>
+                  <div>playerId: {{ task_el.playerId }}</div>
+                  <div>{{ task_el.status }}</div>
+                  <div>
+                    <div>{{ task_el.created_at }}</div>
+                    <div>{{ task_el.ended_at }}</div>
+                  </div>
+                </div>
+
+              </li>
+            </ul>
           </li>
         </ul>
         <div v-else>У вас нет задач по данному проекту</div>

@@ -1,6 +1,6 @@
 <template>
   <!-- 
-    types: 
+    type: 
       1/ original-btn
       2/ pseudo-btn
 

@@ -47,8 +47,8 @@ model Landing {
   created_at DateTime  @default(now()) @db.DateTime(0)
   update_at  DateTime? @updatedAt
   lead       Lead[]
-  partner    Partner   @relation(fields: [partnerId], references: [id])
-  partnerId  Int       @default(0)
+  // partner    Partner   @relation(fields: [partnerId], references: [id])
+  // partnerId  Int
 }
 
 model Lead {
@@ -65,37 +65,67 @@ model Lead {
 }
 
 model Project {
-  id        Int     @id @default(autoincrement())
-  name      String  @db.VarChar(60)
-  sharers   Json?
-  partner   Partner @relation(fields: [partnerId], references: [id])
-  partnerId Int
-  task      Task[]
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(60)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  sharers    Json?
+  // [{"userType": "conspirator", "userId": 1}]
+  // Банда заказчика, если нет - Общее (1)
+  band       Band     @relation(fields: [bandId], references: [id])
+  bandId     Int
+  task       Task[]
 }
 
 model Partner {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(60)
+  middleName        String?             @db.VarChar(60)
+  surname           String?             @db.VarChar(60)
+  phone             String?             @db.VarChar(15)
+  sharers           Json?
+  band              Band                @relation(fields: [bandId], references: [id])
+  bandId            Int                 @default(0)
+  // landing    Landing[]
+  // project    Project[]
+  TaskProcessLedger TaskProcessLedger[]
+  created_at        DateTime            @default(now()) @db.DateTime(0)
+  update_at         DateTime?           @updatedAt
+}
+
+model Band {
   id         Int       @id @default(autoincrement())
   name       String    @db.VarChar(60)
-  middleName String?   @db.VarChar(60)
-  surname    String?   @db.VarChar(60)
-  phone      String?   @db.VarChar(15)
-  sharers    Json?
-  landing    Landing[]
-  project    Project[]
   created_at DateTime  @default(now()) @db.DateTime(0)
-  update_at  DateTime? @updatedAt
+  update_at  DateTime  @updatedAt
+  Partner    Partner[]
+  Project    Project[]
 }
 
 model Task {
+  id                Int                 @id @default(autoincrement())
+  created_at        DateTime            @default(now()) @db.DateTime(0)
+  // ended_at   DateTime?  @default(now()) @db.DateTime(0)
+  update_at         DateTime?           @updatedAt
+  deadline          DateTime?           @default(now()) @db.DateTime(0)
+  ended_at          DateTime?           @default(now()) @db.DateTime(0)
+  project           Project             @relation(fields: [projectId], references: [id])
+  projectId         Int
+  TaskProcessLedger TaskProcessLedger[]
+  status            TaskStatus          @default(waiting)
+  urgency           Urgency             @default(low)
+  desc              String?             @db.VarChar(255)
+}
+
+model TaskProcessLedger {
   id         Int        @id @default(autoincrement())
   created_at DateTime   @default(now()) @db.DateTime(0)
-  update_at  DateTime?  @updatedAt
-  deadline   DateTime?  @default(now())
-  project    Project    @relation(fields: [projectId], references: [id])
-  projectId  Int
+  ended_at   DateTime   @default(now()) @db.DateTime(0)
+  subject    String     @db.VarChar(255)
+  taskId     Int
+  player     Partner    @relation(fields: [playerId], references: [id])
+  playerId   Int
   status     TaskStatus @default(waiting)
-  urgency    Urgency    @default(low)
-  desc       String?    @db.VarChar(255)
+  Task       Task       @relation(fields: [taskId], references: [id])
 }
 
 model LeadHistoryLedger {
