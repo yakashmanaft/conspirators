@@ -292,7 +292,7 @@ const set_bgColor_by_Urgency = (lead: any) => {
 }
 
 // HELPERS
-const contWorkHoursByTask = (taskId: number, taskLedger: any) => {
+const countWorkHoursByTask = (taskId: number, taskLedger: any) => {
 
   let sum:number = 0
   taskLedger?.forEach((item:any) => {
@@ -344,7 +344,7 @@ const contWorkHoursByTask = (taskId: number, taskLedger: any) => {
               <div style="color: #fff;">ПАУЗА</div>
             </div>   -->
             <div>---</div>
-            <div>{{ contWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+            <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
              <!-- (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) -->
 
           </Section>
