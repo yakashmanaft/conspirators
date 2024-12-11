@@ -830,11 +830,9 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   .computedTask_container{
     grid-template-columns: 1fr;
     padding: 0 1rem;
-  }
-  .demands_wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
-  .computedTask_container{
+  .demands_wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
 } 

@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 // shared
-import { Container } from "@/shared/container";
 import { AccessDeniedPlug } from "~/components/plug_access_denied";
+import { Container } from "@/shared/container";
+import { Section } from "~/shared/section";
 
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
@@ -239,6 +240,67 @@ onMounted(async () => {
   //   }
   // }
 });
+
+//= urgency
+const set_bgColor_by_Urgency = (lead: any) => {
+
+  let color;
+
+  // ****** URGENCY ******
+  if(lead.urgency) {
+
+    // LOW
+    if(lead.urgency === 'low') {
+      color = `var(--color-urgency-low)`
+    } 
+    // MIDDLE
+    else if (lead.urgency === 'middle') {
+      color = `var(--color-urgency-middle)`
+    }
+    // HIGH
+    else if (lead.urgency === 'high') {
+      color = `var(--color-urgency-high)`
+    }
+    else {
+      // color = null
+    }
+  }
+  // ****** STATUS 
+  // if(lead.status) {
+
+  //   // BLANK
+  //   if(lead.status === 'blank') {
+  //     color = 'var(--color-status-canceled)'
+  //   }
+  //   // PAUSED
+  //   if(lead.status === 'paused') {
+  //     // color = 'var(--color-bg-popup)'
+  //     color = 'var(--color-status-canceled)'
+  //   }
+  //   // CANCELED
+  //   if(lead.status === 'canceled') {
+  //     color = 'var(--color-status-canceled)'
+  //   }
+  //   // PAUSED
+  //   // FINISHED
+  //   if(lead.status === 'finished') {
+  //     color = 'var(--color-btn-text)'
+  //   }
+  // }
+
+  return color
+}
+
+// HELPERS
+const contWorkHoursByTask = (taskId: number, taskLedger: any) => {
+
+  let sum:number = 0
+  taskLedger?.forEach((item:any) => {
+    sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+  })
+
+  return sum.toFixed(1)
+}
 </script>
 
 <template>
@@ -261,7 +323,36 @@ onMounted(async () => {
       <br>
       Задачи ({{ computedTasks?.length }})
       <div>
-        <ul v-if="task_list?.length">
+
+        <div class="computedTask_container" v-if="task_list?.length" style="list-style: none; padding: 0;">
+
+          <!--  -->
+          <Section 
+            v-for="(task, index) in computedTasks"
+            :padding="true" 
+            :bg="set_bgColor_by_Urgency(task)" 
+            style="cursor: pointer; position: relative;"
+          >
+            {{  task  }}
+            
+            <!-- LEAD is a NEW (absolute) -->
+            <div class="ticket_deadline">
+              New
+            </div>
+            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+            <!-- <div v-if="item.status === 'paused'" class="rounded ticket_paused">
+              <div style="color: #fff;">ПАУЗА</div>
+            </div>   -->
+            <div>---</div>
+            <div>{{ contWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+             <!-- (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) -->
+
+          </Section>
+        </div>
+
+        <ul v-if="task_list?.length" style="list-style: none; padding: 0;" >
+
+
           
           <li v-for="(task, index) in computedTasks" style="border-bottom: 1px solid gray;">
             <!-- {{ task }} -->
@@ -276,6 +367,8 @@ onMounted(async () => {
               <div>{{ task.ended_at }}</div>
               <div>{{ task.status }}</div>
               <div>{{ task.urgency }}</div>
+
+              
             </div>
 
             <ul v-if=" task_ledger?.length" style="padding: 0;">
@@ -461,6 +554,26 @@ onMounted(async () => {
 .balance_container {
   margin-top: 1rem;
 }
+
+.ticket_deadline {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%;
+  /* font-weight: bold;  */
+  background-color: black; 
+  color: var(--color-btn-text); 
+  font-size: 0.6rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.computedTask_container{
+  display: grid;
+  gap: 1rem;
+}
 @media screen and (max-width: 575px) {
   .toggle-title {
     margin-top: 1rem;
@@ -478,6 +591,11 @@ onMounted(async () => {
   .balance_container {
     margin: 0 1rem;
   }
+  .computedTask_container{
+    grid-template-columns: 1fr;
+    padding: 0 0.5rem;
+    gap: 1rem;
+  }
 }
 @media screen and (min-width: 576) and (max-width: 767px) {
   .switch-title_el:first-child {
@@ -488,6 +606,11 @@ onMounted(async () => {
     /* padding-left: 0.5rem; */
     padding-right: 0.5rem;
   }
+  .computedTask_container{
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -496,4 +619,23 @@ onMounted(async () => {
     padding-right: 0.5rem;
   }
 }
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .computedTask_container{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+  .computedTask_container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+
+  .computedTask_container{
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 </style>
