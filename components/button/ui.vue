@@ -11,6 +11,9 @@
       1/ bg-full
       2/ bg-stroke
 
+    width:
+      100px/rem/em/etc...
+
     disabled 
       1/ true
       2/ false
@@ -41,6 +44,10 @@ const props = defineProps({
   type: String,
   link: String,
   bg: String,
+  width: {
+    type: String,
+    default: 'unset'
+  } ,
   disabled: Boolean
 });
 
@@ -75,7 +82,8 @@ button, .bg-full {
   color: var(--color-btn-text);
   padding: 10px 24px;
   border-radius: 100px; 
-  transition: all .2s ease-in
+  transition: all .2s ease-in;
+  width: v-bind('props.width');
 }
 
 button[disabled] {

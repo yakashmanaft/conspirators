@@ -295,6 +295,7 @@ const set_bgColor_by_Urgency = (lead: any) => {
 }
 
 // CLIKCER
+//= choose current task
 const current_task = ref({
   id: null,
   name: '',
@@ -305,6 +306,16 @@ const chooseCurrentLanding = (task: any) => {
   current_task.value.name = task.name
   current_task.value.desc = task.desc
   popup_opened.value = true
+}
+//= change status
+const onClickStatusBtn = (task_el: any) => {
+  console.log(task_el)
+  alert('В разработке...')
+}
+//= add ledger task
+const onClickAddLedgerTask = (currentTask: any) => {
+  alert('В разработке')
+  console.log(currentTask)
 }
 
 // HELPERS
@@ -398,7 +409,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
       </header>
 
       <!-- POPUP CONTENT -->
-      <section style="margin-top: 1rem;">
+      <section style="margin-top: 1rem; margin-bottom: 5rem;">
 
         <!-- LENGTH > 0 -->
         <div v-if="task_ledger?.filter(el => el.taskId === current_task.id).length">
@@ -419,10 +430,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                 </div>
                 <div class="ledger_el_period">
                   <div>
-                    Начало: {{ task_el.created_at }}
+                    <p>Начало: {{ task_el.created_at }}</p>
                   </div>
                   <div>
-                    Завершение: {{ task_el.ended_at }}
+                    <p>Завершение: {{ task_el.ended_at }}</p>
                   </div>
                 </div>
               </div>
@@ -433,7 +444,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               </div>
 
               <!-- STATUS -->
-              <div class="ledger_el_status">
+              <div class="ledger_el_status" @click="onClickStatusBtn(task_el)">
                 {{ task_el.status }}
               </div>
             </li>
@@ -444,7 +455,13 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           <p>Еще ничего не сделали...</p>
         </div>
       </section>
-      <!--  -->
+
+      <!-- POPUP FOOTER -->
+      <footer style="background-color: var(--color-btn-text); position: absolute; bottom: 0; left: 0;width: 100%; padding: 1rem; border-top: 1px solid var(--color-btn-hover-bg)">
+
+        <Button type="original-btn" bg="bg-full" width="100%" @click="onClickAddLedgerTask(current_task)">Добавить выполнение</Button>
+        
+      </footer>
     </InfoPopup>
 
   <!-- CONTAINER -->
@@ -462,9 +479,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
     <!-- ABOUT -->
     <div>
-      <p style="margin: 0;">проект:</p>
       {{ computedProject }}
-      <p>{{ computedProject?.name }}</p>
     </div>
 
     <div>
@@ -732,21 +747,40 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   align-items: center;
 }
 .ledger_el_count {
-  background-color: var( --color-btn-text);
-  color: var(--color-global-text)
+  background-color: var(--color-global-text);
+  color: var(--color-btn-text);
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ledger_el_period {
   display: flex;
   flex-direction: column;
+  /* background-color: red; */
+  padding-left: 0.5rem;
+}
+.ledger_el_period div p {
+  margin: 0;
+  font-size: 1rem;
 }
 .ledger_el_info {
   /* background-color: blue */
+  margin-top: 0.5rem;
 }
 .ledger_el_status {
   position: absolute;
-  top: 0;
+  top: 0.5rem;
   right: 0;
-  background-color: 
+  background-color: var(--color-btn-wo-bg);
+  font-size: 0.7rem;
+  padding: 10px 24px;
+  transition: all .2s ease-in;
+}
+.ledger_el_status:hover {
+  background-color: var(--color-bg-popup);
+  cursor: pointer;
 }
 
 @media screen and (max-width: 575px) {

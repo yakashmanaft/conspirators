@@ -395,6 +395,18 @@ const set_bgColor_by_Urgency = (lead: any) => {
   return color
 }
 
+// HELPERS
+//= cut task desc
+const cutTaskDesc = (str: string, maxLength: number) => {
+  if(str.length > maxLength) {
+    str = str.substring(0, maxLength - 3)
+    return `${str}...`
+  } else {
+
+    return str
+  }
+}
+
 
 // ADD/CREATE
 //= task
@@ -587,7 +599,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
 
          <!-- FROM  -->
          <div>
-           <span>{{ item.task_desc }}</span><br>
+           <span>{{ cutTaskDesc(item.task_desc, 40) }}</span><br>
            <span style="font-size: 0.6rem; display: block;" >*{{ translateProjectID(item.project_id, project_list) }}</span>
            <div>
            </div>
