@@ -16,6 +16,14 @@
     bg: {
       type: String,
       default: '#fff'
+    },
+    fDirection: {
+      type: String,
+      default: 'row'
+    },
+    fGap: {
+      type: String,
+      default: 'unset'
     }
   })
 </script>
@@ -31,9 +39,10 @@
     background-color: var(v-bind('props.bg'));
     /* width: 100%; */
     display: flex;
-    flex-direction: column;
+    flex-direction: v-bind('props.fDirection');
     /* align-items: center; */
     justify-content: center;
+    gap: v-bind('props.fGap');
 }
 @media screen and (max-width: 575px) {
 }

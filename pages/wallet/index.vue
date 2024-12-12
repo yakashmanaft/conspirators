@@ -232,7 +232,7 @@ const set_bgColor = (section: any) => {
     <!-- === WALLET SECTIONS === -->
     <div class="wallet-section_container">
 
-      <Section v-for="section in wallet_sections" :bg="set_bgColor(section)">
+      <Section v-for="section in wallet_sections" :bg="set_bgColor(section)" :fDirection="`column`">
         
         <!-- section header -->
         <header class="section-header_wrapper">

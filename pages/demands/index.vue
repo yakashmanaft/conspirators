@@ -322,7 +322,7 @@ const translateProjectID = (projectID: number, arr: []) => {
 
   let currentProjecObj = arr.find(el => el.id === projectID)
 
-  return currentProjecObj.name
+  return currentProjecObj?.name
 }
 
 // Раскраски
@@ -510,6 +510,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
         <Section 
           :padding="true" 
           :bg="set_bgColor_by_Urgency(item)" 
+          :fDirection="`column`"
           v-for="item in computedLead" 
           @click="$router.push(`demands/${item.id}`)"
           style="cursor: pointer; position: relative;"
@@ -565,12 +566,13 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
         <Section
          :padding="true" 
          :bg="set_bgColor_by_Urgency(item)" 
+         :fDirection="`column`"
          v-for="item in computedTask" 
          @click="$router.push(`task/${item.id}`)"
          style="cursor: pointer; position: relative;"
         >
           <!-- LEAD is a NEW (absolute) -->
-          <div v-if="item.deadline" class="ticket_deadline">
+          <div v-if="item.deadline === item.created_at" class="ticket_deadline">
             deadline: {{ item.deadline }}
           </div>
           <!-- {{ item }} -->
@@ -586,7 +588,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
          <!-- FROM  -->
          <div>
            <span>{{ item.task_desc }}</span><br>
-           <span style="font-size: 0.6rem;">*{{ translateProjectID(item.project_id, project_list) }}</span>
+           <span style="font-size: 0.6rem; display: block;" >*{{ translateProjectID(item.project_id, project_list) }}</span>
            <div>
            </div>
          </div>

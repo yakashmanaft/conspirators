@@ -297,10 +297,12 @@ const set_bgColor_by_Urgency = (lead: any) => {
 // CLIKCER
 const current_task = ref({
   id: null,
+  name: '',
   desc: ''
 })
 const chooseCurrentLanding = (task: any) => {
   current_task.value.id = task.id
+  current_task.value.name = task.name
   current_task.value.desc = task.desc
   popup_opened.value = true
 }
@@ -320,6 +322,21 @@ const countWorkHoursByTask = (taskId: number, taskLedger: any) => {
 //= closePopup
 const closePopup = () => {
   popup_opened.value = false
+  current_task.value = {
+    id: null,
+    name: '',
+    desc: ''
+  }
+}
+//= cut task desc
+const cutTaskDesc = (str: string, maxLength: number) => {
+  if(str.length > maxLength) {
+    str = str.substring(0, maxLength - 3)
+    return `${str}...`
+  } else {
+
+    return str
+  }
 }
 
 // WATHCERS
@@ -346,26 +363,88 @@ const closePopup = () => {
    <InfoPopup
       v-if="popup_opened"
       id="popup-info_ledger_tasks" 
-      popup_title="Ввыполнение" 
+      popup_title="Выполнение" 
       @emitClosePopup="closePopup"
       >
-      {{current_task}}
+      <!-- {{current_task}} -->
 
       <!-- SLOT -->
-      <!-- Перейти на landing -->
-      <div style="display: flex; align-items: center; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
-          <!-- <Button type="pseudo-btn" :link="`${generateLandingLink(choosenEl?.name)}`">{{ choosenEl?.name }}</Button> -->
-          <Button type="pseudo-btn" :link="`/task/${current_task.id}`"></Button>
-          <div>
-          <Icon
-              class="link"
-              name="material-symbols-light:arrow-back-ios"
-              size="24px"
-              color="var(--color-global-text_second)"
-              style="transform: rotate(-180deg)"
-          />
+      <!-- POPUP HEADER -->
+      <header style="margin-top: 1rem; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
+          
+        <!-- title of current task -->
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <!-- header about name -->
+          <div style="display: flex; align-items: center;">
+            <div class="ticketEl_content">
+              <h3>О чЁм:</h3>
+              <p>{{ current_task.name }}</p>
+            </div>
+            <Button type="pseudo-btn" :link="`/task/${current_task.id}`">          <Icon
+                class="link"
+                name="material-symbols-light:arrow-back-ios"
+                size="24px"
+                color="var(--color-global-text_second)"
+                style="transform: rotate(-180deg)"
+            /></Button>
           </div>
-      </div>
+          <!-- header about desc -->
+          <div class="ticketEl_content">
+            <h3>ТЗ:</h3>
+            <p>{{ current_task.desc }}</p>
+          </div>
+        </div>
+
+      </header>
+
+      <!-- POPUP CONTENT -->
+      <section style="margin-top: 1rem;">
+
+        <!-- LENGTH > 0 -->
+        <div v-if="task_ledger?.filter(el => el.taskId === current_task.id).length">
+          <ul class="task_ledger_container" style="list-style: none; padding: 0;">
+            <li v-for="task_el in task_ledger?.filter(el => el.taskId === current_task.id)" class="task_ledger_el">
+
+              <!-- COUNTER -->
+              <div class="ledger_el_counter">
+                <div class="ledger_el_count">
+                  <!-- false | -- -->
+                  <div v-if="task_el.created_at === task_el.ended_at">
+                    --
+                  </div>
+                  <!-- true | +12-->
+                  <div v-else>
+                    +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) }}
+                  </div>
+                </div>
+                <div class="ledger_el_period">
+                  <div>
+                    Начало: {{ task_el.created_at }}
+                  </div>
+                  <div>
+                    Завершение: {{ task_el.ended_at }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- INFO -->
+              <div class="ledger_el_info">
+              {{ task_el.subject }}
+              </div>
+
+              <!-- STATUS -->
+              <div class="ledger_el_status">
+                {{ task_el.status }}
+              </div>
+            </li>
+          </ul>
+        </div>
+         <!-- LENGTH === 0 -->
+        <div v-else>
+          <p>Еще ничего не сделали...</p>
+        </div>
+      </section>
+      <!--  -->
     </InfoPopup>
 
   <!-- CONTAINER -->
@@ -381,91 +460,64 @@ const closePopup = () => {
       <h1 style="margin: 0;">{{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
     </div>
 
-
-      проект:
+    <!-- ABOUT -->
+    <div>
+      <p style="margin: 0;">проект:</p>
       {{ computedProject }}
       <p>{{ computedProject?.name }}</p>
-      <br>
-      Задачи ({{ computedTasks?.length }})
-      <div>
+    </div>
 
-        <div class="computedTask_container" v-if="task_list?.length" style="list-style: none; padding: 0;">
+    <div>
 
-          <!--  -->
-          <Section 
-            v-for="(task, index) in computedTasks"
-            :padding="true" 
-            :bg="set_bgColor_by_Urgency(task)" 
-            style="cursor: pointer; position: relative;"
-            @click.stop="chooseCurrentLanding(task)"
-          >
-            {{  task  }}
-            
-            <!-- LEAD is a NEW (absolute) -->
-            <div class="ticket_deadline">
-              New
+      <h2>Задачи ({{ computedTasks?.length }})</h2>
+      <div class="computedTask_container" v-if="task_list?.length" style="list-style: none; padding: 0;">
+
+        <!--  -->
+        <Section 
+          v-for="(task, index) in computedTasks"
+          :padding="true" 
+          :bg="set_bgColor_by_Urgency(task)" 
+          :fDirection="`column`"
+          :fGap="'1rem'"
+          style="cursor: pointer; position: relative; flex-direction: row"
+          @click.stop="chooseCurrentLanding(task)"
+        >
+          <!-- {{  task  }} -->
+
+          <!-- task name -->
+          <div class="ticketEl_content">
+            <h3>О чЁм</h3>
+            <p>{{ task.name }}</p>
+          </div>
+          <!-- task desc -->
+          <div class="ticketEl_content">
+            <h3>ТЗ:</h3>
+            <p>{{ cutTaskDesc(task.desc, 40) }}</p>
+          </div>
+          <!-- task count work hours -->
+            <div>
+              <div>---</div>
+              <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
             </div>
-            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-            <!-- <div v-if="item.status === 'paused'" class="rounded ticket_paused">
-              <div style="color: #fff;">ПАУЗА</div>
-            </div>   -->
-            <div>---</div>
-            <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
-             <!-- (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) -->
-
-          </Section>
-        </div>
-
-        <ul v-if="task_list?.length" style="list-style: none; padding: 0;" >
-
-
           
-          <li v-for="(task, index) in computedTasks" style="border-bottom: 1px solid gray;">
-            <!-- {{ task }} -->
-            <div style="display: flex; gap: 1rem; align-items: center;">
+          <!--  -->
+          <!-- TASK have deadline (absolute) -->
+          <div v-if="task.deadline > task.created_at" class="ticket_deadline">
+            deadline: {{ task.deadline }}
+          </div>
+          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+          <div v-if="task.status === 'paused'" class="rounded ticket_paused">
+            <div style="color: #fff;">ПАУЗА</div>
+          </div>  
+          <!--  -->
 
-              <div>
-                <Button type="pseudo-btn" :link="`/task/${task.id}`">{{ task.name }}</Button>
-                <div>{{ task.desc }}</div>
-              </div>
-              <div>{{ task.created_at }}</div>
-              <div>{{ task.deadline }}</div>
-              <div>{{ task.ended_at }}</div>
-              <div>{{ task.status }}</div>
-              <div>{{ task.urgency }}</div>
 
-              
-            </div>
 
-            <ul v-if=" task_ledger?.length" style="padding: 0;">
-              <!-- task ledger el -->
-              <li v-for="(task_el) in  task_ledger.filter(el => el.taskId === task.id).sort((a,b) => {
-        return new Date(b.created_at) - new Date(a.created_at);
-      })" >
-                <!-- {{ task_el }} -->
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                  <div>
-                    <div v-if="task_el.created_at === task_el.ended_at">Нет даты завершения</div>
-                    <div v-else>
-                      {{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) }}
-                    </div>
-                  </div>
-                  <div>{{ task_el.subject }}</div>
-                  <div>taskId: {{ task_el.taskId }}</div>
-                  <div>playerId: {{ task_el.playerId }}</div>
-                  <div>{{ task_el.status }}</div>
-                  <div>
-                    <div>{{ task_el.created_at }}</div>
-                    <div>{{ task_el.ended_at }}</div>
-                  </div>
-                </div>
-
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <div v-else>У вас нет задач по данному проекту</div>
+        </Section>
       </div>
+
+      <div v-else>У вас нет задач по данному проекту</div>
+    </div>
     </div>
 
     <!--  -->
@@ -621,6 +673,18 @@ const closePopup = () => {
   margin-top: 1rem;
 }
 
+.ticket_paused {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  background-color: var(--color-paused-wrapper-bg); 
+  width: 100%; 
+  height: 100%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
 .ticket_deadline {
   position: absolute; 
   top: 0; 
@@ -636,10 +700,55 @@ const closePopup = () => {
   padding-right: 0.5rem;
 }
 
+.ticketEl_content h3 {
+  font-size: 0.6rem;
+}
+
+
+.ticketEl_content h3, 
+.ticketEl_content p {
+  margin: 0;
+}
+
 .computedTask_container{
   display: grid;
   gap: 1rem;
 }
+
+
+/*  */
+.task_ledger_container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.task_ledger_el {
+  /* background-color: red;s */
+  position: relative;
+}
+.ledger_el_counter {
+  /* background-color: green; */
+  display: flex;
+  align-items: center;
+}
+.ledger_el_count {
+  background-color: var( --color-btn-text);
+  color: var(--color-global-text)
+}
+.ledger_el_period {
+  display: flex;
+  flex-direction: column;
+}
+.ledger_el_info {
+  /* background-color: blue */
+}
+.ledger_el_status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: 
+}
+
 @media screen and (max-width: 575px) {
   .toggle-title {
     margin-top: 1rem;
