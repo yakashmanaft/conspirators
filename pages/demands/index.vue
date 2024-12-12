@@ -188,11 +188,12 @@ const computedTask = computed(() => {
           arr.push({
             id: task.id,
             created_at: task.created_at,
-            // project_id: task.projectId,
-            project_name: item.name,
+            project_id: task.projectId,
+            task_name: item.name,
             status: task.status,
             urgency: task.urgency,
             deadline: task.deadline,
+            task_desc: task.desc
             // desc: task.desc
           })
         }
@@ -219,9 +220,6 @@ onBeforeMount(async () => {
   // }
 });
 
-// const { data: projects } = useLazyAsyncData("projects", () =>
-//   $fetch("api/projects/projects")
-// );
 // const { data: locations } = useLazyAsyncData("locations", () =>
 //   $fetch("api/locations/locations")
 // );
@@ -320,6 +318,12 @@ const translateType = (type: string) => {
     return category.name;
   }
 };
+const translateProjectID = (projectID: number, arr: []) => {
+
+  let currentProjecObj = arr.find(el => el.id === projectID)
+
+  return currentProjecObj.name
+}
 
 // Раскраски
 //= location
@@ -569,6 +573,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
           <div v-if="item.deadline" class="ticket_deadline">
             deadline: {{ item.deadline }}
           </div>
+          <!-- {{ item }} -->
           <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
           <div v-if="item.status === 'paused'" class="rounded ticket_paused">
             <div style="color: #fff;">ПАУЗА</div>
@@ -580,7 +585,10 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
 
          <!-- FROM  -->
          <div>
-           <span>Проект: {{ item.project_name }}</span>
+           <span>{{ item.task_desc }}</span><br>
+           <span style="font-size: 0.6rem;">*{{ translateProjectID(item.project_id, project_list) }}</span>
+           <div>
+           </div>
          </div>
          <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
         </Section>

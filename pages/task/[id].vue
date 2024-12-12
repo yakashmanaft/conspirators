@@ -99,8 +99,9 @@ useHead({
         <!-- TITLE PAGE SECTION -->
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
-            <h1 style="margin: 0;">{{ current_task?.name  }}</h1> 
+            <p style="margin-top: 1rem;">Что делаем: </p>
             <p>{{ current_task?.desc }}</p>
+            <h1 style="margin: 0;">{{ current_task?.name  }}</h1> 
 
             <Button type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">Проект: {{ current_task?.projectId }}</Button>
         </div>

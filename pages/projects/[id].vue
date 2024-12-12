@@ -3,6 +3,7 @@
 import { AccessDeniedPlug } from "~/components/plug_access_denied";
 import { Container } from "@/shared/container";
 import { Section } from "~/shared/section";
+import { InfoPopup } from "~/shared/popup";
 
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
@@ -51,6 +52,8 @@ const sessionUser = useUserSession().user;
 const project = ref(null);
 // BAND
 const band = ref(null);
+// POPUP
+const popup_opened = ref(false)
 
 // тмц организации
 // items.value = items.value.filter(
@@ -291,7 +294,19 @@ const set_bgColor_by_Urgency = (lead: any) => {
   return color
 }
 
+// CLIKCER
+const current_task = ref({
+  id: null,
+  desc: ''
+})
+const chooseCurrentLanding = (task: any) => {
+  current_task.value.id = task.id
+  current_task.value.desc = task.desc
+  popup_opened.value = true
+}
+
 // HELPERS
+//== count
 const countWorkHoursByTask = (taskId: number, taskLedger: any) => {
 
   let sum:number = 0
@@ -301,9 +316,59 @@ const countWorkHoursByTask = (taskId: number, taskLedger: any) => {
 
   return sum.toFixed(1)
 }
+
+//= closePopup
+const closePopup = () => {
+  popup_opened.value = false
+}
+
+// WATHCERS
+  //= popup_opened
+  watch(popup_opened, () => {
+      let body = document.getElementsByTagName('body')[0]
+      if(popup_opened.value) {
+
+          body.style.margin = '0'
+          body.style.height = '100%'
+          body.style.overflow = 'hidden'
+
+      } else {
+          body.style.margin = 'unset'
+          body.style.height = 'unset'
+          body.style.overflow = 'unset'
+      }
+  })
+
 </script>
 
 <template>
+  <!-- POPUP -->
+   <InfoPopup
+      v-if="popup_opened"
+      id="popup-info_ledger_tasks" 
+      popup_title="Ввыполнение" 
+      @emitClosePopup="closePopup"
+      >
+      {{current_task}}
+
+      <!-- SLOT -->
+      <!-- Перейти на landing -->
+      <div style="display: flex; align-items: center; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
+          <!-- <Button type="pseudo-btn" :link="`${generateLandingLink(choosenEl?.name)}`">{{ choosenEl?.name }}</Button> -->
+          <Button type="pseudo-btn" :link="`/task/${current_task.id}`"></Button>
+          <div>
+          <Icon
+              class="link"
+              name="material-symbols-light:arrow-back-ios"
+              size="24px"
+              color="var(--color-global-text_second)"
+              style="transform: rotate(-180deg)"
+          />
+          </div>
+      </div>
+    </InfoPopup>
+
+  <!-- CONTAINER -->
   <Container>
     <!-- Псевдо защита... -->
     <AccessDeniedPlug v-if="accessPlug === true"/>
@@ -332,6 +397,7 @@ const countWorkHoursByTask = (taskId: number, taskLedger: any) => {
             :padding="true" 
             :bg="set_bgColor_by_Urgency(task)" 
             style="cursor: pointer; position: relative;"
+            @click.stop="chooseCurrentLanding(task)"
           >
             {{  task  }}
             
