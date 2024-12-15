@@ -163,7 +163,10 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
 const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
   lazy: false,
   transform: (task_ledger) => {
-    return task_ledger
+    return task_ledger.sort((a,b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+        // return b.created_at - a.created_at
+      })
   }
 })
 
@@ -269,7 +272,7 @@ const set_bgColor_by_Urgency = (lead: any) => {
     }
   }
   // ****** STATUS 
-  // if(lead.status) {
+  if(lead.status) {
 
   //   // BLANK
   //   if(lead.status === 'blank') {
@@ -284,12 +287,12 @@ const set_bgColor_by_Urgency = (lead: any) => {
   //   if(lead.status === 'canceled') {
   //     color = 'var(--color-status-canceled)'
   //   }
-  //   // PAUSED
-  //   // FINISHED
-  //   if(lead.status === 'finished') {
-  //     color = 'var(--color-btn-text)'
-  //   }
-  // }
+    // PAUSED
+    // FINISHED
+    if(lead.status === 'finished') {
+      color = 'var(--color-btn-text)'
+    }
+  }
 
   return color
 }
@@ -299,21 +302,28 @@ const set_bgColor_by_Urgency = (lead: any) => {
 const current_task = ref({
   id: null,
   name: '',
-  desc: ''
+  desc: '',
+  status: ''
 })
 const chooseCurrentLanding = (task: any) => {
   current_task.value.id = task.id
   current_task.value.name = task.name
   current_task.value.desc = task.desc
+  current_task.value.status = task.status
   popup_opened.value = true
 }
 //= change status
-const onClickStatusBtn = (task_el: any) => {
+const changeCurrentTaskStatus= (currentTask: any) => {
+  console.log(currentTask)
+  alert('В разработке...')
+}
+const changeCurrentTaskElStatus = (task_el: any) => {
   console.log(task_el)
   alert('В разработке...')
 }
 //= add ledger task
-const onClickAddLedgerTask = (currentTask: any) => {
+const addCurrentTaskEl = (currentTask: any) => {
+  // Здесь добавляем в task ledger элемент для current task id
   alert('В разработке')
   console.log(currentTask)
 }
@@ -336,7 +346,8 @@ const closePopup = () => {
   current_task.value = {
     id: null,
     name: '',
-    desc: ''
+    desc: '',
+    status: ''
   }
 }
 //= cut task desc
@@ -385,6 +396,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           
         <!-- title of current task -->
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <!-- heqader status -->
+          <div style="margin-bottom: .5rem;">
+            <span @click="changeCurrentTaskStatus(current_task)" class="popup_current_task_status">{{ current_task.status }}</span>
+          </div>
           <!-- header about name -->
           <div style="display: flex; align-items: center;">
             <div class="ticketEl_content">
@@ -444,7 +459,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               </div>
 
               <!-- STATUS -->
-              <div class="ledger_el_status" @click="onClickStatusBtn(task_el)">
+              <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
                 {{ task_el.status }}
               </div>
             </li>
@@ -457,10 +472,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
       </section>
 
       <!-- POPUP FOOTER -->
-      <footer style="background-color: var(--color-btn-text); position: absolute; bottom: 0; left: 0;width: 100%; padding: 1rem; border-top: 1px solid var(--color-btn-hover-bg)">
+      <footer v-if="current_task?.status !== 'finished'" style="background-color: var(--color-btn-text); position: absolute; bottom: 0; left: 0;width: 100%; padding: 1rem; border-top: 1px solid var(--color-btn-hover-bg)">
 
-        <Button type="original-btn" bg="bg-full" width="100%" @click="onClickAddLedgerTask(current_task)">Добавить выполнение</Button>
-        
+        <Button type="original-btn" bg="bg-full" width="100%" @click="addCurrentTaskEl(current_task)">Добавить выполнение</Button>
+
       </footer>
     </InfoPopup>
 
@@ -779,6 +794,16 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   transition: all .2s ease-in;
 }
 .ledger_el_status:hover {
+  background-color: var(--color-bg-popup);
+  cursor: pointer;
+}
+
+.popup_current_task_status {
+  background-color: var(--color-btn-wo-bg); font-size: 0.7rem;
+  padding: 10px 24px;
+  transition: all .2s ease-in;
+}
+.popup_current_task_status:hover {
   background-color: var(--color-bg-popup);
   cursor: pointer;
 }
