@@ -527,7 +527,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           <!-- task count work hours -->
             <div>
               <div>---</div>
-              <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+              <div style="display: flex; align-items: center; justify-content: space-between">
+                <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+                <div style="color: var(--color-urgency-low-wo)" v-if="task.status === 'finished'">Готово</div>
+              </div>
             </div>
           
           <!--  -->
@@ -539,7 +542,8 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           <div v-if="task.status === 'paused'" class="rounded ticket_paused">
             <div style="color: #fff;">ПАУЗА</div>
           </div>  
-          <!--  -->
+          <!-- WRAPPER FOR FINISHED????????-->
+
 
 
 

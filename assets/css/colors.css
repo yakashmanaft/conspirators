@@ -21,10 +21,13 @@
     --color-bg-popup: rgba(0, 0, 0, 0.5);
     
     /* urgency colors */
+    /* with opacity */
     --color-urgency-high: rgba(232, 109, 109, 0.3);
     --color-urgency-middle: rgba(230, 176, 123, 0.5);
     --color-urgency-low: rgba(128, 191, 138, 0.3);
     --color-status-canceled: rgba(189, 186, 189, 0.5);
+    /* w/o opacity */
+    --color-urgency-low-wo: rgb(128, 191, 138);
 
     /* status colors */
     --color-paused-wrapper-bg: rgba(189, 186, 189, 0.9);
