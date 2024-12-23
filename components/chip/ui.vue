@@ -115,15 +115,19 @@ onMounted(() => {
 
 @media screen and (max-width: 575px) {
   .tab_wrapper {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 576px) and (max-width: 767px) {
   .tab_wrapper {
     border: unset;
     padding-bottom: unset;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
+
 }
+
 </style>

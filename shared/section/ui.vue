@@ -43,6 +43,7 @@
     /* align-items: center; */
     justify-content: center;
     gap: v-bind('props.fGap');
+    height: 100%;
 }
 @media screen and (max-width: 575px) {
 }

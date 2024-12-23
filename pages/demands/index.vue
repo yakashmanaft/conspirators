@@ -7,6 +7,7 @@ import { Section } from '@/shared/section'
 // components
 // import { DevModePlug } from "~/components/plug_dev_mode";
 import { Button } from '~/components/button'
+import { Chip } from "~/components/chip";
 
 // utils
 import { onBeforeMount } from "vue";
@@ -110,6 +111,49 @@ const demandFilterTypes = ref([
   },
 ]);
 
+// CHIPS
+const chips = [
+  {
+      name: 'all',
+      title: 'Все'
+  },
+  {
+      name: 'waiting',
+      title: 'Ожидание'
+  },
+  {
+      name: 'works',
+      title: 'В процессе'
+  },  
+  {
+      name: 'agreement',
+      title: 'Согласование'
+  },
+  {
+      name: 'finished',
+      title: 'Завершенные'
+  },
+  {
+      name: 'canceled',
+      title: 'Отменено'
+  },
+  {
+      name: 'paused',
+      title: 'Пауза'
+  },  
+]
+const currentChip = ref({
+  name: 'all',
+  title: 'Все'
+})
+
+// EVENT CLICKERS
+//= change demands chip
+const changeChip = (obj: any) => {
+    currentChip.value = obj
+}
+
+
 // Фильтры
 const computedDemands = computed(() => {
   if (demands.value.length) {
@@ -184,7 +228,7 @@ const computedTask = computed(() => {
     let merged = task_list.value?.reduce((arr: {}[], task) => {
 
       project_list.value?.forEach(item => {
-        if(item.id === task.projectId) {
+        if(item.id === task.projectId && (currentChip.value.name === task.status || currentChip.value.name === 'all')) {
           arr.push({
             id: task.id,
             created_at: task.created_at,
@@ -519,36 +563,36 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
        <!--  -->
         <div id="lead-block" class="computedLead_container" v-if="computedLead?.length">
           <!-- :bg="'var(--color-urgency-low)'" -->
-        <Section 
-          :padding="true" 
-          :bg="set_bgColor_by_Urgency(item)" 
-          :fDirection="`column`"
-          v-for="item in computedLead" 
-          @click="$router.push(`demands/${item.id}`)"
-          style="cursor: pointer; position: relative;"
-        >
-          <!-- LEAD is a NEW (absolute) -->
-          <div v-if="item.status === 'lead'" class="ticket_new">
-            New
-          </div>
+          <Section 
+            :padding="true" 
+            :bg="set_bgColor_by_Urgency(item)" 
+            :fDirection="`column`"
+            v-for="item in computedLead" 
+            @click="$router.push(`demands/${item.id}`)"
+            style="cursor: pointer; position: relative;"
+          >
+            <!-- LEAD is a NEW (absolute) -->
+            <div v-if="item.status === 'lead'" class="ticket_new">
+              New
+            </div>
 
-          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-          <div v-if="item.status === 'paused'" class="rounded ticket_paused">
-            <div style="color: #fff;">ПАУЗА</div>
-          </div>  
+            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+            <div v-if="item.status === 'paused'" class="rounded ticket_paused">
+              <div style="color: #fff;">ПАУЗА</div>
+            </div>  
 
-          <!-- CREATED DATE -->
-          <div>
-            <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
-          </div>
+            <!-- CREATED DATE -->
+            <div>
+              <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
+            </div>
 
-          <!-- FROM  -->
-          <div>
-            <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
-          </div>
-          <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
+            <!-- FROM  -->
+            <div>
+              <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
+            </div>
+            <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
 
-        </Section>
+          </Section>
         </div>
         <!--  -->
         <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
@@ -563,18 +607,19 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
          <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
       </div>
 
-      <!-- cheap filters of the section -->
-       <ul style="list-style: none; padding: unset; display: flex; gap: 1rem;" v-if="computedTask?.length">
-         <li>waiting</li>
-         <li>works</li>
-         <li>canceled</li>
-         <li>paused</li>
-         <li>finished</li>
-       </ul>
-
+       <!-- CHIP SECTION -->
+       <Chip
+        :tabs="chips"
+        :default="currentChip" 
+        :btn_all_exist="false" 
+        @changed="changeChip"
+        style="margin-top: 0.5rem;"
+       />
+       <!-- {{ currentChip }} -->
        <!--  -->
       <div class="computedTask_container" v-if="computedTask?.length">
 
+        <!-- TASK ITEM -->
         <Section
          :padding="true" 
          :bg="set_bgColor_by_Urgency(item)" 
@@ -606,6 +651,23 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
          </div>
          <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
         </Section>
+
+        <!-- ADD NEW TASK ITEM -->
+        <!-- <Section
+          :padding="true"
+          bg="#fff"
+          :fDirection="`column`"
+          style="cursor: pointer; position: relative;"
+          @click="addNewTask()"
+        >
+          <Icon
+              class="icon"
+              name="material-symbols-light:add-2-rounded"
+              size="48px"
+              color="var(--color-global-text_second)"
+              style="margin: auto;"
+          />
+        </Section> -->
       </div>
       <div class="no-task_wrapper" v-else>Что-то у вас нет задач...</div>
        <!--  -->
@@ -654,7 +716,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
 .header-section_container {
   display: flex; 
   align-items: center; 
-  justify-content: space-between;
+  gap: 1rem;
 }
 .demands_wrapper {
   display: grid;
@@ -759,13 +821,18 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   display: none;
 }
 
-.computedTask_container{
+.computedTask_container {
+  margin-top: 1rem;
   display: grid;
   gap: 1rem;
 }
 
 .no-computed-lead_wrapper {
   margin-bottom: 2rem;
+}
+
+.no-task_wrapper {
+  margin-top: 0.5rem;
 }
 
 /* TICKETS */

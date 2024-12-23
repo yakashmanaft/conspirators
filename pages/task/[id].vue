@@ -61,7 +61,7 @@ useHead({
     const addTaskLedgerItem = () => {
         alert('В разработке')
     }
-    const changeChip = (obj) => {
+    const changeChip = (obj: any) => {
         currentChip.value = obj
     }
 
@@ -133,7 +133,7 @@ useHead({
     <Container v-if="current_task">
 
         <!-- TITLE PAGE SECTION -->
-        <div  style="margin-bottom: 0.5rem;">
+        <div  class="title-section_container" style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
 
             <h1 style="margin: 0;">
@@ -146,53 +146,76 @@ useHead({
         </div>
 
         <!-- CHIP SECTION -->
-         <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip"/>
-        {{ currentChip }}
+         <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/>
+        <!-- {{ currentChip }} -->
         
-        <!-- Общее SECTION -->
-        <section v-if="currentChip.title === 'Общее'">
-            
-            <p>Дата создания: {{ current_task.created_at }}</p> 
-            <p>Deadline: {{ current_task.deadline }}</p>
-            <p>Статус: {{  current_task.status  }}</p>
-            <p>Важность: {{ current_task.urgency }}</p>
-        </section>
+        <!-- CONTENT SECTION -->
+        <div class="content-setion_container">
 
-        <!-- ТЗ SECTION-->
-        <section v-if="currentChip.title === 'ТЗ'">
-
-            <h2>ТЗ</h2>
-            <p>{{ current_task?.desc }}</p>
-        </section>
-        
-        <!-- Выполнение SECTION -->
-        <section v-if="task_ledger?.length && currentChip.title === 'Выполнение'">
-            <h2>Выполнение:</h2>
+            <!-- Общее SECTION -->
+            <section v-if="currentChip.title === 'Общее'">
+                
+                <p>Дата создания: {{ current_task.created_at }}</p> 
+                <p>Deadline: {{ current_task.deadline }}</p>
+                <p>Статус: {{  current_task.status  }}</p>
+                <p>Важность: {{ current_task.urgency }}</p>
+            </section>
     
-            <ul>
-                <li v-for="item in task_ledger">{{ item }}</li>
-            </ul>
-            <div>
-                <Button type="pseudo-btn" @click="addTaskLedgerItem">Добавить выполнение</Button>
-            </div>
-        </section>
+            <!-- ТЗ SECTION-->
+            <section v-if="currentChip.title === 'ТЗ'">
+    
+                <h2>ТЗ</h2>
+                <p>{{ current_task?.desc }}</p>
+            </section>
+            
+            <!-- Выполнение SECTION -->
+            <section v-if="task_ledger?.length && currentChip.title === 'Выполнение'">
+                <h2>Выполнение:</h2>
+        
+                <ul>
+                    <li v-for="item in task_ledger">{{ item }}</li>
+                </ul>
+                <div>
+                    <Button type="pseudo-btn" @click="addTaskLedgerItem">Добавить выполнение</Button>
+                </div>
+            </section>
+        </div>
         
     </Container>
 </template>
 
 <style scoped>
 
+.content-setion_container  {
+    margin-top: 1rem;
+}
+
 @media screen and (max-width: 767px) {
     /* h1 {
         margin-top: 4rem;
     } */
-         .show-max-767 {
+    .show-max-767 {
       display: none;
+    }
+    .content-setion_container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    .title-section_container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .content-setion_container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 @media screen and (min-width: 768px) {
-  /* h1 {
-    margin-top: 6rem;
-  } */
+    .content-setion_container {
+        padding-left: unset;
+        padding-right: unset;
+    }
 }
 </style>

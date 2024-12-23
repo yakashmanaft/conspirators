@@ -485,73 +485,77 @@ const cutTaskDesc = (str: string, maxLength: number) => {
     <AccessDeniedPlug v-if="accessPlug === true"/>
     <!-- {{props.auth_user_profile}} -->
     <div v-if="computedProject && !accessPlug">
-      
-    <!-- TITLE PAGE SECTION -->
-    <div class="show-max-767" style="margin-bottom: 0.5rem;">
-      <BreadCrumbs/>
-      <h1 style="margin: 0;">{{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
-    </div>
+        
+      <!-- TITLE PAGE SECTION -->
+      <div class="title-section_container">
+        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+          <BreadCrumbs/>
+          <h1 style="margin: 0;">{{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
+        </div>
 
-    <!-- ABOUT -->
-    <div>
-      {{ computedProject }}
-    </div>
-
-    <div>
-
-      <h2>Задачи ({{ computedTasks?.length }})</h2>
-      <div class="computedTask_container" v-if="task_list?.length" style="list-style: none; padding: 0;">
-
-        <!--  -->
-        <Section 
-          v-for="(task, index) in computedTasks"
-          :padding="true" 
-          :bg="set_bgColor_by_Urgency(task)" 
-          :fDirection="`column`"
-          :fGap="'1rem'"
-          style="cursor: pointer; position: relative; flex-direction: row"
-          @click.stop="chooseCurrentLanding(task)"
-        >
-          <!-- {{  task  }} -->
-
-          <!-- task name -->
-          <div class="ticketEl_content">
-            <h3>О чЁм</h3>
-            <p>{{ task.name }}</p>
-          </div>
-          <!-- task desc -->
-          <div class="ticketEl_content">
-            <h3>ТЗ:</h3>
-            <p>{{ cutTaskDesc(task.desc, 40) }}</p>
-          </div>
-          <!-- task count work hours -->
-            <div>
-              <div>---</div>
-              <div style="display: flex; align-items: center; justify-content: space-between">
-                <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
-                <div style="color: var(--color-urgency-low-wo)" v-if="task.status === 'finished'">Готово</div>
-              </div>
-            </div>
-          
-          <!--  -->
-          <!-- TASK have deadline (absolute) -->
-          <div v-if="task.deadline > task.created_at" class="ticket_deadline">
-            deadline: {{ task.deadline }}
-          </div>
-          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-          <div v-if="task.status === 'paused'" class="rounded ticket_paused">
-            <div style="color: #fff;">ПАУЗА</div>
-          </div>  
-          <!-- WRAPPER FOR FINISHED????????-->
-
-
-
-
-        </Section>
       </div>
 
-      <div v-else>У вас нет задач по данному проекту</div>
-    </div>
+      <!-- ABOUT SECTION-->
+      <div class="about-section_container">
+        {{ computedProject }}
+      </div>
+
+      <!-- TASKs SECTION -->
+      <div class="task-section_container">
+
+        <h2>Задачи ({{ computedTasks?.length }})</h2>
+        <div class="computedTask_container" v-if="task_list?.length" style="list-style: none; padding: 0;">
+
+          <!--  -->
+          <Section 
+            v-for="(task, index) in computedTasks"
+            :padding="true" 
+            :bg="set_bgColor_by_Urgency(task)" 
+            :fDirection="`column`"
+            :fGap="'1rem'"
+            style="cursor: pointer; position: relative; flex-direction: row"
+            @click.stop="chooseCurrentLanding(task)"
+          >
+            <!-- {{  task  }} -->
+
+            <!-- task name -->
+            <div class="ticketEl_content">
+              <h3>О чЁм</h3>
+              <p>{{ task.name }}</p>
+            </div>
+            <!-- task desc -->
+            <div class="ticketEl_content">
+              <h3>ТЗ:</h3>
+              <p>{{ cutTaskDesc(task.desc, 40) }}</p>
+            </div>
+            <!-- task count work hours -->
+              <div>
+                <div>---</div>
+                <div style="display: flex; align-items: center; justify-content: space-between">
+                  <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+                  <div style="color: var(--color-urgency-low-wo)" v-if="task.status === 'finished'">Готово</div>
+                </div>
+              </div>
+            
+            <!--  -->
+            <!-- TASK have deadline (absolute) -->
+            <div v-if="task.deadline > task.created_at" class="ticket_deadline">
+              deadline: {{ task.deadline }}
+            </div>
+            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+            <div v-if="task.status === 'paused'" class="rounded ticket_paused">
+              <div style="color: #fff;">ПАУЗА</div>
+            </div>  
+            <!-- WRAPPER FOR FINISHED????????-->
+
+
+
+
+          </Section>
+        </div>
+
+        <div v-else>У вас нет задач по данному проекту</div>
+      </div>
     </div>
 
     <!--  -->
@@ -834,8 +838,13 @@ const cutTaskDesc = (str: string, maxLength: number) => {
     padding: 0 0.5rem;
     gap: 1rem;
   }
+  .title-section_container,
+  .about-section_container,
+  .task-section_container {
+    margin: 0 0.5rem;
+  }
 }
-@media screen and (min-width: 576) and (max-width: 767px) {
+@media screen and (min-width: 576px) and (max-width: 767px) {
   .switch-title_el:first-child {
     margin-left: unset;
   }
@@ -848,6 +857,11 @@ const cutTaskDesc = (str: string, maxLength: number) => {
     grid-template-columns: 1fr;
     padding: 0 1rem;
     grid-template-columns: repeat(2, 1fr);
+  }
+  .title-section_container,
+  .about-section_container,
+  .task-section_container {
+    margin: 0 0.5rem;
   }
 }
 
