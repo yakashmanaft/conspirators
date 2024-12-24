@@ -937,6 +937,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
     padding-right: 1rem;
   }
   .computedTask_container{
+    margin-top: 1.5rem;
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -951,6 +952,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
     padding-right: 1rem;
   }
   .computedTask_container {
+    margin-top: 1.5rem;
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -965,6 +967,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
     padding-right: 2rem;
   }
   .computedTask_container{
+    margin-top: 1.5rem;
     grid-template-columns: repeat(5, 1fr);
   }
 }

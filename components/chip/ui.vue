@@ -56,16 +56,16 @@ const emit_object = (obj: any) => {
 
 // Mounted
 onMounted(() => {
-  const scrollContainer = document.querySelector(".scroll-wheel-container");
-  if (scrollContainer) {
-    scrollContainer.addEventListener("wheel", function (event) {
-      // останавливаем поведение по умолчанию, то есть прокрутку
-      if (event) {
-        // console.log(event);
-        scrollContainer.scrollLeft += event.deltaY;
-      }
-    });
-  }
+  // const scrollContainer = document.querySelector(".scroll-wheel-container");
+  // if (scrollContainer) {
+  //   scrollContainer.addEventListener("wheel", function (event) {
+  //     // останавливаем поведение по умолчанию, то есть прокрутку
+  //     if (event) {
+  //       // console.log(event);
+  //       scrollContainer.scrollLeft += event.deltaY;
+  //     }
+  //   });
+  // }
 });
 
 // WATCHERS
@@ -74,17 +74,15 @@ onMounted(() => {
 
 <style scoped>
 .tab_wrapper {
-  width: 100vw;
   display: flex;
-  align-items: center;
   gap: 1rem;
-  overflow-x: scroll;
-  /* scrollbar-width: none; */
-  /* border-bottom: 1px solid var(--bs-border-color); */
-  /* padding-bottom: 1rem;  */
+  overflow: scroll; 
+  max-width: 100vw!important;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none; 
 }
 .tab_wrapper::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }
 .tab input[type="radio"] {
   opacity: 0;
@@ -127,6 +125,16 @@ onMounted(() => {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+
+}
+@media screen and (min-width: 768px) and (max-width: 991px){
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+@media screen and (min-width: 1200px) {
 
 }
 
