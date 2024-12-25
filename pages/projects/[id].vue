@@ -329,16 +329,56 @@ const addCurrentTaskEl = (currentTask: any) => {
 }
 
 // HELPERS
-//== count
-const countWorkHoursByTask = (taskId: number, taskLedger: any) => {
+//== count finished task in accomplishment
+const countFinishedAccomplishmentTask = (taskLedger: any) => {
 
+  let endedSum:number = 0;
+
+  taskLedger?.forEach((item:any) => {
+
+    if(item?.status === 'finished') {
+
+      endedSum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+    }    
+  })
+
+  return endedSum.toFixed(1)
+}
+// all task in accomplishment
+const countAccomplishmentTask = (taskLedger: any) => {
   let sum:number = 0
+
   taskLedger?.forEach((item:any) => {
     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
   })
 
-  return sum.toFixed(1)
+ return sum.toFixed(1)
 }
+
+// SET
+//== accomplishment label by task
+const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
+  if(finished < sum) {
+
+    return `Долг`
+  } else if (finished == sum) {
+    return `Готово`
+  }
+}
+//== readingg hours
+const setReadingTime = (subject: string, data: string) => {
+  
+  let date = new Date(data)
+
+  if( subject === 'date'){
+    
+    return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+  } else {
+
+    return date
+  } 
+}
+
 
 //= closePopup
 const closePopup = () => {
@@ -446,6 +486,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                 <div class="ledger_el_period">
                   <div>
                     <p>Начало: {{ task_el.created_at }}</p>
+                    <p>{{ setReadingTime('date', task_el.created_at) }}</p>
                   </div>
                   <div>
                     <p>Завершение: {{ task_el.ended_at }}</p>
@@ -532,8 +573,20 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               <div>
                 <div>---</div>
                 <div style="display: flex; align-items: center; justify-content: space-between">
-                  <div>{{ countWorkHoursByTask(task.id, task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
-                  <div style="color: var(--color-urgency-low-wo)" v-if="task.status === 'finished'">Готово</div>
+                  <div>{{ countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }} из {{ countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+                  <div 
+                    :style="
+                      setTaskAccomplishmentLabel( 
+                        countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                        countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
+                    ">
+                      {{
+                        setTaskAccomplishmentLabel(
+                          countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                          countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                        )
+                      }}
+                    </div>
                 </div>
               </div>
             
