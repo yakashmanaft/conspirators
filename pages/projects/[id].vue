@@ -8,6 +8,7 @@ import { InfoPopup } from "~/shared/popup";
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
 import { Button } from "~/components/button";
+import { Chip } from "~/components/chip";
 
 useHead({
   title: "Проект # ",
@@ -94,6 +95,81 @@ const titles = ref([
 
 const currentTitle = ref("schedule");
 
+// CHIP
+const currentChip = ref({
+  name: 'all',
+  title: 'Все'
+})
+
+const chips = [
+  {
+      name: 'all',
+      title: 'Все'
+  },
+  {
+      name: 'waiting',
+      title: 'Ожидание'
+  },
+  {
+      name: 'works',
+      title: 'В процессе'
+  },  
+  {
+      name: 'agreement',
+      title: 'Согласование'
+  },
+  {
+      name: 'finished',
+      title: 'Завершенные'
+  },
+  {
+      name: 'canceled',
+      title: 'Отменено'
+  },
+  {
+      name: 'paused',
+      title: 'Пауза'
+  },  
+]
+//
+const chips_accomplishment = ref([
+  {
+      name: 'waiting',
+      title: 'Ожидание'
+  },
+  {
+      name: 'agreement',
+      title: 'Согласование'
+  },
+  {
+      name: 'finished',
+      title: 'Завершенные'
+  },
+  {
+      name: 'paused',
+      title: 'Пауза'
+  },  
+  {
+      name: 'canceled',
+      title: 'Отменено'
+  },
+])
+//
+const currentAccomplishmentChip = ref({
+  name: 'waiting',
+  title: 'Ожидание'
+})
+
+// EVENT CLICKERS
+//= change demands chip
+const changeChip = (obj: any) => {
+    currentChip.value = obj
+}
+//= change accomplishment chip
+const changeAccomplishmentChip = (obj: any) => {
+  currentAccomplishmentChip.value = obj
+}
+
 // DB SCHEDULE
 const schedules = ref([
   {
@@ -117,8 +193,23 @@ const computedTasks = computed(() => {
         el => project_list.value ? el.projectId === project_list.value.id  : []
       ).sort((a,b) => {
         return new Date(b.created_at) - new Date(a.created_at);
+      }).filter(task => {
+        return currentChip.value.name !== 'all' ? task.status === currentChip.value.name : task
       })
     }
+})
+
+// accomplishment
+const computedAccomplishments = computed(() => {
+  if(task_ledger.value) {
+    return task_ledger.value.filter(el => {
+      if(el.taskId === current_task.value.id) {
+        if(el.taskId === current_task.value.id && currentAccomplishmentChip.value.name === el.status) {
+          return el
+        }
+      }
+    })
+  }
 })
 
 // ******* DB
@@ -354,6 +445,17 @@ const countAccomplishmentTask = (taskLedger: any) => {
 
  return sum.toFixed(1)
 }
+// current accomplishment 
+const countCurrentAccomplishment = () => {
+
+  let sum:number = 0
+
+  computedAccomplishments.value?.forEach((item:any) => {
+    sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+  })
+
+  return `+${sum.toFixed(1)} часа`
+}
 
 // SET
 //== accomplishment label by task
@@ -388,6 +490,10 @@ const closePopup = () => {
     name: '',
     desc: '',
     status: ''
+  }
+  currentAccomplishmentChip.value = {
+    name: 'waiting',
+    title: 'Ожидание'
   }
 }
 //= cut task desc
@@ -432,44 +538,28 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
       <!-- SLOT -->
       <!-- POPUP HEADER -->
-      <header style="margin-top: 1rem; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
+      <!-- <header style="margin-top: 1rem;">
           
-        <!-- title of current task -->
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <!-- heqader status -->
-          <div style="margin-bottom: .5rem;">
-            <span @click="changeCurrentTaskStatus(current_task)" class="popup_current_task_status">{{ current_task.status }}</span>
-          </div>
-          <!-- header about name -->
-          <div style="display: flex; align-items: center;">
-            <div class="ticketEl_content">
-              <h3>О чЁм:</h3>
-              <p>{{ current_task.name }}</p>
-            </div>
-            <Button type="pseudo-btn" :link="`/task/${current_task.id}`">          <Icon
-                class="link"
-                name="material-symbols-light:arrow-back-ios"
-                size="24px"
-                color="var(--color-global-text_second)"
-                style="transform: rotate(-180deg)"
-            /></Button>
-          </div>
-          <!-- header about desc -->
-          <div class="ticketEl_content">
-            <h3>ТЗ:</h3>
-            <p>{{ current_task.desc }}</p>
-          </div>
-        </div>
 
-      </header>
+      </header> -->
 
       <!-- POPUP CONTENT -->
       <section style="margin-top: 1rem; margin-bottom: 5rem;">
 
         <!-- LENGTH > 0 -->
         <div v-if="task_ledger?.filter(el => el.taskId === current_task.id).length">
-          <ul class="task_ledger_container" style="list-style: none; padding: 0;">
-            <li v-for="task_el in task_ledger?.filter(el => el.taskId === current_task.id)" class="task_ledger_el">
+          <!-- chips -->
+          <Chip
+            :tabs="chips_accomplishment"
+            :no_padding="true"
+            :default="currentAccomplishmentChip"
+            :btn_all_exist="false" 
+            @changed="changeAccomplishmentChip"
+          />
+          <!-- accomplishment list -->
+          <ul v-if="computedAccomplishments?.length" class="task_ledger_container" style="list-style: none; padding: 0;">
+            {{ countCurrentAccomplishment() }}
+            <li v-for="task_el in computedAccomplishments" class="task_ledger_el">
 
               <!-- COUNTER -->
               <div class="ledger_el_counter">
@@ -505,6 +595,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               </div>
             </li>
           </ul>
+          <ul v-else style="list-style: none; padding: unset; margin-top: 1rem;">
+            <li>Ничего нет</li>
+          </ul>
         </div>
          <!-- LENGTH === 0 -->
         <div v-else>
@@ -538,73 +631,92 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
+        <h3>5 часов</h3>
+        <p>Закрытые часы 3/5</p>
         {{ computedProject }}
+
       </div>
 
       <!-- TASKs SECTION -->
       <div class="task-section_container">
 
         <h2>Задачи ({{ computedTasks?.length }})</h2>
-        <div class="computedTask_container" v-if="task_list?.length" style="list-style: none; padding: 0;">
+        <!-- CHIP -->
+        <Chip
+          v-if="task_list?.length"
+          :tabs="chips"
+          :default="currentChip" 
+          :btn_all_exist="false" 
+          @changed="changeChip"
+          style="margin-top: 1rem; width: 100%;"
+        />
 
-          <!--  -->
-          <Section 
-            v-for="(task, index) in computedTasks"
-            :padding="true" 
-            :bg="set_bgColor_by_Urgency(task)" 
-            :fDirection="`column`"
-            :fGap="'1rem'"
-            style="cursor: pointer; position: relative; flex-direction: row"
-            @click.stop="chooseCurrentLanding(task)"
-          >
-            <!-- {{  task  }} -->
+        <div v-if="task_list?.length" style="list-style: none; padding: 0;">
 
-            <!-- task name -->
-            <div class="ticketEl_content">
-              <h3>О чЁм</h3>
-              <p>{{ task.name }}</p>
-            </div>
-            <!-- task desc -->
-            <div class="ticketEl_content">
-              <h3>ТЗ:</h3>
-              <p>{{ cutTaskDesc(task.desc, 40) }}</p>
-            </div>
-            <!-- task count work hours -->
-              <div>
-                <div>---</div>
-                <div style="display: flex; align-items: center; justify-content: space-between">
-                  <div>{{ countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }} из {{ countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
-                  <div 
-                    :style="
-                      setTaskAccomplishmentLabel( 
-                        countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                        countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
-                    ">
-                      {{
-                        setTaskAccomplishmentLabel(
-                          countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                          countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
-                        )
-                      }}
-                    </div>
-                </div>
+          <!-- TASK -->
+          <div v-if="computedTasks?.length" class="computedTask_container">
+
+            <Section 
+              v-for="(task, index) in computedTasks"
+              :padding="true" 
+              :bg="set_bgColor_by_Urgency(task)" 
+              :fDirection="`column`"
+              :fGap="'1rem'"
+              style="cursor: pointer; position: relative; flex-direction: row"
+              @click.stop="chooseCurrentLanding(task)"
+            >
+              <!-- {{  task  }} -->
+  
+              <!-- task name -->
+              <div class="ticketEl_content">
+                <h3>О чЁм</h3>
+                <p>{{ task.name }}</p>
               </div>
-            
-            <!--  -->
-            <!-- TASK have deadline (absolute) -->
-            <div v-if="task.deadline > task.created_at" class="ticket_deadline">
-              deadline: {{ task.deadline }}
-            </div>
-            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-            <div v-if="task.status === 'paused'" class="rounded ticket_paused">
-              <div style="color: #fff;">ПАУЗА</div>
-            </div>  
-            <!-- WRAPPER FOR FINISHED????????-->
-
-
-
-
-          </Section>
+              <!-- task desc -->
+              <div class="ticketEl_content">
+                <h3>ТЗ:</h3>
+                <p>{{ cutTaskDesc(task.desc, 40) }}</p>
+              </div>
+              <!-- task count work hours -->
+                <div>
+                  <div>---</div>
+                  <div style="display: flex; align-items: center; justify-content: space-between">
+                    <div>{{ countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }} / {{ countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+                    <div 
+                      :style="
+                        setTaskAccomplishmentLabel( 
+                          countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                          countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
+                      ">
+                        {{
+                          setTaskAccomplishmentLabel(
+                            countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                            countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                          )
+                        }}
+                      </div>
+                  </div>
+                </div>
+              
+              <!--  -->
+              <!-- TASK have deadline (absolute) -->
+              <div v-if="task.deadline > task.created_at" class="ticket_deadline">
+                deadline: {{ task.deadline }}
+              </div>
+              <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+              <div v-if="task.status === 'paused'" class="rounded ticket_paused">
+                <div style="color: #fff;">ПАУЗА</div>
+              </div>  
+              <!-- WRAPPER FOR FINISHED????????-->
+  
+  
+  
+  
+            </Section>
+          </div>
+          <div v-else class="computedTask_container">
+           Нет задач по фильтру
+          </div>
         </div>
 
         <div v-else>У вас нет задач по данному проекту</div>
@@ -802,6 +914,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 }
 
 .computedTask_container{
+  margin-top: 1rem;
   display: grid;
   gap: 1rem;
 }
@@ -812,6 +925,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 1rem;
 }
 .task_ledger_el {
   /* background-color: red;s */
@@ -890,10 +1004,11 @@ const cutTaskDesc = (str: string, maxLength: number) => {
     grid-template-columns: 1fr;
     padding: 0 0.5rem;
     gap: 1rem;
+    /* margin-left: 0.5rem;
+    margin-right: 0.5rem; */
   }
   .title-section_container,
-  .about-section_container,
-  .task-section_container {
+  .about-section_container{
     margin: 0 0.5rem;
   }
 }
@@ -909,11 +1024,13 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   .computedTask_container{
     grid-template-columns: 1fr;
     padding: 0 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem;
+    margin-right: 1rem; */
     grid-template-columns: repeat(2, 1fr);
   }
   .title-section_container,
-  .about-section_container,
-  .task-section_container {
+  .about-section_container {
     margin: 0 0.5rem;
   }
 }

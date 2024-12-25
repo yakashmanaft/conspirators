@@ -6,6 +6,7 @@ import { Container } from "@/shared/container";
 import { DevModePlug } from "@/components/plug_dev_mode";
 import { BreadCrumbs } from "~/components/breadcrumbs";
 import { Button } from "@/components/button";
+import { Search } from "~/components/search";
 
 // utils
 import { H3Error } from "h3";
@@ -278,7 +279,6 @@ const addNewProject = () => {
       <BreadCrumbs/>
       <h1 style="margin: 0;">Проекты</h1>
     </div>
-
     <!-- fetch data is error -->
     <!-- <div v-if="error">
       <p>Error Code {{ error.statusCode }}</p>
@@ -443,7 +443,14 @@ const addNewProject = () => {
 
 
 
-    <div class="projects_container">
+    <div class="projects_container" v-if="computedProjects?.length">
+
+      <!-- SEARCH SECTION -->
+      <div>
+        <Search/>
+      </div>
+
+      <!--  -->
       <div
         v-for="(project, index) in computedProjects"
         :key="index"
@@ -474,20 +481,20 @@ const addNewProject = () => {
         </div> -->
       </div>
 
-      <!--  -->
-      <div class="no-project_warapper" v-if="!computedProjects?.length">
-        <p>У вас нет проектов...</p>
-        <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
-      </div>
+    </div>
+    <!--  -->
+    <div class="no-project_warapper" v-else>
+      <p>У вас нет проектов...</p>
+      <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
     </div>
 
   </Container>
 </template>
 
 <style scoped>
-.projects_container {
+/* .projects_container {
   margin-top: 2rem;
-}
+} */
 .project-item_container {
   display: flex;
   align-items: center;

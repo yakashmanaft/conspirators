@@ -40,6 +40,10 @@ const props = defineProps({
   tabs: Array,
   default: Object,
   btn_all_exist: Boolean,
+  no_padding: {
+    type: Boolean,
+    default: false
+  }
 });
 const currentTitle = ref(props?.default);
 
@@ -113,8 +117,8 @@ onMounted(() => {
 
 @media screen and (max-width: 575px) {
   .tab_wrapper {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: v-bind('props.no_padding === false ? `0.5rem` : `unset`');
+    padding-right: v-bind('props.no_padding === false ? `0.5rem` : `unset`');
   }
 }
 
@@ -122,8 +126,8 @@ onMounted(() => {
   .tab_wrapper {
     border: unset;
     padding-bottom: unset;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: v-bind('props.no_padding === false ? `1rem` : `unset`');
+    padding-right: v-bind('props.no_padding === false ? `1rem` : `unset`');
   }
 
 }
