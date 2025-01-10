@@ -474,7 +474,7 @@ const setReadingTime = (subject: string, data: string) => {
 
   if( subject === 'date'){
     
-    return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+    return `${date.getDate()}-${date.getMonth() + 1 }-${date.getFullYear()}`
   } else {
 
     return date
@@ -631,7 +631,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
-        <h3>5 часов</h3>
+        <h3># часов</h3>
         <p>Закрытые часы 3/5</p>
         {{ computedProject }}
 
