@@ -614,7 +614,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
         :btn_all_exist="false" 
         @changed="changeChip"
         style="margin-top: 0.5rem;"
-        v-if="computedTask?.length"
+        v-if="project_list?.length"
        />
        <!-- {{ currentChip }} -->
        <!--  -->
