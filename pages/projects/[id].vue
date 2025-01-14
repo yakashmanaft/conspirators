@@ -160,6 +160,12 @@ const currentAccomplishmentChip = ref({
   title: 'Ожидание'
 })
 
+// COUNT Accomplishments by current chip
+const countAccomplishment = ref(0)
+
+// Accomplishments Ended Date Array
+const accomplishmentsEndedDateArray = ref([])
+
 // EVENT CLICKERS
 //= change demands chip
 const changeChip = (obj: any) => {
@@ -203,11 +209,11 @@ const computedTasks = computed(() => {
 const computedAccomplishments = computed(() => {
   if(task_ledger.value) {
     return task_ledger.value.filter(el => {
-      if(el.taskId === current_task.value.id) {
-        if(el.taskId === current_task.value.id && currentAccomplishmentChip.value.name === el.status) {
-          return el
-        }
+      if(el.taskId === current_task.value.id && currentAccomplishmentChip.value.name === el.status) {
+        return el
       }
+      // if(el.taskId === current_task.value.id) {
+      // }
     })
   }
 })
@@ -254,6 +260,7 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
 const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
   lazy: false,
   transform: (task_ledger) => {
+    task_ledger.filter(item => item.taskId === current_task.value.id)
     return task_ledger.sort((a,b) => {
         return new Date(b.created_at) - new Date(a.created_at);
         // return b.created_at - a.created_at
@@ -336,7 +343,19 @@ onMounted(async () => {
   //     titles.value = [...titles.value].filter((el) => !(el.name === "balance"));
   //   }
   // }
+  countAccomplishment.value = computedAccomplishments.value?.length
 });
+
+//= set accomplishments Ended Date Array
+const accomplishmentsEndedDateArrayFunc = () => {
+  let arr = []
+
+  computedAccomplishments.value?.forEach(item => {
+    arr.push(item.ended_at.slice(0,10))
+  })
+
+  return [...new Set(arr)]
+}
 
 //= urgency
 const set_bgColor_by_Urgency = (lead: any) => {
@@ -454,7 +473,7 @@ const countCurrentAccomplishment = () => {
     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
   })
 
-  return `+${sum.toFixed(1)} часа`
+  return `Всего ${sum.toFixed(1)} часа работы`
 }
 
 // SET
@@ -468,18 +487,18 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   }
 }
 //== readingg hours
-const setReadingTime = (subject: string, data: string) => {
+// const setReadingTime = (subject: string, data: string) => {
   
-  let date = new Date(data)
+//   let date = new Date(data)
 
-  if( subject === 'date'){
+//   if( subject === 'date'){
     
-    return `${date.getDate()}-${date.getMonth() + 1 }-${date.getFullYear()}`
-  } else {
+//     return `${date.getDate()}-${date.getMonth() + 1 }-${date.getFullYear()}`
+//   } else {
 
-    return date
-  } 
-}
+//     return date
+//   } 
+// }
 
 
 //= closePopup
@@ -517,11 +536,24 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           body.style.height = '100%'
           body.style.overflow = 'hidden'
 
+          // set count accomplishment 
+          countAccomplishment.value = computedAccomplishments.value?.length
+
+          // set accomplishments Ended Date Array
+          accomplishmentsEndedDateArray.value = accomplishmentsEndedDateArrayFunc()
+
       } else {
           body.style.margin = 'unset'
           body.style.height = 'unset'
           body.style.overflow = 'unset'
       }
+  })
+  //= countAccomplishment.value = computedAccomplishments.value?.length
+  watch(currentAccomplishmentChip, () => {
+    // set count accomplishment 
+    countAccomplishment.value = computedAccomplishments.value?.length
+    // set accomplishments Ended Date Array
+    accomplishmentsEndedDateArray.value = accomplishmentsEndedDateArrayFunc()
   })
 
 </script>
@@ -556,45 +588,57 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             :btn_all_exist="false" 
             @changed="changeAccomplishmentChip"
           />
+
+          <!-- COUNT   -->
+          <div style="margin-top: 1rem; display: flex; flex-direction: column;">
+            <div>{{ countAccomplishment }} в листе</div>
+            <div v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
+          </div>
           <!-- accomplishment list -->
-          <ul v-if="computedAccomplishments?.length" class="task_ledger_container" style="list-style: none; padding: 0;">
-            {{ countCurrentAccomplishment() }}
-            <li v-for="task_el in computedAccomplishments" class="task_ledger_el">
+          <div v-if="computedAccomplishments?.length">
+            <ul v-for="endedDate in accomplishmentsEndedDateArray" class="task_ledger_container" style="list-style: none; padding: 0;">
+              <li>
+                <p style="margin-bottom: 1rem; font-size: 1.2rem; text-align: center;">{{ endedDate }}</p>
+                <ul style="padding: 0; list-style: none">
+                  <li v-for="task_el in computedAccomplishments.filter(item => item.ended_at.slice(0,10) === endedDate)" class="task_ledger_el">
+                    <!-- PERIOD -->
+                    <div>
+                      <p style="margin: 0;">
+                        <!-- {{ setReadingTime('date', task_el.created_at) }} -->
+                        <span style="font-size: 0.7rem">
+                          Начало: {{ task_el.created_at }}
+                          Завершение: {{ task_el.ended_at }}
+                        </span>
+                      </p>
+                    </div>
+                    <!-- INFO -->
+                    <div class="ledger_el_info">
+                    {{ task_el.subject }}
+                    </div>
+                    <!-- FOOTER -->
+                    <div class="leder_el_footer" style="display: flex; gap: 1rem;">
+                      <!-- STATUS -->
+                      <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
+                        {{ task_el.status }}
+                      </div>
+                      <!-- COUNT -->
+                      <div class="ledger_el_count">
+                        <!-- false | -- -->
+                        <div v-if="task_el.created_at === task_el.ended_at">
+                          --
+                        </div>
+                        <!-- true | +12-->
+                        <div v-else>
+                          +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) }}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
 
-              <!-- COUNTER -->
-              <div class="ledger_el_counter">
-                <div class="ledger_el_count">
-                  <!-- false | -- -->
-                  <div v-if="task_el.created_at === task_el.ended_at">
-                    --
-                  </div>
-                  <!-- true | +12-->
-                  <div v-else>
-                    +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) }}
-                  </div>
-                </div>
-                <div class="ledger_el_period">
-                  <div>
-                    <p>Начало: {{ task_el.created_at }}</p>
-                    <p>{{ setReadingTime('date', task_el.created_at) }}</p>
-                  </div>
-                  <div>
-                    <p>Завершение: {{ task_el.ended_at }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- INFO -->
-              <div class="ledger_el_info">
-              {{ task_el.subject }}
-              </div>
-
-              <!-- STATUS -->
-              <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
-                {{ task_el.status }}
-              </div>
-            </li>
-          </ul>
           <ul v-else style="list-style: none; padding: unset; margin-top: 1rem;">
             <li>Ничего нет</li>
           </ul>
@@ -693,7 +737,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                             countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
                             countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
                           )
-                        }}
+                        }} |
+                        {{ task?.urgency }} |
+                        {{ task?.status }}
                       </div>
                   </div>
                 </div>
@@ -937,10 +983,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   align-items: center;
 }
 .ledger_el_count {
-  background-color: var(--color-global-text);
-  color: var(--color-btn-text);
-  height: 50px;
-  width: 50px;
+  /* background-color: var(--color-global-text);
+  color: var(--color-btn-text); */
+  /* height: 50px;
+  width: 50px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -957,12 +1003,13 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 }
 .ledger_el_info {
   /* background-color: blue */
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
 }
 .ledger_el_status {
-  position: absolute;
+  /* position: absolute;
   top: 0.5rem;
-  right: 0;
+  right: 0; */
+  display: inline-block;
   background-color: var(--color-btn-wo-bg);
   font-size: 0.7rem;
   padding: 10px 24px;
@@ -981,6 +1028,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 .popup_current_task_status:hover {
   background-color: var(--color-bg-popup);
   cursor: pointer;
+}
+
+ul > .task_ledger_el {
+  margin-top: 0.5rem;
 }
 
 @media screen and (max-width: 575px) {
@@ -1011,6 +1062,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   .about-section_container{
     margin: 0 0.5rem;
   }
+  .leder_el_footer {
+    margin-top: 0.5rem;
+  }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
   .switch-title_el:first-child {
@@ -1033,6 +1087,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   .about-section_container {
     margin: 0 0.5rem;
   }
+  .leder_el_footer {
+    margin-top: 0.5rem;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -1045,11 +1102,17 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   .computedTask_container{
     grid-template-columns: repeat(3, 1fr);
   }
+  .leder_el_footer {
+    margin-top: 0.5rem;
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
 
   .computedTask_container {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .leder_el_footer {
+    margin-top: 0.5rem;
   }
 }
 
@@ -1057,6 +1120,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
   .computedTask_container{
     grid-template-columns: repeat(5, 1fr);
+  }
+  .leder_el_footer {
+    margin-top: 0.5rem;
   }
 }
 
