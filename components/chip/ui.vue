@@ -94,10 +94,10 @@ onMounted(() => {
   width: 0;
 }
 .tab label p {
-  border: 1px solid var(--bs-primary);
+  border: 1px solid var(--color-global-text);
   padding: 2px 10px;
   border-radius: 2rem;
-  color: var(--bs-primary);
+  color: var(--color-global-text);
   white-space: nowrap;
 }
 .tab label p {
@@ -112,7 +112,7 @@ onMounted(() => {
 } */
 .tab input[type="radio"]:checked + label p {
   color: var(--bs-body-bg);
-  background-color: var(--bs-primary);
+  background-color: var(--color-global-text);
 }
 
 @media screen and (max-width: 575px) {

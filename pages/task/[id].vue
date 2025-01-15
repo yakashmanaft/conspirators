@@ -133,13 +133,13 @@ useHead({
     <Container v-if="current_task">
 
         <!-- TITLE PAGE SECTION -->
-        <div  class="title-section_container" style="margin-bottom: 0.5rem;">
+        <div  class="title-section_container" style="margin-bottom: 0.5rem; margin-top: -0.95rem;">
             <BreadCrumbs class="show-max-767"/>
 
             <h1 style="margin: 0;">
-                <span style="font-size: 0.7rem; margin: 0 0.5rem;">Делаем</span>
-                <span style="margin: 0 0.5rem;">{{ current_task?.name  }}</span>
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap;">для проекта</span>
+                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-text)">Делаем</span>
+                <span style="margin: 0 0.5rem; color: var(--color-btn-text)">{{ current_task?.name  }}</span>
+                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-text)">для проекта</span>
                 <Button style="display: inline-block; margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
             </h1> 
 
@@ -200,6 +200,13 @@ useHead({
     .content-setion_container {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+    }
+    .title-section_container{
+        height: 200px;
+        background-color: var(--color-global-text);
+    }
+    .title-section_container h1{
+        color: var(--color-global-text_second);
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
