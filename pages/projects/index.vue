@@ -66,15 +66,23 @@ useHead({
     // sharers: null,
     // stages: null
   });
+
+  // CONST
+  const searchInput = ref("")
   
   // COMPUTED
   //= projects
   const computedProjects = computed(() => {
-    if(project_list.value) {
 
+    if(searchInput.value === "") {
       return project_list.value
     } else {
-      return []
+      return project_list.value.filter((item) => 
+        item.name 
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+      )
     }
   }) 
   
@@ -159,6 +167,12 @@ onMounted(async () => {
 //   }
 // }
 
+// FUNc
+//= searchInputChanged
+const searchInputChanged = (str: string) => {
+  searchInput.value = str
+}
+
 // *********** ДОБАВЛЯЕМ New Project newProjectModal ***********
 // флаг disabled для кнопки submit
 // const createNewProjectBtnIsDisabled = ref(true);
@@ -242,6 +256,12 @@ onMounted(async () => {
 //   }
 // };
 
+// WATCHERS
+//= searchInput
+// watch(searchInput, () => {
+//   console.log(searchInput.value)
+// })
+
 // Check before submit creating new project
 // watch(project.value, () => {
 //   if (
@@ -271,222 +291,252 @@ const addNewProject = () => {
 
 
     <!-- <DevModePlug/> -->
-
-
+     
     <!-- TITLE PAGE SECTION -->
     <div class="show-max-767" style="margin-bottom: 0.5rem;">
 
       <BreadCrumbs/>
       <h1 style="margin: 0;">Проекты</h1>
     </div>
-    <!-- fetch data is error -->
-    <!-- <div v-if="error">
-      <p>Error Code {{ error.statusCode }}</p>
-      <p>Error Message {{ error.message }}</p>
-    </div> -->
 
-    <!-- ADD NEW PROJECT MODAL -->
-    <!-- Button trigger modal -->
-    <!-- <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#newProjectModal"
-    >
-      Создать
-    </button> -->
+    <div v-if="pending">
+      <p>Loading...</p>
+    </div>
 
-    <!-- Modal -->
-    <!-- <div
-      class="modal fade"
-      id="newProjectModal"
-      tabindex="-1"
-      aria-labelledby="newProjectModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <form class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="newProjectModalLabel">
-              Новый проект
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
+    <div v-else>
 
-            <div class="mb-3">
-              <label for="projectTitle" class="form-label"
-                >Название проекта</label
-              >
-              <input
-                v-model="project.title"
-                type="text"
-                class="form-control"
-                id="projectTitle"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectAddress" class="form-label">Address</label>
-              <input
-                v-model="project.address"
-                type="text"
-                class="form-control"
-                id="projectAddress"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectPartnerType" class="form-label"
-                >Partner Type (user | company)</label
-              >
-              <input
-                v-model="project.partnerType"
-                type="text"
-                class="form-control"
-                id="projectPartnerType"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectPartnerID" class="form-label">PartnerID</label>
-              <input
-                v-model="project.partnerID"
-                type="number"
-                class="form-control"
-                id="projectPartnerID"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectCreator" class="form-label">Creator</label>
-              <input
-                v-model="project.creator"
-                type="number"
-                class="form-control"
-                id="projectCreator"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectCurator" class="form-label"
-                >Curator (user id)</label
-              >
-              <input
-                v-model="project.curator"
-                type="number"
-                class="form-control"
-                id="projectCurator"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectWorkType" class="form-label">Work Type</label>
-              <input
-                v-model="project.workType"
-                type="string"
-                class="form-control"
-                id="projectWorkType"
-                aria-describedby="nameHelp"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label for="projectCompletion" class="form-label"
-                >Completion</label
-              >
-              <input
-                v-model="project.completion"
-                type="number"
-                class="form-control"
-                id="projectCompletion"
-                aria-describedby="nameHelp"
-              />
-            </div>
-          </div>
-
-
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              @click="clearModalInputs(project)"
-            >
-              Отменить
-            </button>
-            <button
-              type="button"
-              id="createNewProjectBtn"
-              class="btn btn-primary"
-              data-bs-dismiss="modal"
-              :disabled="createNewProjectBtnIsDisabled"
-              @click="addProject(project)"
-            >
-              Создать
-            </button>
-          </div>
-        </form>
-      </div>
-    </div> -->
-
-
-
-    <div class="projects_container" v-if="computedProjects?.length">
-
-      <!-- SEARCH SECTION -->
-      <div>
-        <Search/>
-      </div>
-
-      <!--  -->
-      <div
-        v-for="(project, index) in computedProjects"
-        :key="index"
-        class="project-item_container"
-        @click="$router.push(`/projects/${project.id}`)"
+      <!-- fetch data is error -->
+      <!-- <div v-if="error">
+        <p>Error Code {{ error.statusCode }}</p>
+        <p>Error Message {{ error.message }}</p>
+      </div> -->
+  
+      <!-- ADD NEW PROJECT MODAL -->
+      <!-- Button trigger modal -->
+      <!-- <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#newProjectModal"
       >
-      {{ project }}
-        <!-- <div class="project-item_left">
-          <div class="project-completion">
-            <span>{{ (project.completion * 100).toFixed(0) }}%</span>
-          </div>
-          <div class="project-header">
-            <h2>{{ project.title }}</h2>
-            <span class="project-address"
-              >{{ project.address }} | {{ project.workType }}</span
-            >
-          </div>
-        </div> -->
-        <!-- <div class="project-item_right">
-          <span
-            >Куратор:
-            {{ translateCurator(project.curator, project.curatorType) }}</span
+        Создать
+      </button> -->
+  
+      <!-- Modal -->
+      <!-- <div
+        class="modal fade"
+        id="newProjectModal"
+        tabindex="-1"
+        aria-labelledby="newProjectModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <form class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="newProjectModalLabel">
+                Новый проект
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+  
+              <div class="mb-3">
+                <label for="projectTitle" class="form-label"
+                  >Название проекта</label
+                >
+                <input
+                  v-model="project.title"
+                  type="text"
+                  class="form-control"
+                  id="projectTitle"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectAddress" class="form-label">Address</label>
+                <input
+                  v-model="project.address"
+                  type="text"
+                  class="form-control"
+                  id="projectAddress"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectPartnerType" class="form-label"
+                  >Partner Type (user | company)</label
+                >
+                <input
+                  v-model="project.partnerType"
+                  type="text"
+                  class="form-control"
+                  id="projectPartnerType"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectPartnerID" class="form-label">PartnerID</label>
+                <input
+                  v-model="project.partnerID"
+                  type="number"
+                  class="form-control"
+                  id="projectPartnerID"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectCreator" class="form-label">Creator</label>
+                <input
+                  v-model="project.creator"
+                  type="number"
+                  class="form-control"
+                  id="projectCreator"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectCurator" class="form-label"
+                  >Curator (user id)</label
+                >
+                <input
+                  v-model="project.curator"
+                  type="number"
+                  class="form-control"
+                  id="projectCurator"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectWorkType" class="form-label">Work Type</label>
+                <input
+                  v-model="project.workType"
+                  type="string"
+                  class="form-control"
+                  id="projectWorkType"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="projectCompletion" class="form-label"
+                  >Completion</label
+                >
+                <input
+                  v-model="project.completion"
+                  type="number"
+                  class="form-control"
+                  id="projectCompletion"
+                  aria-describedby="nameHelp"
+                />
+              </div>
+            </div>
+  
+  
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                @click="clearModalInputs(project)"
+              >
+                Отменить
+              </button>
+              <button
+                type="button"
+                id="createNewProjectBtn"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                :disabled="createNewProjectBtnIsDisabled"
+                @click="addProject(project)"
+              >
+                Создать
+              </button>
+            </div>
+          </form>
+        </div>
+      </div> -->
+  
+  
+  
+      <!--  -->
+      <div class="project_container">
+        <!-- SEARCH SECTION -->
+        <div v-if="project_list?.length">
+          <Search
+            @searchInputChanged="searchInputChanged"
           >
-          <span
-            >Заказчик:
-            {{ translatePartner(project.partnerID, project.partnerType) }}</span
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Поиск"
+              v-model="searchInput"
+              style="padding-left: 2.2rem"
+            />
+          </Search>
+        </div>
+        
+        <!-- list-->
+        <div class="project-list_wrapper">
+  
+          <!-- Если ничего не найдено в поиске-->
+          <div>
+            <div v-if="searchInput && !computedProjects.length">
+              По запросу ничего не найдено
+            </div>
+          </div>
+  
+          <!-- Список пользователей -->
+          <div
+            v-for="(project, index) in computedProjects"
+            :key="index"
+            class="project-item_container"
+            @click="$router.push(`/projects/${project.id}`)"
           >
-        </div> -->
+          {{ project }}
+            <!-- <div class="project-item_left">
+              <div class="project-completion">
+                <span>{{ (project.completion * 100).toFixed(0) }}%</span>
+              </div>
+              <div class="project-header">
+                <h2>{{ project.title }}</h2>
+                <span class="project-address"
+                  >{{ project.address }} | {{ project.workType }}</span
+                >
+              </div>
+            </div> -->
+            <!-- <div class="project-item_right">
+              <span
+                >Куратор:
+                {{ translateCurator(project.curator, project.curatorType) }}</span
+              >
+              <span
+                >Заказчик:
+                {{ translatePartner(project.partnerID, project.partnerType) }}</span
+              >
+            </div> -->
+          </div>
+  
+          <!-- Если вообще не проектов -->
+          <!--  -->
+          <div class="no-project_warapper" v-if="searchInput === '' && !computedProjects?.length">
+            <p>У вас нет проектов...</p>
+            <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
+          </div>
+        </div>
       </div>
+    </div>
 
-    </div>
-    <!--  -->
-    <div class="no-project_warapper" v-else>
-      <p>У вас нет проектов...</p>
-      <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
-    </div>
 
   </Container>
 </template>
@@ -504,6 +554,9 @@ const addNewProject = () => {
   padding: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in;
+}
+.project-item_container:last-child {
+  border-bottom: none;
 }
 .project-item_container h2 {
   margin: 0;
@@ -539,6 +592,12 @@ const addNewProject = () => {
   align-items: center;
   justify-content: center;
 }
+.project_container {
+  margin-top: 1rem;
+}
+.project-list_wrapper {
+  margin-top: 1rem;
+}
 @media screen and (max-width: 575px) {
   .no-project_warapper {
     margin-left: .5rem;
@@ -548,6 +607,10 @@ const addNewProject = () => {
 @media screen and (min-width: 576px) and (max-width: 767px) {
 
   .no-project_warapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .partners-list_wrapper {
     margin-left: 1rem;
     margin-right: 1rem;
   }

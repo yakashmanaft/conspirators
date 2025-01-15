@@ -24,7 +24,11 @@
     /* with opacity */
     --color-urgency-high: rgba(232, 109, 109, 0.3);
     --color-urgency-middle: rgba(230, 176, 123, 0.5);
-    --color-urgency-low: rgba(128, 191, 138, 0.3);
+    /* --color-urgency-low: rgba(128, 191, 138, 0.3); */
+    --color-urgency-low: var(--color-btn-text);
+
+    --color-status-paused: rgba(152, 103, 152, 0.5);
+    --color-status-finished: rgba(128, 191, 138, 0.3);
     --color-status-canceled: rgba(189, 186, 189, 0.5);
     /* w/o opacity */
     --color-urgency-low-wo: rgb(128, 191, 138);

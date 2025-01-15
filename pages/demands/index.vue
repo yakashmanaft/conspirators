@@ -423,7 +423,7 @@ const set_bgColor_by_Urgency = (lead: any) => {
     // PAUSED
     if(lead.status === 'paused') {
       // color = 'var(--color-bg-popup)'
-      color = 'var(--color-status-canceled)'
+      color = 'var(--color-status-paused)'
     }
     // CANCELED
     if(lead.status === 'canceled') {
@@ -432,7 +432,7 @@ const set_bgColor_by_Urgency = (lead: any) => {
     // PAUSED
     // FINISHED
     if(lead.status === 'finished') {
-      color = 'var(--color-btn-text)'
+      color = 'var(--color-status-finished)'
     }
   }
 
@@ -635,9 +635,14 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
           </div>
           <!-- {{ item }} -->
           <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-          <div v-if="item.status === 'paused'" class="rounded ticket_paused">
+          <div v-if="item?.status === 'paused'" class="rounded ticket_paused">
             <div style="color: #fff;">ПАУЗА</div>
           </div>  
+          <!-- WRAPPER FOR ITEM ON CANCELED -->
+          <div v-if="item?.status === 'canceled'" class="rounded ticket_canceled">
+            <div style="color: #fff;">ОТМЕНЁН</div>
+          </div>
+          
          <!-- CREATED DATE -->
          <div>
            <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
@@ -849,17 +854,25 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+.ticket_canceled,
 .ticket_paused {
   position: absolute; 
   top: 0; 
-  left: 0; 
-  background-color: var(--color-paused-wrapper-bg); 
+  left: 0;
+  backdrop-filter: blur(2px);
   width: 100%; 
   height: 100%; 
   display: flex; 
   align-items: center; 
   justify-content: center;
 }
+.ticket_paused {
+  background-color: var(--color-status-paused); 
+}
+.ticket_canceled {
+  background-color: var(--color-status-canceled); 
+}
+
 .ticket_deadline {
   position: absolute; 
   top: 0; 

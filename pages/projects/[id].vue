@@ -393,14 +393,14 @@ const set_bgColor_by_Urgency = (lead: any) => {
   //     // color = 'var(--color-bg-popup)'
   //     color = 'var(--color-status-canceled)'
   //   }
-  //   // CANCELED
-  //   if(lead.status === 'canceled') {
-  //     color = 'var(--color-status-canceled)'
-  //   }
+    // CANCELED
+    if(lead.status === 'canceled') {
+      color = 'var(--color-status-canceled)'
+    }
     // PAUSED
     // FINISHED
-    if(lead.status === 'finished') {
-      color = 'var(--color-btn-text)'
+    else if(lead.status === 'finished') {
+      color = 'var(--color-status-finished)'
     }
   }
 
@@ -483,7 +483,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
 
     return `Долг`
   } else if (finished == sum) {
-    return `Готово`
+    return `Оплачено`
   }
 }
 //== readingg hours
@@ -719,30 +719,30 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               <!-- task desc -->
               <div class="ticketEl_content">
                 <h3>ТЗ:</h3>
-                <p>{{ cutTaskDesc(task.desc, 40) }}</p>
+                <p style="font-size: 0.8rem;">{{ cutTaskDesc(task.desc, 40) }}</p>
               </div>
               <!-- task count work hours -->
-                <div>
-                  <div>---</div>
-                  <div style="display: flex; align-items: center; justify-content: space-between">
-                    <div>{{ countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }} / {{ countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
-                    <div 
-                      :style="
-                        setTaskAccomplishmentLabel( 
+              <div>
+                <!-- <div>---</div> -->
+                <!--  -->
+                <div class="ticketEl_content-status">{{ task?.status }}</div>
+                <div style="display: flex; align-items: center; justify-content: space-between">
+                  <div>{{ countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }} / {{ countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
+                  <div 
+                    :style="
+                      setTaskAccomplishmentLabel( 
+                        countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                        countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
+                    ">
+                      {{
+                        setTaskAccomplishmentLabel(
                           countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                          countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
-                      ">
-                        {{
-                          setTaskAccomplishmentLabel(
-                            countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                            countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
-                          )
-                        }} |
-                        {{ task?.urgency }} |
-                        {{ task?.status }}
-                      </div>
-                  </div>
+                          countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                        )
+                      }}
+                    </div>
                 </div>
+              </div>
               
               <!--  -->
               <!-- TASK have deadline (absolute) -->
@@ -752,6 +752,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
               <div v-if="task.status === 'paused'" class="rounded ticket_paused">
                 <div style="color: #fff;">ПАУЗА</div>
+              </div>  
+              <!-- WRAPPER FOR TASK ON CANCELED -->
+              <div v-if="task.status === 'canceled'" class="rounded ticket_canceled">
+                <div style="color: #fff;">ОТМЕНЁН</div>
               </div>  
               <!-- WRAPPER FOR FINISHED????????-->
   
@@ -922,7 +926,8 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   margin-top: 1rem;
 }
 
-.ticket_paused {
+.ticket_paused,
+.ticket_canceled {
   position: absolute; 
   top: 0; 
   left: 0; 
@@ -958,6 +963,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 .ticketEl_content p {
   margin: 0;
 }
+
+.ticketEl_content-status {
+  font-size: 0.8em;
+} 
 
 .computedTask_container{
   margin-top: 1rem;
