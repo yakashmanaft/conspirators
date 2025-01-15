@@ -452,7 +452,7 @@ const countFinishedAccomplishmentTask = (taskLedger: any) => {
     }    
   })
 
-  return endedSum.toFixed(1)
+  return endedSum.toFixed(2)
 }
 // all task in accomplishment
 const countAccomplishmentTask = (taskLedger: any) => {
@@ -462,7 +462,7 @@ const countAccomplishmentTask = (taskLedger: any) => {
     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
   })
 
- return sum.toFixed(1)
+ return sum.toFixed(2)
 }
 // current accomplishment 
 const countCurrentAccomplishment = () => {
@@ -473,7 +473,7 @@ const countCurrentAccomplishment = () => {
     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
   })
 
-  return `Всего ${sum.toFixed(1)} часа работы`
+  return `Всего ${sum.toFixed(2)} часа работы`
 }
 
 // SET
@@ -629,7 +629,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                         </div>
                         <!-- true | +12-->
                         <div v-else>
-                          +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(1) }}
+                          +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2) }}
                         </div>
                       </div>
                     </div>
