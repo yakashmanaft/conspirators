@@ -23,8 +23,12 @@
                 <!-- LEFT -->
                 <div>
 
-                  <!-- STATUS -->
-                  <p style="margin: 0; font-size: 0.8rem;">{{ props.current_task?.status }}</p>
+                  <div>
+                    <!-- STATUS -->
+                    <p style="margin: 0; font-size: 0.8rem;">{{ props.current_task?.status }}</p>
+                    <!-- URGENCY -->
+                    <div :style="`width: 1rem; height: 1rem; background-color: black`"></div>
+                  </div>
   
                   <!-- COUNT -->
                   <div>
@@ -44,10 +48,6 @@
 
               <!-- ADDONS -->
               <!--  -->
-              <!-- URGENCY -->
-              <div :style="`position: absolute; top: 25%; left: 0; width: 1.2rem; height: 1.2rem; background-color: black`">
-
-              </div>
               <!-- DEADLINE -->
               <div v-if="props.current_task?.deadline" class="ticket_deadline">
                 Deadline: {{ props.current_task?.deadline }}
