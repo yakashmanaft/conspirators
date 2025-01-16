@@ -270,7 +270,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   /* urgency */
   .ticket_urgency {
     position: absolute;
-    top: 1.5rem;
+    top: 1.4rem;
     right: 1rem;
     border-radius: 50%;
     /* border-bottom-left-radius: 0.5rem;
