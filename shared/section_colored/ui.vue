@@ -1,6 +1,6 @@
 <template>
     <div class="section_wrapper"> 
-        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '', bgColor ? 'backgroundUrgencyColor' : '']" >
+        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '']" >
 
             <!-- {{ props.current_task}} -->
 
@@ -27,7 +27,10 @@
                     <!-- STATUS -->
                     <p style="margin: 0; font-size: 0.8rem;">{{ props.current_task?.status }}</p>
                     <!-- URGENCY -->
-                    <div :style="`width: 1rem; height: 1rem; background-color: black`"></div>
+                    <div 
+                      class="ticket_urgency"
+                      :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
+                    ></div>
                   </div>
   
                   <!-- COUNT -->
@@ -55,12 +58,17 @@
               
               <!-- CANCELED -->
               <div v-if="props.current_task?.status === 'canceled'" class="ticket_canceled">
-                <p>ОТМЕНЁН</p>
+                <p>Отменён</p>
               </div>
 
               <!-- PAUSED -->
               <div v-if="props.current_task?.status === 'paused'" class="ticket_paused">
-                <p>ПАУЗА</p>
+                <p>Пауза</p>
+              </div>
+
+              <!-- FINISHED -->
+              <div v-if="props.current_task?.status === 'finished'" class="ticket_finished">
+                <p>Выполнено</p>
               </div>
 
             </div>
@@ -79,12 +87,12 @@
       default: 'Беез имени'
     },
     finishedTaskHours: {
-      type: Number,
-      default: 0
+      type: String,
+      default: '0.00'
     },
     totalTaskHours: {
-      type: Number,
-      default: 0
+      type: String,
+      default: '0.00'
     },
     padding: {
       type: Boolean,
@@ -106,7 +114,7 @@
 
   // CONST
   //= bgColor
-  const bgColor = ref('var(--color-btn-text)')
+  // const bgColor = ref('var(--color-btn-text)')
 
   // PROPS
   //= cutTaskDesc
@@ -122,29 +130,28 @@
 
 // SET
 //= set_bgColor_by
-const set_bgColor_by = (el: any) => {
-  let color = bgColor.value
+const set_bgColor_by_urgency = (urgency: string) => {
+  // let color = bgColor.value
+  let color = 'red';
 
   // by urgency
-  if(el?.urgency) {
+  if(urgency) {
 
     //= low
-    if(el?.urgency === 'low') {
+    if(urgency === 'low') {
       color = 'var(--color-urgency-low)'
     }
     //= middle
-    if(el?.urgency === 'middle'){
+    if(urgency === 'middle'){
 
       color = `var(--color-urgency-middle)`
     }
     //= high
-    if(el?.urgency === 'high'){
+    if(urgency === 'high'){
       color = `var(--color-urgency-high)`
     }
-  } else {
-
     return color
-  }
+  } 
   // set_bgColor_by_
   // by status
   // if(el?.status) {
@@ -173,7 +180,7 @@ const set_bgColor_by = (el: any) => {
 
 
 onMounted(() => {
-  bgColor.value = set_bgColor_by(props?.current_task)
+  // bgColor.value = set_bgColor_by(props?.current_task)
 })
 
 // SET
@@ -193,12 +200,12 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
 </script>
   
   <style scoped>
-  .backgroundUrgencyColor {
+  /* .backgroundUrgencyColor {
     background-color: v-bind('bgColor');
-  }
+  } */
 
   .section {
-    background-color: var(v-bind('bgColor'));
+    /* background-color: var(v-bind('bgColor')); */
     /* width: 100%; */
     display: flex;
     flex-direction: v-bind('props.fDirection');
@@ -230,7 +237,8 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   } */
   /* TICKET PAUSED */
   .ticket_canceled,
-  .ticket_paused {
+  .ticket_paused,
+  .ticket_finished {
     position: absolute; 
     top: 0; 
     left: 0;
@@ -249,10 +257,27 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   .ticket_paused {
     background-color: var(--color-status-paused); 
   }
+  .ticket_finished {
+    background-color: var(--color-status-finished)
+  }
   .ticket_canceled p,
-  .ticket_paused p {
+  .ticket_paused p,
+  .ticket_finished p {
     margin: 0;
     color: var(--color-btn-text);
+    text-transform: uppercase;
+  }
+  /* urgency */
+  .ticket_urgency {
+    position: absolute;
+    top: 1.5rem;
+    right: 1rem;
+    border-radius: 50%;
+    /* border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem; */
+    width: 1.3rem; 
+    height: 1.3rem; 
+    background-color: black
   }
 @media screen and (max-width: 575px) {
 }

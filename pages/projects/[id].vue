@@ -602,10 +602,11 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             :default="currentAccomplishmentChip"
             :btn_all_exist="false" 
             @changed="changeAccomplishmentChip"
+            style="padding-left: 1rem; padding-right: 1rem;"
           />
 
           <!-- COUNT   -->
-          <div style="margin-top: 1rem; display: flex; flex-direction: column;">
+          <div v-if="computedAccomplishments?.length" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem; display: flex; flex-direction: column; background-color: gray;">
             <div>{{ countAccomplishment }} в листе</div>
             <div v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
           </div>
@@ -616,58 +617,65 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             <ul v-for="endedDate in accomplishmentsEndedDateArray" class="task_ledger_container" style="list-style: none; padding: 0;">
               <!-- LI1 -->
               <li>
-                <p style="margin-bottom: 1rem; font-size: 0.8rem; text-align: center; color: var(--color-global-text_second)">{{ endedDate }}</p>
+                <p style="margin-bottom: 1rem; font-size: 1rem; text-align: center; color: var(--color-global-text_second)">{{ endedDate }}</p>
                 
                 <!-- UUL2 -->
                 <ul style="padding: 0; list-style: none">
 
                   <!-- LI2 -->
+                  
                   <li v-for="task_el in computedAccomplishments.filter(item => item.ended_at.slice(0,10) === endedDate)" class="task_ledger_el">
-
-                    <!-- INFO -->
-                    <div class="ledger_el_info">
-                    {{ task_el.subject }}
-                    </div>
-
-                    <!-- FOOTER -->
-                    <div class="leder_el_footer" style="display: flex; gap: 1rem;">
-
-                      <!-- STATUS -->
-                      <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
-                        {{ task_el.status }}
+                    <Section :fJustifyContent="'flex-start'" :fDirection="'column'">
+                      <!-- INFO -->
+                      <div class="ledger_el_info">
+                      {{ task_el.subject }}
                       </div>
+                      <!-- FOOTER -->
+                      <div class="leder_el_footer" style="display: flex; align-items: center; gap: 1rem; justify-content: space-between;">
 
-                      <!-- PERIOD -->
-                      <div>
-                        <p style="margin: 0;">
-                          <!-- {{ setReadingTime('date', task_el.created_at) }} -->
-                          <span style="font-size: 0.7rem">
-                            {{ task_el?.created_at.slice(11, 16)}}
-                            - 
-                            {{ task_el.ended_at.slice(11,16) }}
-                          </span>
-                        </p>
-                      </div>
-                      <!-- COUNT -->
-                      <div class="ledger_el_count">
-                        <!-- false | -- -->
-                        <div v-if="task_el.created_at === task_el.ended_at">
-                          --
+                        <div style="display: flex; gap: .5rem; align-items: center;">
+
+                          <!-- PERIOD -->
+                          <div>
+                            <p style="margin: 0;">
+                              <!-- {{ setReadingTime('date', task_el.created_at) }} -->
+                              <span style="font-size: 0.7rem; color: var(--color-btn-disabled-text);">
+                                {{ task_el?.created_at.slice(11, 16)}}
+                                - 
+                                {{ task_el.ended_at.slice(11,16) }}
+                              </span>
+                            </p>
+                          </div>
+                          <!-- line -->
+                          <div style="color: var(--color-btn-disabled-text);">|</div>
+                          <!-- COUNT -->
+                          <div class="ledger_el_count">
+                            <!-- false | -- -->
+                            <div v-if="task_el.created_at === task_el.ended_at">
+                              --
+                            </div>
+                            <!-- true | +12-->
+                            <div v-else>
+                              +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2) }} часа
+                            </div>
+                          </div>
                         </div>
-                        <!-- true | +12-->
-                        <div v-else>
-                          +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2) }}
+  
+                        <!-- STATUS -->
+                        <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
+                          {{ task_el.status }}
                         </div>
                       </div>
+                    </Section>
 
-                    </div>
+
                   </li>
                 </ul>
               </li>
             </ul>
           </div>
 
-          <ul v-else style="list-style: none; padding: unset; margin-top: 1rem;">
+          <ul v-else style="list-style: none; padding: unset; margin-top: 1rem; margin-left: 1rem; ">
             <li>Ничего нет</li>
           </ul>
         </div>
@@ -703,10 +711,18 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
-        <h3># часов</h3>
-        <p>Закрытые часы 3/5</p>
-        {{ computedProject }}
-
+        <h3>Уделено # часов</h3>
+        <p>Закрытые часы #.## / #.##</p>
+        <p>Ставка: почасовая (####,## RUB / час)</p>
+        <p>Выручка: ## ###,## RUB</p>
+        <p>Затраты:
+          <ul>
+            <li>Налог(Ставка: ##,##%): ###,## RUB</li>
+            <li>Производство: # ###,## RUB</li>
+          </ul>
+        </p>
+        <p>Маржа с проекта: ## ###,## RUB</p>
+        <p>{{ computedProject }}</p>
       </div>
 
       <!-- TASKs SECTION -->
@@ -727,7 +743,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           style="margin-top: 1rem; width: 100%;"
         />
 
-        <div style="margin-top: 1rem;">{{ computedTasks?.length }} в листе</div>
+        <div class="count_task" v-if="computedTasks?.length ">{{ computedTasks?.length }} в листе</div>
 
         <div v-if="task_list?.length" style="list-style: none; padding: 0;">
 
@@ -978,6 +994,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   gap: 1rem;
 }
 
+.count_task {
+  margin-top: 1rem!important;
+}
 
 /*  */
 .task_ledger_container {
@@ -989,6 +1008,8 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 .task_ledger_el {
   /* background-color: red;s */
   position: relative;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 .ledger_el_counter {
   /* background-color: green; */
@@ -1003,6 +1024,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-btn-disabled-text);
 }
 .ledger_el_period {
   display: flex;
@@ -1024,8 +1046,8 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   right: 0; */
   display: inline-block;
   background-color: var(--color-btn-wo-bg);
-  font-size: 0.7rem;
-  padding: 10px 24px;
+  font-size: 0.8rem;
+  padding: 2px 4px;
   transition: all .2s ease-in;
 }
 .ledger_el_status:hover {
@@ -1068,8 +1090,8 @@ ul > .task_ledger_el {
     grid-template-columns: 1fr;
     padding: 0 0.5rem;
     gap: 1rem;
-    /* margin-left: 0.5rem;
-    margin-right: 0.5rem; */
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
   .title-section_container,
   .about-section_container{
@@ -1077,6 +1099,9 @@ ul > .task_ledger_el {
   }
   .leder_el_footer {
     margin-top: 0.5rem;
+  }
+  .count_task {
+    margin: 0 1rem;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -1092,8 +1117,8 @@ ul > .task_ledger_el {
     grid-template-columns: 1fr;
     padding: 0 1rem;
     margin-top: 1rem;
-    /* margin-left: 1rem;
-    margin-right: 1rem; */
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     grid-template-columns: repeat(2, 1fr);
   }
   .title-section_container,
@@ -1102,6 +1127,9 @@ ul > .task_ledger_el {
   }
   .leder_el_footer {
     margin-top: 0.5rem;
+  }
+  .count_task {
+    margin: 0 1.5rem;
   }
 }
 
@@ -1114,18 +1142,28 @@ ul > .task_ledger_el {
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .computedTask_container{
     grid-template-columns: repeat(3, 1fr);
+    margin-left: .5rem;
+    margin-right: .5rem;
   }
   .leder_el_footer {
     margin-top: 0.5rem;
+  }
+  .count_task {
+    margin: 0 0.5rem;
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
 
   .computedTask_container {
     grid-template-columns: repeat(4, 1fr);
+    margin-left: .5rem;
+    margin-right: .5rem;
   }
   .leder_el_footer {
     margin-top: 0.5rem;
+  }
+  .count_task {
+    margin: 0 0.5rem;
   }
 }
 
@@ -1133,9 +1171,14 @@ ul > .task_ledger_el {
 
   .computedTask_container{
     grid-template-columns: repeat(5, 1fr);
+    margin-left: .5rem;
+    margin-right: .5rem;
   }
   .leder_el_footer {
     margin-top: 0.5rem;
+  }
+  .count_task {
+    margin: 0 0.5rem;
   }
 }
 

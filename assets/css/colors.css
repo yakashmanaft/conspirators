@@ -22,10 +22,10 @@
     
     /* urgency colors */
     /* with opacity */
-    --color-urgency-high: rgba(232, 109, 109, 0.3);
-    --color-urgency-middle: rgba(230, 176, 123, 0.5);
+    --color-urgency-high: rgba(232, 109, 109);
+    --color-urgency-middle: rgb(255, 130, 6);
     /* --color-urgency-low: rgba(128, 191, 138, 0.3); */
-    --color-urgency-low: var(--color-btn-text);
+    --color-urgency-low: rgb(64, 204, 87);
 
     --color-status-paused: rgba(84, 11, 231, 0.3);
     --color-status-finished: rgba(128, 191, 138, 0.3);

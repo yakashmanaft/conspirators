@@ -28,6 +28,10 @@
     fGap: {
       type: String,
       default: 'unset'
+    },
+    fJustifyContent: {
+      type: String,
+      default: 'center'
     }
   })
 </script>
@@ -45,7 +49,7 @@
     display: flex;
     flex-direction: v-bind('props.fDirection');
     /* align-items: center; */
-    justify-content: center;
+    justify-content: v-bind('props.fJustifyContent');
     gap: v-bind('props.fGap');
     height: 100%;
 }

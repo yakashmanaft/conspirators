@@ -136,11 +136,15 @@ useHead({
         <div  class="title-section_container" style="margin-bottom: 0.5rem; margin-top: -0.95rem;">
             <BreadCrumbs class="show-max-767"/>
 
-            <h1 style="margin: 0;">
-                <span style="font-size: 0.7rem; margin: 0 0.5rem;">Делаем</span>
-                <span style="margin: 0 0.5rem;">{{ current_task?.name  }}</span>
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap;">для проекта</span>
+            <h1 style="margin: 0; position: relative; padding: .5rem;">
+                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Делаем</span>
+                <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
+                <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
                 <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
+                <div style="color: #fff; font-size: 1rem;font-weight: normal; position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: .5rem;">
+                    <div>{{ current_task.urgency }}</div>
+                    <div>{{ current_task.status }}</div>
+                </div>
             </h1> 
 
         </div>
@@ -157,8 +161,7 @@ useHead({
                 
                 <p>Дата создания: {{ current_task.created_at }}</p> 
                 <p>Deadline: {{ current_task.deadline }}</p>
-                <p>Статус: {{  current_task.status  }}</p>
-                <p>Важность: {{ current_task.urgency }}</p>
+                <p>Ставка задачи: Почасовая (# ###,## RUB / час)</p>
             </section>
     
             <!-- ТЗ SECTION-->
@@ -190,6 +193,11 @@ useHead({
     margin-top: 1rem;
 }
 
+.title-section_container h1{
+    background-color: var(--color-global-text);
+    height: 200px;
+}
+
 @media screen and (max-width: 767px) {
     /* h1 {
         margin-top: 4rem;
@@ -203,7 +211,6 @@ useHead({
     }
     .title-section_container{
         height: 200px;
-        background-color: var(--color-global-text);
     }
     .title-section_container h1{
         /* color: var(--color-global-text_second); */
@@ -211,8 +218,8 @@ useHead({
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
     .title-section_container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+        /* padding-left: 0.5rem; */
+        /* padding-right: 0.5rem; */
     }
     .content-setion_container {
         padding-left: 1rem;

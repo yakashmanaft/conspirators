@@ -35,6 +35,7 @@ const props = defineProps({
         type: String,
         default: 'title is undefined'
     },
+
 })
 
 // EMITS
@@ -71,7 +72,7 @@ window.addEventListener('click', (e) => {
         width: 50%; 
         position: relative; 
         /* border-radius: 1rem;  */
-        padding: .5rem 1rem;
+        /* padding: .5rem 1rem; */
     }
     .popup_header {
         position: absolute; 
@@ -83,7 +84,6 @@ window.addEventListener('click', (e) => {
         padding: 1rem; 
         background-color: var(--color-btn-text); 
         width: 100%; 
-        border-radius: 1rem 1rem 0 0;
         z-index: 1;
     }
     .popup_header .close_btn {
@@ -127,6 +127,9 @@ window.addEventListener('click', (e) => {
             width: 100%;
             border-top-left-radius: 1rem;   
             border-top-right-radius: 1rem; 
+        }
+        .popup_header {
+            border-radius: 1rem 1rem 0 0;
         }
     }
 

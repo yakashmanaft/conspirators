@@ -390,6 +390,7 @@ const locationColorized = (location: string) => {
 //   return color
 // }
 
+// SET
 //= urgency
 const set_bgColor_by_Urgency = (lead: any) => {
 
@@ -439,6 +440,15 @@ const set_bgColor_by_Urgency = (lead: any) => {
 
   return color
 }
+// set task accomplishment label
+const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
+  if(finished < sum) {
+
+    return `Долг`
+  } else if (finished == sum) {
+    return `Оплачено`
+  }
+}
 
 // HELPERS
 //= cut task desc
@@ -452,6 +462,30 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   }
 }
 
+//= count finished accomplishment task
+const countFinishedAccomplishmentTask = (taskLedger: any) => {
+  let endedSum:number = 0;
+
+  taskLedger?.forEach((item:any) => {
+
+    if(item?.status === 'finished') {
+
+      endedSum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+    }    
+  })
+
+  return endedSum.toFixed(2)
+}
+//= count accomplishment task
+const countAccomplishmentTask = (taskLedger: any) => {
+  let sum:number = 0
+
+  taskLedger?.forEach((item:any) => {
+    sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+  })
+
+ return sum.toFixed(2)
+}
 
 // ADD/CREATE
 //= task
@@ -498,6 +532,13 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   lazy: false,
   transform: (task_list) => {
     return task_list
+  }
+})
+//= accomplishment 
+const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskElement", {
+  lazy: false,
+  transform: (accomplishment_list) => {
+    return accomplishment_list
   }
 })
 
@@ -638,11 +679,24 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
           :fDirection="`column`"
           :fGap="'1rem'"
           style="cursor: pointer; position: relative;"
-          :finishedTaskHours=20
-          :totalTaskHours=20
+          :finishedTaskHours="countFinishedAccomplishmentTask(accomplishment_list?.filter(el => el.taskId === item.id))"
+          :totalTaskHours="countAccomplishmentTask(accomplishment_list?.filter(el => el.taskId === item.id))"
           @click="$router.push(`task/${item.id}`)"
         >
-        {{ computedTask?.length }}
+        <div 
+          :style="
+            setTaskAccomplishmentLabel( 
+              countFinishedAccomplishmentTask(accomplishment_list?.filter(el => el.taskId === item.id)),
+              countAccomplishmentTask(accomplishment_list?.filter(el => el.taskId === item.id))
+            ) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
+        ">
+          {{
+            setTaskAccomplishmentLabel(
+              countFinishedAccomplishmentTask(accomplishment_list?.filter(el => el.taskId === item.id)),
+              countAccomplishmentTask(accomplishment_list?.filter(el => el.taskId === item.id))
+            ) 
+          }}
+        </div>
         </SectionColored>
 
         <!-- ADD NEW TASK ITEM -->
