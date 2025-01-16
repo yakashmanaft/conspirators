@@ -3,6 +3,10 @@
         <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '', props.bg ? 'backgroundUrgencyColor' : '']" >
 
             <slot></slot>
+
+            <!-- STATUS -->
+
+            <!-- URGENCY -->
         </div>
     </div>
   </template>

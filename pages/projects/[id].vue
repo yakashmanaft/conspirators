@@ -3,6 +3,7 @@
 import { AccessDeniedPlug } from "~/components/plug_access_denied";
 import { Container } from "@/shared/container";
 import { Section } from "~/shared/section";
+import { SectionColored } from "~/shared/section_colored";
 import { InfoPopup } from "~/shared/popup";
 
 //components
@@ -437,9 +438,14 @@ const addCurrentTaskEl = (currentTask: any) => {
   alert('В разработке')
   console.log(currentTask)
 }
+//= add New Task
+const addNewTask = () => {
+  alert('В разработке...')
+}
 
 // HELPERS
-//== count finished task in accomplishment
+//
+//= count finished task in accomplishment
 const countFinishedAccomplishmentTask = (taskLedger: any) => {
 
   let endedSum:number = 0;
@@ -454,7 +460,8 @@ const countFinishedAccomplishmentTask = (taskLedger: any) => {
 
   return endedSum.toFixed(2)
 }
-// all task in accomplishment
+//
+//= all task in accomplishment
 const countAccomplishmentTask = (taskLedger: any) => {
   let sum:number = 0
 
@@ -464,7 +471,8 @@ const countAccomplishmentTask = (taskLedger: any) => {
 
  return sum.toFixed(2)
 }
-// current accomplishment 
+//
+//= current accomplishment 
 const countCurrentAccomplishment = () => {
 
   let sum:number = 0
@@ -475,6 +483,12 @@ const countCurrentAccomplishment = () => {
 
   return `Всего ${sum.toFixed(2)} часа работы`
 }
+//
+// //= slice string
+// const slice = () => {
+
+// }
+
 
 // SET
 //== accomplishment label by task
@@ -499,6 +513,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
 //     return date
 //   } 
 // }
+
 
 
 //= closePopup
@@ -596,30 +611,42 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           </div>
           <!-- accomplishment list -->
           <div v-if="computedAccomplishments?.length">
+
+            <!-- UL1 -->
             <ul v-for="endedDate in accomplishmentsEndedDateArray" class="task_ledger_container" style="list-style: none; padding: 0;">
+              <!-- LI1 -->
               <li>
-                <p style="margin-bottom: 1rem; font-size: 1.2rem; text-align: center;">{{ endedDate }}</p>
+                <p style="margin-bottom: 1rem; font-size: 0.8rem; text-align: center; color: var(--color-global-text_second)">{{ endedDate }}</p>
+                
+                <!-- UUL2 -->
                 <ul style="padding: 0; list-style: none">
+
+                  <!-- LI2 -->
                   <li v-for="task_el in computedAccomplishments.filter(item => item.ended_at.slice(0,10) === endedDate)" class="task_ledger_el">
-                    <!-- PERIOD -->
-                    <div>
-                      <p style="margin: 0;">
-                        <!-- {{ setReadingTime('date', task_el.created_at) }} -->
-                        <span style="font-size: 0.7rem">
-                          Начало: {{ task_el.created_at }}
-                          Завершение: {{ task_el.ended_at }}
-                        </span>
-                      </p>
-                    </div>
+
                     <!-- INFO -->
                     <div class="ledger_el_info">
                     {{ task_el.subject }}
                     </div>
+
                     <!-- FOOTER -->
                     <div class="leder_el_footer" style="display: flex; gap: 1rem;">
+
                       <!-- STATUS -->
                       <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
                         {{ task_el.status }}
+                      </div>
+
+                      <!-- PERIOD -->
+                      <div>
+                        <p style="margin: 0;">
+                          <!-- {{ setReadingTime('date', task_el.created_at) }} -->
+                          <span style="font-size: 0.7rem">
+                            {{ task_el?.created_at.slice(11, 16)}}
+                            - 
+                            {{ task_el.ended_at.slice(11,16) }}
+                          </span>
+                        </p>
                       </div>
                       <!-- COUNT -->
                       <div class="ledger_el_count">
@@ -632,6 +659,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                           +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2) }}
                         </div>
                       </div>
+
                     </div>
                   </li>
                 </ul>
@@ -684,7 +712,11 @@ const cutTaskDesc = (str: string, maxLength: number) => {
       <!-- TASKs SECTION -->
       <div class="task-section_container">
 
-        <h2>Задачи ({{ computedTasks?.length }})</h2>
+        <div class="header-section_container">
+
+          <h2>Задачи</h2>
+          <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
+        </div>
         <!-- CHIP -->
         <Chip
           v-if="task_list?.length"
@@ -695,74 +727,41 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           style="margin-top: 1rem; width: 100%;"
         />
 
+        <div style="margin-top: 1rem;">{{ computedTasks?.length }} в листе</div>
+
         <div v-if="task_list?.length" style="list-style: none; padding: 0;">
 
           <!-- TASK -->
           <div v-if="computedTasks?.length" class="computedTask_container">
 
-            <Section 
+            <SectionColored               
               v-for="(task, index) in computedTasks"
+              :current_task="task"
+              :name="task.name"
               :padding="true" 
-              :bg="set_bgColor_by_Urgency(task)" 
               :fDirection="`column`"
               :fGap="'1rem'"
               style="cursor: pointer; position: relative; flex-direction: row"
+              :finishedTaskHours="countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))"
+              :totalTaskHours="countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))"
               @click.stop="chooseCurrentLanding(task)"
             >
-              <!-- {{  task  }} -->
-  
-              <!-- task name -->
-              <div class="ticketEl_content">
-                <h3>О чЁм</h3>
-                <p>{{ task.name }}</p>
+              <div 
+                :style="
+                  setTaskAccomplishmentLabel( 
+                    countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                    countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                  ) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
+              ">
+                {{
+                  setTaskAccomplishmentLabel(
+                    countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                    countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                  ) 
+                }}
               </div>
-              <!-- task desc -->
-              <div class="ticketEl_content">
-                <h3>ТЗ:</h3>
-                <p style="font-size: 0.8rem;">{{ cutTaskDesc(task.desc, 40) }}</p>
-              </div>
-              <!-- task count work hours -->
-              <div>
-                <!-- <div>---</div> -->
-                <!--  -->
-                <div class="ticketEl_content-status">{{ task?.status }}</div>
-                <div style="display: flex; align-items: center; justify-content: space-between">
-                  <div>{{ countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }} / {{ countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)) }}</div> 
-                  <div 
-                    :style="
-                      setTaskAccomplishmentLabel( 
-                        countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                        countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
-                    ">
-                      {{
-                        setTaskAccomplishmentLabel(
-                          countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                          countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
-                        )
-                      }}
-                    </div>
-                </div>
-              </div>
-              
-              <!--  -->
-              <!-- TASK have deadline (absolute) -->
-              <div v-if="task.deadline > task.created_at" class="ticket_deadline">
-                deadline: {{ task.deadline }}
-              </div>
-              <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-              <div v-if="task.status === 'paused'" class="rounded ticket_paused">
-                <div style="color: #fff;">ПАУЗА</div>
-              </div>  
-              <!-- WRAPPER FOR TASK ON CANCELED -->
-              <div v-if="task.status === 'canceled'" class="rounded ticket_canceled">
-                <div style="color: #fff;">ОТМЕНЁН</div>
-              </div>  
-              <!-- WRAPPER FOR FINISHED????????-->
-  
-  
-  
-  
-            </Section>
+            </SectionColored>
+
           </div>
           <div v-else class="computedTask_container">
            Нет задач по фильтру
@@ -888,6 +887,11 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 </template>
 
 <style scoped>
+.header-section_container {
+  display: flex; 
+  align-items: center; 
+  gap: 1rem;
+}
 /* TOGGLE TITLE */
 .toggle-title {
   display: flex;

@@ -137,10 +137,10 @@ useHead({
             <BreadCrumbs class="show-max-767"/>
 
             <h1 style="margin: 0;">
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-text)">Делаем</span>
-                <span style="margin: 0 0.5rem; color: var(--color-btn-text)">{{ current_task?.name  }}</span>
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-text)">для проекта</span>
-                <Button style="display: inline-block; margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
+                <span style="font-size: 0.7rem; margin: 0 0.5rem;">Делаем</span>
+                <span style="margin: 0 0.5rem;">{{ current_task?.name  }}</span>
+                <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap;">для проекта</span>
+                <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
             </h1> 
 
         </div>
@@ -206,7 +206,7 @@ useHead({
         background-color: var(--color-global-text);
     }
     .title-section_container h1{
-        color: var(--color-global-text_second);
+        /* color: var(--color-global-text_second); */
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {

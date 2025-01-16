@@ -503,7 +503,20 @@ const addNewProject = () => {
             class="project-item_container"
             @click="$router.push(`/projects/${project.id}`)"
           >
-          {{ project }}
+          <!-- {{ project }} -->
+          <div style="padding-left: 3.5rem;">
+            {{ project?.name }}
+          </div>
+          
+          <!-- Symbol -->
+          <div class="project-symbol_wrapper">
+            <div class="project-symbol_content">{{ project?.name[0] }}</div>
+          </div>  
+
+          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+
+
+
             <!-- <div class="project-item_left">
               <div class="project-completion">
                 <span>{{ (project.completion * 100).toFixed(0) }}%</span>
@@ -554,6 +567,7 @@ const addNewProject = () => {
   padding: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in;
+  position: relative;
 }
 .project-item_container:last-child {
   border-bottom: none;
@@ -564,6 +578,21 @@ const addNewProject = () => {
 
 .project-item_container:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+.project-symbol_wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--color-error);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem
+}
+.project-symbol_content {
+  color: var(--color-btn-text);
 }
 
 .project-item_left {

@@ -3,6 +3,7 @@
 // shared
 import { Container } from "@/shared/container";
 import { Section } from '@/shared/section'
+import { SectionColored } from "@/shared/section_colored";
 
 // components
 // import { DevModePlug } from "~/components/plug_dev_mode";
@@ -237,7 +238,7 @@ const computedTask = computed(() => {
             status: task.status,
             urgency: task.urgency,
             deadline: task.deadline,
-            task_desc: task.desc
+            desc: task.desc
             // desc: task.desc
           })
         }
@@ -590,8 +591,17 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
             <div>
               <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
             </div>
-            <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
 
+            <!-- FOOTER -->
+            <div>
+
+              <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
+            </div>
+
+            <!-- COUNT -->
+            <div>
+              123
+            </div>
           </Section>
         </div>
         <!--  -->
@@ -620,43 +630,20 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
        <!--  -->
       <div class="computedTask_container" v-if="computedTask?.length">
 
-        <!-- TASK ITEM -->
-        <Section
-         :padding="true" 
-         :bg="set_bgColor_by_Urgency(item)" 
-         :fDirection="`column`"
-         v-for="item in computedTask" 
-         @click="$router.push(`task/${item.id}`)"
-         style="cursor: pointer; position: relative;"
+        <SectionColored
+          v-for="item in computedTask" 
+          :current_task="item"
+          :name="item.task_name"
+          :padding="true"
+          :fDirection="`column`"
+          :fGap="'1rem'"
+          style="cursor: pointer; position: relative;"
+          :finishedTaskHours=20
+          :totalTaskHours=20
+          @click="$router.push(`task/${item.id}`)"
         >
-          <!-- LEAD is a NEW (absolute) -->
-          <div v-if="item.deadline === item.created_at" class="ticket_deadline">
-            deadline: {{ item.deadline }}
-          </div>
-          <!-- {{ item }} -->
-          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-          <div v-if="item?.status === 'paused'" class="rounded ticket_paused">
-            <div style="color: #fff;">ПАУЗА</div>
-          </div>  
-          <!-- WRAPPER FOR ITEM ON CANCELED -->
-          <div v-if="item?.status === 'canceled'" class="rounded ticket_canceled">
-            <div style="color: #fff;">ОТМЕНЁН</div>
-          </div>
-          
-         <!-- CREATED DATE -->
-         <div>
-           <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
-         </div>
-
-         <!-- FROM  -->
-         <div>
-           <span>{{ cutTaskDesc(item.task_desc, 40) }}</span><br>
-           <span style="font-size: 0.6rem; display: block;" >*{{ translateProjectID(item.project_id, project_list) }}</span>
-           <div>
-           </div>
-         </div>
-         <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
-        </Section>
+        {{ computedTask?.length }}
+        </SectionColored>
 
         <!-- ADD NEW TASK ITEM -->
         <!-- <Section
