@@ -875,7 +875,8 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 .computedTask_container {
   margin-top: 1rem;
   display: grid;
-  gap: 1rem;
+  column-gap: 1rem;
+  row-gap: 1.5rem;
 }
 
 .no-computed-lead_wrapper {
