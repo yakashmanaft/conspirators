@@ -67,7 +67,7 @@
 
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
-            <h1 style="margin: 0;">Мой огород</h1> 
+            <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Мой огород</h1> 
         </div>
 
         <div v-if="computed_landing_list?.length">

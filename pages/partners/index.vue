@@ -6,7 +6,7 @@
     <div class="show-max-767" style="margin-bottom: 0.5rem;">
 
       <BreadCrumbs/>
-      <h1 style="margin: 0;">Контакты</h1>
+      <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Контакты</h1>
     </div>
     <!-- <DevModePlug/> -->
 

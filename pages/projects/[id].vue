@@ -135,6 +135,10 @@ const chips = [
 //
 const chips_accomplishment = ref([
   {
+    name: 'all',
+    title: 'Все'
+  },
+  {
       name: 'waiting',
       title: 'Ожидание'
   },
@@ -157,8 +161,10 @@ const chips_accomplishment = ref([
 ])
 //
 const currentAccomplishmentChip = ref({
-  name: 'waiting',
-  title: 'Ожидание'
+  // name: 'waiting',
+  // title: 'Ожидание'
+    name: 'all',
+    title: 'Все'
 })
 
 // COUNT Accomplishments by current chip
@@ -211,6 +217,9 @@ const computedAccomplishments = computed(() => {
   if(task_ledger.value) {
     return task_ledger.value.filter(el => {
       if(el.taskId === current_task.value.id && currentAccomplishmentChip.value.name === el.status) {
+        return el
+      }
+      else if (el.taskId === current_task.value.id && currentAccomplishmentChip.value.name === 'all') {
         return el
       }
       // if(el.taskId === current_task.value.id) {
@@ -500,6 +509,30 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     return `Оплачено`
   }
 }
+//= set color by status 
+const set_bgColor_by_status = (status: string) => {
+  // status finished
+  if (status === 'finished') {
+    return `border: 1px solid var(--color-urgency-low-wo); background-color: var(--color-status-finished); color: var(--color-urgency-low-wo)`
+  } 
+  // status waiting
+  else if (status === 'waiting') {
+    return `border: 1px solid var(--color-urgency-middle); color: var(--color-urgency-middle); background-color: unset`
+  }
+  // status agreement
+  else if (status === "agreement") {
+    return `border: 1px solid var(--color-urgency-low-wo); color: var(--color-urgency-low-wo); background-color: unset;`
+  }
+  // status paused
+  else if (status === 'paused') {
+    return `background-color: var(--color-status-paused); `
+  }
+  //else
+  else {
+    return 
+  }
+}
+
 //== readingg hours
 // const setReadingTime = (subject: string, data: string) => {
   
@@ -526,8 +559,10 @@ const closePopup = () => {
     status: ''
   }
   currentAccomplishmentChip.value = {
-    name: 'waiting',
-    title: 'Ожидание'
+    // name: 'waiting',
+    // title: 'Ожидание'
+    name: 'all',
+    title: 'Все'
   }
 }
 //= cut task desc
@@ -574,6 +609,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 </script>
 
 <template>
+
   <!-- POPUP -->
    <InfoPopup
       v-if="popup_opened"
@@ -606,7 +642,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           />
 
           <!-- COUNT   -->
-          <div v-if="computedAccomplishments?.length" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem; display: flex; flex-direction: column; background-color: gray;">
+          <div v-if="computedAccomplishments?.length" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem; display: flex; flex-direction: column;">
             <div>{{ countAccomplishment }} в листе</div>
             <div v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
           </div>
@@ -628,43 +664,35 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                   <li v-for="task_el in computedAccomplishments.filter(item => item.ended_at.slice(0,10) === endedDate)" class="task_ledger_el">
                     <Section :fJustifyContent="'flex-start'" :fDirection="'column'">
                       <!-- HEADER -->
-                      <div class="leder_el_header" style="display: flex; align-items: center; gap: 1rem; justify-content: space-between;">
+                      <p 
+                        style="font-size: 0.8rem; margin: 0;"
+                      >
+                        <!-- PERIOD -->
+                        <span 
+                          style="color: var(--color-btn-disabled-text);"
+                        >
+                          {{ task_el?.created_at.slice(11, 16)}}
+                          - 
+                          {{ task_el.ended_at.slice(11,16) }}
+                        </span> 
+                        <!-- COUNT HOURS -->
+                        <span
+                          style="color: var(--color-btn-disabled-text);"
+                        >
+                          {{ task_el.created_at === task_el.ended_at ? '' : ` (+${(Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2)} часа)`}}
+                        </span>
+                      </p>
 
-                        <div style="display: flex; gap: .5rem; align-items: center;">
-
-                          <!-- PERIOD -->
-                          <div>
-                            <p style="margin: 0;">
-                              <!-- {{ setReadingTime('date', task_el.created_at) }} -->
-                              <span style="font-size: 0.8rem; color: var(--color-btn-disabled-text);">
-                                {{ task_el?.created_at.slice(11, 16)}}
-                                - 
-                                {{ task_el.ended_at.slice(11,16) }}
-                              </span>
-                            </p>
-                          </div>
-                          <!-- COUNT -->
-                          <div class="ledger_el_count">
-                            <!-- false | -- -->
-                            <div v-if="task_el.created_at === task_el.ended_at">
-                              --
-                            </div>
-                            <!-- true | +12-->
-                            <div v-else>
-                              +{{ (Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2) }} часа
-                            </div>
-                          </div>
-                        </div>
-  
-                      </div>
-                      <!-- CONTTENT -->
+                      <!-- CONTENT -->
                       <div class="ledger_el_info">
                       {{ task_el.subject }}
                       </div>
+
                       <!-- FOOTER -->
                       <div class="leder_el_footer">
+
                         <!-- STATUS -->
-                        <div class="ledger_el_status" @click="changeCurrentTaskElStatus(task_el)">
+                        <div class="ledger_el_status" :style="set_bgColor_by_status(task_el.status)" @click="changeCurrentTaskElStatus(task_el)">
                           {{ task_el.status }}
                         </div>
                       </div>
@@ -760,7 +788,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               :fDirection="`column`"
               :fGap="'1rem'"
               style="cursor: pointer; position: relative; flex-direction: row"
-              :finishedTaskHours="countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))"
+              :taskArray="task_ledger?.filter(el => el.taskId === task.id)"
               :totalTaskHours="countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))"
               @click.stop="chooseCurrentLanding(task)"
             >
@@ -1009,27 +1037,21 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   margin-top: 1rem;
 }
 .task_ledger_el {
-  /* background-color: red;s */
   position: relative;
-    margin-left: 1rem;
-    margin-right: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 .ledger_el_counter {
-  /* background-color: green; */
   display: flex;
   align-items: center;
 }
-.ledger_el_count {
-  /* background-color: var(--color-global-text);
-  color: var(--color-btn-text); */
-  /* height: 50px;
-  width: 50px; */
+/* .ledger_el_count {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-btn-disabled-text);
   font-size: 0.8rem;
-}
+} */
 .ledger_el_period {
   display: flex;
   flex-direction: column;
@@ -1049,6 +1071,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   top: 0.5rem;
   right: 0; */
   display: inline-block;
+  color: var(--color-btn-text);
   background-color: var(--color-btn-wo-bg);
   font-size: 0.8rem;
   padding: 2px 8px;
@@ -1071,7 +1094,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 }
 
 ul > .task_ledger_el {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .leder_el_footer {
@@ -1168,9 +1191,9 @@ ul > .task_ledger_el {
     margin-left: .5rem;
     margin-right: .5rem;
   }
-  .leder_el_header {
+  /* .leder_el_header {
     margin-top: 0.5rem;
-  }
+  } */
   .count_task {
     margin: 0 0.5rem;
   }
@@ -1183,9 +1206,9 @@ ul > .task_ledger_el {
     margin-left: .5rem;
     margin-right: .5rem;
   }
-  .leder_el_header {
+  /* .leder_el_header {
     margin-top: 0.5rem;
-  }
+  } */
   .count_task {
     margin: 0 0.5rem;
   }

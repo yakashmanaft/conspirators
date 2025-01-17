@@ -32,19 +32,24 @@
                       :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
                     ></div>
                   </div>
-  
+
                   <!-- COUNT -->
                   <div>
-                    {{ props?.finishedTaskHours }} /
-                    {{ props?.totalTaskHours }}
+                   {{ countFinishedAccomplishmentTask(props?.taskArray) }} / {{ countAccomplishmentTask(props?.taskArray) }}
                   </div>
                 </div>
 
                 <!-- RIGHT -->
-                <!-- SLOT: COUNT  -->
-                <slot>
-                  <!-- 123 -->
-                </slot>
+                <!-- Label -->
+                <div
+                  :style="
+                    setTaskAccomplishmentLabel(
+                      countFinishedAccomplishmentTask(props?.taskArray),
+                      countAccomplishmentTask(props?.taskArray)
+                    ) === 'Долг' ? `color: var(--color-urgency-middle)` : `color: var(--color-urgency-low-wo)`
+                  ">
+                  {{ setTaskAccomplishmentLabel(countFinishedAccomplishmentTask(props?.taskArray), countAccomplishmentTask(props?.taskArray)) }}
+                </div>
 
 
               </div>
@@ -86,13 +91,9 @@
       type: String,
       default: 'Беез имени'
     },
-    finishedTaskHours: {
-      type: String,
-      default: '0.00'
-    },
-    totalTaskHours: {
-      type: String,
-      default: '0.00'
+    taskArray: {
+      type: Array,
+      default: []
     },
     padding: {
       type: Boolean,
@@ -184,7 +185,31 @@ onMounted(() => {
 })
 
 // SET
-//== accomplishment label by task
+//= count finished accomplishment task
+const countFinishedAccomplishmentTask = (taskLedger: any) => {
+  let endedSum:number = 0;
+
+  taskLedger?.forEach((item:any) => {
+
+    if(item?.status === 'finished') {
+
+      endedSum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+    }    
+  })
+
+  return endedSum.toFixed(2)
+}
+//= count accomplishment task
+const countAccomplishmentTask = (taskLedger: any) => {
+  let sum:number = 0
+
+  taskLedger?.forEach((item:any) => {
+    sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+  })
+
+ return sum.toFixed(2)
+}
+//= accomplishment label by task
 const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   if(finished < sum) {
 
