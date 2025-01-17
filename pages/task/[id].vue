@@ -133,10 +133,10 @@ useHead({
     <Container v-if="current_task">
 
         <!-- TITLE PAGE SECTION -->
-        <div  class="title-section_container" style="margin-bottom: 0.5rem; margin-top: -0.95rem;">
+        <div  class="title-section_container" style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
 
-            <h1 style="margin: 0; position: relative; padding: .5rem;">
+            <h1>
                 <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Делаем</span>
                 <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
                 <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
@@ -194,6 +194,11 @@ useHead({
 }
 
 .title-section_container h1{
+    position: relative;
+    padding: .5rem;
+    padding-top: 3rem;
+    margin: 0;
+    margin-top: .5rem;
     background-color: var(--color-global-text);
     height: 200px;
 }

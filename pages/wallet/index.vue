@@ -6,6 +6,7 @@ import { Section } from '@/shared/section';
 // components
 import { HorizontalCard } from "@/components/card";
 import { StackedCard } from "@/components/card"
+import { BreadCrumbs } from "@/components/breadcrumbs"; 
 
 
 // components
@@ -186,8 +187,11 @@ const set_bgColor = (section: any) => {
 <template>
   <Container>
 
-    <!-- TITLE -->
-    <h1 class="show-max-767" style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
+    <div class="show-max-767" >
+      <BreadCrumbs/>
+      <!-- TITLE -->
+      <h1 style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
+    </div>
 
     <!-- CHIPs -->
     <!-- <chip

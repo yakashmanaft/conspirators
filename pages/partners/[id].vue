@@ -5,6 +5,7 @@ import { Container } from "@/shared/container";
 
 // components
 import { AccessDeniedPlug } from "~/components/plug_access_denied";
+import { BreadCrumbs } from "~/components/breadcrumbs";
 /*
 *
     временно
@@ -560,6 +561,10 @@ const createMyNewBand = () => {
 
     <AccessDeniedPlug v-if="accessPlug === true"/>
 
+    <div class="show-max-767">
+      <BreadCrumbs/>
+    </div>
+
     <div v-if="accessPlug === false">
       {{ computedPartner }}
     </div>
@@ -976,6 +981,9 @@ const createMyNewBand = () => {
 }
 
 @media screen and (max-width: 767px) {
+  .show-max-767 {
+    display: none;
+  }
   .page-title {
     margin-top: 4rem;
   }

@@ -149,7 +149,8 @@ useHead({
 
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
-            <h1 style="margin: 0;">Заявка #{{ $route.params.id  }}</h1> 
+            <h1 style="margin: 0;">Заявка</h1> 
+            
         </div>
 
         <div v-if="current_lead">

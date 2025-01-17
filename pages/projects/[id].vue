@@ -610,6 +610,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             <div>{{ countAccomplishment }} в листе</div>
             <div v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
           </div>
+
           <!-- accomplishment list -->
           <div v-if="computedAccomplishments?.length">
 
@@ -617,7 +618,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             <ul v-for="endedDate in accomplishmentsEndedDateArray" class="task_ledger_container" style="list-style: none; padding: 0;">
               <!-- LI1 -->
               <li>
-                <p style="margin-bottom: 1rem; font-size: 1rem; text-align: center; color: var(--color-global-text_second)">{{ endedDate }}</p>
+                <p style="margin-bottom: 1rem; font-size: 1rem; text-align: center; color: var(--color-global-text)">{{ endedDate }}</p>
                 
                 <!-- UUL2 -->
                 <ul style="padding: 0; list-style: none">
@@ -704,7 +705,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
       <div class="title-section_container">
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
           <BreadCrumbs/>
-          <h1 style="margin: 0;">{{computedProject?.name}} (#{{ $route.params.id  }})</h1> 
+          <h1 style="margin: 0;">{{computedProject?.name}}</h1> 
         </div>
 
       </div>

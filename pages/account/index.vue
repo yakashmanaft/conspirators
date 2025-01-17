@@ -1,8 +1,11 @@
 <template>
   <Container>
 
-    <!-- TITLE -->
-    <h1 style="margin-top: 5rem">Аккаунт</h1>
+    <div class="show-max-767">
+      <BreadCrumbs/>
+      <!-- TITLE -->
+      <h1>Аккаунт</h1>
+    </div>
 
     <!-- <DevModePlug/> -->
     {{ $props.auth_user_profile }}
@@ -279,6 +282,9 @@
 import { Container } from "@/shared/container";
 
 // components
+import { BreadCrumbs } from "@/components/breadcrumbs";
+
+// components
 // import { DevModePlug } from '@/components/plug_dev_mode'
 
 // utils
@@ -432,5 +438,11 @@ watch(location.value, () => {
 <style scoped>
 .link {
   cursor: pointer;
+}
+
+@media screen and (max-width: 767px)  {
+  .show-max-767 {
+      display: none;
+  }
 }
 </style>

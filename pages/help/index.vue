@@ -1,6 +1,10 @@
 <template>
   <Container>
-    <h1>Помощь</h1>
+
+    <div class="show-max-767">
+      <BreadCrumbs/>
+      <h1 style="margin: 0">Помощь</h1>
+    </div>
 
     <ul>
       <li>
@@ -120,7 +124,11 @@ useHead({
     },
   ],
 });
+// Shared
 import { Container } from "@/shared/container";
+
+// Components
+import { BreadCrumbs } from "@/components/breadcrumbs";
 
 // ПЕРЕМЕННЫЕ
 
@@ -415,4 +423,11 @@ const make_string_split = (string: string, sign: string) => {
 }
 
 /* ARTICLE ELEMENT */
+
+@media screen and (max-width: 767px) {
+  /*  */
+  .show-max-767 {
+    display: none;
+  }
+}
 </style>

@@ -9,6 +9,7 @@ import { SectionColored } from "@/shared/section_colored";
 // import { DevModePlug } from "~/components/plug_dev_mode";
 import { Button } from '~/components/button'
 import { Chip } from "~/components/chip";
+import { BreadCrumbs } from "~/components/breadcrumbs";
 
 // utils
 import { onBeforeMount } from "vue";
@@ -549,7 +550,10 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 
     <!-- <DevModePlug/> -->
 
-    <h1 class="show-max-767">Доска дел</h1>
+    <div class="show-max-767">
+      <BreadCrumbs/>
+      <h1 style="margin: 0;">Доска дел</h1>
+    </div>
 
     <!-- <p>{{ props?.auth_user_profile }}</p> -->
     <!-- Фильтры -->

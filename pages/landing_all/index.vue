@@ -9,7 +9,7 @@
      >
         <!-- SLOT -->
         <!-- Перейти на landing -->
-        <div style="display: flex; align-items: center; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
+        <div style="display: flex; align-items: center; margin-top: 1rem; margin-left: 1rem; margin-right: 1rem; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
             <Button type="pseudo-btn" :link="`${generateLandingLink(choosenEl?.name)}`">{{ choosenEl?.name }}</Button>
             <div>
             <Icon
@@ -23,7 +23,7 @@
         </div>
 
         <!-- leads -->
-        <div class="leads_container" style="margin-top: 1rem;">
+        <div class="leads_container" style="margin-top: 1rem; margin-left: 1rem; margin-right: 1rem;">
             
             <!-- LENGTH > 0 -->
             <div v-if="choosenEl?.leads.length">
