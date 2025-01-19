@@ -1,12 +1,14 @@
 <script setup>
 // shared
 import {Container} from '@/shared/container'
+import { Section } from '@/shared/section';
 
 //components
 import { BreadCrumbs } from '~/components/breadcrumbs';
+import { Button } from '~/components/button';
 
 useHead({
-        title: "Проект - ",
+        title: `Заявка`,
         link: [
             { 
                 rel: 'stylesheet', 
@@ -118,6 +120,16 @@ useHead({
         return lead_list.value
     })
 
+    //  CLICK
+    //= current_lead to project
+    const connectToProject = () => {
+        alert('В разработке...')
+    }
+    // change Current Lead Status
+    const changeCurrentLeadStatus = () => {
+        alert('В разработке...')
+    }
+
     // ******* DB
     // *** GET
 
@@ -149,22 +161,46 @@ useHead({
 
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
-            <h1 style="margin: 0;">Заявка</h1> 
+            <h1 style="margin: 0;">Заявка с огорода</h1> 
             
         </div>
 
-        <div v-if="current_lead">
+        <div v-if="current_lead" class="section_container">
 
-            <p>Дата создания: {{ current_lead.created_at }}</p> 
-            <p>Статус: {{  current_lead.status  }}</p>
-            <p>Связать с заказчиком</p>
-            <!-- <p>Deadline: xxx</p>
-            <p>Автор: xxx</p>
-            <p>Контроль реализации: xxx</p>-->
-            <h2>This is a lead from: {{ current_lead.landing_name }}</h2>
+            <!-- current lead info -->
+            <Section 
+                fDirection = "column"
+            >
+
+            
+                <div class="status_container">
+                    <div>
+                        <p style="margin: 0;">От: {{ current_lead.created_at }}</p> 
+
+                        <p style="margin: 0;">Статус: <span style="text-decoration: underline; text-decoration-style: dotted;" @click="changeCurrentLeadStatus()">{{  current_lead.status  }}</span></p>
+                    </div>
+                    <div>
+                        <!-- if status LEAD -->
+                        <Button style="margin: 0;" @click="connectToProject()" v-if="current_lead.status === 'lead'" type="original-btn">Прикрепить к проекту</Button>
+                        <!-- if status PROJECT -->
+                        <Button v-else-if="current_lead.status === 'project'" type="original-btn" link="/projects"><nuxt-link to="/projects">В проект</nuxt-link></Button>
+                        
+                    </div>
+                </div>
+            </Section>
+
+            <!-- current lead грядка -->
+            <Section style="margin-top: 1rem;">
+                <!-- ABOUT ГРЯДКА -->
+                <div style="margin-top: 1rem;">
+                    <h2>Грядка: {{ current_lead.landing_name }}</h2>
+                    {{ current_lead  }}
+                </div>
+
+            </Section>
+
         </div>
 
-        {{ current_lead  }}
         <!-- <div v-for="(item, index) in currentDemand.itemsList">
             <p>{{index + 1 }}.{{ item }}</p>
         </div> -->
@@ -175,17 +211,62 @@ useHead({
 
 <style scoped>
 
-@media screen and (max-width: 767px) {
-    /* h1 {
-        margin-top: 4rem;
-    } */
-         .show-max-767 {
+.status_container {
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 575px) {
+    .show-max-767 {
       display: none;
     }
+    .section_container {
+        padding-left: .5rem;
+        padding-right: .5rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .section_wrapper {
+
+    }
+    .status_container {
+        /* padding-left: .5rem;
+        padding-right: .5rem; */
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}   
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    .show-max-767 {
+      display: none;
+    }
+    .section_container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
-@media screen and (min-width: 768px) {
-  /* h1 {
-    margin-top: 6rem;
-  } */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    /* .status_container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    } */
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .status_container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .status_container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 }
 </style>

@@ -625,7 +625,7 @@ const addNewProject = () => {
   margin-top: 1rem;
 }
 .project-list_wrapper {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 @media screen and (max-width: 575px) {
   .no-project_warapper {

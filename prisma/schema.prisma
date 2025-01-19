@@ -148,6 +148,8 @@ enum LeadStatus {
   lead
   // 2
   blank
+  // 3
+  project
 }
 
 enum TaskStatus {

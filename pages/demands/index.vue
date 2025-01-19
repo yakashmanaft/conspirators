@@ -113,7 +113,26 @@ const demandFilterTypes = ref([
   },
 ]);
 
-// CHIPS
+//CHIPS LEADs
+const chips_lead = [
+  {
+    name: 'lead',
+    title: 'Новые'
+  },
+  {
+    name: 'project',
+    title: 'В проекте'
+  },
+  {
+    name: 'blank',
+    title: 'Пустышки'
+  }
+]
+const currentChipLead = ref({
+    name: 'lead',
+    title: 'Новые'
+  })
+// CHIPS TASKs
 const chips = [
   {
       name: 'all',
@@ -150,6 +169,10 @@ const currentChip = ref({
 })
 
 // EVENT CLICKERS
+//= change lead chip
+const changeChipLead = (obj: any) => {
+  currentChipLead.value = obj
+}
 //= change demands chip
 const changeChip = (obj: any) => {
     currentChip.value = obj
@@ -553,7 +576,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 
       <!-- header of section -->
       <div class="header-section_container">
-        <h2>Лиды</h2>
+        <h2>Заявки с огорода</h2>
         <div style="display: flex; align-items: center;">
             <Button type="pseudo-btn" :link="`landing_all`">К огороду</Button>
             <div>
@@ -568,20 +591,23 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
         </div>
       </div>
 
-      <!--  -->
-      <ul v-if="computedLead?.length" style="list-style: none; padding: unset; display: flex; gap: 1rem;">
-        <li>lead</li>
-        <li>blank</li>
-      </ul>
+      <!-- CHIP LEAD SECTION -->
+      <Chip
+        v-if="computedLead?.length"
+        :tabs="chips_lead"
+        :default="currentChipLead"
+        :btn_all_exist="false"
+        @changed="changeChipLead"
+      />
 
        <!--  -->
-        <div id="lead-block" class="computedLead_container" v-if="computedLead?.length">
+        <div id="lead-block" class="computedLead_container" v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
           <!-- :bg="'var(--color-urgency-low)'" -->
           <Section 
             :padding="true" 
             :bg="set_bgColor_by_Urgency(item)" 
             :fDirection="`column`"
-            v-for="item in computedLead" 
+            v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" 
             @click="$router.push(`demands/${item.id}`)"
             style="cursor: pointer; position: relative;"
           >
@@ -617,7 +643,15 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
             </div>
           </Section>
         </div>
-        <!--  -->
+        <!-- no lead with status PROJECT -->
+        <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'project').length == 0 && currentChipLead.name === 'project'">
+          Заявки не стали проектами...
+        </div>
+        <!-- no lead with status LEAD -->
+        <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'blank').length == 0 && currentChipLead.name === 'blank'">
+          Грац! У вас нет пустышек
+        </div>
+        <!-- ELSE -->
         <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
     </div>
 
@@ -630,7 +664,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
          <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
       </div>
 
-       <!-- CHIP SECTION -->
+       <!-- CHIP TASK SECTION -->
        <Chip
         :tabs="chips"
         :default="currentChip" 
@@ -814,6 +848,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 .computedLead_container {
   display: flex;
   gap: 1rem;
+  margin-top: 1rem;
   padding-bottom: 2rem;
   overflow: scroll; 
   max-width: 100vw!important;
@@ -833,6 +868,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 
 .no-computed-lead_wrapper {
   margin-bottom: 2rem;
+  margin-top: .5rem;
 }
 
 .no-task_wrapper {

@@ -69,6 +69,7 @@ onMounted(() => {
 // FUNC
 const counter = () => {
   console.log(`${props.type} clicked on ${route.path} page`)
+  console.log(props.link)
 }
 
 // WATCHERS

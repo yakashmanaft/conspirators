@@ -200,7 +200,7 @@ useHead({
     margin: 0;
     margin-top: .5rem;
     background-color: var(--color-global-text);
-    height: 200px;
+    height: 250px;
 }
 
 @media screen and (max-width: 767px) {

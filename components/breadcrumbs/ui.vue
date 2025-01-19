@@ -79,6 +79,10 @@ const translateCrumb = (str: string) => {
   if(str === 'demands') {
     return 'Заявки'
   }
+  // partners 
+  if(str = 'partners') {
+    return 'Контакты'
+  }
   // else
   else {
 
