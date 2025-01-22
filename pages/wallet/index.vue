@@ -4,8 +4,8 @@ import { Container } from "@/shared/container";
 import { Section } from '@/shared/section';
 
 // components
-import { HorizontalCard } from "@/components/card";
-import { StackedCard } from "@/components/card"
+// import { HorizontalCard } from "@/components/card";
+// import { StackedCard } from "@/components/card"
 import { BreadCrumbs } from "@/components/breadcrumbs"; 
 
 
@@ -19,15 +19,13 @@ const sessionUser = useUserSession().user;
 // useProfileStore().loadData()
 // const profiles = useProfileStore().profiles
 // = chip
-const choosenChip_bank = ref({
-  title: 'Все',
-  name: 'all',
-  id: null
-})
+const choosenChip_section = ref('available')
+// = 
 // = wallet articles
 const wallet_sections = ref([
   {
     title: 'Свободные средства',
+    name: 'available',
     total: 3750287.08,
     aticles: [
 
@@ -36,13 +34,15 @@ const wallet_sections = ref([
   {
     title: 'Инвестировано',
     total: 150428.08,
+    name: 'invested',
     aticles: [
 
     ]
   },
-  {
+  { 
     title: 'Долг',
     total: 0.00,
+    name: 'debt',
     aticles: [
 
     ]
@@ -73,15 +73,16 @@ useHead({
   ],
 });
 
+onMounted(() => {
+  const scrollContainer = document.getElementById("fund-block");
+
+  scrollContainer?.addEventListener("wheel", (evt) => {
+      evt.preventDefault();
+      scrollContainer.scrollLeft += evt.deltaY;
+  });
+})
+
 // EMITS FUNCTIONs
-// = chip
-const emittedChip_bank = (chip: any) => {
-  choosenChip_bank.value = {
-    title: chip.title,
-    name: chip.name,
-    id: chip.id
-  }
-}
 
 // choose title
 // const titles = ref([
@@ -169,12 +170,30 @@ const set_bgColor = (section: any) => {
   let color;
 
   // ****** Title ******
-  if(section.title) {
+  if(section.name) {
 
     // Свободные средства
-    if(section.title === 'Свободные средства') {
-      color = `var(--color-urgency-low)`
+    if(section.name === 'available') {
+      if(choosenChip_section.value === section.name) {
+        color = `var(--color-wallet-fund-available-wo)`
+      } else {
+        color = `var(--color-wallet-fund-available)`
+      }
     } 
+    if(section.name === 'invested') {
+      if(choosenChip_section.value === section.name) {
+        color = `var(--color-wallet-fund-invested-wo)`
+      } else {
+        color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    if(section.name === 'debt') {
+      if(choosenChip_section.value === section.name) {
+        color = `var(--color-wallet-fund-debt-wo)`
+      } else {
+        color = `var(--color-wallet-fund-debt)`
+      }
+    }
     else {
       // color = null
     }
@@ -182,6 +201,12 @@ const set_bgColor = (section: any) => {
 
   return color
 }
+
+// WATCh
+//= choosenChip_section
+watch(choosenChip_section, () => {
+  console.log(`Переключили вкладку на ${choosenChip_section.value}`)
+})
 </script>
 
 <template>
@@ -192,6 +217,8 @@ const set_bgColor = (section: any) => {
       <!-- TITLE -->
       <h1 style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
     </div>
+
+    <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p>
 
     <!-- CHIPs -->
     <!-- <chip
@@ -226,35 +253,47 @@ const set_bgColor = (section: any) => {
       @changed="emittedChip_bank"
     /> -->
 
-    <br>
+    <!-- === INFO SECTION === -->
+    <div id="fund-block" class="wallet-section_container">
 
-    {{ choosenChip_bank }}
-    <br>
-
-    <br>
-
-    <!-- === WALLET SECTIONS === -->
-    <div class="wallet-section_container">
-
-      <Section v-for="section in wallet_sections" :bg="set_bgColor(section)" :fDirection="`column`">
+      <Section 
+        v-for="section in wallet_sections" 
+        :bg="set_bgColor(section)" 
+        :fDirection="`column`" 
+        class="section-header_wrapper"
+        @click="choosenChip_section = section.name"
+      >
         
         <!-- section header -->
-        <header class="section-header_wrapper">
-          <h2 style="font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-          <p>{{ section.total }} P</p>
+        <header>
+          <h2 :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="text-wrap: nowrap; font-size: unset; font-weight: unset;">{{ section.title }}</h2>
+          <p :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ section.total }} P</p>
         </header>
 
         <!-- section articles -->
-        <HorizontalCard>123</HorizontalCard>
+        <!-- <HorizontalCard>123</HorizontalCard>
         <StackedCard>2704Кредит2024 | 275 734.00 P</StackedCard>
-        <StackedCard>Брокерский счет (Тинькофф) | 275 734.00 P</StackedCard>
+        <StackedCard>Брокерский счет (Тинькофф) | 275 734.00 P</StackedCard> -->
       </Section>
 
     </div>
-    <br>
-    <p>session: {{ sessionUser }}</p>
 
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam earum recusandae officia quasi, odit commodi, voluptatum ut debitis nostrum aspernatur pariatur deserunt perspiciatis fugit magni, illum nihil modi deleniti eaque fuga. Dolorem sed, eos adipisci ex harum ipsum quisquam odit autem iure laboriosam quis sit ullam neque aliquam recusandae amet ad dicta expedita excepturi deserunt. Blanditiis, voluptate exercitationem atque animi commodi quis beatae fuga consequuntur quasi ab quidem tempora illum? Quibusdam, aspernatur dolor! Unde, illo incidunt? Explicabo accusantium molestias quidem voluptatibus in quasi consectetur ex et! Nulla, eaque, obcaecati incidunt repellendus dolorem, unde voluptatibus asperiores laudantium accusantium eum necessitatibus. Quidem quo voluptate explicabo sunt dolorem omnis maxime ullam culpa corporis quas quis adipisci amet perferendis, quos eligendi minus ad! Totam, voluptas facilis. In saepe sed ex officia ea assumenda iusto fugiat minima et error impedit temporibus voluptates cumque accusantium similique, repellat, quisquam sit exercitationem aliquid autem. Unde consectetur voluptatibus at possimus, dolore saepe dicta alias ipsa voluptates hic, quaerat itaque necessitatibus ipsam excepturi omnis eos incidunt aliquid? Soluta sunt mollitia illum ipsum consequuntur fugit distinctio, vel magni quis officiis in vero porro odit. Nemo, vero vel. Nostrum ipsam distinctio atque. Eveniet vel neque praesentium blanditiis illum. Magni dolorum ea omnis molestiae! Omnis non tempore vitae qui expedita accusantium! Commodi alias fuga odio vero minus dicta blanditiis rerum quam illo impedit quod hic saepe iure sequi minima, facere tempore neque cum delectus asperiores, sunt eius quisquam aliquid? Similique blanditiis dicta quasi aperiam eveniet, iusto optio. Tempore placeat delectus eius quia consequatur nihil corrupti fugit! Fugit sunt nam reprehenderit officiis veniam perferendis quisquam numquam error saepe vel neque, consequuntur libero voluptates non, similique labore inventore. Molestiae doloremque minus aut fugit repellendus praesentium ullam voluptatem iste, fugiat quam ut itaque illum possimus, consectetur officiis eaque temporibus ea! Dolorum voluptatum est suscipit, nemo corporis, minima voluptas voluptate necessitatibus labore blanditiis sed cupiditate dignissimos, voluptatem incidunt praesentium dolore voluptatibus adipisci iusto quod facilis hic. Eligendi a doloribus reiciendis minus harum ut fuga sequi, accusantium animi labore, adipisci odit nam quas quos aliquam repudiandae totam. Repellendus voluptate eum dolor quo consectetur a sit at blanditiis optio enim sapiente expedita officiis, sint nostrum iusto reprehenderit est vero totam illo ut! Animi consectetur adipisci recusandae mollitia, nostrum neque tempora cum quia reiciendis debitis. Ex illum numquam deserunt odit sit laboriosam vero, quisquam vel voluptates architecto? Eligendi tempora quae voluptatibus corporis? Expedita, rem vitae? Explicabo, consequatur! Non exercitationem enim at velit accusantium, recusandae quibusdam sed placeat cum in delectus fugiat ab repellendus provident ipsa iusto vel laborum quam eos unde voluptatem pariatur facilis. Voluptatibus ipsum atque numquam quo explicabo asperiores et dicta aperiam unde reiciendis hic officia assumenda dolore pariatur quos quaerat, nulla libero tempora magni. Odit doloremque non adipisci nostrum reiciendis. Nemo illo quaerat adipisci sapiente facilis reiciendis rerum praesentium nisi. Harum fugiat atque perspiciatis sunt incidunt eligendi est, delectus numquam ad facilis molestiae? Iusto quo totam delectus eligendi? Facilis, vero dicta voluptatem porro sapiente dolore optio! Ullam, beatae est fugit ut quisquam sequi esse, animi magni minus cum ipsum nostrum quis modi quos dolorem voluptatibus vero quidem necessitatibus illo eligendi, quaerat soluta! Nemo minima magni illo animi? Quidem sint temporibus nihil iste quia repellendus sequi dolorum quod, enim praesentium tempora, impedit optio quo, deleniti illo modi. Sint adipisci distinctio, temporibus magni natus reiciendis qui, porro pariatur accusamus velit repellendus minima facilis sed officia esse iusto sequi, veritatis modi saepe. Quaerat accusantium beatae aliquam voluptatibus inventore neque necessitatibus fugit? Molestias, accusamus dicta. Sapiente, cupiditate hic accusantium quaerat doloremque quasi recusandae obcaecati dolor dolores corporis, saepe optio accusamus pariatur neque, nam praesentium voluptates reiciendis. Pariatur fugit eligendi odit quas iste harum unde non dolor. Eaque obcaecati suscipit, veniam atque eius veritatis magni quisquam ipsa ex, facere accusamus laudantium voluptatum iure exercitationem labore reiciendis explicabo unde sint itaque! Dolorum ex vitae quo minus, consequatur illo quas corporis voluptatum, repudiandae ad nobis commodi, iure voluptatibus. Error ipsam nobis accusantium cum itaque temporibus architecto debitis, repellendus pariatur ullam, quam modi eum recusandae odio consequatur beatae neque enim, optio veniam ipsum dignissimos. Veritatis expedita temporibus ratione deserunt laboriosam aperiam tempora, soluta sed quos quam. Nam temporibus amet nulla necessitatibus laborum sint accusantium adipisci fugit, voluptatem blanditiis tenetur illum placeat odit dolorem harum neque perspiciatis quod dolores tempora minima iusto omnis! Laboriosam rerum eveniet laudantium excepturi modi natus quo, consectetur at nihil id dolores voluptatem! Similique fugit doloremque ab sint necessitatibus culpa, facilis esse ullam, fugiat explicabo saepe accusantium vel ea harum numquam expedita mollitia? Cupiditate asperiores aperiam ratione explicabo. Nisi, sed? Asperiores molestias unde voluptates architecto corrupti fugiat reiciendis illo repellat blanditiis veritatis iure, quos id exercitationem iusto provident ullam eum! Sint perspiciatis rem sequi reprehenderit ullam tempore mollitia quod ipsam id quaerat velit ab expedita aliquam consectetur nesciunt, delectus facere modi voluptate totam autem vitae iste eius laborum. Quaerat error perspiciatis adipisci nobis praesentium, saepe eos alias ipsum, corrupti, debitis sapiente nisi! Reprehenderit dolor esse similique nisi fugit nam tenetur odit. Tempore saepe, delectus sed unde voluptatum alias quam molestias adipisci maiores voluptates vel iste ad nam totam voluptas harum id fugit perferendis iusto modi dignissimos quia rerum! Et sed iure fugiat, exercitationem debitis neque ipsam nobis, impedit consectetur corrupti tempore voluptatibus ratione aspernatur rem non ut temporibus deserunt dicta, nulla accusantium similique qui. Praesentium repudiandae laborum quam commodi recusandae, saepe minus ducimus veniam repellendus numquam vero, magni nobis quia impedit reprehenderit ullam esse, repellat reiciendis quidem dignissimos quisquam. Dignissimos iusto modi mollitia adipisci, voluptate corrupti tempore, perspiciatis impedit illum cumque ad odit eveniet sint dicta? Ullam, nemo. Adipisci cumque maxime, voluptates fugit itaque laboriosam quis illum non aliquid. Repudiandae ullam incidunt, amet illum deserunt fugit voluptatibus ipsam atque reprehenderit nihil accusamus quod excepturi libero et eligendi dolores laudantium ea, placeat corporis quo temporibus eveniet? Aut alias eos repellat officia aspernatur excepturi recusandae adipisci voluptas odit voluptatem, error id. Perferendis ipsa esse culpa quos, consequuntur alias nihil exercitationem! Voluptatibus inventore hic excepturi nam repudiandae sunt voluptatum perferendis voluptates quam numquam adipisci quisquam minima, voluptas ipsam error libero ex aspernatur velit veritatis dolorum! s</p>
+    <!--  -->
+    <div>
+
+      <!-- available -->
+      <div v-if="choosenChip_section === 'available'">Свободные средства</div>
+      <div v-if="choosenChip_section === 'invested'">Ивестированные средства</div>
+      <div v-if="choosenChip_section === 'debt'">Долги</div>
+    </div>
+
+    <div >
+      Банки
+      <br>
+      Банк1
+      Всего # ### ###,## RUB
+      Моя доля 1/2 # ### ###,## RUB
+    </div>
 
     <!-- <div>
       {{ computedFund }}
@@ -334,8 +373,20 @@ const set_bgColor = (section: any) => {
 
 /* conspirators v1.0.0 */
 .wallet-section_container {
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  -ms-overflow-style: none;  /* IE and Edge */
+  overflow: scroll; 
+  scrollbar-width: none; 
+  max-width: 100vw!important;
+  gap: 1rem;
+}
+
+.wallet-section_container:-webkit-scrollbar {
+  display: none;
+}
+
+.section-header_wrapper:hover {
+  cursor: pointer;
 }
 
 .section-header_wrapper p{
@@ -349,11 +400,21 @@ const set_bgColor = (section: any) => {
     display: none;
   }
   .wallet-section_container {
+    margin-top: 1rem;
     padding: 0 0.5rem;
-    grid-template-columns: repeat(2, 1fr)
+    padding-bottom: 1.5rem;
+    gap: .5rem;
+  }
+  .section-header_wrapper {
+    min-width: 220px;
   }
   .section-header_wrapper p {
     font-size: 16px;
+  }
+}
+@media screen and (min-width: 576px) {
+  .section-header_wrapper {
+    min-width: 330px;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -361,8 +422,9 @@ const set_bgColor = (section: any) => {
     display: none;
   }
   .wallet-section_container {
+    margin-top: 1rem;
     padding: 0 1rem;
-    grid-template-columns: repeat(2, 1fr)
+    padding-bottom: 1.5rem;
   }
   .section-header_wrapper p {
     font-size: 32px;
@@ -370,12 +432,28 @@ const set_bgColor = (section: any) => {
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .wallet-section_container {
-    grid-template-columns: repeat(2, 1fr)
+    margin-top: 1rem;
+    margin-left: -1rem;
+    padding-left: 1rem;
+    margin-right: -.5rem;
+    padding-right: .5rem;
+    padding-bottom: 1.5rem;
   }
 }
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 992px) and (max-width: 1199px){
   .wallet-section_container {
-    grid-template-columns: repeat(3, 1fr)
+    margin-top: 1rem;
+    margin-left: -1rem;
+    padding-left: 1rem;
+    padding-bottom: 1.5rem;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .wallet-section_container {
+    margin-top: 1rem;
+    margin-left: -1rem;
+    padding-left: 1rem;
+    padding-bottom: 1.5rem;
   }
 }
 </style>
