@@ -33,12 +33,12 @@
     /* ==================== */
     /* without opacity */
     --color-wallet-fund-available-wo: rgb(64, 204, 87);
-    --color-wallet-fund-invested-wo: rgb(63, 69, 241);
+    --color-wallet-fund-invested-wo: rgb(82, 86, 212);
     --color-wallet-fund-debt-wo: rgb(232, 109, 109);
 
     /* with opacity */
     --color-wallet-fund-available: rgba(64, 204, 87, 0.4);
-    --color-wallet-fund-invested: rgba(63, 69, 241, 0.4);
+    --color-wallet-fund-invested: rgba(66, 38, 248, 0.4);
     --color-wallet-fund-debt: rgba(232, 109, 109, 0.4);
 
     /* STATUS */

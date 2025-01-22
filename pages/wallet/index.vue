@@ -18,9 +18,54 @@ const route = useRoute();
 const sessionUser = useUserSession().user;
 // useProfileStore().loadData()
 // const profiles = useProfileStore().profiles
-// = chip
+
+// Chips
+//= section fund
 const choosenChip_section = ref('available')
-// = 
+// = affiliation
+const affiliationFundsChips = ref([
+  {
+    name: 'all',
+    title: 'Всего'
+  },
+  {
+    name: 'mine',
+    title: 'Мои'
+  },
+  {
+    name: 'unidrum',
+    title: 'Unidrum'
+  },
+  {
+    name: 'AC',
+    title: 'АС'
+  },
+  {
+    name: 'EC',
+    title: 'ЕС'
+  },
+  {
+    name: 'IS',
+    title: 'ИС'
+  },
+  {
+    name: 'Conspirators',
+    title: 'Соучастники'
+  },
+  {
+    name: 'JD',
+    title: 'ЮД'
+  },
+  {
+    name: 'JS',
+    title: 'ЮС'
+  }
+]) 
+const currentAffiliation = ref({
+  name: 'all',
+  title: 'Всего'
+})
+
 // = wallet articles
 const wallet_sections = ref([
   {
@@ -75,10 +120,16 @@ useHead({
 
 onMounted(() => {
   const scrollContainer = document.getElementById("fund-block");
+  const scrollAffiliationContainer = document.getElementById("affiliation-chip-block")
 
   scrollContainer?.addEventListener("wheel", (evt) => {
       evt.preventDefault();
       scrollContainer.scrollLeft += evt.deltaY;
+  });
+
+  scrollAffiliationContainer?.addEventListener("wheel", (evt) => {
+      evt.preventDefault();
+      scrollAffiliationContainer.scrollLeft += evt.deltaY;
   });
 })
 
@@ -164,6 +215,12 @@ onMounted(() => {
 //   }
 // }
 
+// CLICK
+//= changeChipAffiliation
+const changeChipAffiliation = (obj: any) => {
+  currentAffiliation.value = obj
+}
+
 // Colorized
 //= set_bgColor
 const set_bgColor = (section: any) => {
@@ -218,9 +275,19 @@ watch(choosenChip_section, () => {
       <h1 style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
     </div>
 
-    <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p>
+    <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p>
+    <p style="margin: 0; margin-left: 1rem;">{{ currentAffiliation }}</p> -->
+
+
 
     <!-- CHIPs -->
+    <Chip
+      id="affiliation-chip-block"
+      :tabs="affiliationFundsChips"
+      :default="currentAffiliation"
+      :btn_all_exist="false"
+      @changed="changeChipAffiliation"
+    />
     <!-- <chip
       :tabs="[
         {
@@ -282,18 +349,98 @@ watch(choosenChip_section, () => {
     <div>
 
       <!-- available -->
-      <div v-if="choosenChip_section === 'available'">Свободные средства</div>
-      <div v-if="choosenChip_section === 'invested'">Ивестированные средства</div>
-      <div v-if="choosenChip_section === 'debt'">Долги</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'available'">Available by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested'">Invested by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'debt'">Debt by {{ currentAffiliation.title }}</div>
     </div>
 
-    <div >
-      Банки
-      <br>
-      Банк1
-      Всего # ### ###,## RUB
-      Моя доля 1/2 # ### ###,## RUB
-    </div>
+    <!-- MINE -->
+    <section class="current-fund_container" v-if="currentAffiliation.name === 'mine'">
+
+      <div class="current-fund_wrapper">
+        <section class="fund-el_contatiner" v-if="choosenChip_section === 'available'">
+          <header>Накопительные счета</header>
+          <main>
+            <section>
+              <h4>Личные</h4>
+            </section>
+            <section>
+              <h4>Unidrum <span style="font-size: 0.8rem;">1/2</span></h4>
+            </section>
+            <section>
+              <h4>АС <span style="font-size: 0.8rem;">1/2</span></h4>
+            </section>
+            <section>
+              <h4>ЕС <span style="font-size: 0.8rem;">1/2</span></h4>
+            </section>
+          </main>
+          <header>Наличка</header>
+          <main>
+            <section>
+              <h4>ЕС <span style="font-size: 0.8rem;">1/2</span></h4>
+            </section>
+          </main>
+        </section>
+
+        <section class="fund-el_contatiner" v-if="choosenChip_section === 'invested'">
+          <header>Фонда</header>
+          <main>
+            <section>
+              <h4>Личные</h4>
+            </section>
+            <section>
+              <h4>ИС <span style="font-size: 0.8rem;">1/2</span></h4>
+            </section>
+            <section>
+              <h4>BOT <span style="font-size: 0.8rem;">1/5</span></h4>
+            </section>
+          </main>
+        </section>
+
+        <section class="fund-el_contatiner" v-if="choosenChip_section === 'debt'">
+          <header>Кредиты</header>
+          <main>
+            <section>
+              <h4>ЕС</h4>
+            </section>
+          </main>
+          <header>Взносы</header>
+          <main>
+            <section>
+              <h4>ЕС</h4>
+            </section>
+          </main>
+        </section>
+      </div>
+    </section>
+
+    <!-- CONSPIRATORS ALL -->
+     <section v-else class="current-fund_container">
+       <div class="current-fund_wrapper">
+   
+         <div class="fund-el_contatiner">
+           <header>Вклады</header>
+         </div>
+   
+         <div class="fund-el_contatiner">
+           <header>Фонда</header>
+         </div>
+   
+         <div class="fund-el_contatiner">
+           <header>Крипта</header>
+         </div>
+
+         <div class="fund-el_contatiner">
+           <header>Кредиты</header>
+         </div>
+
+         <div class="fund-el_contatiner">
+           <header>Взносы</header>
+         </div>
+         Всего # ### ###,## RUB
+         Моя доля 1/2 # ### ###,## RUB
+       </div>
+     </section>
 
     <!-- <div>
       {{ computedFund }}
@@ -392,6 +539,15 @@ watch(choosenChip_section, () => {
 .section-header_wrapper p{
   font-size: 36px; 
   font-weight: bold;
+}
+
+.current-fund_container {
+}
+
+.current-fund_wrapper {
+}
+.fund-el_contatiner {
+
 }
 
 /*  */
