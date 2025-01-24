@@ -26,44 +26,54 @@ const choosenChip_section = ref('available')
 const affiliationFundsChips = ref([
   {
     name: 'all',
-    title: 'Всего'
+    title: 'Всего',
+    id: 'chips_funds_1'
   },
   {
     name: 'mine',
-    title: 'Мои'
+    title: 'Мои',
+    id: 'chips_funds_2'
   },
   {
     name: 'unidrum',
-    title: 'Unidrum'
+    title: 'Unidrum',
+    id: 'chips_funds_3'
   },
   {
     name: 'AC',
-    title: 'АС'
+    title: 'АС',
+    id: 'chips_funds_4'
   },
   {
     name: 'EC',
-    title: 'ЕС'
+    title: 'ЕС',
+    id: 'chips_funds_5'
   },
   {
     name: 'IS',
-    title: 'ИС'
+    title: 'ИС',
+    id: 'chips_funds_6'
   },
   {
     name: 'Conspirators',
-    title: 'Соучастники'
+    title: 'Соучастники',
+    id: 'chips_funds_7'
   },
   {
     name: 'JD',
-    title: 'ЮД'
+    title: 'ЮД',
+    id: 'chips_funds_8'
   },
   {
     name: 'JS',
-    title: 'ЮС'
+    title: 'ЮС',
+    id: 'chips_funds_9'
   }
 ]) 
 const currentAffiliation = ref({
   name: 'all',
-  title: 'Всего'
+  title: 'Всего',
+  id: 'chips_funds_1'
 })
 
 // = wallet articles

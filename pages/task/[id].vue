@@ -52,7 +52,7 @@ useHead({
         }
     ]
     const currentChip = ref({
-        title: 'Общее'
+        title: 'Выполнение'
     })
 
     const route = useRoute()
@@ -137,10 +137,16 @@ useHead({
             <BreadCrumbs class="show-max-767"/>
 
             <h1>
+
                 <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Делаем</span>
+                <!--  -->
                 <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
+                <!--  -->
+                <p style="color: white; font-size: 0.9rem;">{{ current_task }}</p>
                 <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
+                <!--  -->
                 <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
+                <!--  -->
                 <div style="color: #fff; font-size: 1rem;font-weight: normal; position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: .5rem;">
                     <div>{{ current_task.urgency }}</div>
                     <div>{{ current_task.status }}</div>

@@ -21,11 +21,11 @@
     <div class="tab" v-for="(tab, j) in tabs">
       <input
         type="radio"
-        :id="`tab-radio_item_${j}`"
+        :id="`tab-radio_item_${tab.id}`"
         :value="tab"
         v-model="currentTitle"
       />
-      <label :for="`tab-radio_item_${j}`" @click="emit_object(tab)"
+      <label :for="`tab-radio_item_${tab.id}`" @click="emit_object(tab)"
         ><p>
           {{ tab.title }}
         </p></label

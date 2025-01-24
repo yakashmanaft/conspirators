@@ -97,7 +97,7 @@ const warehouseCategories = ref([
 ]);
 
 // demand filter types
-const currentDemandFilterType = ref("all");
+// const currentDemandFilterType = ref("all");
 const demandFilterTypes = ref([
   {
     name: "all",
@@ -116,56 +116,68 @@ const demandFilterTypes = ref([
 //CHIPS LEADs
 const chips_lead = [
   {
+    id: 'chip-lead-1',
     name: 'lead',
     title: 'Новые'
   },
   {
+    id: 'chip-lead-2',
     name: 'project',
     title: 'В проекте'
   },
   {
+    id: 'chip-lead-3',
     name: 'blank',
     title: 'Пустышки'
   }
 ]
 const currentChipLead = ref({
+  id: 'chip-lead-1',
     name: 'lead',
     title: 'Новые'
   })
 // CHIPS TASKs
-const chips = [
+const chips_status = [
   {
       name: 'all',
-      title: 'Все'
+      title: 'Все',
+      id: 'chip-status-1'
   },
   {
       name: 'waiting',
-      title: 'Ожидание'
+      title: 'Ожидание',
+      id: 'chip-status-2'
   },
   {
       name: 'works',
-      title: 'В процессе'
+      title: 'В процессе',
+      id: 'chip-status-3'
   },  
   {
       name: 'agreement',
-      title: 'Согласование'
+      title: 'Согласование',
+      id: 'chip-status-4'
   },
   {
       name: 'finished',
-      title: 'Завершенные'
+      title: 'Завершенные',
+      id: 'chip-status-5'
   },
   {
       name: 'canceled',
-      title: 'Отменено'
+      title: 'Отменено',
+      id: 'chip-status-6',
   },
   {
       name: 'paused',
-      title: 'Пауза'
+      title: 'Пауза',
+      id: 'chip-status-7',
   },  
 ]
 const currentChip = ref({
   name: 'all',
-  title: 'Все'
+      title: 'Все',
+      id: 'chip-status-1'
 })
 
 // EVENT CLICKERS
@@ -666,7 +678,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 
        <!-- CHIP TASK SECTION -->
        <Chip
-        :tabs="chips"
+        :tabs="chips_status"
         :default="currentChip" 
         :btn_all_exist="false" 
         @changed="changeChip"

@@ -98,73 +98,90 @@ const currentTitle = ref("schedule");
 
 // CHIP
 const currentChip = ref({
-  name: 'all',
-  title: 'Все'
+      name: 'all',
+      title: 'Все',
+      id: 'chips_status_1'
 })
 
 const chips = [
   {
       name: 'all',
-      title: 'Все'
+      title: 'Все',
+      id: 'chips_status_1'
   },
   {
       name: 'waiting',
-      title: 'Ожидание'
+      title: 'Ожидание',
+      id: 'chips_status_2'
   },
   {
       name: 'works',
-      title: 'В процессе'
+      title: 'В процессе',
+      id: 'chips_status_3'
   },  
   {
       name: 'agreement',
-      title: 'Согласование'
+      title: 'Согласование',
+      id: 'chips_status_4'
   },
   {
       name: 'finished',
-      title: 'Завершенные'
+      title: 'Завершенные',
+      id: 'chips_status_5'
   },
   {
       name: 'canceled',
-      title: 'Отменено'
+      title: 'Отменено',
+      id: 'chips_status_6'
   },
   {
       name: 'paused',
-      title: 'Пауза'
+      title: 'Пауза',
+      id: 'chips_status_7'
   },  
 ]
 //
 const chips_accomplishment = ref([
   {
+    id: 'chips_accomplishment_1',
     name: 'all',
-    title: 'Все'
+    title: 'Все',
   },
   {
+    id: 'chips_accomplishment_2',
       name: 'waiting',
       title: 'Ожидание'
   },
   {
+    id: 'chips_accomplishment_3',
       name: 'agreement',
       title: 'Согласование'
   },
   {
+    id: 'chips_accomplishment_4',
       name: 'finished',
       title: 'Завершенные'
   },
   {
+    id: 'chips_accomplishment_5',
       name: 'paused',
       title: 'Пауза'
   },  
   {
-      name: 'canceled',
-      title: 'Отменено'
+    id: 'chips_accomplishment_6',
+    name: 'canceled',
+    title: 'Отменено'
   },
 ])
 //
 const currentAccomplishmentChip = ref({
   // name: 'waiting',
   // title: 'Ожидание'
-    name: 'all',
-    title: 'Все'
+  id: 'chips_accomplishment_1',
+
+  
+
+
 })
 
 // COUNT Accomplishments by current chip
@@ -561,6 +578,7 @@ const closePopup = () => {
   currentAccomplishmentChip.value = {
     // name: 'waiting',
     // title: 'Ожидание'
+    id: `${currentAccomplishmentChip.value?.id}`,
     name: 'all',
     title: 'Все'
   }
@@ -662,7 +680,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                   <!-- LI2 -->
                   
                   <li v-for="task_el in computedAccomplishments.filter(item => item.ended_at.slice(0,10) === endedDate)" class="task_ledger_el">
-                    <Section :fJustifyContent="'flex-start'" :fDirection="'column'">
+                    <div 
+                      :fJustifyContent="'flex-start'" 
+                      :fDirection="'column'"
+                    >
                       <!-- HEADER -->
                       <p 
                         style="font-size: 0.8rem; margin: 0;"
@@ -696,7 +717,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                           {{ task_el.status }}
                         </div>
                       </div>
-                    </Section>
+                    </div>
 
 
                   </li>
