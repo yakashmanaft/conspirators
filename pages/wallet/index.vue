@@ -81,15 +81,55 @@ const wallet_sections = ref([
   {
     title: 'Свободные средства',
     name: 'available',
-    total: 3750287.08,
+    total: 136187.50,
     aticles: [
 
     ]
   },
   {
-    title: 'Инвестировано',
-    total: 150428.08,
-    name: 'invested',
+    title: 'Фонда',
+    total: 203705.14,
+    name: 'invested_stock',
+    aticles: [
+
+    ]
+  },
+  {
+    title: 'Крипта',
+    total: 203705.14,
+    name: 'invested_crypto',
+    aticles: [
+
+    ]
+  },
+  {
+    title: 'Вклады',
+    total: 203705.14,
+    name: 'invested_deposit',
+    aticles: [
+
+    ]
+  },
+  {
+    title: 'Валюта',
+    total: 203705.14,
+    name: 'invested_currency',
+    aticles: [
+
+    ]
+  },
+  {
+    title: 'Выдано кредитов',
+    total: 203705.14,
+    name: 'credits',
+    aticles: [
+
+    ]
+  },
+  {
+    title: 'Старт проекты',
+    total: 203705.14,
+    name: 'projects',
     aticles: [
 
     ]
@@ -242,23 +282,66 @@ const set_bgColor = (section: any) => {
     // Свободные средства
     if(section.name === 'available') {
       if(choosenChip_section.value === section.name) {
-        color = `var(--color-wallet-fund-available-wo)`
-      } else {
+        // color = `var(--color-wallet-fund-available-wo)`
         color = `var(--color-wallet-fund-available)`
+      } else {
+        // color = `var(--color-wallet-fund-available)`
       }
     } 
-    if(section.name === 'invested') {
+    if(section.name === 'invested_stock') {
       if(choosenChip_section.value === section.name) {
-        color = `var(--color-wallet-fund-invested-wo)`
-      } else {
+        // color = `var(--color-wallet-fund-invested-wo)`
         color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    if(section.name === 'invested_crypto') {
+      if(choosenChip_section.value === section.name) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    if(section.name === 'invested_deposit') {
+      if(choosenChip_section.value === section.name) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    if(section.name === 'invested_currency') {
+      if(choosenChip_section.value === section.name) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    if(section.name === 'credits') {
+      if(choosenChip_section.value === section.name) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    if(section.name === 'projects') {
+      if(choosenChip_section.value === section.name) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
       }
     }
     if(section.name === 'debt') {
       if(choosenChip_section.value === section.name) {
-        color = `var(--color-wallet-fund-debt-wo)`
-      } else {
+        // color = `var(--color-wallet-fund-debt-wo)`
         color = `var(--color-wallet-fund-debt)`
+      } else {
+        // color = `var(--color-wallet-fund-debt)`
       }
     }
     else {
@@ -297,6 +380,7 @@ watch(choosenChip_section, () => {
       :default="currentAffiliation"
       :btn_all_exist="false"
       @changed="changeChipAffiliation"
+      style="margin-top: 1rem;"
     />
     <!-- <chip
       :tabs="[
@@ -329,6 +413,8 @@ watch(choosenChip_section, () => {
       :btn_all_exist="true"
       @changed="emittedChip_bank"
     /> -->
+    <!-- TOTAL -->
+    <div style="margin-top: 1rem">~1 500 000.00RUB</div>
 
     <!-- === INFO SECTION === -->
     <div id="fund-block" class="wallet-section_container">
@@ -344,10 +430,11 @@ watch(choosenChip_section, () => {
         <!-- section header -->
         <header>
           <h2 :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="text-wrap: nowrap; font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-          <p :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ section.total }} P</p>
+          <p :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ section.total }} RUB</p>
+          <p v-if="section.name === 'invested_stock'" style="font-size: 0.8rem; font-weight: normal;">ROI 10%(+3736.00RUB)</p>
         </header>
 
-        <!-- section articles -->
+        <!-- section articles -->   
         <!-- <HorizontalCard>123</HorizontalCard>
         <StackedCard>2704Кредит2024 | 275 734.00 P</StackedCard>
         <StackedCard>Брокерский счет (Тинькофф) | 275 734.00 P</StackedCard> -->
@@ -360,7 +447,12 @@ watch(choosenChip_section, () => {
 
       <!-- available -->
       <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'available'">Available by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested'">Invested by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_stock'">Invested stock by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_crypto'">Invested crypto by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_deposit'">Invested deposit by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_currency'">Invested currency by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'credits'">Given credits by {{ currentAffiliation.title }}</div>
+      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'projects'">Start projects by {{ currentAffiliation.title }}</div>
       <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'debt'">Debt by {{ currentAffiliation.title }}</div>
     </div>
 
@@ -369,6 +461,7 @@ watch(choosenChip_section, () => {
     <!--  -->
      <section class="current-fund_container">
        <div class="current-fund_wrapper">
+
 
         <!-- AVAILABLE -->
         <div v-if="choosenChip_section === 'available'">
@@ -382,60 +475,60 @@ watch(choosenChip_section, () => {
                 <ul>
                   <!--  -->
                   <li>
-                    <p>Сбербанк</p>
+                    <p>Сбер <span>22769,99RUB</span></p>
                     <ul> 
-                    <li>LambArt BOT</li>
-                    <li>Запасы</li>
-                    <li>ЕС</li>
-                    <li>АС</li>
-                    <li>ЮС</li>
-                    <li>ДомИнвест</li>
+                    <li><p>LambArt BOT <span>4178,70RUB</span></p></li>
+                    <li><p>Запасы <span>34,05RUB</span></p></li>
+                    <li><p>ЕС <span>14681,41RUB</span></p></li>
+                    <li><p>АС <span>5385,01RUB</span></p></li>
+                    <li><p>ЮС <span>513,46RUB</span></p></li>
+                    <li><p>ДомИнвест <span>3362,37RUB</span></p></li>
                   </ul>
                   </li>
                   <!--  -->
                   <li>
-                    <p>ВТБ</p>
+                    <p>ВТБ <span>3447,70RUB</span></p>
                     <ul>
-                      <li>Unidrum</li>
-                      <li>ЕС</li>
-                      <li>ЮС</li>
-                      <li>ЮД</li>
+                      <li><p>Unidrum <span>3090,64RUB</span></p></li>
+                      <li><p>ЕС <span>350,55RUB</span></p></li>
+                      <li><p>ЮС <span>5,08RUB</span></p></li>
+                      <li><p>ЮД <span>1,43RUB</span></p></li>
                     </ul>
                   </li>
 
                   <!--  -->
                   <li>
-                    <p>Яндекс</p>
+                    <p>Яндекс <span>85407,46RUB</span></p>
                     <ul>
-                      <li>Купоны</li>
-                      <li>Станция</li>
-                      <li>ЕС</li>
-                      <li>ЕС ФИИ</li>
-                      <li>ЮС</li>
-                      <li>Соучастники</li>
-                      <li>ФИИ</li>
-                      <li>ЮД</li>
+                      <li><p>Купоны <span>531,73RUB</span></p></li>
+                      <li><p>Станция <span>53599,28RUB</span></p></li>
+                      <li><p>ЕС <span>23767,03RUB</span></p></li>
+                      <li><p>ЕС ФИИ <span>265,48RUB</span></p></li>
+                      <li><p>ЮС <span>1726,05RUB</span></p></li>
+                      <li><p>Соучастники <span>2968,75RUB</span></p></li>
+                      <li><p>Соучастники <span>1421,14RUB</span></p></li>
+                      <li><p>ЮД <span>1128,00RUB</span></p></li>
                     </ul>
                   </li>
 
                   <li>
-                    <p>Т-Банк</p>
+                    <p>Т-Банк <span>6057,75RUB</span></p>
                     <ul>
-                      <li>ЮС</li>
-                      <li>Юнидрам</li>
+                      <li><p>ЮС <span>510,66RUB</span></p></li>
+                      <li><p>Юнидрам <span>5547,09RUB</span></p></li>
                     </ul>
                   </li>
                   <li>
-                    <p>Ренесанс</p>
+                    <p>Ренесанс <span>13155,09RUB</span></p>
                     <ul>
-                      <li>ИС</li>
-                      <li>Магнит</li>
+                      <li><p>ИС <span>9467,49RUB</span></p></li>
+                      <li><p>Магнит <span>3687,60RUB</span></p></li>
                     </ul>
                   </li>
                   <li>
-                    <p>БКС</p>
+                    <p>БКС <span>379,51RUB</span></p>
                     <ul>
-                      <li>ИС</li>
+                      <li><p>ИС <span>379,51RUB</span></p></li>
                     </ul>
                   </li>
                 </ul>
@@ -452,7 +545,12 @@ watch(choosenChip_section, () => {
               <header>Наличные</header>
               <main>
                 <ul>
-                  <li>Нет наличных</li>
+                  <li>
+                    <p>Сейф</p>
+                    <ul>
+                      <li><p>ЮС <span>4970,00RUB</span></p></li>
+                    </ul>
+                  </li>
                 </ul>
               </main>
             </section>
@@ -461,10 +559,90 @@ watch(choosenChip_section, () => {
         </div>
    
         
-        <!-- INVESTED -->
+        <!-- INVESTED STOCk-->
         <!--  -->
-        <div v-if="choosenChip_section === 'invested'">
+        <div v-if="choosenChip_section === 'invested_stock'">
 
+          <!-- ПИФЫ -->
+          <div class="fund-el_contatiner">
+            <section>
+              <header>ПИФЫ</header>
+              <main>
+                <ul>
+                  <li><p>Фонд Локальнй <span>308,75RUB</span></p></li>
+                  <li><p>Фонд российских облигаций <span>321,63RUB</span></p></li>
+                  <li><p>Фонд Накопительный <span>329,89RUB</span></p></li>
+                </ul>
+              </main>
+            </section>
+          </div>
+
+          <!-- БРОКЕРСКИЕ СЧЕТА -->
+          <div class="fund-el_contatiner">
+            <section>
+              <header>Брокерские счета</header>
+              <main>
+                <ul>
+                  <li><p>Инвесткопилка <span>866,46RUB</span></p></li>
+                  <li><p>Валюта <span>0,60RUB</span></p></li>
+                  <li><p>Камини <span>2679,06RUB</span></p></li>
+                  <li><p>BOT <span>141694,55RUB</span></p></li>
+                  <li><p>Сбер Личный <span>108054,97RUB</span></p></li>
+                  <li><p>Альфа-Инвестиции Личный <span>217,56RUB</span></p></li>
+                  <li><p>ИС Без имени <span>5660,71</span></p></li>
+                  <li><p>ИС <span>15092,99RUB</span></p></li>
+                  <li><p>Кит Финанс Личный <span>0,00RUB</span></p></li>
+                  <li><p>Цифра Брокер Личный <span>0,00RUB</span></p></li>
+                </ul>
+              </main>
+            </section>
+          </div>
+
+        </div>
+
+        <!-- INVEVSTED CRYPTO -->
+        <div v-if="choosenChip_section === 'invested_crypto'">
+          <!-- КРИПТА -->
+          <div class="fund-el_contatiner">
+
+
+          <section>
+          <header>Крипта</header>
+          <main>
+          <!-- Кошельки -->
+          <ul>
+          <li>
+          <p>Кошельки <span>51265.46RUB</span></p>
+          <ul>
+          <li><p>MetaMask <span>234.91USD (~23164.57)RUB</span></p></li>
+          <li><p>Phantom <span>284.97USD (~28100.89RUB)</span></p></li>
+          </ul>
+          </li>
+          <li>
+          <p>Балансы Бирж <span>0,00RUB</span></p>
+          <ul>
+          <li><p>Binance <span>0,00RUB</span></p></li>
+          </ul>
+          </li>
+          <li>
+          <p>Стейкинг <span>~2289,72RUB</span></p>
+          <ul>
+          <li><p>MTT Network <span>258 MTT (~2289,72RUB)</span></p></li>
+          </ul>
+          </li>
+          </ul>
+          <ul>
+          <li>Не вкидывали в крипту</li>
+          </ul>
+          </main>
+          </section>
+
+          </div>
+        </div>
+
+        <!-- INVESTED DEPOSIT -->
+        <!--  -->
+        <div v-if="choosenChip_section === 'invested_deposit'">
           <!-- БАНКОВСКИЕ ВКЛАДЫ -->
           <div class="fund-el_contatiner">
           <section>
@@ -477,133 +655,123 @@ watch(choosenChip_section, () => {
             </main>
           </section>
           </div>
+        </div>
 
-          <!-- БРОКЕРСКИЕ СЧЕТА -->
+        <!-- INVESTED CURRENCY -->
+        <div v-if="choosenChip_section === 'invested_currency'">
+          <!-- ВАЛЮТНЫЕ СЧЕТА -->
           <div class="fund-el_contatiner">
             <section>
-              <header>Брокерские счета</header>
+              <header>Валютные счета</header>
               <main>
                 <ul>
-                  <li>
-                    <p>Т-Банк</p>
-                    <ul>
-                      <li>Инвесткопилка</li>
-                      <li>Валюта</li>
-                      <li>Камини</li>
-                      <li>BOT</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Сбер</p>
-                    <ul>
-                      <li>Без имени</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Альфа-Инвестиции</p>
-                    <ul>
-                      <li>Без имени</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>БКС</p>
-                    <ul>
-                      <li>ИС Без имени</li>
-                      <li>ИС</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Кит Финанс</p>
-                    <ul>
-                      <li>Без имени</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Цифра Брокер</p>
-                    <ul>
-                      <li>Без имени</li>
-                    </ul>
-                  </li>
+                  <li><p>Доллар <span>10,00USD (982,64RUB)</span></p></li>
+                  <li><p>Юань <span>271,00CNY (3661,24RUB)</span></p></li>
+                  <li><p>Гонконгский доллар <span>21,00HKD (265,41)</span></p></li>
                 </ul>
               </main>
             </section>
           </div>
+        </div>
 
-          <!-- КРИПТА -->
-          <div class="fund-el_contatiner">
+        <!-- CREDITS -->
+        <!--  -->
+        <div v-if="choosenChip_section === 'credits'">
 
-
-            <section>
-              <header>Крипта</header>
-              <main>
-                <!-- Кошельки -->
-                <ul>
-                  <li>
-                    <p>Кошельки</p>
-                    <ul>
-                      <li>MetaMask</li>
-                      <li>Phantom</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Балансы Бирж</p>
-                    <ul>
-                      <li>Binance</li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Стейкинг</p>
-                    <ul>
-                      <li>MTT Network</li>
-                    </ul>
-                  </li>
-                </ul>
-                <ul>
-                  <li>Не вкидывали в крипту</li>
-                </ul>
-              </main>
-            </section>
-
-          </div>
-
-          <!-- КРЕДИТЫ -->
+          <!-- ВЫДАННЫЕ КРЕДИТЫ -->
           <div class="fund-el_contatiner">
 
             <section>
-              <header>Кредиты</header>
+              <header>Выданные кредиты</header>
               <main>
                 <ul>
+                  <li><p><span>ЮС</span> 1002Кредит22 <span>-7501,411RUB</span></p></li>
                   <li>Не выдавали кредиты</li>
                 </ul>
               </main>
             </section>
-            
+
           </div>
-
-          <!-- ПРочЕЕ -->
-          <div class="fund-el_contatiner">
-
-            <section>
-              <header>Прочее</header>
-              <main>
-                <ul>
-                  <li>Нет инвестиций</li>
-                </ul>
-              </main>
-            </section>
-
-            </div>
         </div>
    
+        <!-- PROJECTS -->
+        <!--  -->
+        <div v-if="choosenChip_section === 'projects'">
+
+          <!-- ПРОЕКТЫ -->
+          <div class="fund-el_contatiner">
+          <section>
+            <header>Проекты</header>
+            <main>
+              <ul>
+                <li><p><span>ЕС</span> 1602РАТСА19 <span>-1206.34RUB</span></p></li>
+                <li>Не инвестировали в проекты</li>
+              </ul>
+            </main>
+          </section>
+          </div>
+
+          <!-- ПРОЧЕЕ -->
+          <div class="fund-el_contatiner">
+
+          <section>
+            <header>Прочее</header>
+            <main>
+              <ul>
+                <li>Нет инвестиций</li>
+              </ul>
+            </main>
+          </section>
+
+          </div>
+        </div>
+
         <!-- DEBT -->
         <!--  -->
         <div v-if="choosenChip_section === 'debt'">
+
+          <!-- ПРОПУЩЕННЫЕ ВЗНОСЫ -->
           <div class="fund-el_contatiner">
 
             <section>
               <header>Пропущенные взносы</header>
               <main>
                 <ul>
+                  <li>
+                    <p>Мои</p>
+                    <ul>
+                      <li>
+                        <p>ЮС</p>
+                        <ul>
+                          <li><p>18.01.2025 <span>100.00RUB</span>  </p></li>
+                          <li><p>25.01.2025 <span>100.00RUB</span>  </p></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Юлия</p>
+                    <ul>
+                      <li>
+                        <p>ЮС</p>
+                        <ul>
+                          <li><p>18.01.2025 <span>100.00RUB</span>  </p></li>
+                          <li><p>25.01.2025 <span>100.00RUB</span>  </p></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Глеб</p>
+                    <ul>
+                      <li>
+                        <p>Юнидрам</p>
+                        <ul>
+                          <li><p>18.11.2024 <span>100.00RUB</span>  </p></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
                   <li>Нет пропусков</li>
                 </ul>
               </main>
@@ -617,9 +785,42 @@ watch(choosenChip_section, () => {
               <header>Кредиты</header>
               <main>
                 <ul>
-                  <li>ЕС</li>
-                  <li>Unidrum</li>
-                  <li>ЮС</li>
+                  <li>
+                    <p>Мои</p>
+                    <ul>
+                      <li>
+
+                        <p>ЕС <span>7032,43RUB</span></p>
+                        <ul>
+                          <li><p>0611Кредит24   <span>5850,00RUB</span></p></li>
+                          <li><p>2008Кредит24 <span>1182,42RUB</span> </p></li>
+  
+                        </ul>
+                        <!-- 1157,57RUB - 2340,00RUB  = -1182,42RUB-->
+                      </li>
+                      <li>
+                        <p>Ренессанс <span>24151,89RUB</span></p>
+                        <ul>
+                          <li>Кредит на товар <span>24151,89RUB</span></li>
+                          <!-- 29115,11RUB - 53967,00RUB =  -24151,89RUB-->
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Глеб</p>
+                    <ul>
+                      <li>
+                        <p>Юнидрам <span>4165,00RUB</span></p>
+                        <ul>
+                          <li><p>0501Кредит24   <span>1404,00RUB</span></p></li>
+                          <li><p>0402Кредит24 <span>304,00RUB</span> </p></li>
+                          <li><p>0405Кредит24 <span>117,00RUB</span> </p></li>
+                          <li><p>1212Кредит24 <span>2340,00RUB</span> </p></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
                 </ul>
               </main>
             </section>
@@ -742,7 +943,7 @@ watch(choosenChip_section, () => {
     display: none;
   }
   .wallet-section_container {
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 0 0.5rem;
     padding-bottom: 1.5rem;
     gap: .5rem;
@@ -764,7 +965,7 @@ watch(choosenChip_section, () => {
     display: none;
   }
   .wallet-section_container {
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 0 1rem;
     padding-bottom: 1.5rem;
   }
@@ -774,7 +975,7 @@ watch(choosenChip_section, () => {
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .wallet-section_container {
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-left: -1rem;
     padding-left: 1rem;
     margin-right: -.5rem;
@@ -784,7 +985,7 @@ watch(choosenChip_section, () => {
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
   .wallet-section_container {
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
@@ -792,7 +993,7 @@ watch(choosenChip_section, () => {
 }
 @media screen and (min-width: 1200px) {
   .wallet-section_container {
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
