@@ -178,10 +178,8 @@ const currentAccomplishmentChip = ref({
   // name: 'waiting',
   // title: 'Ожидание'
   id: 'chips_accomplishment_1',
-
-  
-
-
+    name: 'all',
+    title: 'Все',
 })
 
 // COUNT Accomplishments by current chip

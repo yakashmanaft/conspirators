@@ -138,11 +138,10 @@ useHead({
 
             <h1>
 
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Делаем</span>
+                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Решаем задачу</span>
                 <!--  -->
                 <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
                 <!--  -->
-                <p style="color: white; font-size: 0.9rem;">{{ current_task }}</p>
                 <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
                 <!--  -->
                 <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
@@ -152,7 +151,9 @@ useHead({
                     <div>{{ current_task.status }}</div>
                 </div>
             </h1> 
-
+            <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
+                Кратко: <span>{{ current_task.desc }}</span>
+            </h2>
         </div>
 
         <!-- CHIP SECTION -->

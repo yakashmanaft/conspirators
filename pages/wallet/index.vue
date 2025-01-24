@@ -364,91 +364,267 @@ watch(choosenChip_section, () => {
       <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'debt'">Debt by {{ currentAffiliation.title }}</div>
     </div>
 
-    <!-- MINE -->
-    <section class="current-fund_container" v-if="currentAffiliation.name === 'mine'">
 
-      <div class="current-fund_wrapper">
-        <section class="fund-el_contatiner" v-if="choosenChip_section === 'available'">
-          <header>Накопительные счета</header>
-          <main>
-            <section>
-              <h4>Личные</h4>
-            </section>
-            <section>
-              <h4>Unidrum <span style="font-size: 0.8rem;">1/2</span></h4>
-            </section>
-            <section>
-              <h4>АС <span style="font-size: 0.8rem;">1/2</span></h4>
-            </section>
-            <section>
-              <h4>ЕС <span style="font-size: 0.8rem;">1/2</span></h4>
-            </section>
-          </main>
-          <header>Наличка</header>
-          <main>
-            <section>
-              <h4>ЕС <span style="font-size: 0.8rem;">1/2</span></h4>
-            </section>
-          </main>
-        </section>
-
-        <section class="fund-el_contatiner" v-if="choosenChip_section === 'invested'">
-          <header>Фонда</header>
-          <main>
-            <section>
-              <h4>Личные</h4>
-            </section>
-            <section>
-              <h4>ИС <span style="font-size: 0.8rem;">1/2</span></h4>
-            </section>
-            <section>
-              <h4>BOT <span style="font-size: 0.8rem;">1/5</span></h4>
-            </section>
-          </main>
-        </section>
-
-        <section class="fund-el_contatiner" v-if="choosenChip_section === 'debt'">
-          <header>Кредиты</header>
-          <main>
-            <section>
-              <h4>ЕС</h4>
-            </section>
-          </main>
-          <header>Взносы</header>
-          <main>
-            <section>
-              <h4>ЕС</h4>
-            </section>
-          </main>
-        </section>
-      </div>
-    </section>
-
-    <!-- CONSPIRATORS ALL -->
-     <section v-else class="current-fund_container">
+    <!-- ALL -->
+    <!--  -->
+     <section class="current-fund_container">
        <div class="current-fund_wrapper">
-   
-         <div class="fund-el_contatiner">
-           <header>Вклады</header>
-         </div>
-   
-         <div class="fund-el_contatiner">
-           <header>Фонда</header>
-         </div>
-   
-         <div class="fund-el_contatiner">
-           <header>Крипта</header>
-         </div>
 
-         <div class="fund-el_contatiner">
-           <header>Кредиты</header>
-         </div>
+        <!-- AVAILABLE -->
+        <div v-if="choosenChip_section === 'available'">
 
-         <div class="fund-el_contatiner">
-           <header>Взносы</header>
-         </div>
-         Всего # ### ###,## RUB
-         Моя доля 1/2 # ### ###,## RUB
+          <!-- НАКОПИТЕЛЬНЫЕ СЧЕТА -->
+          <div class="fund-el_contatiner">
+  
+            <section>
+              <header>Накопительные счета</header>
+              <main>
+                <ul>
+                  <!--  -->
+                  <li>
+                    <p>Сбербанк</p>
+                    <ul> 
+                    <li>LambArt BOT</li>
+                    <li>Запасы</li>
+                    <li>ЕС</li>
+                    <li>АС</li>
+                    <li>ЮС</li>
+                    <li>ДомИнвест</li>
+                  </ul>
+                  </li>
+                  <!--  -->
+                  <li>
+                    <p>ВТБ</p>
+                    <ul>
+                      <li>Unidrum</li>
+                      <li>ЕС</li>
+                      <li>ЮС</li>
+                      <li>ЮД</li>
+                    </ul>
+                  </li>
+
+                  <!--  -->
+                  <li>
+                    <p>Яндекс</p>
+                    <ul>
+                      <li>Купоны</li>
+                      <li>Станция</li>
+                      <li>ЕС</li>
+                      <li>ЕС ФИИ</li>
+                      <li>ЮС</li>
+                      <li>Соучастники</li>
+                      <li>ФИИ</li>
+                      <li>ЮД</li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <p>Т-Банк</p>
+                    <ul>
+                      <li>ЮС</li>
+                      <li>Юнидрам</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Ренесанс</p>
+                    <ul>
+                      <li>ИС</li>
+                      <li>Магнит</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>БКС</p>
+                    <ul>
+                      <li>ИС</li>
+                    </ul>
+                  </li>
+                </ul>
+              </main>
+            </section>
+  
+  
+          </div>
+
+          <!-- НАЛИЧНЫЕ -->
+          <div class="fund-el_contatiner">
+
+            <section>
+              <header>Наличные</header>
+              <main>
+                <ul>
+                  <li>Нет наличных</li>
+                </ul>
+              </main>
+            </section>
+            
+          </div>
+        </div>
+   
+        
+        <!-- INVESTED -->
+        <!--  -->
+        <div v-if="choosenChip_section === 'invested'">
+
+          <!-- БАНКОВСКИЕ ВКЛАДЫ -->
+          <div class="fund-el_contatiner">
+          <section>
+            <header>Банковские вклады</header>
+            <main>
+              <ul>
+                <!-- <li>Сбербанк</li> -->
+                  <li>Нет вкладов</li>
+              </ul>
+            </main>
+          </section>
+          </div>
+
+          <!-- БРОКЕРСКИЕ СЧЕТА -->
+          <div class="fund-el_contatiner">
+            <section>
+              <header>Брокерские счета</header>
+              <main>
+                <ul>
+                  <li>
+                    <p>Т-Банк</p>
+                    <ul>
+                      <li>Инвесткопилка</li>
+                      <li>Валюта</li>
+                      <li>Камини</li>
+                      <li>BOT</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Сбер</p>
+                    <ul>
+                      <li>Без имени</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Альфа-Инвестиции</p>
+                    <ul>
+                      <li>Без имени</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>БКС</p>
+                    <ul>
+                      <li>ИС Без имени</li>
+                      <li>ИС</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Кит Финанс</p>
+                    <ul>
+                      <li>Без имени</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Цифра Брокер</p>
+                    <ul>
+                      <li>Без имени</li>
+                    </ul>
+                  </li>
+                </ul>
+              </main>
+            </section>
+          </div>
+
+          <!-- КРИПТА -->
+          <div class="fund-el_contatiner">
+
+
+            <section>
+              <header>Крипта</header>
+              <main>
+                <!-- Кошельки -->
+                <ul>
+                  <li>
+                    <p>Кошельки</p>
+                    <ul>
+                      <li>MetaMask</li>
+                      <li>Phantom</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Балансы Бирж</p>
+                    <ul>
+                      <li>Binance</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Стейкинг</p>
+                    <ul>
+                      <li>MTT Network</li>
+                    </ul>
+                  </li>
+                </ul>
+                <ul>
+                  <li>Не вкидывали в крипту</li>
+                </ul>
+              </main>
+            </section>
+
+          </div>
+
+          <!-- КРЕДИТЫ -->
+          <div class="fund-el_contatiner">
+
+            <section>
+              <header>Кредиты</header>
+              <main>
+                <ul>
+                  <li>Не выдавали кредиты</li>
+                </ul>
+              </main>
+            </section>
+            
+          </div>
+
+          <!-- ПРочЕЕ -->
+          <div class="fund-el_contatiner">
+
+            <section>
+              <header>Прочее</header>
+              <main>
+                <ul>
+                  <li>Нет инвестиций</li>
+                </ul>
+              </main>
+            </section>
+
+            </div>
+        </div>
+   
+        <!-- DEBT -->
+        <!--  -->
+        <div v-if="choosenChip_section === 'debt'">
+          <div class="fund-el_contatiner">
+
+            <section>
+              <header>Пропущенные взносы</header>
+              <main>
+                <ul>
+                  <li>Нет пропусков</li>
+                </ul>
+              </main>
+
+            </section>
+          </div>
+          <!-- КРЕДИТЫ -->
+          <div class="fund-el_contatiner">
+
+            <section>
+              <header>Кредиты</header>
+              <main>
+                <ul>
+                  <li>ЕС</li>
+                  <li>Unidrum</li>
+                  <li>ЮС</li>
+                </ul>
+              </main>
+            </section>
+          </div>
+        </div>
        </div>
      </section>
 
@@ -566,7 +742,7 @@ watch(choosenChip_section, () => {
     display: none;
   }
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     padding: 0 0.5rem;
     padding-bottom: 1.5rem;
     gap: .5rem;
@@ -588,7 +764,7 @@ watch(choosenChip_section, () => {
     display: none;
   }
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     padding: 0 1rem;
     padding-bottom: 1.5rem;
   }
@@ -598,7 +774,7 @@ watch(choosenChip_section, () => {
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-left: -1rem;
     padding-left: 1rem;
     margin-right: -.5rem;
@@ -608,7 +784,7 @@ watch(choosenChip_section, () => {
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
@@ -616,7 +792,7 @@ watch(choosenChip_section, () => {
 }
 @media screen and (min-width: 1200px) {
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
