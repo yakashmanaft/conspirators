@@ -219,6 +219,18 @@ const translateRoutePath = (path: string) => {
     let id = path.substr(startIndex + 1);
     return `Задача #${id}`;
   }
+  // MESHки
+  else if (path.includes('/mesh/')) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Мешок #${id}`;
+  }
+  // FUNDS
+  else if (path.includes('/fund/')) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Фонд соучастников #${id}`;
+  }
   // BANKS
   else if (path === "/banks") {
     return "Банки"

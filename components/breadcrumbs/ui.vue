@@ -66,40 +66,56 @@ onMounted(() => {
 // TRANSLATORS
 //= translateCrumb
 const translateCrumb = (str: string) => {
-  // projects
-  if(str === 'projects') {
+  console.log(str)
 
-    return 'Проекты'
-  } 
-  // task
-  if(str === 'task') {
-    return 'Задачи'
-  }
-  // demands
-  if(str === 'demands') {
-    return 'Заявки'
-  }
-  // partners 
-  if(str = 'partners') {
-    return 'Контакты'
-  }
-  // else
-  else {
-
-    return str
+  switch (str) {
+      // TASK
+      case "task":
+          return 'Задачи'; 
+      // PROJECTS
+      case "projects":
+          return 'Проекты'; 
+      // PARTNERS
+      case "partners":
+          return 'Контакты'
+      // DEMANDS
+      case "demands":
+          return 'Заявки'
+      // MESH
+      case "mesh":
+          return 'Кошелек'
+      // MESH
+      case "fund":
+          return 'Кошелек'
+      default:
+          str
   }
 }
 
 // HELPERS
 //= compileRoute
 const compileRoute = (str: string) => {
-  // task
-  if(str === 'task') {
-    return 'demands'
-  }
-  // else
-  else {
-    return str
+  switch (str) {
+      // TASK
+      case "task":
+          return 'demands'; 
+      // PROJECTS
+      case "projects":
+          return 'projects'; 
+      // PARTNERS
+      case "partners":
+          return 'partners'
+      // DEMANDS
+      case "demands":
+          return 'demands'; 
+      // MESH
+      case "mesh":
+          return 'wallet'
+      // MESH
+      case "fund":
+          return 'wallet'
+      default:
+          str
   }
 }
 

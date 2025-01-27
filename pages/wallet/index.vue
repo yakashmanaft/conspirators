@@ -7,6 +7,7 @@ import { Section } from '@/shared/section';
 // import { HorizontalCard } from "@/components/card";
 // import { StackedCard } from "@/components/card"
 import { BreadCrumbs } from "@/components/breadcrumbs"; 
+import { Button } from "@/components/button";
 
 
 // components
@@ -14,6 +15,7 @@ import { Chip } from "~/components/chip";
 
 //
 const route = useRoute();
+const router = useRouter();
 // 
 const sessionUser = useUserSession().user;
 // useProfileStore().loadData()
@@ -27,56 +29,57 @@ const affiliationFundsChips = ref([
   {
     name: 'all',
     title: 'Всего',
-    id: 'chips_funds_1'
+    id: 0
   },
   {
     name: 'mine',
     title: 'Мои',
-    id: 'chips_funds_2'
+    id: 1
   },
   {
     name: 'unidrum',
     title: 'Unidrum',
-    id: 'chips_funds_3'
+    id: 2
   },
   {
     name: 'AC',
     title: 'АС',
-    id: 'chips_funds_4'
+    id: 3
   },
   {
     name: 'EC',
     title: 'ЕС',
-    id: 'chips_funds_5'
+    id: 4
   },
   {
     name: 'IS',
     title: 'ИС',
-    id: 'chips_funds_6'
+    id: 5
   },
   {
     name: 'Conspirators',
     title: 'Соучастники',
-    id: 'chips_funds_7'
+    id: 6
   },
   {
     name: 'JD',
     title: 'ЮД',
-    id: 'chips_funds_8'
+    id: 7
   },
   {
     name: 'JS',
     title: 'ЮС',
-    id: 'chips_funds_9'
+    id: 7
   }
 ]) 
 const currentAffiliation = ref({
   name: 'all',
   title: 'Всего',
-  id: 'chips_funds_1'
+  id: 0
 })
 
-// = wallet articles
+// WALLET
+//= wallet articles
 const wallet_sections = ref([
   {
     title: 'Свободные средства',
@@ -143,6 +146,274 @@ const wallet_sections = ref([
     ]
   }
 ])
+
+
+
+//= wallet articles child (fund group)
+// id: String, 
+//== group-#
+// tagName: String,
+//== available, invested_stock, debt
+// tagType: String,
+//== saving_account, cash
+// name: 'Накопительные счета'
+const wallet_fund_group = ref([
+  {
+    id: 'group-1',
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Накопительные счета'
+  },
+  {
+    id: 'group-2',
+    tagName: 'available',
+    tagType: 'cash',
+    name: 'Наличка'
+  },
+  {
+    id: 'group-3',
+    tagName: 'invested_stock',
+    tagType: 'mutual_funds',
+    name: 'ПИФы'
+  },
+  {
+    id: 'group-4',
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Брокерские счета'
+  },
+  {
+    id: 'group-4',
+    tagName: 'invested_crypto',
+    tagType: 'crypto-wallet',
+    name: 'Кошельки'
+  },
+])
+//= conspirators funds
+
+const conspirators_fund = ref([
+  {
+    id: 1,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'LambOfArt BOT',
+    brokerTag: 'SBER',
+    invested: 4178.70
+  },
+  {
+    id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'BOT',
+    brokerTag: 'T-Bank',
+    invested: 141694.55
+  },
+  {
+    id: 2,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Запасы',
+    brokerTag: 'SBER',
+    invested: 34.05
+  },
+  {
+    id: 4 ,
+    tagName: 'invested_stock',
+    tagType: 'mutual_funds',
+    name: 'Фонд локальный',
+    brokerTag: 'SBER',
+    invested: 308.75
+  },
+  {
+    id: 5,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЕС',
+    brokerTag: 'SBER',
+    invested: 4681.41
+  },
+  {
+    id: 6,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'АС',
+    brokerTag: 'SBER',
+    invested: 5385.01
+  },
+  {
+    id: 7,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЮС',
+    brokerTag: 'SBER',
+    invested: 513.46
+  },
+  {
+    id: 8,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ДомИнввест',
+    brokerTag: 'SBER',
+    invested: 3362.37
+  },
+  {
+    id: 9,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Юнидрам',
+    brokerTag: 'VTB',
+    invested: 3090.64
+  },
+  {
+    id: 10,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЕС',
+    brokerTag: 'VTB',
+    invested: 350.55
+  },
+  {
+    id: 11,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЮС',
+    brokerTag: 'VTB',
+    invested: 5.08
+  },
+  {
+    id: 12,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЮД',
+    brokerTag: 'VTB',
+    invested: 1.43
+  },
+  {
+    id: 13,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Купоны',
+    brokerTag: 'Yandex',
+    invested: 531.73
+  },
+  {
+    id: 14,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Станция',
+    brokerTag: 'Yandex',
+    invested: 53599.28
+  },
+  {
+    id: 14,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЕС',
+    brokerTag: 'Yandex',
+    invested: 23767.03
+  },
+  {
+    id: 15,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЕС ФИИ',
+    brokerTag: 'Yandex',
+    invested: 265.48
+  },
+  {
+    id: 16,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЮС',
+    brokerTag: 'Yandex',
+    invested: 1726.05
+  },
+  {
+    id: 17,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Соучастники',
+    brokerTag: 'Yandex',
+    invested: 2194.12
+  },
+  {
+    id: 18,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Соучастники ФИИ',
+    brokerTag: 'Yandex',
+    invested: 1421.14
+  },
+  {
+    id: 19,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЮД',
+    brokerTag: 'Yandex',
+    invested: 1128.00
+  },
+  {
+    id: 20,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ЮС',
+    brokerTag: 'T-Bank',
+    invested: 510.66
+  },
+  {
+    id: 21,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Юнидрам',
+    brokerTag: 'T-Bank',
+    invested: 5547.09
+  },
+  {
+    id: 21,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ИС',
+    brokerTag: 'Renesans',
+    invested: 9467.49
+  },
+  {
+    id: 21,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'Магнит',
+    brokerTag: 'Renessans',
+    invested: 3687.60
+  },
+  {
+    id: 22,
+    tagName: 'available',
+    tagType: 'saving_account',
+    name: 'ИС',
+    brokerTag: 'BCS',
+    invested: 379.51
+  },
+])
+
+// COMPUTED
+// conspirators_fund
+const conspirators_fund_computed = computed(() => {
+
+
+  const array = [...conspirators_fund.value].filter((fund) => {
+    return fund.tagName === choosenChip_section.value
+  })
+
+  return array
+})
+
+// HELPERS
+//= filter funds by group
+const filteredFundByGroupName = (groupType: string, fundsArray: any) => {
+  const result = [...fundsArray].filter(el => el.tagType === groupType)
+  
+  return result
+}
+
 
 // data base
 
@@ -414,7 +685,11 @@ watch(choosenChip_section, () => {
       @changed="emittedChip_bank"
     /> -->
     <!-- TOTAL -->
-    <div style="margin-top: 1rem">~1 500 000.00RUB</div>
+    <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
+      <p style="margin: 0;">~1 500 000.00RUB</p>
+      <Button v-if="currentAffiliation.id !== 0" type="pseudo-btn" :link="`/fund/${currentAffiliation?.id}`">Подробнее</Button>
+
+    </div>
 
     <!-- === INFO SECTION === -->
     <div id="fund-block" class="wallet-section_container">
@@ -446,14 +721,14 @@ watch(choosenChip_section, () => {
     <div>
 
       <!-- available -->
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'available'">Available by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_stock'">Invested stock by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_crypto'">Invested crypto by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_deposit'">Invested deposit by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_currency'">Invested currency by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'credits'">Given credits by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'projects'">Start projects by {{ currentAffiliation.title }}</div>
-      <div style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'debt'">Debt by {{ currentAffiliation.title }}</div>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'available'">Available by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_stock'">Invested stock by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_crypto'">Invested crypto by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_deposit'">Invested deposit by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_currency'">Invested currency by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'credits'">Given credits by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'projects'">Start projects by {{ currentAffiliation.title }}</h3>
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'debt'">Debt by {{ currentAffiliation.title }}</h3>
     </div>
 
 
@@ -462,101 +737,35 @@ watch(choosenChip_section, () => {
      <section class="current-fund_container">
        <div class="current-fund_wrapper">
 
+        <!-- GROUP FUND -->
+        <section v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)">
+          <header>
+            <h4>{{ group.name }}</h4>
+          </header>
 
-        <!-- AVAILABLE -->
-        <div v-if="choosenChip_section === 'available'">
+          <main>
+            <!-- LENGTH -->
+            <section 
+              v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
+              style="display: flex; gap: 1rem; flex-wrap: wrap;"  
+            >
 
-          <!-- НАКОПИТЕЛЬНЫЕ СЧЕТА -->
-          <div class="fund-el_contatiner">
-  
-            <section>
-              <header>Накопительные счета</header>
-              <main>
-                <ul>
-                  <!--  -->
-                  <li>
-                    <p>Сбер <span>22769,99RUB</span></p>
-                    <ul> 
-                    <li><p>LambArt BOT <span>4178,70RUB</span></p></li>
-                    <li><p>Запасы <span>34,05RUB</span></p></li>
-                    <li><p>ЕС <span>14681,41RUB</span></p></li>
-                    <li><p>АС <span>5385,01RUB</span></p></li>
-                    <li><p>ЮС <span>513,46RUB</span></p></li>
-                    <li><p>ДомИнвест <span>3362,37RUB</span></p></li>
-                  </ul>
-                  </li>
-                  <!--  -->
-                  <li>
-                    <p>ВТБ <span>3447,70RUB</span></p>
-                    <ul>
-                      <li><p>Unidrum <span>3090,64RUB</span></p></li>
-                      <li><p>ЕС <span>350,55RUB</span></p></li>
-                      <li><p>ЮС <span>5,08RUB</span></p></li>
-                      <li><p>ЮД <span>1,43RUB</span></p></li>
-                    </ul>
-                  </li>
-
-                  <!--  -->
-                  <li>
-                    <p>Яндекс <span>85407,46RUB</span></p>
-                    <ul>
-                      <li><p>Купоны <span>531,73RUB</span></p></li>
-                      <li><p>Станция <span>53599,28RUB</span></p></li>
-                      <li><p>ЕС <span>23767,03RUB</span></p></li>
-                      <li><p>ЕС ФИИ <span>265,48RUB</span></p></li>
-                      <li><p>ЮС <span>1726,05RUB</span></p></li>
-                      <li><p>Соучастники <span>2968,75RUB</span></p></li>
-                      <li><p>Соучастники <span>1421,14RUB</span></p></li>
-                      <li><p>ЮД <span>1128,00RUB</span></p></li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <p>Т-Банк <span>6057,75RUB</span></p>
-                    <ul>
-                      <li><p>ЮС <span>510,66RUB</span></p></li>
-                      <li><p>Юнидрам <span>5547,09RUB</span></p></li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Ренесанс <span>13155,09RUB</span></p>
-                    <ul>
-                      <li><p>ИС <span>9467,49RUB</span></p></li>
-                      <li><p>Магнит <span>3687,60RUB</span></p></li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>БКС <span>379,51RUB</span></p>
-                    <ul>
-                      <li><p>ИС <span>379,51RUB</span></p></li>
-                    </ul>
-                  </li>
-                </ul>
-              </main>
+              <Section 
+                style="cursor: pointer; max-width: 200px"
+                v-for="fund in filteredFundByGroupName(group.tagType, conspirators_fund_computed)"
+                @click="$router.push(`mesh/${fund.id}`)"  
+              >
+                {{ fund }}
+              </Section>
             </section>
-  
-  
-          </div>
-
-          <!-- НАЛИЧНЫЕ -->
-          <div class="fund-el_contatiner">
-
-            <section>
-              <header>Наличные</header>
-              <main>
-                <ul>
-                  <li>
-                    <p>Сейф</p>
-                    <ul>
-                      <li><p>ЮС <span>4970,00RUB</span></p></li>
-                    </ul>
-                  </li>
-                </ul>
-              </main>
+            <!-- !LENGTH -->
+            <section v-else>
+              <div>В этом мешке пусто...</div>
             </section>
-            
-          </div>
-        </div>
+
+          </main>
+
+        </section>
    
         
         <!-- INVESTED STOCk-->

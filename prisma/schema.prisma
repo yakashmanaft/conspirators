@@ -137,6 +137,22 @@ model LeadHistoryLedger {
   authorId   Int      @default(0)
 }
 
+// FUND GROUP (Это не надо в БД)
+//= tagName: available, invested_stock, debt
+//= tagType: saving_account, cash
+
+//= tagName: invested_stock, debt
+//= tagType: brokerage_account, mutual_funds
+
+//= brokerTagg: SBER, T-Bank
+
+// FUND Obj
+// id
+// name
+// tagName
+// tagType
+// brokerTag
+
 enum Urgency {
   low
   middle

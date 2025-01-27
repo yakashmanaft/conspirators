@@ -1,4 +1,8 @@
 <script setup>
+// components
+import { BreadCrumbs } from "@/components/breadcrumbs";
+
+// shared
 import { Container } from "@/shared/container";
 
 //
@@ -25,6 +29,11 @@ useHead({
     },
   ],
 });
+
+// COMPUTED
+const current_fund = computed(() => {
+  return true
+})
 
 // choose title
 // const titles = ref([
@@ -108,15 +117,55 @@ useHead({
 </script>
 
 <template>
-  <Container style="margin-top: 5rem">
-    <!-- <h1 class="show-max-767">Фонд {{ computedFund.title }}</h1> -->
-    <h1 class="show-max-767">Фонд соучастников #{{ route.params.id }} банды</h1>
+  <Container v-if="current_fund">
 
+    <!-- TITLE PAGE SECTION -->
+    <div class="title-section_container" style="margin-bottom: 0.5rem;">
+      <!-- BreadCrumbs -->
+      <BreadCrumbs class="show-max-767"/>
+
+      <!--  -->
+      <h1 class="show-max-767">Фонд соучастников</h1>
+    </div>
+
+    <!-- <h1 class="show-max-767">Фонд {{ computedFund.title }}</h1> -->
+    <p>id{{ route.params.id }}</p>
     <!-- <div>
       {{ computedFund }}
     </div> -->
 
-    <br />
+    
+    <h2>Параметры фонда</h2>
+    <div>
+      <p>Капитал: 999 999.00RUB</p>
+      <p>Задолженность: 99 999.00RUB</p>
+    </div>
+    <div>
+      <p>Название: ЕС</p>
+      <p>Дата старта: ##.##.####</p>
+      <p>Текущая доходность: 999%</p>
+    </div>
+
+    <h2>Условия фонда</h2>
+    <div>
+      <p>Еженедельный взнос соучастника: 100.00RUB</p>
+      <p>Кредиты: 17%</p>
+      <p>Комиссия за управление 0.00RUB</p>
+    </div>
+
+    <h3>Структура / Сделки</h3>
+    <div>
+      <p>Соучастники: Евгений Павловский (50%), Сергей Анфалов(50%)</p>
+      <p>Управляющий фонда: Сергей Анфалов</p>
+    </div>
+    <p>Активы / Стоимость активов / Остаток (свободные средства)</p>
+
+    <!-- Если выбрана структура -->
+    <h4>График стоимости фонда</h4>
+    <h4>Общая информация(диаграма ппо активам)</h4>
+
+    <!-- Если выбрана Сделки -->
+    <h4>Лист сделок</h4>
 
     <!-- <div>
       <p>Дата создания: {{ computedFund.created_at }}</p>
@@ -169,7 +218,7 @@ useHead({
 
 <style scoped>
 /*  */
-.switch-title_container {
+/* .switch-title_container {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -187,20 +236,26 @@ useHead({
 }
 .switch-title_el input[type="radio"]:checked + label {
   color: unset;
-}
+} */
 
-/*  */
-@media screen and (max-width: 767px) {
-  /* h1 {
-        margin-top: 4rem;
-    } */
+@media screen and (max-width: 575px) {
   .show-max-767 {
     display: none;
   }
 }
-@media screen and (min-width: 768px) {
-  /* h1 {
-    margin-top: 6rem;
-  } */
+/*  */
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .show-max-767 {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px)  {
+
 }
 </style>

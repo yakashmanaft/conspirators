@@ -8,7 +8,7 @@ import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
 
 useHead({
-        title: "Задача - ",
+        title: "Финансовый мешок",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -42,20 +42,16 @@ useHead({
     //CHIPS
     const chips = [
         {
-            id: 1,
             title: 'Общее'
         },
         {
-            id: 2,
             title: 'ТЗ'
         },
         {
-            id: 3,
             title: 'Выполнение'
         }
     ]
     const currentChip = ref({
-        id: 3,
         title: 'Выполнение'
     })
 
@@ -140,60 +136,28 @@ useHead({
         <div  class="title-section_container" style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
 
-            <h1>
+            <h1 style="font-weight: bold; font-size: 42px;" class="show-max-767">
 
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Решаем задачу</span>
-                <!--  -->
-                <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
-                <!--  -->
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
-                <!--  -->
-                <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
-                <!--  -->
-                <div style="color: #fff; font-size: 1rem;font-weight: normal; position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: .5rem;">
-                    <div>{{ current_task.urgency }}</div>
-                    <div>{{ current_task.status }}</div>
-                </div>
+                МЕШОК:
             </h1> 
             <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
-                Кратко: <span>{{ current_task.desc }}</span>
+                <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+                    <p style="margin: 0;">Состоит в фонде: </p>
+                    <Button type="pseudo-btn" link="/fund/1">ЕС</Button>
+                </div>
+                <p>Тип: Накопительные счета</p>
+                <p>Брокер: SBER</p>
+                <p>2 468.RUB</p>
+                <p>Ваша доля: 50% (1 234.00RUB)</p>
+                <p>Соучастники: Евгений  Павловский (50%), Сергей Анфалов (50%)</p>
+                <p>Управляющий: Сергей Анфалов</p>
             </h2>
         </div>
 
         <!-- CHIP SECTION -->
-         <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/>
+         <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
         <!-- {{ currentChip }} -->
-        
-        <!-- CONTENT SECTION -->
-        <div class="content-setion_container">
-
-            <!-- Общее SECTION -->
-            <section v-if="currentChip.title === 'Общее'">
-                
-                <p>Дата создания: {{ current_task.created_at }}</p> 
-                <p>Deadline: {{ current_task.deadline }}</p>
-                <p>Ставка задачи: Почасовая (# ###,## RUB / час)</p>
-            </section>
-    
-            <!-- ТЗ SECTION-->
-            <section v-if="currentChip.title === 'ТЗ'">
-    
-                <h2>ТЗ</h2>
-                <p>{{ current_task?.desc }}</p>
-            </section>
-            
-            <!-- Выполнение SECTION -->
-            <section v-if="task_ledger?.length && currentChip.title === 'Выполнение'">
-                <h2>Выполнение:</h2>
-        
-                <ul>
-                    <li v-for="item in task_ledger">{{ item }}</li>
-                </ul>
-                <div>
-                    <Button type="pseudo-btn" @click="addTaskLedgerItem">Добавить выполнение</Button>
-                </div>
-            </section>
-        </div>
+        <h3>Структура / Сделки</h3>
         
     </Container>
 </template>
@@ -205,35 +169,23 @@ useHead({
 }
 
 .title-section_container h1{
-    position: relative;
+    /* position: relative;
     padding: .5rem;
     padding-top: 3rem;
     margin: 0;
     margin-top: .5rem;
     background-color: var(--color-global-text);
-    height: 250px;
+    height: 250px; */
 }
-
-@media screen and (max-width: 767px) {
-    /* h1 {
-        margin-top: 4rem;
-    } */
-    .show-max-767 {
-      display: none;
-    }
-    .content-setion_container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-    .title-section_container{
-        /* height: 180px; */
-    }
-    .title-section_container h1{
-        /* color: var(--color-global-text_second); */
-    }
-    .title-section_container h2 {
-        margin-left: 1rem;
-    }
+@media screen and (max-width: 575px) {
+  .show-max-767 {
+    display: none;
+  }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .show-max-767 {
+    display: none;
+  }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
     .title-section_container {
@@ -241,14 +193,14 @@ useHead({
         /* padding-right: 0.5rem; */
     }
     .content-setion_container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        /* padding-left: 1rem; */
+        /* padding-right: 1rem; */
     }
 }
 @media screen and (min-width: 768px) {
     .content-setion_container {
-        padding-left: unset;
-        padding-right: unset;
+        /* padding-left: unset; */
+        /* padding-right: unset; */
     }
 }
 </style>
