@@ -82,6 +82,7 @@ const currentAffiliation = ref({
 //= wallet articles
 const wallet_sections = ref([
   {
+    id: 1,
     title: 'Свободные средства',
     name: 'available',
     total: 136187.50,
@@ -90,6 +91,7 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 2,
     title: 'Фонда',
     total: 203705.14,
     name: 'invested_stock',
@@ -98,6 +100,7 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 3,
     title: 'Крипта',
     total: 203705.14,
     name: 'invested_crypto',
@@ -106,6 +109,7 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 4,
     title: 'Вклады',
     total: 203705.14,
     name: 'invested_deposit',
@@ -114,6 +118,7 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 5,
     title: 'Валюта',
     total: 203705.14,
     name: 'invested_currency',
@@ -122,6 +127,7 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 6,
     title: 'Выдано кредитов',
     total: 203705.14,
     name: 'credits',
@@ -130,6 +136,7 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 7,
     title: 'Старт проекты',
     total: 203705.14,
     name: 'projects',
@@ -138,6 +145,7 @@ const wallet_sections = ref([
     ]
   },
   { 
+    id: 8,
     title: 'Долг',
     total: 0.00,
     name: 'debt',
@@ -157,36 +165,58 @@ const wallet_sections = ref([
 // tagType: String,
 //== saving_account, cash
 // name: 'Накопительные счета'
+const currency_to_show =  ref({
+  ticket:  'RUB'
+})
 const wallet_fund_group = ref([
   {
-    id: 'group-1',
+    id: 1,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Накопительные счета'
   },
   {
-    id: 'group-2',
+    id: 2,
+    section_id: 1,
     tagName: 'available',
     tagType: 'cash',
     name: 'Наличка'
   },
   {
-    id: 'group-3',
+    id: 3,
+    section_id: 2,
     tagName: 'invested_stock',
     tagType: 'mutual_funds',
     name: 'ПИФы'
   },
   {
-    id: 'group-4',
+    id: 4,
+    section_id: 2 ,
     tagName: 'invested_stock',
     tagType: 'brokerage_account',
     name: 'Брокерские счета'
   },
   {
-    id: 'group-4',
+    id: 5,
+    section_id: 3,
     tagName: 'invested_crypto',
     tagType: 'crypto-wallet',
     name: 'Кошельки'
+  },
+  {
+    id: 6,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-stock',
+    name: 'Балансы бирж'
+  },
+  {
+    id: 7,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-stacking',
+    name: 'Стэйкинг'
   },
 ])
 //= conspirators funds
@@ -194,203 +224,423 @@ const wallet_fund_group = ref([
 const conspirators_fund = ref([
   {
     id: 1,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'LambOfArt BOT',
     brokerTag: 'SBER',
-    invested: 4178.70
+    invested: 4178.70,
+    currency: 'RUB'
   },
   {
     id: 2,
+    section_id: 2,
     tagName: 'invested_stock',
     tagType: 'brokerage_account',
     name: 'BOT',
     brokerTag: 'T-Bank',
-    invested: 141694.55
+    invested: 141694.55,
+    currency: 'RUB'
   },
   {
     id: 2,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Запасы',
     brokerTag: 'SBER',
-    invested: 34.05
+    invested: 34.05,
+    currency: 'RUB'
   },
   {
-    id: 4 ,
+    id: 4,
+    section_id: 2,
     tagName: 'invested_stock',
     tagType: 'mutual_funds',
     name: 'Фонд локальный',
     brokerTag: 'SBER',
-    invested: 308.75
+    invested: 308.75,
+    currency: 'RUB'
   },
   {
     id: 5,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЕС',
     brokerTag: 'SBER',
-    invested: 4681.41
+    invested: 4681.41,
+    currency: 'RUB'
   },
   {
     id: 6,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'АС',
     brokerTag: 'SBER',
-    invested: 5385.01
+    invested: 5385.01,
+    currency: 'RUB'
   },
   {
     id: 7,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЮС',
     brokerTag: 'SBER',
-    invested: 513.46
+    invested: 513.46,
+    currency: 'RUB'
   },
   {
     id: 8,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ДомИнввест',
     brokerTag: 'SBER',
-    invested: 3362.37
+    invested: 3362.37,
+    currency: 'RUB'
   },
   {
     id: 9,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Юнидрам',
     brokerTag: 'VTB',
-    invested: 3090.64
+    invested: 3090.64,
+    currency: 'RUB'
   },
   {
     id: 10,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЕС',
     brokerTag: 'VTB',
-    invested: 350.55
+    invested: 350.55,
+    currency: 'RUB'
   },
   {
     id: 11,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЮС',
     brokerTag: 'VTB',
-    invested: 5.08
+    invested: 5.08,
+    currency: 'RUB'
   },
   {
     id: 12,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЮД',
     brokerTag: 'VTB',
-    invested: 1.43
+    invested: 1.43,
+    currency: 'RUB'
   },
   {
     id: 13,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Купоны',
     brokerTag: 'Yandex',
-    invested: 531.73
+    invested: 531.73,
+    currency: 'RUB'
   },
   {
     id: 14,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Станция',
     brokerTag: 'Yandex',
-    invested: 53599.28
+    invested: 53599.28,
+    currency: 'RUB'
   },
   {
     id: 14,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЕС',
     brokerTag: 'Yandex',
-    invested: 23767.03
+    invested: 23767.03,
+    currency: 'RUB'
   },
   {
     id: 15,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЕС ФИИ',
     brokerTag: 'Yandex',
-    invested: 265.48
+    invested: 265.48,
+    currency: 'RUB'
   },
   {
     id: 16,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЮС',
     brokerTag: 'Yandex',
-    invested: 1726.05
+    invested: 1726.05,
+    currency: 'RUB'
   },
   {
     id: 17,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Соучастники',
     brokerTag: 'Yandex',
-    invested: 2194.12
+    invested: 2194.12,
+    currency: 'RUB'
   },
   {
     id: 18,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Соучастники ФИИ',
     brokerTag: 'Yandex',
-    invested: 1421.14
+    invested: 1421.14,
+    currency: 'RUB'
   },
   {
     id: 19,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЮД',
     brokerTag: 'Yandex',
-    invested: 1128.00
+    invested: 1128.00,
+    currency: 'RUB'
   },
   {
     id: 20,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ЮС',
     brokerTag: 'T-Bank',
-    invested: 510.66
+    invested: 510.66,
+    currency: 'RUB'
   },
   {
     id: 21,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Юнидрам',
     brokerTag: 'T-Bank',
-    invested: 5547.09
+    invested: 5547.09,
+    currency: 'RUB'
   },
   {
     id: 21,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ИС',
     brokerTag: 'Renesans',
-    invested: 9467.49
+    invested: 9467.49,
+    currency: 'RUB'
   },
   {
     id: 21,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'Магнит',
     brokerTag: 'Renessans',
-    invested: 3687.60
+    invested: 3687.60,
+    currency: 'RUB'
   },
   {
     id: 22,
+    section_id: 1,
     tagName: 'available',
     tagType: 'saving_account',
     name: 'ИС',
     brokerTag: 'BCS',
-    invested: 379.51
+    invested: 379.51,
+    currency: 'RUB'
+  },
+  {
+    id: 23,
+    section_id: 1,
+    tagName: 'available',
+    tagType: 'cash',
+    name: 'ЮС',
+    brokerTag: 'SBER',
+    invested: 4970.00,
+    currency: 'RUB'
+  },
+  {
+    id: 24,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'mutual_funds',
+    name: 'Фонд российских облигаций',
+    brokerTag: 'SBER',
+    invested: 321.63,
+    currency: 'RUB'
+  },
+  {
+    id: 25,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'mutual_funds',
+    name: 'Фонд Накопительный',
+    brokerTag: 'SBER',
+    invested: 329.89,
+    currency: 'RUB'
+  },
+  {
+    id: 26,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Инвесткопилка',
+    brokerTag: 'T-Bank',
+    invested: 866.46,
+    currency: 'RUB'
+  },
+  {
+    id: 27,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Валюта',
+    brokerTag: 'T-Bank',
+    invested: 0.60,
+    currency: 'RUB'
+  },
+  {
+    id: 28,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Камини',
+    brokerTag: 'T-Bank',
+    invested: 2679.00,
+    currency: 'RUB'
+  },
+  {
+    id: 29,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Сбер Личный',
+    brokerTag: 'T-Bank',
+    invested: 108054.97,
+    currency: 'RUB'
+  },
+  {
+    id: 30,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Альфа-инвестиции Личный',
+    brokerTag: 'Alfa-bank',
+    invested: 217.56,
+    currency: 'RUB'
+  },
+  {
+    id: 31,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'ИС Без имени',
+    brokerTag: 'BCS',
+    invested: 15092.99,
+    currency: 'RUB'
+  },
+  {
+    id: 32,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'ИИС Личный',
+    brokerTag: 'BCS',
+    invested: 5660.71,
+    currency: 'RUB'
+  },
+  {
+    id: 33,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Кит финанс Личный',
+    brokerTag: 'KF',
+    invested: 0.00,
+    currency: 'RUB'
+  },
+  {
+    id: 34,
+    section_id: 2,
+    tagName: 'invested_stock',
+    tagType: 'brokerage_account',
+    name: 'Цифра брокер Личный',
+    brokerTag: 'CB',
+    invested: 0.00,
+    currency: 'RUB'
+  },
+  {
+    id: 35,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-wallet',
+    name: 'BOT',
+    brokerTag: 'Metamask BSC',
+    invested: 234.91,
+    currency: 'USD'
+  },
+  {
+    id: 36,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-wallet',
+    name: 'BOT',
+    brokerTag: 'Telegram Wallet',
+    invested: 93.42,
+    currency: 'USD'
+  },
+  {
+    id: 37,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-wallet',
+    name: 'Личный',
+    brokerTag: 'Phantom Wallet',
+    invested: 93.42,
+    currency: 'USD'
+  },
+  {
+    id: 38,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-stock',
+    name: 'BOT',
+    brokerTag: 'Binance',
+    invested: 0.00,
+    currency: 'USD'
+  },
+  {
+    id: 39,
+    section_id: 3,
+    tagName: 'invested_crypto',
+    tagType: 'crypto-stacking',
+    name: 'BOT',
+    brokerTag: 'MTT',
+    invested: 0.00,
+    currency: 'USD'
   },
 ])
 
@@ -623,6 +873,24 @@ const set_bgColor = (section: any) => {
   return color
 }
 
+// CALCULATE
+const sumTotal = (id: number) => {
+
+  const array = conspirators_fund.value.filter(el => el.section_id === id)
+  
+  const sum = array.reduce((acc, el) => {
+    return acc + el.invested
+  }, 0)
+  return sum.toFixed(2)
+
+  if(id === 1){
+
+  } else  {
+
+    return 'xxx.xx'
+  }
+}
+
 // WATCh
 //= choosenChip_section
 watch(choosenChip_section, () => {
@@ -686,7 +954,7 @@ watch(choosenChip_section, () => {
     /> -->
     <!-- TOTAL -->
     <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-      <p style="margin: 0;">~1 500 000.00RUB</p>
+      <p style="margin: 0;">~1 500 000.00 {{ currency_to_show.ticket }}</p>
       <Button v-if="currentAffiliation.id !== 0" type="pseudo-btn" :link="`/fund/${currentAffiliation?.id}`">Подробнее</Button>
 
     </div>
@@ -705,8 +973,23 @@ watch(choosenChip_section, () => {
         <!-- section header -->
         <header>
           <h2 :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="text-wrap: nowrap; font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-          <p :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ section.total }} RUB</p>
-          <p v-if="section.name === 'invested_stock'" style="font-size: 0.8rem; font-weight: normal;">ROI 10%(+3736.00RUB)</p>
+          <!--  -->
+          <p v-if="section.name  === 'available' || section.name === 'invested_deposit'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotal(section.id) }} {{ currency_to_show.ticket }}</p>
+          <p v-else :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ 0.00 }} {{ currency_to_show.ticket }}</p>
+
+          <!--  -->
+          <p 
+            v-if="section.name === 'invested_stock' || section.name === 'invested_currency'" 
+            style="font-size: 0.8rem; font-weight: normal;"
+          >
+            Инвестировано: {{sumTotal(section.id)}} {{ currency_to_show.ticket }} <br> +3736.00RUB  / +10%
+          </p>
+          <p 
+            v-if="section.name === 'invested_crypto'" 
+            style="font-size: 0.8rem; font-weight: normal;"
+          >
+            Инвестировано: {{sumTotal(section.id)}} USD / ~0.00 RUB<br> +3736.00RUB  / +10%
+          </p>
         </header>
 
         <!-- section articles -->   
@@ -718,7 +1001,7 @@ watch(choosenChip_section, () => {
     </div>
 
     <!--  -->
-    <div>
+    <div class="current_affiliation_title">
 
       <!-- available -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'available'">Available by {{ currentAffiliation.title }}</h3>
@@ -738,24 +1021,42 @@ watch(choosenChip_section, () => {
        <div class="current-fund_wrapper">
 
         <!-- GROUP FUND -->
-        <section v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)">
+        <section 
+          v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)"
+          style="margin-top: 1rem;"  
+          class="fund_group_container"
+        >
           <header>
             <h4>{{ group.name }}</h4>
           </header>
 
-          <main>
+          <main style="margin-top: 1rem;">
             <!-- LENGTH -->
             <section 
               v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
-              style="display: flex; gap: 1rem; flex-wrap: wrap;"  
+              class="fund_list"
             >
 
               <Section 
-                style="cursor: pointer; max-width: 200px"
+                style="cursor: pointer;"
                 v-for="fund in filteredFundByGroupName(group.tagType, conspirators_fund_computed)"
                 @click="$router.push(`mesh/${fund.id}`)"  
+                fDirection="column"
               >
-                {{ fund }}
+                <h5>{{ fund.name }}</h5>
+                <p style="margin: 0;">{{ fund.brokerTag }}</p>
+                
+                <!--  -->
+                <p v-if="choosenChip_section === 'available'" style="margin: 0;">{{ fund.invested }} {{ fund.currency }}</p>
+                <p v-if="choosenChip_section === 'invested_crypto'" style="margin: 0;">234.99 USD / ~ 0.00 {{ currency_to_show.ticket }}</p>
+                <p v-else style="margin: 0;">0.00 {{ currency_to_show.ticket }}</p>
+                
+                <!--  -->
+                <p style="margin: 0;  font-size: 0.8rem;" v-if="choosenChip_section === 'invested_stock'">Инвестировано: {{ fund.invested }} {{ currency_to_show.ticket }}<br> +11,32 /  10%</p>
+                <p v-if="choosenChip_section === 'invested_crypto'" style="margin: 0; font-size: 0.8rem;">Инвестировано: {{ fund.invested }} USD / ~0.00 {{ currency_to_show.ticket }}</p>
+                <p v-if="choosenChip_section === 'invested_crypto'" style="margin: 0;  font-size: 0.8rem;">+3736.00RUB / +10%</p>
+                {{fund.section_id}}
+                <!-- {{ fund }} -->
               </Section>
             </section>
             <!-- !LENGTH -->
@@ -766,88 +1067,6 @@ watch(choosenChip_section, () => {
           </main>
 
         </section>
-   
-        
-        <!-- INVESTED STOCk-->
-        <!--  -->
-        <div v-if="choosenChip_section === 'invested_stock'">
-
-          <!-- ПИФЫ -->
-          <div class="fund-el_contatiner">
-            <section>
-              <header>ПИФЫ</header>
-              <main>
-                <ul>
-                  <li><p>Фонд Локальнй <span>308,75RUB</span></p></li>
-                  <li><p>Фонд российских облигаций <span>321,63RUB</span></p></li>
-                  <li><p>Фонд Накопительный <span>329,89RUB</span></p></li>
-                </ul>
-              </main>
-            </section>
-          </div>
-
-          <!-- БРОКЕРСКИЕ СЧЕТА -->
-          <div class="fund-el_contatiner">
-            <section>
-              <header>Брокерские счета</header>
-              <main>
-                <ul>
-                  <li><p>Инвесткопилка <span>866,46RUB</span></p></li>
-                  <li><p>Валюта <span>0,60RUB</span></p></li>
-                  <li><p>Камини <span>2679,06RUB</span></p></li>
-                  <li><p>BOT <span>141694,55RUB</span></p></li>
-                  <li><p>Сбер Личный <span>108054,97RUB</span></p></li>
-                  <li><p>Альфа-Инвестиции Личный <span>217,56RUB</span></p></li>
-                  <li><p>ИС Без имени <span>5660,71</span></p></li>
-                  <li><p>ИС <span>15092,99RUB</span></p></li>
-                  <li><p>Кит Финанс Личный <span>0,00RUB</span></p></li>
-                  <li><p>Цифра Брокер Личный <span>0,00RUB</span></p></li>
-                </ul>
-              </main>
-            </section>
-          </div>
-
-        </div>
-
-        <!-- INVEVSTED CRYPTO -->
-        <div v-if="choosenChip_section === 'invested_crypto'">
-          <!-- КРИПТА -->
-          <div class="fund-el_contatiner">
-
-
-          <section>
-          <header>Крипта</header>
-          <main>
-          <!-- Кошельки -->
-          <ul>
-          <li>
-          <p>Кошельки <span>51265.46RUB</span></p>
-          <ul>
-          <li><p>MetaMask <span>234.91USD (~23164.57)RUB</span></p></li>
-          <li><p>Phantom <span>284.97USD (~28100.89RUB)</span></p></li>
-          </ul>
-          </li>
-          <li>
-          <p>Балансы Бирж <span>0,00RUB</span></p>
-          <ul>
-          <li><p>Binance <span>0,00RUB</span></p></li>
-          </ul>
-          </li>
-          <li>
-          <p>Стейкинг <span>~2289,72RUB</span></p>
-          <ul>
-          <li><p>MTT Network <span>258 MTT (~2289,72RUB)</span></p></li>
-          </ul>
-          </li>
-          </ul>
-          <ul>
-          <li>Не вкидывали в крипту</li>
-          </ul>
-          </main>
-          </section>
-
-          </div>
-        </div>
 
         <!-- INVESTED DEPOSIT -->
         <!--  -->
@@ -1146,6 +1365,10 @@ watch(choosenChip_section, () => {
 
 }
 
+.fund_list {
+  display: grid;
+}
+
 /*  */
 @media screen and (max-width: 575px) {
   .show-max-767 {
@@ -1162,6 +1385,17 @@ watch(choosenChip_section, () => {
   }
   .section-header_wrapper p {
     font-size: 16px;
+  }
+
+  /* fund list */
+  .current_affiliation_title,
+  .fund_group_container {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  .fund_list {
+    gap: 1rem;
+    grid-template-columns: 1fr;
   }
 }
 @media screen and (min-width: 576px) {
@@ -1181,6 +1415,16 @@ watch(choosenChip_section, () => {
   .section-header_wrapper p {
     font-size: 32px;
   }
+  /* fund list */
+  .current_affiliation_title,
+  .fund_group_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .fund_list {
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .wallet-section_container {
@@ -1191,6 +1435,10 @@ watch(choosenChip_section, () => {
     padding-right: .5rem;
     padding-bottom: 1.5rem;
   }
+  .fund_list {
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
   .wallet-section_container {
@@ -1199,6 +1447,10 @@ watch(choosenChip_section, () => {
     padding-left: 1rem;
     padding-bottom: 1.5rem;
   }
+  .fund_list {
+    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 @media screen and (min-width: 1200px) {
   .wallet-section_container {
@@ -1206,6 +1458,10 @@ watch(choosenChip_section, () => {
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
+  }
+  .fund_list {
+    gap: 1rem;
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 </style>

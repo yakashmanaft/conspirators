@@ -86,7 +86,7 @@ const translateCrumb = (str: string) => {
           return 'Кошелек'
       // MESH
       case "fund":
-          return 'Кошелек'
+          return 'Фонды'
       default:
           str
   }
@@ -113,7 +113,7 @@ const compileRoute = (str: string) => {
           return 'wallet'
       // MESH
       case "fund":
-          return 'wallet'
+          return 'fund'
       default:
           str
   }
