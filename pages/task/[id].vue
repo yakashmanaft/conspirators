@@ -155,13 +155,13 @@ useHead({
                     <div>{{ current_task.status }}</div>
                 </div>
             </h1> 
-            <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
+            <!-- <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
                 Кратко: <span>{{ current_task.desc }}</span>
-            </h2>
+            </h2> -->
         </div>
 
         <!-- CHIP SECTION -->
-         <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/>
+         <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1.5rem;"/>
         <!-- {{ currentChip }} -->
         
         <!-- CONTENT SECTION -->
