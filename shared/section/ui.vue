@@ -54,6 +54,9 @@
     height: 100%;
 }
 @media screen and (max-width: 575px) {
+  .section {
+
+  }
 }
 
 @media screen and (max-width: 767px) {

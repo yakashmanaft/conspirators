@@ -12,6 +12,7 @@ import { Button } from "@/components/button";
 
 // components
 import { Chip } from "~/components/chip";
+import { isInDestructureAssignment } from "vue/compiler-sfc";
 
 //
 const route = useRoute();
@@ -128,7 +129,7 @@ const wallet_sections = ref([
   },
   {
     id: 6,
-    title: 'Выдано кредитов',
+    title: 'Выдано займов',
     total: 203705.14,
     name: 'credits',
     aticles: [
@@ -149,6 +150,24 @@ const wallet_sections = ref([
     title: 'Долг',
     total: 0.00,
     name: 'debt',
+    aticles: [
+
+    ]
+  },
+  { 
+    id: 9,
+    title: 'Вывод',
+    total: 0.00,
+    name: 'withdraw',
+    aticles: [
+
+    ]
+  },
+  { 
+    id: 10,
+    title: '+Депозит',
+    total: 0.00,
+    name: 'deposit',
     aticles: [
 
     ]
@@ -218,6 +237,90 @@ const wallet_fund_group = ref([
     tagType: 'crypto-stacking',
     name: 'Стэйкинг'
   },
+  {
+    id: 8,
+    section_id: 4,
+    tagName: 'invested_deposit',
+    tagType: 'deposit-capitalize',
+    name: 'С капитализацией'
+  },
+  {
+    id: 9,
+    section_id: 4,
+    tagName: 'invested_deposit',
+    tagType: 'deposit-wocapitalize',
+    name: 'Без капитализации'
+  },
+  {
+    id: 10,
+    section_id: 5,
+    tagName: 'invested_currency',
+    tagType: 'currency-usd',
+    name: 'Доллар'
+  },
+  {
+    id: 11,
+    section_id: 5,
+    tagName: 'invested_currency',
+    tagType: 'currency-cny',
+    name: 'Юань'
+  },
+  {
+    id: 12,
+    section_id: 5,
+    tagName: 'invested_currency',
+    tagType: 'currency-hkd',
+    name: 'Гонконский доллар'
+  },
+  {
+    id: 13,
+    section_id: 6,
+    tagName: 'credits',
+    tagType: 'credits-interest',
+    name: 'Кредит Процентный'
+  },
+  {
+    id: 14,
+    section_id: 6,
+    tagName: 'credits',
+    tagType: 'credits-free',
+    name: 'Кредит Беспроцентный'
+  },
+  {
+    id: 15,
+    section_id: 9,
+    tagName: 'withdraw',
+    tagType: 'withdraw-salary',
+    name: 'Зарплаты'
+  },
+  {
+    id: 16,
+    section_id: 9,
+    tagName: 'withdraw',
+    tagType: 'withdraw-dividends',
+    name: 'Дивиденды'
+  },
+  {
+    id: 16,
+    section_id: 10,
+    tagName: 'deposit',
+    tagType: 'deposit-weekly-contributions',
+    name: 'Еженедельные взносы'
+  },
+  {
+    id: 17,
+    section_id: 10,
+    tagName: 'deposit',
+    tagType: 'deposit-gift',
+    name: 'Дар'
+  },
+  {
+    id: 19,
+    section_id: 1,
+    tagName: 'available',
+    tagType: 'debet_card',
+    name: 'Дебетовая карта'
+  },
 ])
 //= conspirators funds
 
@@ -229,7 +332,8 @@ const conspirators_fund = ref([
     tagType: 'saving_account',
     name: 'LambOfArt BOT',
     brokerTag: 'SBER',
-    invested: 4178.70,
+    invested: 4000.00,
+    price: 4178.70,
     currency: 'RUB'
   },
   {
@@ -239,7 +343,8 @@ const conspirators_fund = ref([
     tagType: 'brokerage_account',
     name: 'BOT',
     brokerTag: 'T-Bank',
-    invested: 141694.55,
+    invested: 123383.61,
+    price: 141694.55,
     currency: 'RUB'
   },
   {
@@ -250,6 +355,7 @@ const conspirators_fund = ref([
     name: 'Запасы',
     brokerTag: 'SBER',
     invested: 34.05,
+    price: 34.05,
     currency: 'RUB'
   },
   {
@@ -259,7 +365,8 @@ const conspirators_fund = ref([
     tagType: 'mutual_funds',
     name: 'Фонд локальный',
     brokerTag: 'SBER',
-    invested: 308.75,
+    invested: 300.00,
+    price: 308.75,
     currency: 'RUB'
   },
   {
@@ -270,6 +377,7 @@ const conspirators_fund = ref([
     name: 'ЕС',
     brokerTag: 'SBER',
     invested: 4681.41,
+    price: 4681.41, 
     currency: 'RUB'
   },
   {
@@ -280,6 +388,7 @@ const conspirators_fund = ref([
     name: 'АС',
     brokerTag: 'SBER',
     invested: 5385.01,
+    price: 5385.01,
     currency: 'RUB'
   },
   {
@@ -290,6 +399,7 @@ const conspirators_fund = ref([
     name: 'ЮС',
     brokerTag: 'SBER',
     invested: 513.46,
+    price: 513.46,
     currency: 'RUB'
   },
   {
@@ -300,6 +410,7 @@ const conspirators_fund = ref([
     name: 'ДомИнввест',
     brokerTag: 'SBER',
     invested: 3362.37,
+    price: 3362.37,
     currency: 'RUB'
   },
   {
@@ -310,6 +421,7 @@ const conspirators_fund = ref([
     name: 'Юнидрам',
     brokerTag: 'VTB',
     invested: 3090.64,
+    price: 3090.64,
     currency: 'RUB'
   },
   {
@@ -320,6 +432,7 @@ const conspirators_fund = ref([
     name: 'ЕС',
     brokerTag: 'VTB',
     invested: 350.55,
+    price: 350.55,
     currency: 'RUB'
   },
   {
@@ -330,6 +443,7 @@ const conspirators_fund = ref([
     name: 'ЮС',
     brokerTag: 'VTB',
     invested: 5.08,
+    price: 5.08,
     currency: 'RUB'
   },
   {
@@ -340,6 +454,7 @@ const conspirators_fund = ref([
     name: 'ЮД',
     brokerTag: 'VTB',
     invested: 1.43,
+    price: 1.43,
     currency: 'RUB'
   },
   {
@@ -350,6 +465,7 @@ const conspirators_fund = ref([
     name: 'Купоны',
     brokerTag: 'Yandex',
     invested: 531.73,
+    price: 531.73,
     currency: 'RUB'
   },
   {
@@ -360,6 +476,7 @@ const conspirators_fund = ref([
     name: 'Станция',
     brokerTag: 'Yandex',
     invested: 53599.28,
+    price: 53599.28,
     currency: 'RUB'
   },
   {
@@ -370,6 +487,7 @@ const conspirators_fund = ref([
     name: 'ЕС',
     brokerTag: 'Yandex',
     invested: 23767.03,
+    price: 23767.03,
     currency: 'RUB'
   },
   {
@@ -380,6 +498,7 @@ const conspirators_fund = ref([
     name: 'ЕС ФИИ',
     brokerTag: 'Yandex',
     invested: 265.48,
+    price: 265.48,
     currency: 'RUB'
   },
   {
@@ -390,6 +509,7 @@ const conspirators_fund = ref([
     name: 'ЮС',
     brokerTag: 'Yandex',
     invested: 1726.05,
+    price: 1726.05,
     currency: 'RUB'
   },
   {
@@ -400,6 +520,7 @@ const conspirators_fund = ref([
     name: 'Соучастники',
     brokerTag: 'Yandex',
     invested: 2194.12,
+    price: 2194.12,
     currency: 'RUB'
   },
   {
@@ -410,6 +531,7 @@ const conspirators_fund = ref([
     name: 'Соучастники ФИИ',
     brokerTag: 'Yandex',
     invested: 1421.14,
+    price: 1421.14,
     currency: 'RUB'
   },
   {
@@ -420,6 +542,7 @@ const conspirators_fund = ref([
     name: 'ЮД',
     brokerTag: 'Yandex',
     invested: 1128.00,
+    price: 1128.00,
     currency: 'RUB'
   },
   {
@@ -430,6 +553,7 @@ const conspirators_fund = ref([
     name: 'ЮС',
     brokerTag: 'T-Bank',
     invested: 510.66,
+    price: 510.66,
     currency: 'RUB'
   },
   {
@@ -440,6 +564,7 @@ const conspirators_fund = ref([
     name: 'Юнидрам',
     brokerTag: 'T-Bank',
     invested: 5547.09,
+    price: 5547.09,
     currency: 'RUB'
   },
   {
@@ -450,6 +575,7 @@ const conspirators_fund = ref([
     name: 'ИС',
     brokerTag: 'Renesans',
     invested: 9467.49,
+    price: 9467.49,
     currency: 'RUB'
   },
   {
@@ -460,6 +586,7 @@ const conspirators_fund = ref([
     name: 'Магнит',
     brokerTag: 'Renessans',
     invested: 3687.60,
+    price: 3687.60,
     currency: 'RUB'
   },
   {
@@ -470,6 +597,7 @@ const conspirators_fund = ref([
     name: 'ИС',
     brokerTag: 'BCS',
     invested: 379.51,
+    price: 379.51,
     currency: 'RUB'
   },
   {
@@ -480,6 +608,7 @@ const conspirators_fund = ref([
     name: 'ЮС',
     brokerTag: 'SBER',
     invested: 4970.00,
+    price: 4970.00,
     currency: 'RUB'
   },
   {
@@ -489,7 +618,8 @@ const conspirators_fund = ref([
     tagType: 'mutual_funds',
     name: 'Фонд российских облигаций',
     brokerTag: 'SBER',
-    invested: 321.63,
+    invested: 300.00,
+    price: 321.63,
     currency: 'RUB'
   },
   {
@@ -499,7 +629,8 @@ const conspirators_fund = ref([
     tagType: 'mutual_funds',
     name: 'Фонд Накопительный',
     brokerTag: 'SBER',
-    invested: 329.89,
+    invested: 300.00,
+    price: 329.89,
     currency: 'RUB'
   },
   {
@@ -510,6 +641,7 @@ const conspirators_fund = ref([
     name: 'Инвесткопилка',
     brokerTag: 'T-Bank',
     invested: 866.46,
+    price: 866.46,
     currency: 'RUB'
   },
   {
@@ -520,6 +652,7 @@ const conspirators_fund = ref([
     name: 'Валюта',
     brokerTag: 'T-Bank',
     invested: 0.60,
+    price: 0.60,
     currency: 'RUB'
   },
   {
@@ -529,7 +662,9 @@ const conspirators_fund = ref([
     tagType: 'brokerage_account',
     name: 'Камини',
     brokerTag: 'T-Bank',
-    invested: 2679.00,
+    // invested: 2679.00,
+    invested: 2700.00,
+    price: 2679.00,
     currency: 'RUB'
   },
   {
@@ -540,6 +675,7 @@ const conspirators_fund = ref([
     name: 'Сбер Личный',
     brokerTag: 'T-Bank',
     invested: 108054.97,
+    price: 108054.97,
     currency: 'RUB'
   },
   {
@@ -550,6 +686,7 @@ const conspirators_fund = ref([
     name: 'Альфа-инвестиции Личный',
     brokerTag: 'Alfa-bank',
     invested: 217.56,
+    price: 217.56,
     currency: 'RUB'
   },
   {
@@ -560,6 +697,7 @@ const conspirators_fund = ref([
     name: 'ИС Без имени',
     brokerTag: 'BCS',
     invested: 15092.99,
+    price: 15092.99,
     currency: 'RUB'
   },
   {
@@ -570,6 +708,7 @@ const conspirators_fund = ref([
     name: 'ИИС Личный',
     brokerTag: 'BCS',
     invested: 5660.71,
+    price: 5660.71,
     currency: 'RUB'
   },
   {
@@ -580,6 +719,7 @@ const conspirators_fund = ref([
     name: 'Кит финанс Личный',
     brokerTag: 'KF',
     invested: 0.00,
+    price: 0.00,
     currency: 'RUB'
   },
   {
@@ -590,6 +730,7 @@ const conspirators_fund = ref([
     name: 'Цифра брокер Личный',
     brokerTag: 'CB',
     invested: 0.00,
+    price: 0.00,
     currency: 'RUB'
   },
   {
@@ -600,6 +741,7 @@ const conspirators_fund = ref([
     name: 'BOT',
     brokerTag: 'Metamask BSC',
     invested: 234.91,
+    price: 234.91,
     currency: 'USD'
   },
   {
@@ -610,6 +752,7 @@ const conspirators_fund = ref([
     name: 'BOT',
     brokerTag: 'Telegram Wallet',
     invested: 93.42,
+    price: 93.42,
     currency: 'USD'
   },
   {
@@ -619,7 +762,8 @@ const conspirators_fund = ref([
     tagType: 'crypto-wallet',
     name: 'Личный',
     brokerTag: 'Phantom Wallet',
-    invested: 93.42,
+    invested: 53.34,
+    price: 249.13,
     currency: 'USD'
   },
   {
@@ -630,6 +774,7 @@ const conspirators_fund = ref([
     name: 'BOT',
     brokerTag: 'Binance',
     invested: 0.00,
+    price: 0.00,
     currency: 'USD'
   },
   {
@@ -640,7 +785,224 @@ const conspirators_fund = ref([
     name: 'BOT',
     brokerTag: 'MTT',
     invested: 0.00,
+    price: 0.00,
+    currency: 'MTT'
+  },
+  {
+    id: 40,
+    section_id: 4,
+    tagName: 'invested_deposit',
+    tagType: 'deposit-capitalize',
+    name: 'Личный',
+    brokerTag: 'SBER',
+    invested: 0.00,
+    price: 0.00,
+    currency: 'RUB'
+  },
+  {
+    id: 41,
+    section_id: 4,
+    tagName: 'invested_deposit',
+    tagType: 'deposit-wocapitalize',
+    name: 'Личный',
+    brokerTag: 'SBER',
+    invested: 0.00,
+    price: 0.00,
+    currency: 'RUB'
+  },
+  {
+    id: 43,
+    section_id: 5,
+    tagName: 'invested_currency',
+    tagType: 'currency-usd',
+    name: 'Личный',
+    brokerTag: 'T-Bank',
+    invested: 10.00,
+    price: 10.00,
     currency: 'USD'
+  },
+  {
+    id: 44,
+    section_id: 5,
+    tagName: 'invested_currency',
+    tagType: 'currency-cny',
+    name: 'Личный',
+    brokerTag: 'T-Bank',
+    invested: 271.00,
+    price: 271.00,
+    currency: 'CNY'
+  },
+  {
+    id: 45,
+    section_id: 5,
+    tagName: 'invested_currency',
+    tagType: 'currency-hkd',
+    name: 'Личный',
+    brokerTag: 'T-Bank',
+    invested: 21.00,
+    price: 21.00,
+    currency: 'HKD'
+  },
+  {
+    id: 46,
+    section_id: 9,
+    tagName: 'withdraw',
+    tagType: 'withdraw-dividends',
+    name: 'Sergey Anfalov',
+    brokerTag: 'Банковская карта',
+    invested: 1000.00,
+    price: 1000.00,
+    currency: 'RUB'
+  },
+  {
+    id: 47,
+    section_id: 10,
+    tagName: 'deposit',
+    tagType: 'deposit-weekly-contributions',
+    name: 'Sergey Anfalov',
+    brokerTag: 'ЕС',
+    invested: 100.00,
+    price: 100.00,
+    currency: 'RUB'
+  },
+  {
+    id: 47,
+    section_id: 10,
+    tagName: 'deposit',
+    tagType: 'deposit-weekly-contributions',
+    name: 'Dzagi',
+    brokerTag: 'ЕС',
+    invested: 100.00,
+    price: 100.00,
+    currency: 'RUB'
+  },
+  {
+    id: 47,
+    section_id: 10,
+    tagName: 'deposit',
+    tagType: 'deposit-weekly-contributions',
+    name: 'Sergy Anfalov',
+    brokerTag: 'ЕС',
+    invested: 1000.00,
+    price: 1000.00,
+    currency: 'RUB'
+  }
+])
+
+const ledger = ref([
+{
+    id: 1,
+    created_at: '2024-12-07 17:48:02',
+    //
+    fund_type: 'invested_stock',
+    fund_tag: 'brokerage_account',
+    fund_id: 2,
+    recieved_amount: 500.00,
+    recieved_amount_currency: 'RUB',
+    //
+    operation_type: 'invest',
+    operator_id: 1,
+    //
+    from_fund_type: 'available',
+    from_fund_tag: 'saving_account',
+    from_fund_id: 5,
+    send_amount: 500.00,
+    send_amount_currency: 'RUB',
+  },
+  {
+    id: 2,
+    created_at: '2024-12-07 17:48:02', 
+    // 
+    fund_type: 'invested_stock',
+    fund_tag: 'brokerage_account',
+    fund_id: 4,
+    recieved_amount: 300.00,
+    recieved_amount_currency: 'RUB',
+    //
+    operation_type: 'invest',
+    operator_id: 1,
+    //
+    from_fund_type: 'available',
+    from_fund_tag: 'debet_card',
+    from_fund_id: 47,
+    send_amount: 300.00,
+    send_amount_currency: 'RUB',
+  },
+  {
+    id: 3,
+    created_at: '2024-12-07 17:48:02',
+    //
+    fund_type: 'available',
+    fund_tag: 'saving_account',
+    fund_id: 1,
+    recieved_amount: 1000.00,
+    recieved_amount_currency: 'RUB',
+    //
+    operation_type: 'deposit',
+    operator_id: 1,
+    //
+    from_fund_type: 'available',
+    from_fund_tag: 'saving_account',
+    from_fund_id: 5,
+    send_amount: 1000.00,
+    send_amount_currency: 'RUB',
+  },
+  {
+    id: 4,
+    created_at: '2024-12-07 17:48:02',
+    //
+    fund_type: 'available',
+    fund_tag: 'saving_account',
+    fund_id: 1,
+    recieved_amount: 4000.00,
+    recieved_amount_currency: 'RUB',
+    //
+    operation_type: 'deposit',
+    operator_id: 1,
+    //
+    from_fund_type: 'available',
+    from_fund_tag: 'saving_account',
+    from_fund_id: 5,
+    send_amount: 4000.00,
+    send_amount_currency: 'RUB',
+  },
+  {
+    id: 5,
+    created_at: '2024-12-07 17:48:02',
+    //
+    fund_type: 'available',
+    fund_tag: 'saving_account',
+    fund_id: 5,
+    recieved_amount: 15000.00,
+    recieved_amount_currency: 'RUB',
+    //
+    operation_type: 'withdraw',
+    operator_id: 1,
+    //
+    from_fund_type: 'invested_stock',
+    from_fund_tag: 'brokerage_account',
+    from_fund_id: 2,
+    send_amount: 15000.00,
+    send_amount_currency: 'RUB',
+  },
+  {
+    id: 6,
+    created_at: '2024-12-07 17:48:02',
+    //
+    fund_type: 'invested_crypto',
+    fund_tag: 'Telegram Wallet',
+    fund_id: 35,
+    recieved_amount: 91.72,
+    recieved_amount_currency: 'USD',
+    //
+    operation_type: 'invest',
+    operator_id: 1,
+    //
+    from_fund_type: 'available',
+    from_fund_tag: 'saving_account',
+    from_fund_id: 5,
+    send_amount: 10000.00,
+    send_amount_currency: 'RUB',
   },
 ])
 
@@ -663,7 +1025,57 @@ const filteredFundByGroupName = (groupType: string, fundsArray: any) => {
   
   return result
 }
+//= calc Profit
+const calcProfit = (fundPrice, fundInvested, fundCurrency) => {
+  if(fundInvested !== 0) {
 
+    let result = fundPrice - fundInvested
+
+    if(fundPrice - fundInvested > 0) {
+      return `+${result.toFixed(2)}${fundCurrency}`
+
+    } else if (fundPrice - fundInvested === 0) {
+      return `0.00${fundCurrency}`
+
+    } else if (fundPrice - fundInvested < 0 ) {
+      return `${result.toFixed(2)}${fundCurrency}`
+    } else {
+      return `Нет инвестиций`
+    }
+
+  } else {
+    return 
+  }
+}
+//= calc Profit Percent
+const calcProfitPercent = (fundPrice, fundInvested, fundCurrency) => {
+  if(fundInvested !== 0) {
+    let result = (fundPrice - fundInvested)/fundInvested * 100
+    return `${result.toFixed(2)}%`
+  } else {
+
+    return 'Нет инвестиций'
+  }
+}
+//= calc color by profit
+const calcColorByProfit = (fundPrice, fundInvested) => {
+  if(fundInvested !== 0) {
+    if(fundPrice - fundInvested > 0) {
+      return 'color: var(--color-urgency-low)'
+    } 
+    else if (fundPrice - fundInvested === 0) {
+      return 'color: var(--color-btn-wo-bg)'
+    }
+    else if (fundPrice - fundInvested < 0) {
+      return 'color: var(--color-urgency-high)'
+    } else {
+
+      return 'color: orange!important'
+    }
+  } else {
+    return 'color: var(--color-btn-wo-bg)'
+  }
+}
 
 // data base
 
@@ -776,6 +1188,13 @@ onMounted(() => {
 // })
 
 // Translaters
+const translateFundName = (fundId) => {
+  let el = conspirators_fund.value.find(el => el.id === fundId)
+
+
+    return el?.name
+
+}
 // const translateStockFundType = (type) => {
 //   if(type) {
 //     if(type === 'iia') {
@@ -793,8 +1212,8 @@ const changeChipAffiliation = (obj: any) => {
 }
 
 // Colorized
-//= set_bgColor
-const set_bgColor = (section: any) => {
+//= set_section_bgColor
+const set_section_bgColor = (section: any) => {
   let color;
 
   // ****** Title ******
@@ -865,12 +1284,43 @@ const set_bgColor = (section: any) => {
         // color = `var(--color-wallet-fund-debt)`
       }
     }
+    if(section.name === 'withdraw') {
+      if(choosenChip_section.value === section.name) {
+
+        color = `var(--color-global-text)`
+      } else {
+
+      }
+    }
+    if(section.name === 'deposit') {
+      if(choosenChip_section.value === section.name) {
+
+        color = `var(--color-global-text)`
+      } else {
+
+      }
+    }
     else {
       // color = null
     }
   }
 
   return color
+}
+//= set Color By Operation Type
+const setBgColorByOperationType = (operationType) => {
+  if(operationType === 'invest') {
+    return 'background-color: var(--color-wallet-fund-invested)'
+  }
+  else if (operationType === 'deposit') {
+    return 'background-color: var(--color-wallet-fund-available)'
+  }
+  else if (operationType === 'withdraw') {
+    return 'background-color: var(--color-wallet-fund-debt)'
+  }
+  else {
+    return 'background-color: var(--color-btn-disabled-bg)'
+  }
 }
 
 // CALCULATE
@@ -883,18 +1333,22 @@ const sumTotal = (id: number) => {
   }, 0)
   return sum.toFixed(2)
 
-  if(id === 1){
-
-  } else  {
-
-    return 'xxx.xx'
-  }
+}
+//= available funds
+const sumTotalAvailable = (id: number) => {
+  const array = conspirators_fund.value.filter(el => el.section_id === id)
+  
+  const sum = array.reduce((acc, el) => {
+    return acc + el.price
+  }, 0)
+  return sum.toFixed(2)
 }
 
 // WATCh
 //= choosenChip_section
 watch(choosenChip_section, () => {
   console.log(`Переключили вкладку на ${choosenChip_section.value}`)
+
 })
 </script>
 
@@ -964,7 +1418,7 @@ watch(choosenChip_section, () => {
 
       <Section 
         v-for="section in wallet_sections" 
-        :bg="set_bgColor(section)" 
+        :bg="set_section_bgColor(section)" 
         :fDirection="`column`" 
         class="section-header_wrapper"
         @click="choosenChip_section = section.name"
@@ -973,8 +1427,11 @@ watch(choosenChip_section, () => {
         <!-- section header -->
         <header>
           <h2 :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="text-wrap: nowrap; font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-          <!--  -->
-          <p v-if="section.name  === 'available' || section.name === 'invested_deposit'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotal(section.id) }} {{ currency_to_show.ticket }}</p>
+          <!-- available -->
+          <p v-if="section.name  === 'available'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotalAvailable(section.id) }} {{ currency_to_show.ticket }}</p>
+          <!-- deposit -->
+          <p v-else-if="section.name === 'invested_deposit'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotal(section.id) }} {{ currency_to_show.ticket }}</p>
+          <!-- else -->
           <p v-else :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ 0.00 }} {{ currency_to_show.ticket }}</p>
 
           <!--  -->
@@ -1001,17 +1458,32 @@ watch(choosenChip_section, () => {
     </div>
 
     <!--  -->
-    <div class="current_affiliation_title">
+    <div class="current_affiliation_title" style="display: flex; gap: 1rem; align-items: center;">
 
       <!-- available -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'available'">Available by {{ currentAffiliation.title }}</h3>
+      <!-- invested_stock -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_stock'">Invested stock by {{ currentAffiliation.title }}</h3>
+      <!--  -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_crypto'">Invested crypto by {{ currentAffiliation.title }}</h3>
+      <!-- invested_crypto -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_deposit'">Invested deposit by {{ currentAffiliation.title }}</h3>
+      <!--  -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'invested_currency'">Invested currency by {{ currentAffiliation.title }}</h3>
-      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'credits'">Given credits by {{ currentAffiliation.title }}</h3>
+      <!--  -->
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'credits'">Given by {{ currentAffiliation.title }}</h3>
+      <!--  -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'projects'">Start projects by {{ currentAffiliation.title }}</h3>
+      <!--  -->
       <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'debt'">Debt by {{ currentAffiliation.title }}</h3>
+      <!--  -->
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'withdraw'">История выводов {{ currentAffiliation.title }}</h3>
+      <!--  -->
+      <h3 style="font-size: 2rem; font-weight: bold;" v-if="choosenChip_section === 'deposit'">История пополнений {{ currentAffiliation.title }}</h3>
+
+      <div>
+        Операции
+      </div>
     </div>
 
 
@@ -1019,6 +1491,50 @@ watch(choosenChip_section, () => {
     <!--  -->
      <section class="current-fund_container">
        <div class="current-fund_wrapper">
+
+        <div class="ledger-list_container">
+
+          <!-- LEDGER ITEM -->
+          <div class="ledger-list_el" v-for="item in ledger.filter(el => el.fund_type === choosenChip_section || el.from_fund_type === choosenChip_section)">
+            <!-- DATE -->
+            <div class="el_date">{{ item.created_at }}</div>
+
+            <!-- OPERATION TYPE -->
+            <div class="el_type" :style="setBgColorByOperationType(item.operation_type)">{{ item.operation_type }}</div>
+
+            <!-- TRANSACTION -->
+            <div class="el_fund" style="display: flex; gap: 1rem;">
+              <div style="display: flex; flex-direction: column;">
+                <p style="margin: 0;">
+                  <span>{{ translateFundName(item.from_fund_id) }}</span>
+                  <span style="background-color: var(--color-btn-disabled-bg)">{{ item.from_fund_type }}</span>
+                  <span style="background-color: var(--color-btn-disabled-bg)">{{item.from_fund_tag}}</span>
+                </p>
+                <p style="margin: 0;">
+
+                  <span>-{{ item.send_amount }}{{ item.send_amount_currency }}</span>
+                </p>
+              </div>
+              <div>
+                >>>
+              </div>
+              <div style="display: flex; flex-direction: column;">
+                <p style="margin: 0;">
+
+                  <span>{{ translateFundName(item.fund_id) }}</span>
+                  <span style="background-color: var(--color-btn-disabled-bg)">{{ item.fund_type }}</span>
+                  <span style="background-color: var(--color-btn-disabled-bg)">{{item.fund_tag}}</span>
+                </p>
+                <p style="margin: 0;">
+
+                  <span>+{{ item.recieved_amount }}{{ item.recieved_amount_currency }}</span>
+                </p>
+              </div>
+            </div>
+            <div class="el_operator">{{ item.operator_id }}</div>
+            <!-- <div class="el_item">{{ item }}</div> -->
+          </div>
+        </div>
 
         <!-- GROUP FUND -->
         <section 
@@ -1034,29 +1550,51 @@ watch(choosenChip_section, () => {
             <!-- LENGTH -->
             <section 
               v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
-              class="fund_list"
+              class="fund-list"
             >
 
+              <!--  -->
               <Section 
                 style="cursor: pointer;"
                 v-for="fund in filteredFundByGroupName(group.tagType, conspirators_fund_computed)"
                 @click="$router.push(`mesh/${fund.id}`)"  
                 fDirection="column"
+                fJustifyContent="space-between"
               >
-                <h5>{{ fund.name }}</h5>
-                <p style="margin: 0;">{{ fund.brokerTag }}</p>
-                
-                <!--  -->
-                <p v-if="choosenChip_section === 'available'" style="margin: 0;">{{ fund.invested }} {{ fund.currency }}</p>
-                <p v-if="choosenChip_section === 'invested_crypto'" style="margin: 0;">234.99 USD / ~ 0.00 {{ currency_to_show.ticket }}</p>
-                <p v-else style="margin: 0;">0.00 {{ currency_to_show.ticket }}</p>
-                
-                <!--  -->
-                <p style="margin: 0;  font-size: 0.8rem;" v-if="choosenChip_section === 'invested_stock'">Инвестировано: {{ fund.invested }} {{ currency_to_show.ticket }}<br> +11,32 /  10%</p>
-                <p v-if="choosenChip_section === 'invested_crypto'" style="margin: 0; font-size: 0.8rem;">Инвестировано: {{ fund.invested }} USD / ~0.00 {{ currency_to_show.ticket }}</p>
-                <p v-if="choosenChip_section === 'invested_crypto'" style="margin: 0;  font-size: 0.8rem;">+3736.00RUB / +10%</p>
-                {{fund.section_id}}
-                <!-- {{ fund }} -->
+                <div class="fund-list_el">
+
+                  <!-- LOGO -->
+                  <div class="el_logo">
+                    <!--  -->
+                    <div style="background-color: black; width: 2rem; height: 2rem; border-radius: 50%;"></div>
+                  </div>
+
+                  <!-- TITLE -->
+                  <div class="el_title">
+  
+                    <h5 style="font-size: 1rem;">{{ fund.name }}</h5>
+                    <p style="margin: 0; font-size: 0.8rem; color: var(--color-btn-wo-bg)">{{ fund.brokerTag }}</p>
+                  </div>
+  
+                  <!-- ACTUAL PRICE (capital) -->
+                  <div class="el_price">
+                    <!-- AMOUNT -->
+                    <div style="font-weight: bold;">{{(fund.price).toFixed(2)}}{{ fund.currency }} </div>
+
+                    <!-- PROFIT -->
+                    <div style="font-size: 0.8rem; display: flex; align-items: center;gap: .5rem;" :style="`${calcColorByProfit(fund.price, fund.invested)}`">
+                      <div>{{ calcProfit(fund.price, fund.invested, fund.currency) }}</div> 
+                      <div style="width: 5px; height: 5px; border-radius: 50%; background-color: red;"></div>
+                      <div>{{ calcProfitPercent(fund.price, fund.invested, fund.currency) }}</div>
+                    </div>
+                  </div>
+  
+                  <!-- TOTAL INVESTED -->
+                  <div class="el_invested">
+                    <p style="text-align: right;">dep: {{ (fund.invested).toFixed(2) }}{{ fund.currency }}</p>
+                  </div>
+                </div>
+
               </Section>
             </section>
             <!-- !LENGTH -->
@@ -1067,40 +1605,6 @@ watch(choosenChip_section, () => {
           </main>
 
         </section>
-
-        <!-- INVESTED DEPOSIT -->
-        <!--  -->
-        <div v-if="choosenChip_section === 'invested_deposit'">
-          <!-- БАНКОВСКИЕ ВКЛАДЫ -->
-          <div class="fund-el_contatiner">
-          <section>
-            <header>Банковские вклады</header>
-            <main>
-              <ul>
-                <!-- <li>Сбербанк</li> -->
-                  <li>Нет вкладов</li>
-              </ul>
-            </main>
-          </section>
-          </div>
-        </div>
-
-        <!-- INVESTED CURRENCY -->
-        <div v-if="choosenChip_section === 'invested_currency'">
-          <!-- ВАЛЮТНЫЕ СЧЕТА -->
-          <div class="fund-el_contatiner">
-            <section>
-              <header>Валютные счета</header>
-              <main>
-                <ul>
-                  <li><p>Доллар <span>10,00USD (982,64RUB)</span></p></li>
-                  <li><p>Юань <span>271,00CNY (3661,24RUB)</span></p></li>
-                  <li><p>Гонконгский доллар <span>21,00HKD (265,41)</span></p></li>
-                </ul>
-              </main>
-            </section>
-          </div>
-        </div>
 
         <!-- CREDITS -->
         <!--  -->
@@ -1120,6 +1624,43 @@ watch(choosenChip_section, () => {
             </section>
 
           </div>
+        </div>
+
+        <!-- CREDITS -->
+        <!--  -->
+        <div v-if="choosenChip_section === 'withdraw'">
+
+          <!-- ВЫДАННЫЕ КРЕДИТЫ -->
+          <div class="fund-el_contatiner">
+
+            <section>
+              <header>История выводов</header>
+              <main>
+                <ul>
+                  <li><p><span>25.12.2024 ЮС 1002Кредит22</span> Кто: Сергей Анфалов <span>-7501,411RUB</span></p></li>
+                  <li>Не было выводов</li>
+                </ul>
+              </main>
+            </section>
+
+          </div>
+        </div>
+        <div v-if="choosenChip_section === 'deposit'">
+
+        <!-- ВЫДАННЫЕ КРЕДИТЫ -->
+        <div class="fund-el_contatiner">
+
+          <section>
+            <header>История выводов</header>
+            <main>
+              <ul>
+                <li><p><span>25.12.2024 ЮС 1002Кредит22</span> Кто: Сергей Анфалов <span>-7501,411RUB</span></p></li>
+                <li>Не было выводов</li>
+              </ul>
+            </main>
+          </section>
+
+        </div>
         </div>
    
         <!-- PROJECTS -->
@@ -1365,9 +1906,84 @@ watch(choosenChip_section, () => {
 
 }
 
-.fund_list {
-  display: grid;
-}
+/* FUND LIST */
+.fund-list {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  .fund-list_el {
+    display: grid; 
+    grid-template-columns: 10% 50% 40%; 
+    grid-template-rows: 40% 60%;
+    grid-template-areas: "logo price price" 
+                          "logo title invested";
+  }
+  .el_logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .el_title {
+    grid-area: title;
+    /* background-color: red; */
+  }
+  .el_price {
+    grid-area: price;
+    /* background-color: cyan; */
+    display: flex;
+    justify-content: space-between;
+  }
+  .el_invested {
+    grid-area: invested;
+    /* background-color: blue; */
+  }
+
+  /* fund list */
+  .current_affiliation_title {
+  }
+  .current_affiliation_title,
+  .fund_group_container {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  .ledger-list_container {
+
+  }
+  .ledger-list_el {
+    display: grid;
+    grid-template-columns: 15% 10% 1fr 10%;
+    grid-template-areas: 'date type fund operator'  
+                          'item item item item';
+    border-bottom: 0.5px solid var(--color-btn-wo-bg);
+  }
+  .el_type {
+    grid-area: type;
+    align-self: center;
+    width: max-content;
+    padding: 0px 6px;
+    border-radius: .5rem;
+  }
+  .el_date {
+    grid_area: date;
+    align-self: center;
+    font-size: 0.8rem;
+  }
+  .el_fund {
+    grid_area: fund;
+    align-self: center;
+    display: flex;
+    align-items: center;
+  }
+  .el_operator {
+    grid-area: operator;
+    align-self: center;
+  }
+  .el_item {
+    grid-area: item;
+    align-self: center;
+  }
 
 /*  */
 @media screen and (max-width: 575px) {
@@ -1385,17 +2001,6 @@ watch(choosenChip_section, () => {
   }
   .section-header_wrapper p {
     font-size: 16px;
-  }
-
-  /* fund list */
-  .current_affiliation_title,
-  .fund_group_container {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-  }
-  .fund_list {
-    gap: 1rem;
-    grid-template-columns: 1fr;
   }
 }
 @media screen and (min-width: 576px) {
@@ -1423,7 +2028,8 @@ watch(choosenChip_section, () => {
   }
   .fund_list {
     gap: 1rem;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    /* grid-template-columns: repeat(2, 1fr); */
   }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -1437,7 +2043,11 @@ watch(choosenChip_section, () => {
   }
   .fund_list {
     gap: 1rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+    /* grid-template-columns: repeat(3, 1fr); */
+  }
+  .el_logo {
+    justify-content: center;
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
@@ -1451,6 +2061,9 @@ watch(choosenChip_section, () => {
     gap: 1rem;
     grid-template-columns: repeat(4, 1fr);
   }
+  .el_logo {
+    justify-content: center;
+  }
 }
 @media screen and (min-width: 1200px) {
   .wallet-section_container {
@@ -1462,6 +2075,9 @@ watch(choosenChip_section, () => {
   .fund_list {
     gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
+  }
+  .el_logo {
+    justify-content: center;
   }
 }
 </style>
