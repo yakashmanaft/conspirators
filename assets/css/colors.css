@@ -49,6 +49,9 @@
     /* w/o opacity */
     --color-urgency-low-wo: rgb(128, 191, 138);
 
+    /* operation Types */
+    --color-operation-type-donation: rgba(114, 166, 245, 0.3);
+
     /* status colors */
     --color-paused-wrapper-bg: rgba(189, 186, 189, 0.9);
     --color-item-hover-bg: rgba(0, 0, 0, 0.05);

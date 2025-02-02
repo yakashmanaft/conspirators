@@ -882,11 +882,11 @@ const computedPartners = computed(() => {
           .replace(/\s+/g, "")
           .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
         ||  
-        partner.middleName
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
-        ||  
+        // partner?.middleName
+        //   .toLowerCase()
+        //   .replace(/\s+/g, "")
+        //   .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+        // ||  
         partner.phone
           .toLowerCase()
           .replace(/\s+/g, "")
