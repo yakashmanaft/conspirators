@@ -990,7 +990,7 @@ const ledger = ref([
     created_at: '2024-12-07 17:48:02',
     //
     fund_type: 'invested_crypto',
-    fund_tag: 'Telegram Wallet',
+    fund_tag: 'crypto-wallet',
     fund_id: 35,
     recieved_amount: 91.72,
     recieved_amount_currency: 'USD',
@@ -1061,19 +1061,19 @@ const calcProfitPercent = (fundPrice, fundInvested, fundCurrency) => {
 const calcColorByProfit = (fundPrice, fundInvested) => {
   if(fundInvested !== 0) {
     if(fundPrice - fundInvested > 0) {
-      return 'color: var(--color-urgency-low)'
+      return 'var(--color-urgency-low)'
     } 
     else if (fundPrice - fundInvested === 0) {
-      return 'color: var(--color-btn-wo-bg)'
+      return 'var(--color-btn-wo-bg)'
     }
     else if (fundPrice - fundInvested < 0) {
-      return 'color: var(--color-urgency-high)'
+      return 'var(--color-urgency-high)'
     } else {
 
-      return 'color: orange!important'
+      return 'orange!important'
     }
   } else {
-    return 'color: var(--color-btn-wo-bg)'
+    return 'var(--color-btn-wo-bg)'
   }
 }
 
@@ -1188,12 +1188,15 @@ onMounted(() => {
 // })
 
 // Translaters
+//= translate Fund Name
 const translateFundName = (fundId) => {
   let el = conspirators_fund.value.find(el => el.id === fundId)
-
-
     return el?.name
-
+}
+//= translate fund broker tag
+const translateFundBrokerTag = (fundId) => {
+  let el = conspirators_fund.value.find(el => el.id === fundId)
+    return el?.brokerTag
 }
 // const translateStockFundType = (type) => {
 //   if(type) {
@@ -1505,8 +1508,8 @@ watch(choosenChip_section, () => {
             <!-- TRANSACTION -->
             <div class="el_fund" style="display: flex; gap: 1rem;">
               <div style="display: flex; flex-direction: column;">
-                <p style="margin: 0;">
-                  <span>{{ translateFundName(item.from_fund_id) }}</span>
+                <p style="margin: 0;">{{ translateFundBrokerTag(item.from_fund_id) }} <span style="font-size: 0.8rem;background-color: var(--color-btn-disabled-bg)">{{ translateFundName(item.from_fund_id) }}</span></p>
+                <p style="margin: 0; font-size: 0.8rem;">
                   <span style="background-color: var(--color-btn-disabled-bg)">{{ item.from_fund_type }}</span>
                   <span style="background-color: var(--color-btn-disabled-bg)">{{item.from_fund_tag}}</span>
                 </p>
@@ -1519,9 +1522,9 @@ watch(choosenChip_section, () => {
                 >>>
               </div>
               <div style="display: flex; flex-direction: column;">
-                <p style="margin: 0;">
+                <p style="margin: 0;">{{ translateFundName(item.fund_id) }} <span style="font-size: 0.8rem;background-color: var(--color-btn-disabled-bg)">{{ translateFundBrokerTag(item.fund_id) }}</span></p>
+                <p style="margin: 0; font-size: 0.8rem;">
 
-                  <span>{{ translateFundName(item.fund_id) }}</span>
                   <span style="background-color: var(--color-btn-disabled-bg)">{{ item.fund_type }}</span>
                   <span style="background-color: var(--color-btn-disabled-bg)">{{item.fund_tag}}</span>
                 </p>
@@ -1582,9 +1585,9 @@ watch(choosenChip_section, () => {
                     <div style="font-weight: bold;">{{(fund.price).toFixed(2)}}{{ fund.currency }} </div>
 
                     <!-- PROFIT -->
-                    <div style="font-size: 0.8rem; display: flex; align-items: center;gap: .5rem;" :style="`${calcColorByProfit(fund.price, fund.invested)}`">
+                    <div style="font-size: 0.8rem; display: flex; align-items: center;gap: .5rem;" :style="`color: ${calcColorByProfit(fund.price, fund.invested)}`">
                       <div>{{ calcProfit(fund.price, fund.invested, fund.currency) }}</div> 
-                      <div style="width: 5px; height: 5px; border-radius: 50%; background-color: red;"></div>
+                      <div style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByProfit(fund.price, fund.invested)}`"></div>
                       <div>{{ calcProfitPercent(fund.price, fund.invested, fund.currency) }}</div>
                     </div>
                   </div>
@@ -1964,6 +1967,7 @@ watch(choosenChip_section, () => {
     width: max-content;
     padding: 0px 6px;
     border-radius: .5rem;
+    font-size: 0.8rem;
   }
   .el_date {
     grid_area: date;
