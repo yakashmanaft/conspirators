@@ -153,7 +153,7 @@ model LeadHistoryLedger {
 // tagType
 // brokerTag
 
-//= wallet type:
+//= wallet tag:
 // available
 // deposit
 // invested_stock

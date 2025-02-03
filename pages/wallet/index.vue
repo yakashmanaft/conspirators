@@ -1145,7 +1145,7 @@ const mesh_list = ref([
     tag: 'available',
     name: 'Хранилище 1',    
     broker_tag: 'Yandex',
-    ownerID: 1,
+    ownerID: 5,
     ownerType: 'conspirator'
   },
   {
@@ -1154,7 +1154,7 @@ const mesh_list = ref([
     tag: 'invested_stock',
     name: 'Брокерский счет',
     broker_tag: 'T-Bank',
-    ownerID: 4,
+    ownerID: 5,
     ownerType: 'conspirator'
   },
   {
@@ -1163,8 +1163,8 @@ const mesh_list = ref([
     tag: 'available',
     name: 'Счет №321',
     broker_tag: 'SBER',
-    ownerID: 3,
-    ownerType: 'conspirator'
+    ownerID: 1,
+    ownerType: 'user'
   },
   {
     id: 5,
@@ -1182,7 +1182,7 @@ const transaction_ledger = ref([
     id: 1,
     created_at: '2024-12-08 17:48:02',
     //
-    tag: 'income',
+    tag: 'receive',
     purpose: 'weekly',
     fee: 0.00,
     //
@@ -1192,10 +1192,10 @@ const transaction_ledger = ref([
     from_mesh_price: 1000.00,
     //
     //
-    income_mesh_id: 2,
-    income_mesh_currency: 'RUB',
-    income_mesh_amount: 1.00,
-    income_mesh_price: 1000.00,
+    receive_mesh_id: 2,
+    receive_mesh_currency: 'RUB',
+    receive_mesh_amount: 1.00,
+    receive_mesh_price: 1000.00,
     //
     comments: '',
   },
@@ -1213,10 +1213,10 @@ const transaction_ledger = ref([
     from_mesh_price: 500.00,
     //
     //
-    income_mesh_id: 2,
-    income_mesh_currency: 'RUB',
-    income_mesh_amount: 1.00,
-    income_mesh_price: 500.00,
+    receive_mesh_id: 2,
+    receive_mesh_currency: 'RUB',
+    receive_mesh_amount: 1.00,
+    receive_mesh_price: 500.00,
     //
     comments: '',
   },
@@ -1233,10 +1233,10 @@ const transaction_ledger = ref([
     from_mesh_amount: 1.00,
     from_mesh_price: 500.00,
     //
-    income_mesh_id: null,
-    income_mesh_currency: '',
-    income_mesh_amount: null,
-    income_mesh_price: null,
+    receive_mesh_id: null,
+    receive_mesh_currency: '',
+    receive_mesh_amount: null,
+    receive_mesh_price: null,
     //
     comments: '',
   },
@@ -1253,10 +1253,10 @@ const transaction_ledger = ref([
     from_mesh_amount: 1.00,
     from_mesh_price: 500.00,
     //
-    income_mesh_id: null,
-    income_mesh_currency: '',
-    income_mesh_amount: null,
-    income_mesh_price: null,
+    receive_mesh_id: null,
+    receive_mesh_currency: '',
+    receive_mesh_amount: null,
+    receive_mesh_price: null,
     //
     comments: '',
   },
@@ -1273,10 +1273,10 @@ const transaction_ledger = ref([
     from_mesh_amount: 1.00,
     from_mesh_price: 44.00,
     //
-    income_mesh_id: null,
-    income_mesh_currency: '',
-    income_mesh_amount: null,
-    income_mesh_price: null,
+    receive_mesh_id: null,
+    receive_mesh_currency: '',
+    receive_mesh_amount: null,
+    receive_mesh_price: null,
     //
     comments: '',
   },
@@ -1284,8 +1284,8 @@ const transaction_ledger = ref([
     id: 6,
     created_at: '2024-12-15 17:48:02',
     //
-    name: 'issue',
-    tag: 'loan-interest',
+    name: 'loan-interest',
+    purpose: 'issue',
     fee: 0.00,
     //
     from_mesh_id: 2,
@@ -1293,10 +1293,10 @@ const transaction_ledger = ref([
     from_mesh_amount: 1.00,
     from_mesh_price: 1000.00,
     //
-    income_mesh_id: 5,
-    income_mesh_currency: 'RUB',
-    income_mesh_amount: 1.00,
-    income_mesh_price: 1000.00,
+    receive_mesh_id: 5,
+    receive_mesh_currency: 'RUB',
+    receive_mesh_amount: 1.00,
+    receive_mesh_price: 1000.00,
     //
     comments: '',
   },
@@ -1304,19 +1304,19 @@ const transaction_ledger = ref([
     id: 7,
     created_at: '2024-12-15 17:48:02',
     //
-    name: 'repayment',
-    tag: 'loan-interest',
+    name: 'loan-interest',
+    purpose: 'payment',
     fee: 0.00,
     //
-    from_mesh_id: 5,
+    from_mesh_id: 4,
     from_mesh_currency: 'RUB',
     from_mesh_amount: 1.00,
     from_mesh_price: 200.00,
     //
-    income_mesh_id: 2,
-    income_mesh_currency: 'RUB',
-    income_mesh_amount: 1.00,
-    income_mesh_price: 200.00,
+    receive_mesh_id: 5,
+    receive_mesh_currency: 'RUB',
+    receive_mesh_amount: 1.00,
+    receive_mesh_price: 200.00,
     //
     comments: '',
   }
@@ -1334,15 +1334,47 @@ const conspirators_fund_computed = computed(() => {
   return array
 })
 
-//= transaction_ledger
+//= transaction ledger
 const transaction_ledger_computed = computed(() => {
   let array:any = []
 
   transaction_ledger.value.forEach(transaction => {
     
     meshes_computed.value.forEach(mesh => {
-      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.income_mesh_id) {
-        array.push(transaction)
+      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id) {
+
+        let from_obj = translateMeshByID(transaction?.from_mesh_id)
+        let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
+
+        array.push({
+          id: transaction.id,
+          created_at: transaction.created_at,
+          name: transaction.name,
+          purpose: transaction.purpose,
+          //
+          fee: transaction.fee,
+          comments: transaction.comments,
+          // 
+          from_mesh_type: from_obj?.type,
+          from_mesh_tag: from_obj?.tag,
+          from_mesh_name: from_obj?.name,
+          from_mesh_broker_tag: from_obj?.broker_tag,
+          from_mesh_currency: transaction.from_mesh_currency,
+          from_mesh_amount: transaction.from_mesh_amount,
+          from_mesh_price: transaction.from_mesh_price,
+          from_mesh_owner_id: from_obj?.ownerID, 
+          from_mesh_owner_type: from_obj?.ownerType,
+          // 
+          receive_mesh_type: receive_obj?.type,
+          receive_mesh_tag: receive_obj?.tag,
+          receive_mesh_name: receive_obj?.name,
+          receive_mesh_broker_tag: receive_obj?.broker_tag,
+          receive_mesh_currency: transaction.receive_mesh_currency,
+          receive_mesh_amount: transaction.receive_mesh_amount,
+          receive_mesh_price: transaction.receive_mesh_price,
+          receive_mesh_owner_id: receive_obj?.ownerID, 
+          receive_mesh_owner_type: receive_obj?.ownerType, 
+        })
       }
     })
   })
@@ -1350,7 +1382,7 @@ const transaction_ledger_computed = computed(() => {
   return [...new Set (array)]
 })
 
-//= meshes
+//= meshes array
 const meshes_computed = computed(() => {
   return mesh_list.value.filter(el => el.tag === choosenChip_section.value)
 })
@@ -1367,6 +1399,8 @@ const filterMeshByWalletType = (type: string, array: any) => {
 
   return result
 }
+
+//  CALC
 //= calc Profit
 const calcProfit = (fundPrice, fundInvested, fundCurrency) => {
   if(fundInvested !== 0) {
@@ -1417,6 +1451,16 @@ const calcColorByProfit = (fundPrice, fundInvested) => {
   } else {
     return 'var(--color-btn-wo-bg)'
   }
+}
+
+// TRANSLATE
+//= meshes id in transactions
+const translateMeshByID = (id: number) => {
+  let mesh;
+  if(mesh_list.value.length) {
+    mesh = mesh_list.value.find(mesh => mesh.id === id)
+  }
+  return mesh
 }
 
 // data base
@@ -1606,6 +1650,14 @@ const set_section_bgColor = (section: any) => {
         // color = `var(--color-wallet-fund-invested)`
       }
     }
+    if(section.name === 'invested_loan') {
+      if(choosenChip_section.value === section.name) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
     if(section.name === 'credits') {
       if(choosenChip_section.value === section.name) {
         // color = `var(--color-wallet-fund-invested-wo)`
@@ -1684,6 +1736,8 @@ const setBgColorByOperationType = (operationType) => {
 }
 
 // CALCULATE
+//
+//= sum total
 const sumTotal = (id: number) => {
 
   const array = conspirators_fund.value.filter(el => el.section_id === id)
@@ -1838,20 +1892,71 @@ watch(currentAffiliation, () => {
     </div>
 
 
-    <!-- ALL -->
+    <!-- CURRENT FUND -->
     <!--  -->
      <section class="current-fund_container">
+
 
       <!-- LEDGER -->
       <div v-if="currentFundParagraph === 'history'" class="current-fund_wrapper">
 
-        <div class="current-fund-ledger_container">
-          <div v-for="transaction in transaction_ledger_computed">
-            <p style="margin: 0;">{{ transaction.purpose }} <span>from: {{ transaction.from_mesh_id }}</span> <span>to: {{ transaction.income_mesh_id }}</span></p>
-            <p>{{ transaction }}</p>
+        <!-- length -->
+        <div class="current-fund-ledger_container transaction_container" v-if="transaction_ledger_computed.length">
+
+          <!-- TRANSACTION -->
+          <div 
+            v-for="transaction in transaction_ledger_computed"
+            class="transaction_wrapper"  
+          >
+            <!-- tFirst -->
+            <div class="transaction-first">
+              <!-- DATE -->
+
+              <p class="transaction_date">{{ transaction.created_at }}</p>
+
+              <!-- PURPOSE -->
+              <p 
+                class="transacion_purpose"
+                :style="setBgColorByOperationType(transaction.purpose)"
+              >
+                {{ transaction.purpose }} 
+              </p>
+            </div>
+
+            <!-- DETAILS -->
+            <div class="transaction_details">
+              <div>
+                <p v-if="transaction.from_mesh_name" style="margin: 0;">
+                  <span>{{ transaction.from_mesh_owner_id }}{{ transaction.from_mesh_owner_type }}</span>
+                  <span>{{ transaction.from_mesh_name }}</span>
+                  <span>{{ transaction.from_mesh_type }}</span>
+                  <span>{{ transaction.from_mesh_broker_tag }}</span>
+                  <span>({{ transaction.from_mesh_price }}{{transaction.from_mesh_currency}} x {{ transaction.from_mesh_amount }} = {{ transaction.from_mesh_price * transaction.from_mesh_amount }}{{transaction.from_mesh_currency}})</span>
+                </p>
+                <p style="margin: 0;" v-else>Неизвестный</p> 
+              </div>
+              <div>>>></div>
+              <div>
+                <p v-if="transaction.receive_mesh_name" style="margin: 0;">
+                  <span>{{ transaction.receive_mesh_owner_id }}{{ transaction.receive_mesh_owner_type }}</span>
+                  <span>{{ transaction.receive_mesh_name }}</span>
+                  <span>{{ transaction.receive_mesh_type }}</span>
+                  <span>{{ transaction.receive_mesh_broker_tag }}</span>
+                  <span>({{ transaction.receive_mesh_price }}{{transaction.receive_mesh_currency}} x {{ transaction.receive_mesh_amount }} = {{ transaction.receive_mesh_price * transaction.receive_mesh_amount }}{{transaction.receive_mesh_currency}})</span>
+                </p>
+                <p style="margin: 0;" v-else>Неизвестный</p> 
+              </div>
+            </div>
+
+            <!--  -->
+            <!-- <p style="margin: 0;"> <span>from: {{ transaction.from_mesh_id }}</span> <span>to: {{ transaction.receive_mesh_id }}</span></p> -->
+            <!-- <p style="grid-area: item">{{ transaction }}</p> -->
           </div>
         </div>
-        
+        <!-- else -->
+        <div class="current-fund-ledger_container" v-else>Нет операций</div>
+
+        <!--  -->
         <div class="current-fund-ledger_container" v-if="ledger.filter(el => el.fund_type === choosenChip_section || el.from_fund_type === choosenChip_section).length !== 0">
   
           <!-- LEDGER ITEM -->
@@ -1895,142 +2000,132 @@ watch(currentAffiliation, () => {
             <!-- <div class="el_item">{{ item }}</div> -->
           </div>
         </div>
-        <div class="current-fund-ledger_container" v-else>Нет операций</div>
       </div>
 
       <!-- MESHES -->
-       <div v-if="currentFundParagraph === 'meshes'" class="current-fund_wrapper">
-        <section
-          v-for="group in [...new Set([...meshes_computed.map(obj => {
-            return {
-              type: obj.type, 
-              tag: obj.tag
-            }
-          }) ])]"
-          style="margin-top: 1rem;"
-          class="fund_group_container"
-        >
-          <header>
-            <h4>{{ group.type }}</h4>
-          </header>
-          <main style="margin-top: 1rem;">
+      <div v-if="currentFundParagraph === 'meshes'">
 
-            <!-- LENGTH -->
-            <section v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)">
-              {{ mesh }}
-            </section>
-          </main>
-      </section>
+        <!-- LENGTH -->
+        <div class="current-fund_wrapper" v-if="meshes_computed.length">
+          <section
+            v-for="group in [...new Set([...meshes_computed.map(obj => {
+              return {
+                type: obj.type, 
+                tag: obj.tag
+              }
+            }) ])]"
+            style="margin-top: 1rem;"
+            class="fund_group_container"
+          >
+            <header>
+              <h4>{{ group.type }}</h4>
+            </header>
+            <main style="margin-top: 1rem;">
 
-        <section 
-          v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)" 
-          class="fund_group_container"
-        >
-          <header>
-            <h4>{{ group.name }}</h4>
-          </header>
+              <section v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)">
+                {{ mesh }}
+              </section>
 
-          <main style="margin-top: 1rem;">
-            <!-- LENGTH -->
-            <section 
-              v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
-              class="fund-list"
+            </main>
+          </section>
+        </div>
+        <!-- ELSE -->
+        <div class="fund_group_container" v-else>
+          <p style="margin-top: 1rem;">У вас нет мешков</p>
+        </div>
+
+      <section 
+        v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)" 
+        class="fund_group_container"
+      >
+        <header>
+          <h4>{{ group.name }}</h4>
+        </header>
+
+        <main style="margin-top: 1rem;">
+          <!-- LENGTH -->
+          <section 
+            v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
+            class="fund-list"
+          >
+            
+            <!--  -->
+            <Section 
+              style="cursor: pointer;"
+              v-for="fund in filteredFundByGroupName(group.tagType, conspirators_fund_computed)"
+              @click="$router.push(`mesh/${fund.id}`)"  
+              fDirection="column"
+              fJustifyContent="space-between"
             >
-              
-              <!--  -->
-              <Section 
-                style="cursor: pointer;"
-                v-for="fund in filteredFundByGroupName(group.tagType, conspirators_fund_computed)"
-                @click="$router.push(`mesh/${fund.id}`)"  
-                fDirection="column"
-                fJustifyContent="space-between"
-              >
-                <div class="fund-list_el">
+              <div class="fund-list_el">
 
-                  <!-- LOGO -->
-                  <div class="el_logo">
-                    <!--  -->
-                    <div style="background-color: black; width: 2rem; height: 2rem; border-radius: 50%;"></div>
-                  </div>
+                <!-- LOGO -->
+                <div class="el_logo">
+                  <!--  -->
+                  <div style="background-color: black; width: 2rem; height: 2rem; border-radius: 50%;"></div>
+                </div>
 
-                  <!-- TITLE -->
-                  <div class="el_title">
-  
-                    <h5 style="font-size: 1rem;">{{ fund.name }}</h5>
-                    <p style="margin: 0; font-size: 0.8rem; color: var(--color-btn-wo-bg)">{{ fund.brokerTag }} ({{fund?.conspirators }})</p>
-                  </div>
-  
-                  <!-- ACTUAL PRICE (capital) -->
-                  <div class="el_price">
-                    <!-- AMOUNT -->
-                    <div style="font-weight: bold;">{{(fund.price).toFixed(2)}}{{ fund.currency }} </div>
+                <!-- TITLE -->
+                <div class="el_title">
 
-                    <!-- PROFIT -->
-                    <div style="font-size: 0.8rem; display: flex; align-items: center;gap: .5rem;" :style="`color: ${calcColorByProfit(fund.price, fund.invested)}`">
-                      <div>{{ calcProfit(fund.price, fund.invested, fund.currency) }}</div> 
-                      <div style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByProfit(fund.price, fund.invested)}`"></div>
-                      <div>{{ calcProfitPercent(fund.price, fund.invested, fund.currency) }}</div>
-                    </div>
-                  </div>
-  
-                  <!-- TOTAL INVESTED -->
-                  <div class="el_invested">
-                    <p style="text-align: right;">dep: {{ (fund.invested).toFixed(2) }}{{ fund.currency }}</p>
+                  <h5 style="font-size: 1rem;">{{ fund.name }}</h5>
+                  <p style="margin: 0; font-size: 0.8rem; color: var(--color-btn-wo-bg)">{{ fund.brokerTag }} ({{fund?.conspirators }})</p>
+                </div>
+
+                <!-- ACTUAL PRICE (capital) -->
+                <div class="el_price">
+                  <!-- AMOUNT -->
+                  <div style="font-weight: bold;">{{(fund.price).toFixed(2)}}{{ fund.currency }} </div>
+
+                  <!-- PROFIT -->
+                  <div style="font-size: 0.8rem; display: flex; align-items: center;gap: .5rem;" :style="`color: ${calcColorByProfit(fund.price, fund.invested)}`">
+                    <div>{{ calcProfit(fund.price, fund.invested, fund.currency) }}</div> 
+                    <div style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByProfit(fund.price, fund.invested)}`"></div>
+                    <div>{{ calcProfitPercent(fund.price, fund.invested, fund.currency) }}</div>
                   </div>
                 </div>
 
-              </Section>
-            </section>
-            <!-- !LENGTH -->
-            <section v-else>
-              <div>В этом мешке пусто...</div>
-            </section>
+                <!-- TOTAL INVESTED -->
+                <div class="el_invested">
+                  <p style="text-align: right;">dep: {{ (fund.invested).toFixed(2) }}{{ fund.currency }}</p>
+                </div>
+              </div>
 
-          </main>
+            </Section>
+          </section>
+          <!-- !LENGTH -->
+          <section v-else>
+            <div>В этом мешке пусто...</div>
+          </section>
 
-        </section>
+        </main>
 
-        <section class="fund_group_container" v-if="wallet_fund_group.filter(el => el.tagName === choosenChip_section).length === 0"><p style="margin-top: 1rem;">Ни одного мешка</p></section>
-        <!-- CREDITS -->
-        <!--  -->
-        <div v-if="choosenChip_section === 'credits'">
+      </section>
 
-          <!-- ВЫДАННЫЕ КРЕДИТЫ -->
-          <div class="fund-el_contatiner">
+      <section class="fund_group_container" v-if="wallet_fund_group.filter(el => el.tagName === choosenChip_section).length === 0"><p style="margin-top: 1rem;">Ни одного мешка</p></section>
+      <!-- CREDITS -->
+      <!--  -->
+      <div v-if="choosenChip_section === 'credits'">
 
-            <section>
-              <header>Выданные кредиты</header>
-              <main>
-                <ul>
-                  <li><p><span>ЮС</span> 1002Кредит22 <span>-7501,411RUB</span></p></li>
-                  <li>Не выдавали кредиты</li>
-                </ul>
-              </main>
-            </section>
+        <!-- ВЫДАННЫЕ КРЕДИТЫ -->
+        <div class="fund-el_contatiner">
 
-          </div>
+          <section>
+            <header>Выданные кредиты</header>
+            <main>
+              <ul>
+                <li><p><span>ЮС</span> 1002Кредит22 <span>-7501,411RUB</span></p></li>
+                <li>Не выдавали кредиты</li>
+              </ul>
+            </main>
+          </section>
+
         </div>
+      </div>
 
-        <!-- CREDITS -->
-        <!--  -->
-        <div v-if="choosenChip_section === 'withdraw'">
-
-          <!-- ВЫДАННЫЕ КРЕДИТЫ -->
-          <div class="fund-el_contatiner">
-
-            <section>
-              <header>История выводов</header>
-              <main>
-                <ul>
-                  <li><p><span>25.12.2024 ЮС 1002Кредит22</span> Кто: Сергей Анфалов <span>-7501,411RUB</span></p></li>
-                  <li>Не было выводов</li>
-                </ul>
-              </main>
-            </section>
-
-          </div>
-        </div>
-        <div v-if="choosenChip_section === 'deposit'">
+      <!-- CREDITS -->
+      <!--  -->
+      <div v-if="choosenChip_section === 'withdraw'">
 
         <!-- ВЫДАННЫЕ КРЕДИТЫ -->
         <div class="fund-el_contatiner">
@@ -2046,141 +2141,158 @@ watch(currentAffiliation, () => {
           </section>
 
         </div>
-        </div>
-   
-        <!-- PROJECTS -->
-        <!--  -->
-        <div v-if="choosenChip_section === 'projects'">
+      </div>
+      <div v-if="choosenChip_section === 'deposit'">
 
-          <!-- ПРОЕКТЫ -->
-          <div class="fund-el_contatiner">
-          <section>
-            <header>Проекты</header>
-            <main>
-              <ul>
-                <li><p><span>ЕС</span> 1602РАТСА19 <span>-1206.34RUB</span></p></li>
-                <li>Не инвестировали в проекты</li>
-              </ul>
-            </main>
-          </section>
-          </div>
+      <!-- ВЫДАННЫЕ КРЕДИТЫ -->
+      <div class="fund-el_contatiner">
 
-          <!-- ПРОЧЕЕ -->
-          <div class="fund-el_contatiner">
+        <section>
+          <header>История выводов</header>
+          <main>
+            <ul>
+              <li><p><span>25.12.2024 ЮС 1002Кредит22</span> Кто: Сергей Анфалов <span>-7501,411RUB</span></p></li>
+              <li>Не было выводов</li>
+            </ul>
+          </main>
+        </section>
 
-          <section>
-            <header>Прочее</header>
-            <main>
-              <ul>
-                <li>Нет инвестиций</li>
-              </ul>
-            </main>
-          </section>
-
-          </div>
-        </div>
-
-        <!-- DEBT -->
-        <!--  -->
-        <div v-if="choosenChip_section === 'debt'">
-
-          <!-- ПРОПУЩЕННЫЕ ВЗНОСЫ -->
-          <div class="fund-el_contatiner">
-
-            <section>
-              <header>Пропущенные взносы</header>
-              <main>
-                <ul>
-                  <li>
-                    <p>Мои</p>
-                    <ul>
-                      <li>
-                        <p>ЮС</p>
-                        <ul>
-                          <li><p>18.01.2025 <span>100.00RUB</span>  </p></li>
-                          <li><p>25.01.2025 <span>100.00RUB</span>  </p></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Юлия</p>
-                    <ul>
-                      <li>
-                        <p>ЮС</p>
-                        <ul>
-                          <li><p>18.01.2025 <span>100.00RUB</span>  </p></li>
-                          <li><p>25.01.2025 <span>100.00RUB</span>  </p></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Глеб</p>
-                    <ul>
-                      <li>
-                        <p>Юнидрам</p>
-                        <ul>
-                          <li><p>18.11.2024 <span>100.00RUB</span>  </p></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>Нет пропусков</li>
-                </ul>
-              </main>
-
-            </section>
-          </div>
-          <!-- КРЕДИТЫ -->
-          <div class="fund-el_contatiner">
-
-            <section>
-              <header>Кредиты</header>
-              <main>
-                <ul>
-                  <li>
-                    <p>Мои</p>
-                    <ul>
-                      <li>
-
-                        <p>ЕС <span>7032,43RUB</span></p>
-                        <ul>
-                          <li><p>0611Кредит24   <span>5850,00RUB</span></p></li>
-                          <li><p>2008Кредит24 <span>1182,42RUB</span> </p></li>
+      </div>
+      </div>
   
-                        </ul>
-                        <!-- 1157,57RUB - 2340,00RUB  = -1182,42RUB-->
-                      </li>
-                      <li>
-                        <p>Ренессанс <span>24151,89RUB</span></p>
-                        <ul>
-                          <li>Кредит на товар <span>24151,89RUB</span></li>
-                          <!-- 29115,11RUB - 53967,00RUB =  -24151,89RUB-->
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <p>Глеб</p>
-                    <ul>
-                      <li>
-                        <p>Юнидрам <span>4165,00RUB</span></p>
-                        <ul>
-                          <li><p>0501Кредит24   <span>1404,00RUB</span></p></li>
-                          <li><p>0402Кредит24 <span>304,00RUB</span> </p></li>
-                          <li><p>0405Кредит24 <span>117,00RUB</span> </p></li>
-                          <li><p>1212Кредит24 <span>2340,00RUB</span> </p></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </main>
-            </section>
-          </div>
+      <!-- PROJECTS -->
+      <!--  -->
+      <div v-if="choosenChip_section === 'projects'">
+
+        <!-- ПРОЕКТЫ -->
+        <div class="fund-el_contatiner">
+        <section>
+          <header>Проекты</header>
+          <main>
+            <ul>
+              <li><p><span>ЕС</span> 1602РАТСА19 <span>-1206.34RUB</span></p></li>
+              <li>Не инвестировали в проекты</li>
+            </ul>
+          </main>
+        </section>
         </div>
-       </div>
+
+        <!-- ПРОЧЕЕ -->
+        <div class="fund-el_contatiner">
+
+        <section>
+          <header>Прочее</header>
+          <main>
+            <ul>
+              <li>Нет инвестиций</li>
+            </ul>
+          </main>
+        </section>
+
+        </div>
+      </div>
+
+      <!-- DEBT -->
+      <!--  -->
+      <div v-if="choosenChip_section === 'debt'">
+
+        <!-- ПРОПУЩЕННЫЕ ВЗНОСЫ -->
+        <div class="fund-el_contatiner">
+
+          <section>
+            <header>Пропущенные взносы</header>
+            <main>
+              <ul>
+                <li>
+                  <p>Мои</p>
+                  <ul>
+                    <li>
+                      <p>ЮС</p>
+                      <ul>
+                        <li><p>18.01.2025 <span>100.00RUB</span>  </p></li>
+                        <li><p>25.01.2025 <span>100.00RUB</span>  </p></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <p>Юлия</p>
+                  <ul>
+                    <li>
+                      <p>ЮС</p>
+                      <ul>
+                        <li><p>18.01.2025 <span>100.00RUB</span>  </p></li>
+                        <li><p>25.01.2025 <span>100.00RUB</span>  </p></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <p>Глеб</p>
+                  <ul>
+                    <li>
+                      <p>Юнидрам</p>
+                      <ul>
+                        <li><p>18.11.2024 <span>100.00RUB</span>  </p></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>Нет пропусков</li>
+              </ul>
+            </main>
+
+          </section>
+        </div>
+        <!-- КРЕДИТЫ -->
+        <div class="fund-el_contatiner">
+
+          <section>
+            <header>Кредиты</header>
+            <main>
+              <ul>
+                <li>
+                  <p>Мои</p>
+                  <ul>
+                    <li>
+
+                      <p>ЕС <span>7032,43RUB</span></p>
+                      <ul>
+                        <li><p>0611Кредит24   <span>5850,00RUB</span></p></li>
+                        <li><p>2008Кредит24 <span>1182,42RUB</span> </p></li>
+
+                      </ul>
+                      <!-- 1157,57RUB - 2340,00RUB  = -1182,42RUB-->
+                    </li>
+                    <li>
+                      <p>Ренессанс <span>24151,89RUB</span></p>
+                      <ul>
+                        <li>Кредит на товар <span>24151,89RUB</span></li>
+                        <!-- 29115,11RUB - 53967,00RUB =  -24151,89RUB-->
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <p>Глеб</p>
+                  <ul>
+                    <li>
+                      <p>Юнидрам <span>4165,00RUB</span></p>
+                      <ul>
+                        <li><p>0501Кредит24   <span>1404,00RUB</span></p></li>
+                        <li><p>0402Кредит24 <span>304,00RUB</span> </p></li>
+                        <li><p>0405Кредит24 <span>117,00RUB</span> </p></li>
+                        <li><p>1212Кредит24 <span>2340,00RUB</span> </p></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </main>
+          </section>
+        </div>
+      </div>
+      </div>
      </section>
 
     <!-- <div>
@@ -2358,6 +2470,45 @@ watch(currentAffiliation, () => {
   .current-fund-ledger_container {
     margin-top: 1rem;
   }
+
+  .transaction_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* TRANSACTION */
+  .transaction_wrapper {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 15% 20% 1fr 20%;
+    grid-template-areas: 't_first details details detatils';
+  }
+  .transaction-first {
+    grid-area: t_first;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .transacion_purpose {
+    align-self: left;
+    justify-self: center;
+    width: max-content;
+    padding: 0px 6px;
+    border-radius: .5rem;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  .transaction_date {
+    align-self: left;
+    font-size: 0.8rem; 
+    margin-bottom: 0.5rem;
+  }
+  .transaction_details {
+    grid-area: details;
+  }
+
   .ledger-list_el {
     display: grid;
     grid-template-columns: 15% 15% 1fr 10%;
