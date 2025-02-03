@@ -152,6 +152,15 @@ const wallet_sections = ref([
     ]
   },
   {
+    id: 6,
+    title: 'Займы',
+    total: 203705.14,
+    name: 'invested_loan',
+    aticles: [
+
+    ]
+  },
+  {
     id: 7,
     title: 'Старт проекты',
     total: 203705.14,
@@ -169,33 +178,33 @@ const wallet_sections = ref([
 
     ]
   },
-  { 
-    id: 9,
-    title: 'Вывод',
-    total: 0.00,
-    name: 'withdraw',
-    aticles: [
+  // { 
+  //   id: 9,
+  //   title: 'Вывод',
+  //   total: 0.00,
+  //   name: 'withdraw',
+  //   aticles: [
 
-    ]
-  },
-  { 
-    id: 10,
-    title: '+Депозит',
-    total: 0.00,
-    name: 'deposit',
-    aticles: [
+  //   ]
+  // },
+  // { 
+  //   id: 10,
+  //   title: '+Депозит',
+  //   total: 0.00,
+  //   name: 'deposit',
+  //   aticles: [
 
-    ]
-  },
-  { 
-    id: 11,
-    title: 'Расходы',
-    total: 0.00,
-    name: 'expenses',
-    aticles: [
+  //   ]
+  // },
+  // { 
+  //   id: 11,
+  //   title: 'Расходы',
+  //   total: 0.00,
+  //   name: 'expenses',
+  //   aticles: [
 
-    ]
-  }
+  //   ]
+  // }
 ])
 
 
@@ -1072,6 +1081,9 @@ const ledger = ref([
     send_amount: 1.00,
     send_amount_price: 10000.00,
     send_amount_currency: 'RUB',
+    // sign
+    sign_user_id: 'conspirator',
+    sign_user_type: 2
   },
   {
     id: 7,
@@ -1117,6 +1129,199 @@ const ledger = ref([
   }
 ])
 
+const mesh_list = ref([
+  {
+    id: 1,
+    type: 'debet_card',
+    tag: 'available',
+    name: 'Картусечка',
+    broker_tag: 'SBER',
+    ownerID: 1,
+    ownerType: 'user'
+  },
+  {
+    id: 2,
+    type: 'saving_account',
+    tag: 'available',
+    name: 'Хранилище 1',    
+    broker_tag: 'Yandex',
+    ownerID: 1,
+    ownerType: 'conspirator'
+  },
+  {
+    id: 3,
+    type: 'brokerage_account',
+    tag: 'invested_stock',
+    name: 'Брокерский счет',
+    broker_tag: 'T-Bank',
+    ownerID: 4,
+    ownerType: 'conspirator'
+  },
+  {
+    id: 4,
+    type: 'cash',
+    tag: 'available',
+    name: 'Счет №321',
+    broker_tag: 'SBER',
+    ownerID: 3,
+    ownerType: 'conspirator'
+  },
+  {
+    id: 5,
+    type: 'loan-interest',
+    tag: 'invested_loan',
+    name: '3001Кредит2025',
+    broker_tag: 'ЕС',
+    ownerID: 5,
+    ownerType: 'conspirator'
+  }
+])
+
+const transaction_ledger = ref([
+  {
+    id: 1,
+    created_at: '2024-12-08 17:48:02',
+    //
+    tag: 'income',
+    purpose: 'weekly',
+    fee: 0.00,
+    //
+    from_mesh_id: 1,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 1000.00,
+    //
+    //
+    income_mesh_id: 2,
+    income_mesh_currency: 'RUB',
+    income_mesh_amount: 1.00,
+    income_mesh_price: 1000.00,
+    //
+    comments: '',
+  },
+  {
+    id: 2,
+    created_at: '2024-12-09 17:48:02',
+    //
+    tag: 'outcome',
+    purpose: 'withdraw',
+    fee: 0.00,
+    //
+    from_mesh_id: 3,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 500.00,
+    //
+    //
+    income_mesh_id: 2,
+    income_mesh_currency: 'RUB',
+    income_mesh_amount: 1.00,
+    income_mesh_price: 500.00,
+    //
+    comments: '',
+  },
+  {
+    id: 3,
+    created_at: '2024-12-09 17:48:02',
+    //
+    tag: 'outcome',
+    purpose: 'withdraw',
+    fee: 0.00,
+    //
+    from_mesh_id: 3,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 500.00,
+    //
+    income_mesh_id: null,
+    income_mesh_currency: '',
+    income_mesh_amount: null,
+    income_mesh_price: null,
+    //
+    comments: '',
+  },
+  {
+    id: 4,
+    created_at: '2024-12-09 17:48:02',
+    //
+    tag: 'outcome',
+    purpose: 'tax',
+    fee: 0.00,
+    //
+    from_mesh_id: 3,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 500.00,
+    //
+    income_mesh_id: null,
+    income_mesh_currency: '',
+    income_mesh_amount: null,
+    income_mesh_price: null,
+    //
+    comments: '',
+  },
+  {
+    id: 5,
+    created_at: '2024-12-15 17:48:02',
+    //
+    tag: 'outcome',
+    purpose: 'tax',
+    fee: 0.00,
+    //
+    from_mesh_id: 2,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 44.00,
+    //
+    income_mesh_id: null,
+    income_mesh_currency: '',
+    income_mesh_amount: null,
+    income_mesh_price: null,
+    //
+    comments: '',
+  },
+  {
+    id: 6,
+    created_at: '2024-12-15 17:48:02',
+    //
+    name: 'issue',
+    tag: 'loan-interest',
+    fee: 0.00,
+    //
+    from_mesh_id: 2,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 1000.00,
+    //
+    income_mesh_id: 5,
+    income_mesh_currency: 'RUB',
+    income_mesh_amount: 1.00,
+    income_mesh_price: 1000.00,
+    //
+    comments: '',
+  },
+  {
+    id: 7,
+    created_at: '2024-12-15 17:48:02',
+    //
+    name: 'repayment',
+    tag: 'loan-interest',
+    fee: 0.00,
+    //
+    from_mesh_id: 5,
+    from_mesh_currency: 'RUB',
+    from_mesh_amount: 1.00,
+    from_mesh_price: 200.00,
+    //
+    income_mesh_id: 2,
+    income_mesh_currency: 'RUB',
+    income_mesh_amount: 1.00,
+    income_mesh_price: 200.00,
+    //
+    comments: '',
+  }
+])
+
 // COMPUTED
 // conspirators_fund
 const conspirators_fund_computed = computed(() => {
@@ -1129,11 +1334,37 @@ const conspirators_fund_computed = computed(() => {
   return array
 })
 
+//= transaction_ledger
+const transaction_ledger_computed = computed(() => {
+  let array:any = []
+
+  transaction_ledger.value.forEach(transaction => {
+    
+    meshes_computed.value.forEach(mesh => {
+      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.income_mesh_id) {
+        array.push(transaction)
+      }
+    })
+  })
+
+  return [...new Set (array)]
+})
+
+//= meshes
+const meshes_computed = computed(() => {
+  return mesh_list.value.filter(el => el.tag === choosenChip_section.value)
+})
+
 // HELPERS
 //= filter funds by group
 const filteredFundByGroupName = (groupType: string, fundsArray: any) => {
   const result = [...fundsArray].filter(el => el.tagType === groupType)
   
+  return result
+}
+const filterMeshByWalletType = (type: string, array: any) => {
+  const result = [...array].filter(el => el.type === type)
+
   return result
 }
 //= calc Profit
@@ -1546,6 +1777,10 @@ watch(currentAffiliation, () => {
 
     </div>
 
+    {{ [...new Set([...mesh_list.map(obj => obj.tag)])] }}
+    <br>
+    
+
     <!-- === INFO SECTION === -->
     <div id="fund-block" class="wallet-section_container">
 
@@ -1609,6 +1844,13 @@ watch(currentAffiliation, () => {
 
       <!-- LEDGER -->
       <div v-if="currentFundParagraph === 'history'" class="current-fund_wrapper">
+
+        <div class="current-fund-ledger_container">
+          <div v-for="transaction in transaction_ledger_computed">
+            <p style="margin: 0;">{{ transaction.purpose }} <span>from: {{ transaction.from_mesh_id }}</span> <span>to: {{ transaction.income_mesh_id }}</span></p>
+            <p>{{ transaction }}</p>
+          </div>
+        </div>
         
         <div class="current-fund-ledger_container" v-if="ledger.filter(el => el.fund_type === choosenChip_section || el.from_fund_type === choosenChip_section).length !== 0">
   
@@ -1658,11 +1900,30 @@ watch(currentAffiliation, () => {
 
       <!-- MESHES -->
        <div v-if="currentFundParagraph === 'meshes'" class="current-fund_wrapper">
+        <section
+          v-for="group in [...new Set([...meshes_computed.map(obj => {
+            return {
+              type: obj.type, 
+              tag: obj.tag
+            }
+          }) ])]"
+          style="margin-top: 1rem;"
+          class="fund_group_container"
+        >
+          <header>
+            <h4>{{ group.type }}</h4>
+          </header>
+          <main style="margin-top: 1rem;">
 
+            <!-- LENGTH -->
+            <section v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)">
+              {{ mesh }}
+            </section>
+          </main>
+      </section>
 
         <section 
-          v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)"
-          style="margin-top: 1rem;"  
+          v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)" 
           class="fund_group_container"
         >
           <header>
@@ -1675,7 +1936,7 @@ watch(currentAffiliation, () => {
               v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
               class="fund-list"
             >
-
+              
               <!--  -->
               <Section 
                 style="cursor: pointer;"

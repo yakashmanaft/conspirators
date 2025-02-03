@@ -153,6 +153,60 @@ model LeadHistoryLedger {
 // tagType
 // brokerTag
 
+//= wallet type:
+// available
+// deposit
+// invested_stock
+// invested_crypto
+// invested_deposit
+// invested_currency
+// invested_loan
+// invested_project
+// tax_fund
+// dept
+// project
+// expenses
+// salary
+// 
+//
+//
+//= mesh type 
+// saving_account
+// debet_card
+// cash
+// mutual_fund
+// brokerage_account
+// crypto-wallet
+// crypto-stock
+// crypto-stacking
+// deposit-capitalize
+// deposit-wocapitalize
+// currency-usd
+// currency-cny
+// currency-hkd
+// loan-interest
+// loan-free
+
+//= purpose of payment
+// deposit (income размывает долю)
+// dividend (дивиденды)
+// coupon (купоны)
+// tax (налог)
+// fee (комиссия)
+// salary (зарплата)
+// weekly (еженедельный взнос)
+// gift (дар)
+// withdraw (outcome размывает долю)
+// repayment (погашение чего-либо (займа))
+// issue (выдача)
+// 
+
+//= tag of payment
+// income
+// outcome
+// buy
+// sale
+
 enum Urgency {
   low
   middle
