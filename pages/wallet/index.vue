@@ -1157,12 +1157,12 @@ const transaction_ledger_computed = computed(() => {
 
           array.push({
             id: transaction.id,
+            // DETAILS
             created_at: transaction.created_at,
             purpose: transaction.purpose,
-            //
             fee: transaction.fee,
             comments: transaction.comments,
-            // 
+            // FROM
             from_mesh_type: from_obj?.type,
             from_mesh_tag: from_obj?.tag,
             from_mesh_name: from_obj?.name,
@@ -1172,7 +1172,7 @@ const transaction_ledger_computed = computed(() => {
             from_mesh_price: transaction.from_mesh_price,
             from_mesh_owner_id: from_obj?.ownerID, 
             from_mesh_owner_type: from_obj?.ownerType,
-            // 
+            // RECIEVE
             receive_mesh_type: receive_obj?.type,
             receive_mesh_tag: receive_obj?.tag,
             receive_mesh_name: receive_obj?.name,
