@@ -1129,199 +1129,6 @@ const ledger = ref([
   }
 ])
 
-const mesh_list = ref([
-  {
-    id: 1,
-    type: 'debet_card',
-    tag: 'available',
-    name: 'Картусечка',
-    broker_tag: 'SBER',
-    ownerID: 1,
-    ownerType: 'user'
-  },
-  {
-    id: 2,
-    type: 'saving_account',
-    tag: 'available',
-    name: 'Хранилище 1',    
-    broker_tag: 'Yandex',
-    ownerID: 5,
-    ownerType: 'conspirator'
-  },
-  {
-    id: 3,
-    type: 'brokerage_account',
-    tag: 'invested_stock',
-    name: 'Брокерский счет',
-    broker_tag: 'T-Bank',
-    ownerID: 5,
-    ownerType: 'conspirator'
-  },
-  {
-    id: 4,
-    type: 'cash',
-    tag: 'available',
-    name: 'Счет №321',
-    broker_tag: 'SBER',
-    ownerID: 1,
-    ownerType: 'user'
-  },
-  {
-    id: 5,
-    type: 'loan-interest',
-    tag: 'invested_loan',
-    name: '3001Кредит2025',
-    broker_tag: 'ЕС',
-    ownerID: 5,
-    ownerType: 'conspirator'
-  }
-])
-
-const transaction_ledger = ref([
-  {
-    id: 1,
-    created_at: '2024-12-08 17:48:02',
-    //
-    tag: 'receive',
-    purpose: 'weekly',
-    fee: 0.00,
-    //
-    from_mesh_id: 1,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 1000.00,
-    //
-    //
-    receive_mesh_id: 2,
-    receive_mesh_currency: 'RUB',
-    receive_mesh_amount: 1.00,
-    receive_mesh_price: 1000.00,
-    //
-    comments: '',
-  },
-  {
-    id: 2,
-    created_at: '2024-12-09 17:48:02',
-    //
-    tag: 'outcome',
-    purpose: 'withdraw',
-    fee: 0.00,
-    //
-    from_mesh_id: 3,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 500.00,
-    //
-    //
-    receive_mesh_id: 2,
-    receive_mesh_currency: 'RUB',
-    receive_mesh_amount: 1.00,
-    receive_mesh_price: 500.00,
-    //
-    comments: '',
-  },
-  {
-    id: 3,
-    created_at: '2024-12-09 17:48:02',
-    //
-    tag: 'outcome',
-    purpose: 'withdraw',
-    fee: 0.00,
-    //
-    from_mesh_id: 3,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 500.00,
-    //
-    receive_mesh_id: null,
-    receive_mesh_currency: '',
-    receive_mesh_amount: null,
-    receive_mesh_price: null,
-    //
-    comments: '',
-  },
-  {
-    id: 4,
-    created_at: '2024-12-09 17:48:02',
-    //
-    tag: 'outcome',
-    purpose: 'tax',
-    fee: 0.00,
-    //
-    from_mesh_id: 3,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 500.00,
-    //
-    receive_mesh_id: null,
-    receive_mesh_currency: '',
-    receive_mesh_amount: null,
-    receive_mesh_price: null,
-    //
-    comments: '',
-  },
-  {
-    id: 5,
-    created_at: '2024-12-15 17:48:02',
-    //
-    tag: 'outcome',
-    purpose: 'tax',
-    fee: 0.00,
-    //
-    from_mesh_id: 2,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 44.00,
-    //
-    receive_mesh_id: null,
-    receive_mesh_currency: '',
-    receive_mesh_amount: null,
-    receive_mesh_price: null,
-    //
-    comments: '',
-  },
-  {
-    id: 6,
-    created_at: '2024-12-15 17:48:02',
-    //
-    name: 'loan-interest',
-    purpose: 'issue',
-    fee: 0.00,
-    //
-    from_mesh_id: 2,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 1000.00,
-    //
-    receive_mesh_id: 5,
-    receive_mesh_currency: 'RUB',
-    receive_mesh_amount: 1.00,
-    receive_mesh_price: 1000.00,
-    //
-    comments: '',
-  },
-  {
-    id: 7,
-    created_at: '2024-12-15 17:48:02',
-    //
-    name: 'loan-interest',
-    purpose: 'payment',
-    fee: 0.00,
-    //
-    from_mesh_id: 4,
-    from_mesh_currency: 'RUB',
-    from_mesh_amount: 1.00,
-    from_mesh_price: 200.00,
-    //
-    receive_mesh_id: 5,
-    receive_mesh_currency: 'RUB',
-    receive_mesh_amount: 1.00,
-    receive_mesh_price: 200.00,
-    //
-    comments: '',
-  }
-])
-
 // COMPUTED
 // conspirators_fund
 const conspirators_fund_computed = computed(() => {
@@ -1336,55 +1143,64 @@ const conspirators_fund_computed = computed(() => {
 
 //= transaction ledger
 const transaction_ledger_computed = computed(() => {
-  let array:any = []
+  let array:any = new Array()
 
-  transaction_ledger.value.forEach(transaction => {
+  transaction_ledger.value?.forEach(transaction => {
     
-    meshes_computed.value.forEach(mesh => {
+    meshes_computed.value?.forEach(mesh => {
       if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id) {
 
         let from_obj = translateMeshByID(transaction?.from_mesh_id)
         let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
 
-        array.push({
-          id: transaction.id,
-          created_at: transaction.created_at,
-          name: transaction.name,
-          purpose: transaction.purpose,
-          //
-          fee: transaction.fee,
-          comments: transaction.comments,
-          // 
-          from_mesh_type: from_obj?.type,
-          from_mesh_tag: from_obj?.tag,
-          from_mesh_name: from_obj?.name,
-          from_mesh_broker_tag: from_obj?.broker_tag,
-          from_mesh_currency: transaction.from_mesh_currency,
-          from_mesh_amount: transaction.from_mesh_amount,
-          from_mesh_price: transaction.from_mesh_price,
-          from_mesh_owner_id: from_obj?.ownerID, 
-          from_mesh_owner_type: from_obj?.ownerType,
-          // 
-          receive_mesh_type: receive_obj?.type,
-          receive_mesh_tag: receive_obj?.tag,
-          receive_mesh_name: receive_obj?.name,
-          receive_mesh_broker_tag: receive_obj?.broker_tag,
-          receive_mesh_currency: transaction.receive_mesh_currency,
-          receive_mesh_amount: transaction.receive_mesh_amount,
-          receive_mesh_price: transaction.receive_mesh_price,
-          receive_mesh_owner_id: receive_obj?.ownerID, 
-          receive_mesh_owner_type: receive_obj?.ownerType, 
-        })
+        if(from_obj && receive_obj) {
+
+          array.push({
+            id: transaction.id,
+            created_at: transaction.created_at,
+            purpose: transaction.purpose,
+            //
+            fee: transaction.fee,
+            comments: transaction.comments,
+            // 
+            from_mesh_type: from_obj?.type,
+            from_mesh_tag: from_obj?.tag,
+            from_mesh_name: from_obj?.name,
+            from_mesh_broker_tag: from_obj?.broker_tag,
+            from_mesh_currency: transaction.from_mesh_currency,
+            from_mesh_amount: transaction.from_mesh_amount,
+            from_mesh_price: transaction.from_mesh_price,
+            from_mesh_owner_id: from_obj?.ownerID, 
+            from_mesh_owner_type: from_obj?.ownerType,
+            // 
+            receive_mesh_type: receive_obj?.type,
+            receive_mesh_tag: receive_obj?.tag,
+            receive_mesh_name: receive_obj?.name,
+            receive_mesh_broker_tag: receive_obj?.broker_tag,
+            receive_mesh_currency: transaction.receive_mesh_currency,
+            receive_mesh_amount: transaction.receive_mesh_amount,
+            receive_mesh_price: transaction.receive_mesh_price,
+            receive_mesh_owner_id: receive_obj?.ownerID, 
+            receive_mesh_owner_type: receive_obj?.ownerType, 
+          })
+        }
+
       }
     })
   })
+  if(array.length) {
 
-  return [...new Set (array)]
+    array.reverse()
+
+    const unique = array.filter((obj, idx, arr) => 
+    idx === arr.findIndex((t) => t.id === obj.id));
+    return unique
+  }
 })
 
 //= meshes array
 const meshes_computed = computed(() => {
-  return mesh_list.value.filter(el => el.tag === choosenChip_section.value)
+  return mesh_list.value?.filter(el => el.tag === choosenChip_section.value)
 })
 
 // HELPERS
@@ -1457,7 +1273,7 @@ const calcColorByProfit = (fundPrice, fundInvested) => {
 //= meshes id in transactions
 const translateMeshByID = (id: number) => {
   let mesh;
-  if(mesh_list.value.length) {
+  if(mesh_list.value?.length) {
     mesh = mesh_list.value.find(mesh => mesh.id === id)
   }
   return mesh
@@ -1768,6 +1584,23 @@ watch(currentAffiliation, () => {
   console.log(currentAffiliation.value)
   currentFundParagraph.value = 'meshes'
 })
+
+// BD
+//
+// mesh
+const { data: mesh_list } = useFetch("/api/mesh/mesh", {
+  lazy: false,
+  transform: (mesh_list) => {
+    return mesh_list
+  }
+})
+// transaction_ledger
+const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
+  lazy: false,
+  transform: (transaction_ledger) => {
+    return transaction_ledger
+  }
+})
 </script>
 
 <template>
@@ -1831,8 +1664,9 @@ watch(currentAffiliation, () => {
 
     </div>
 
-    {{ [...new Set([...mesh_list.map(obj => obj.tag)])] }}
-    <br>
+    <p v-if="mesh_list">
+      {{ [...new Set([...mesh_list?.map(obj => obj.tag)])] }}
+    </p> 
     
 
     <!-- === INFO SECTION === -->
@@ -1908,17 +1742,17 @@ watch(currentAffiliation, () => {
             v-for="transaction in transaction_ledger_computed"
             class="transaction_wrapper"  
           >
-            <!-- tFirst -->
-            <div class="transaction-first">
-              <!-- DATE -->
-
-              <p class="transaction_date">{{ transaction.created_at }}</p>
-
-              <!-- PURPOSE -->
-              <p 
-                class="transacion_purpose"
-                :style="setBgColorByOperationType(transaction.purpose)"
-              >
+          <!-- tFirst -->
+          <div class="transaction-first">
+            <!-- DATE -->
+            
+            <p class="transaction_date">{{ transaction.created_at }}</p>
+            
+            <!-- PURPOSE -->
+            <p 
+            class="transacion_purpose"
+            :style="setBgColorByOperationType(transaction.purpose)"
+            >
                 {{ transaction.purpose }} 
               </p>
             </div>
@@ -1948,9 +1782,6 @@ watch(currentAffiliation, () => {
               </div>
             </div>
 
-            <!--  -->
-            <!-- <p style="margin: 0;"> <span>from: {{ transaction.from_mesh_id }}</span> <span>to: {{ transaction.receive_mesh_id }}</span></p> -->
-            <!-- <p style="grid-area: item">{{ transaction }}</p> -->
           </div>
         </div>
         <!-- else -->
@@ -2006,7 +1837,7 @@ watch(currentAffiliation, () => {
       <div v-if="currentFundParagraph === 'meshes'">
 
         <!-- LENGTH -->
-        <div class="current-fund_wrapper" v-if="meshes_computed.length">
+        <div class="current-fund_wrapper" v-if="meshes_computed?.length">
           <section
             v-for="group in [...new Set([...meshes_computed.map(obj => {
               return {
