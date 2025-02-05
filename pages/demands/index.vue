@@ -619,6 +619,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
             :padding="true" 
             :bg="set_bgColor_by_Urgency(item)" 
             :fDirection="`column`"
+            :fAlignItems="`flex-start`"
             v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" 
             @click="$router.push(`demands/${item.id}`)"
             style="cursor: pointer; position: relative;"

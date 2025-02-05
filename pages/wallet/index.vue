@@ -1416,7 +1416,7 @@ const changeChipAffiliation = (obj: any) => {
   currentAffiliation.value = obj
 }
 
-// Colorized
+// COLLRIZED
 //
 //= set_section_bgColor
 const set_section_bgColor = (section: any) => {
@@ -1530,7 +1530,7 @@ const set_section_bgColor = (section: any) => {
   return color
 }
 //= set Color By Operation Type
-const setBgColorByOperationType = (operationType) => {
+const setBgColorByOperationType = (operationType: string) => {
   if(operationType === 'invest') {
     return 'background-color: var(--color-wallet-fund-invested)'
   }
@@ -1574,7 +1574,7 @@ const sumTotalAvailable = (id: number) => {
   return sum.toFixed(2)
 }
 
-// WATCh
+// WATCH
 //= choosenChip_section
 watch(choosenChip_section, () => {
   console.log(`Переключили вкладку на ${choosenChip_section.value}`)
@@ -1734,27 +1734,27 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
       <!-- LEDGER -->
       <div v-if="currentFundParagraph === 'history'" class="current-fund_wrapper">
 
-        <!-- length -->
-        <div class="current-fund-ledger_container transaction_container" v-if="transaction_ledger_computed.length">
+        <!--if length -->
+        <div class="transaction_container" v-if="transaction_ledger_computed?.length">
 
           <!-- TRANSACTION -->
-          <div 
+          <section 
             v-for="transaction in transaction_ledger_computed"
             class="transaction_wrapper"  
           >
-          <!-- tFirst -->
-          <div class="transaction-first">
-            <!-- DATE -->
-            
-            <p class="transaction_date">{{ transaction.created_at }}</p>
-            
-            <!-- PURPOSE -->
-            <p 
-            class="transacion_purpose"
-            :style="setBgColorByOperationType(transaction.purpose)"
-            >
-                {{ transaction.purpose }} 
-              </p>
+            <!-- tFirst -->
+            <div class="transaction-first">
+              <!-- DATE -->
+              
+              <p class="transaction_date">{{ transaction.created_at }}</p>
+              
+              <!-- PURPOSE -->
+              <p 
+              class="transacion_purpose"
+              :style="setBgColorByOperationType(transaction.purpose)"
+              >
+                  {{ transaction.purpose }} 
+                </p>
             </div>
 
             <!-- DETAILS -->
@@ -1782,62 +1782,19 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               </div>
             </div>
 
-          </div>
+          </section>
         </div>
         <!-- else -->
-        <div class="current-fund-ledger_container" v-else>Нет операций</div>
+        <div class="transaction_container" v-else>Нет операций</div>
 
-        <!--  -->
-        <div class="current-fund-ledger_container" v-if="ledger.filter(el => el.fund_type === choosenChip_section || el.from_fund_type === choosenChip_section).length !== 0">
-  
-          <!-- LEDGER ITEM -->
-          <div class="ledger-list_el" v-for="item in ledger.filter(el => el.fund_type === choosenChip_section || el.from_fund_type === choosenChip_section)">
-            <!-- DATE -->
-            <div class="el_date">{{ item.created_at }}</div>
-  
-            <!-- OPERATION TYPE -->
-            <div class="el_type" :style="setBgColorByOperationType(item.operation_type)">{{ item.operation_type }}</div>
-  
-            <!-- TRANSACTION -->
-            <div class="el_fund" style="display: flex; gap: 1rem;">
-              <div style="display: flex; flex-direction: column;">
-                <p style="margin: 0;">{{ translateFundBrokerTag(item.from_fund_id) }} <span style="font-size: 0.8rem;background-color: var(--color-btn-disabled-bg)">{{ translateFundName(item.from_fund_id) }}</span></p>
-                <p style="margin: 0; font-size: 0.8rem;">
-                  <span style="background-color: var(--color-btn-disabled-bg)">{{ item.from_fund_type }}</span>
-                  <span style="background-color: var(--color-btn-disabled-bg)">{{item.from_fund_tag}}</span>
-                </p>
-                <p style="margin: 0;">
-  
-                  <span>-{{ item.send_amount }}лот. х {{ item.send_amount_price }}{{ item.send_amount_currency }}</span>
-                </p>
-              </div>
-              <div>
-                >>>
-              </div>
-              <div style="display: flex; flex-direction: column;">
-                <p style="margin: 0;">{{ translateFundName(item.fund_id) }} <span style="font-size: 0.8rem;background-color: var(--color-btn-disabled-bg)">{{ translateFundBrokerTag(item.fund_id) }}</span></p>
-                <p style="margin: 0; font-size: 0.8rem;">
-  
-                  <span style="background-color: var(--color-btn-disabled-bg)">{{ item.fund_type }}</span>
-                  <span style="background-color: var(--color-btn-disabled-bg)">{{item.fund_tag}}</span>
-                </p>
-                <p style="margin: 0;">
-  
-                  <span>+{{ item.recieved_amount }}лот. х {{item?.recieved_amount_price}}{{ item.recieved_amount_currency }}</span>
-                </p>
-              </div>
-            </div>
-            <div class="el_operator">{{ item.operator_id }}</div>
-            <!-- <div class="el_item">{{ item }}</div> -->
-          </div>
-        </div>
       </div>
 
       <!-- MESHES -->
-      <div v-if="currentFundParagraph === 'meshes'">
+      <div v-if="currentFundParagraph === 'meshes'" class="current-fund_wrapper">
 
         <!-- LENGTH -->
-        <div class="current-fund_wrapper" v-if="meshes_computed?.length">
+        <div v-if="meshes_computed?.length">
+
           <section
             v-for="group in [...new Set([...meshes_computed.map(obj => {
               return {
@@ -1846,22 +1803,36 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               }
             }) ])]"
             style="margin-top: 1rem;"
-            class="fund_group_container"
+            class="mesh_group_container"
           >
+            <!-- mesh group name -->
             <header>
               <h4>{{ group.type }}</h4>
             </header>
+
+            <!-- mesh array container -->
             <main style="margin-top: 1rem;">
 
-              <section v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)">
-                {{ mesh }}
-              </section>
+              <!-- Mesh item -->
+              <Section 
+                v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)"
+                @click="$router.push(`mesh/${mesh.id}`)"
+                fGap="24px"  
+                fDirection="row"
+                fJustifyContent="space-between"
+                fAlignItems="center"
+              >
+                <div style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
+                <div>
+                  {{ mesh }}
+                </div>
+              </Section>
 
             </main>
           </section>
         </div>
         <!-- ELSE -->
-        <div class="fund_group_container" v-else>
+        <div v-else>
           <p style="margin-top: 1rem;">У вас нет мешков</p>
         </div>
 
@@ -1933,6 +1904,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 
       </section>
 
+      <!-- ОБРАБОТАТЬ! -->
       <section class="fund_group_container" v-if="wallet_fund_group.filter(el => el.tagName === choosenChip_section).length === 0"><p style="margin-top: 1rem;">Ни одного мешка</p></section>
       <!-- CREDITS -->
       <!--  -->
@@ -2298,17 +2270,25 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
-  .current-fund-ledger_container {
-    margin-top: 1rem;
+
+  /* CURRENT FUND CONTAINER */
+  .current-fund_container {
+    /* margin-left: 0.5rem;
+    margin-right: 0.5rem; */
   }
 
+  /* MESH */
+  .mesh_group_container {
+
+  }
+  
+  /* TRANSACTION */
   .transaction_container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-top: 1rem;
   }
-
-  /* TRANSACTION */
   .transaction_wrapper {
     display: grid;
     align-items: center;
@@ -2335,45 +2315,10 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     align-self: left;
     font-size: 0.8rem; 
     margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
   .transaction_details {
     grid-area: details;
-  }
-
-  .ledger-list_el {
-    display: grid;
-    grid-template-columns: 15% 15% 1fr 10%;
-    grid-template-areas: 'date type fund operator'  
-                          'item item item item';
-    border-bottom: 0.5px solid var(--color-btn-wo-bg);
-  }
-  .el_type {
-    grid-area: type;
-    align-self: center;
-    justify-self: center;
-    width: max-content;
-    padding: 0px 6px;
-    border-radius: .5rem;
-    font-size: 0.8rem;
-  }
-  .el_date {
-    grid_area: date;
-    align-self: center;
-    font-size: 0.8rem;
-  }
-  .el_fund {
-    grid_area: fund;
-    align-self: center;
-    display: flex;
-    align-items: center;
-  }
-  .el_operator {
-    grid-area: operator;
-    align-self: center;
-  }
-  .el_item {
-    grid-area: item;
-    align-self: center;
   }
 
 /*  */
@@ -2393,10 +2338,21 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .section-header_wrapper p {
     font-size: 16px;
   }
-  .current-fund-ledger_container {
+
+  /* CURRENT FUND CONTAINER */
+  .current-fund_container {
     margin-left: .5rem;
     margin-right: .5rem;
   }
+
+  /* TRANSACTION */
+  .transaction_container {
+    /* margin-left: .5rem;
+    margin-right: .5rem; */
+  }
+
+  /* MESH */
+
 }
 @media screen and (min-width: 576px) {
   .section-header_wrapper {
@@ -2421,14 +2377,26 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     margin-left: 1rem;
     margin-right: 1rem;
   }
-  .current-fund-ledger_container {
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
   .fund_list {
     gap: 1rem;
     grid-template-columns: 1fr;
     /* grid-template-columns: repeat(2, 1fr); */
+  }
+
+  /* CURRENT FUND CONTAINER */
+  .current-fund_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  /* MESH */
+  .mesh_group_container {
+
+  }
+
+  /* TRANSACTION */
+  .transaction_container {
+
   }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -2448,9 +2416,17 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .el_logo {
     justify-content: center;
   }
-  .current-fund-ledger_container {
+
+  /* CURRENT FUND CONTAINER */
+  .current-fund_container {
     margin-left: .5rem;
     margin-right: .5rem;
+  }
+
+  /* TRANSACTION */
+  .transaction_container {
+    /* margin-left: .5rem;
+    margin-right: .5rem; */
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
@@ -2467,9 +2443,17 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .el_logo {
     justify-content: center;
   }
-  .current-fund-ledger_container {
+
+  /* CURRENT FUND CONTAINER */
+  .current-fund_container {
     margin-left: .5rem;
     margin-right: .5rem;
+  }
+
+  /* TRANSACTION */
+  .transaction_container {
+    /* margin-left: .5rem;
+    margin-right: .5rem; */
   }
 }
 @media screen and (min-width: 1200px) {
@@ -2486,9 +2470,17 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .el_logo {
     justify-content: center;
   }
-  .current-fund-ledger_container {
+
+  /* CURRENT FUND CONTAINER */
+  .current-fund_container {
     margin-left: .5rem;
     margin-right: .5rem;
+  }
+
+  /* TRANSACTION */
+  .transaction_container {
+    /* margin-left: .5rem;
+    margin-right: .5rem; */
   }
 }
 </style>

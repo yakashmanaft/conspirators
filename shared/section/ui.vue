@@ -32,6 +32,10 @@
     fJustifyContent: {
       type: String,
       default: 'center'
+    },
+    fAlignItems: {
+      type: String,
+      default: 'center'
     }
   })
 </script>
@@ -47,9 +51,10 @@
     background-color: var(v-bind('props.bg'));
     /* width: 100%; */
     display: flex;
+    gap: v-bind('props.fGap');
     flex-direction: v-bind('props.fDirection');
-    /* align-items: center; */
     justify-content: v-bind('props.fJustifyContent');
+    align-items: v-bind('props.fAlignItems');
     gap: v-bind('props.fGap');
     height: 100%;
 }
