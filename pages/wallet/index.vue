@@ -1304,12 +1304,12 @@ const calcColorByProfit = (fundPrice, fundInvested) => {
   }
 }
 
-//=
+// MESH ITEM FUNC
 //= calc mesh invested
 const calcMeshInvested = (meshID: number) => {
 
   let result  = 0;
-  // let transactions = [...transaction_ledger?.value]
+  let transactions = transaction_ledger?.value
 
   // currency_to_show.ticket
 
@@ -1326,32 +1326,32 @@ const calcMeshInvested = (meshID: number) => {
   // transaction.receive_mesh_price
 
   // Пока считает  в рублях....
-  // transactions.forEach(transaction => {
+  if(transactions) {
 
-  //   if(transaction.purpose === 'weekly' || transaction.purpose === 'withdraw' || transaction.purpose === 'gift' || transaction.purpose === 'salary') {
+    transactions.forEach(transaction => {
+    // deposit
+    // deposit weekly
+    // gift
+    // withdraw
 
-  //     // if(transaction.from_mesh_id === meshID) {
-  //     //   result -= transaction.from_mesh_amount * transaction.from_mesh_price
-  //     // }
-  //     // if(transaction.receive_mesh_id === meshID) {
-  //     //   result += transaction.receive_mesh_amount * transaction.receive_mesh_price
-  //     // }
-  //     if (transaction.from_mesh_id === 0 && transaction.receive_mesh_id === meshID) {
-  //       result += transaction.receive_mesh_amount * transaction.receive_mesh_price
-  //     } 
-  //     if (transaction.from_mesh_id === meshID && transaction.receive_mesh_id === 0) {
-  //       result -= transaction.from_mesh_amount * transaction.from_mesh_price
-  //     }
-  //   }
-
-  // })
+      if(transaction.purpose === 'deposit' || transaction.purpose === 'deposit weekly'|| transaction.purpose === 'gift' || transaction.purpose === 'withdraw' ) {
+        if(transaction.from_mesh_id === meshID) {
+          result -= transaction.from_mesh_amount * transaction.from_mesh_price
+        }
+        if(transaction.receive_mesh_id === meshID) {
+          result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+        }
+      }
+  
+    })
+  }
 
   return result
 }
 // calc mesh available
 const calcMeshAvailable = (meshID: number) => {
   let result  = 0;
-  // let transactions = [...transaction_ledger?.value]
+  let transactions = transaction_ledger?.value
 
   // currency_to_show.ticket
 
@@ -1368,15 +1368,18 @@ const calcMeshAvailable = (meshID: number) => {
   // transaction.receive_mesh_price
 
   // Пока считает  в рублях....
-  // transactions.forEach(transaction => {
+  if(transactions){
 
-  //   if(transaction.from_mesh_id === meshID) {
-  //     result -= transaction.from_mesh_amount * transaction.from_mesh_price
-  //   }
-  //   else if(transaction.receive_mesh_id === meshID) {
-  //     result += transaction.receive_mesh_amount * transaction.receive_mesh_price
-  //   }
-  // })
+    transactions.forEach(transaction => {
+
+      if(transaction.receive_mesh_id === meshID) {
+        result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+      } 
+      else if(transaction.from_mesh_id === meshID) {
+        result -= transaction.from_mesh_amount * transaction.from_mesh_price
+      } 
+    })
+  }
 
   return result
 }
@@ -1390,6 +1393,20 @@ const calcMeshProfit = (meshID: number) => {
   result = available - invested
 
   return result
+
+}
+// calc mesh profit in percentage
+const calcMeshProfitPercent = (meshID: number) => {
+
+  let result = 0;
+  let invested = calcMeshInvested(meshID)
+  let available = calcMeshAvailable(meshID)
+
+
+  result = (available - invested) / invested * 100
+
+  return result
+
 }
 
 // TRANSLATE
@@ -1402,7 +1419,12 @@ const translateMeshByID = (id: number) => {
   return mesh
 }
 
-// data base
+// HELPERS
+//
+//= transform number to float
+const transformToFixed = (num: number) => {
+  return num.toFixed(2)
+}
 
 useHead({
   title: "Мой кошелек",
@@ -1512,7 +1534,8 @@ onMounted(() => {
 //     }
 // })
 
-// Translaters
+// TRANSLATORS
+//
 //= translate Fund Name
 const translateFundName = (fundId) => {
   let el = conspirators_fund.value.find(el => el.id === fundId)
@@ -1534,6 +1557,7 @@ const translateFundBrokerTag = (fundId) => {
 // }
 
 // CLICK
+//
 //= changeChipAffiliation
 const changeChipAffiliation = (obj: any) => {
   currentAffiliation.value = obj
@@ -1663,14 +1687,28 @@ const setBgColorByOperationType = (operationType: string) => {
   else if (operationType === 'withdraw') {
     return 'background-color: var(--color-wallet-fund-debt)'
   }
-  else if (operationType === 'donation') {
-    return 'background-color: var(--color-operation-type-donation)'
+  // PROFIT
+  else if (operationType === 'dividend') {
+    return 'background-color: var(--color-wallet-fund-available)'
   }
-  else if (operationType === 'donation weekly') {
-    return 'background-color: var(--color-operation-type-donation)'
-  }
+
   else {
     return 'background-color: var(--color-btn-disabled-bg)'
+  }
+
+}
+//= set color by profit
+const calcColorByMeshProfit = (meshID: number) => {
+
+  let result = calcMeshProfit(meshID)
+  if(result > 0) {
+    return `var(--color-urgency-low)`
+  } else if (result  < 0) {
+    return `var(--color-urgency-high)`
+  } else if (result === 0) {
+    return `var(--color-btn-wo-bg)`
+  } else {
+    return `orange!important`
   }
 }
 
@@ -1957,7 +1995,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                   <!--  -->
                   <div>
                     <!-- CURRENT AMOUNT -->
-                    <div style="font-weight: bold;">{{calcMeshAvailable(mesh.id)}}{{ currency_to_show.ticket }}</div>
+                    <div style="font-weight: bold;">{{transformToFixed(calcMeshAvailable(mesh.id), 2)}}{{ currency_to_show.ticket }}</div>
                     <!-- MESH NAME -->
                     <div>{{ mesh.name }}</div>
                     <!-- MESH OWNER -->
@@ -1966,13 +2004,20 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                 </div>
                 <!-- MESH TOTAL -->
                 <div
-                v-if="mesh.type !== 'debet_card' && mesh.type !== 'cash'" 
+                  v-if="mesh.type !== 'debet_card' && mesh.type !== 'cash'" 
                   style="text-wrap: nowrap; text-align: right;"
                 >
                   <!-- PROFIT -->
-                  <!-- <div style="font-size: .8rem;">{{calcMeshProfit(mesh.id)}}{{ currency_to_show.ticket }} * XX.XX%</div> -->
+                  <div style="font-size: .8rem; display: flex; align-items: center; gap: .5rem;" :style="`color: ${calcColorByMeshProfit(mesh.id)}`">
+                    <!-- amount -->
+                    <div>{{transformToFixed(calcMeshProfit(mesh.id))}}{{ currency_to_show.ticket }}</div>
+                    <!-- el separator -->
+                    <div style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByMeshProfit(mesh.id)}`"></div>
+                    <!-- percentage -->
+                    <div>{{ transformToFixed(calcMeshProfitPercent(mesh.id)) }}%</div>
+                  </div>
                   <!-- INVESTED -->
-                  <div>dep: {{calcMeshInvested(mesh.id)}}{{ currency_to_show.ticket }}</div>
+                  <div>dep: {{transformToFixed(calcMeshInvested(mesh.id))}}{{ currency_to_show.ticket }}</div>
                 </div>
               </Section>
 
