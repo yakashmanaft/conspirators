@@ -1182,6 +1182,41 @@ const transaction_ledger_computed = computed(() => {
             receive_mesh_price: transaction.receive_mesh_price,
             receive_mesh_owner_id: receive_obj?.ownerID, 
             receive_mesh_owner_type: receive_obj?.ownerType, 
+            // AUTHOR
+            authorID: transaction.authorID,
+            authorType: transaction.authorType
+          })
+        } else {
+          array.push({
+            id: transaction.id,
+            // DETAILS
+            created_at: transaction.created_at,
+            purpose: transaction.purpose,
+            fee: transaction.fee,
+            comments: transaction.comments,
+            // FROM
+            from_mesh_type: from_obj?.type,
+            from_mesh_tag: from_obj?.tag,
+            from_mesh_name: from_obj?.name,
+            from_mesh_broker_tag: from_obj?.broker_tag,
+            from_mesh_currency: transaction.from_mesh_currency,
+            from_mesh_amount: transaction.from_mesh_amount,
+            from_mesh_price: transaction.from_mesh_price,
+            from_mesh_owner_id: from_obj?.ownerID, 
+            from_mesh_owner_type: from_obj?.ownerType,
+            // RECIEVE
+            receive_mesh_type: receive_obj?.type,
+            receive_mesh_tag: receive_obj?.tag,
+            receive_mesh_name: receive_obj?.name,
+            receive_mesh_broker_tag: receive_obj?.broker_tag,
+            receive_mesh_currency: transaction.receive_mesh_currency,
+            receive_mesh_amount: transaction.receive_mesh_amount,
+            receive_mesh_price: transaction.receive_mesh_price,
+            receive_mesh_owner_id: receive_obj?.ownerID, 
+            receive_mesh_owner_type: receive_obj?.ownerType, 
+            // AUTHOR
+            authorID: transaction.authorID,
+            authorType: transaction.authorType
           })
         }
 
@@ -1267,6 +1302,94 @@ const calcColorByProfit = (fundPrice, fundInvested) => {
   } else {
     return 'var(--color-btn-wo-bg)'
   }
+}
+
+//=
+//= calc mesh invested
+const calcMeshInvested = (meshID: number) => {
+
+  let result  = 0;
+  // let transactions = [...transaction_ledger?.value]
+
+  // currency_to_show.ticket
+
+  // transaction.purpose
+  
+  // transaction.from_mesh_id
+  // transaction.from_mesh_currency
+  // transaction.from_mesh_amount
+  // transaction.from_mesh_price
+  
+  // transaction.receive_mesh_id
+  // transaction.receive_mesh_currency
+  // transaction.receive_mesh_amount
+  // transaction.receive_mesh_price
+
+  // Пока считает  в рублях....
+  // transactions.forEach(transaction => {
+
+  //   if(transaction.purpose === 'weekly' || transaction.purpose === 'withdraw' || transaction.purpose === 'gift' || transaction.purpose === 'salary') {
+
+  //     // if(transaction.from_mesh_id === meshID) {
+  //     //   result -= transaction.from_mesh_amount * transaction.from_mesh_price
+  //     // }
+  //     // if(transaction.receive_mesh_id === meshID) {
+  //     //   result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+  //     // }
+  //     if (transaction.from_mesh_id === 0 && transaction.receive_mesh_id === meshID) {
+  //       result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+  //     } 
+  //     if (transaction.from_mesh_id === meshID && transaction.receive_mesh_id === 0) {
+  //       result -= transaction.from_mesh_amount * transaction.from_mesh_price
+  //     }
+  //   }
+
+  // })
+
+  return result
+}
+// calc mesh available
+const calcMeshAvailable = (meshID: number) => {
+  let result  = 0;
+  // let transactions = [...transaction_ledger?.value]
+
+  // currency_to_show.ticket
+
+  // transaction.purpose
+  
+  // transaction.from_mesh_id
+  // transaction.from_mesh_currency
+  // transaction.from_mesh_amount
+  // transaction.from_mesh_price
+  
+  // transaction.receive_mesh_id
+  // transaction.receive_mesh_currency
+  // transaction.receive_mesh_amount
+  // transaction.receive_mesh_price
+
+  // Пока считает  в рублях....
+  // transactions.forEach(transaction => {
+
+  //   if(transaction.from_mesh_id === meshID) {
+  //     result -= transaction.from_mesh_amount * transaction.from_mesh_price
+  //   }
+  //   else if(transaction.receive_mesh_id === meshID) {
+  //     result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+  //   }
+  // })
+
+  return result
+}
+// calc mesh profit
+const calcMeshProfit = (meshID: number) => {
+  let result = 0;
+  let invested = calcMeshInvested(meshID)
+  let available = calcMeshAvailable(meshID)
+
+
+  result = available - invested
+
+  return result
 }
 
 // TRANSLATE
@@ -1782,6 +1905,11 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               </div>
             </div>
 
+            <!-- AUTHOR -->
+            <div>
+              <div>{{ transaction.authorType }}{{ transaction.authorID }}</div>
+            </div>
+
           </section>
         </div>
         <!-- else -->
@@ -1813,7 +1941,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
             <!-- mesh array container -->
             <main style="margin-top: 1rem;">
 
-              <!-- Mesh item -->
+              <!-- MESH ITEM -->
               <Section 
                 v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)"
                 @click="$router.push(`mesh/${mesh.id}`)"
@@ -1822,9 +1950,29 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                 fJustifyContent="space-between"
                 fAlignItems="center"
               >
-                <div style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
-                <div>
-                  {{ mesh }}
+                <!-- MESH INFO -->
+                <div style="display: flex; align-items: center; gap: 24px;">
+                  <!-- BROKER TAG -->
+                  <div style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
+                  <!--  -->
+                  <div>
+                    <!-- CURRENT AMOUNT -->
+                    <div style="font-weight: bold;">{{calcMeshAvailable(mesh.id)}}{{ currency_to_show.ticket }}</div>
+                    <!-- MESH NAME -->
+                    <div>{{ mesh.name }}</div>
+                    <!-- MESH OWNER -->
+                    <div style="font-size: 0.8rem; color: var(--color-btn-wo-bg)">{{ mesh.ownerType }}{{ mesh.ownerID }}</div>
+                  </div>
+                </div>
+                <!-- MESH TOTAL -->
+                <div
+                v-if="mesh.type !== 'debet_card' && mesh.type !== 'cash'" 
+                  style="text-wrap: nowrap; text-align: right;"
+                >
+                  <!-- PROFIT -->
+                  <!-- <div style="font-size: .8rem;">{{calcMeshProfit(mesh.id)}}{{ currency_to_show.ticket }} * XX.XX%</div> -->
+                  <!-- INVESTED -->
+                  <div>dep: {{calcMeshInvested(mesh.id)}}{{ currency_to_show.ticket }}</div>
                 </div>
               </Section>
 
@@ -1862,10 +2010,9 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               <div class="fund-list_el">
 
                 <!-- LOGO -->
-                <div class="el_logo">
-                  <!--  -->
+                <!-- <div class="el_logo">
                   <div style="background-color: black; width: 2rem; height: 2rem; border-radius: 50%;"></div>
-                </div>
+                </div> -->
 
                 <!-- TITLE -->
                 <div class="el_title">

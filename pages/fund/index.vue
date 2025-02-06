@@ -143,6 +143,8 @@ const fund_list = computed(() => {
 
     <!-- <h1 class="show-max-767">Фонд {{ computedFund.title }}</h1> -->
     <p @click="$router.push('/fund/1')">Фонд ЕС</p>
+    <p @click="$router.push('/fund/1')">Фонд ЮС</p>
+    <p @click="$router.push('/fund/1')">Фонд Conspirators</p>
     <!-- <div>
       {{ computedFund }}
     </div> -->

@@ -144,7 +144,7 @@ useHead({
             <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
                 <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
                     <p style="margin: 0;">Состоит в фонде: </p>
-                    <Button type="pseudo-btn" link="/fund/1">ЕС</Button>
+                    <Button type="pseudo-btn" link="/fund/1">НАЗВАНИЕ ФОНДА</Button>
                 </div>
                 <p>Тип: Накопительные счета</p>
                 <p>Брокер: SBER</p>

@@ -162,6 +162,8 @@ model Transaction {
   receive_mesh_amount   Float    @default(0.00)
   receive_mesh_price    Float    @default(0.00)
   comments              String   @db.VarChar(255)
+  authorID              Int?     @default(0)
+  authorType            String?  @db.VarChar(60)
 }
 
 // FUND GROUP (Это не надо в БД)
