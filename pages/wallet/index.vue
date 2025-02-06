@@ -88,7 +88,7 @@ const fundParagraph = ref([
   {
     id: 2,
     name: 'history',
-    title: 'История операций'
+    title: 'Транзакции'
   }
 ])
 //= current fund paragraph
@@ -1735,6 +1735,27 @@ const sumTotalAvailable = (id: number) => {
   return sum.toFixed(2)
 }
 
+// AMOUNT
+//
+//= calc total capitalization
+const sumTotalCap = () => {
+  // let result  = 0;
+
+  let result = mesh_list.value?.reduce((acc, mesh) => {
+    return acc + calcMeshAvailable(mesh.id)
+  }, 0)
+
+  return result
+}
+//= calc amount by section 
+const sumSectionAmount = (groupType: string) => {
+  let result = 0;
+  mesh_list.value?.filter(el => el.tag === groupType).forEach(mesh => {
+    result += calcMeshAvailable(mesh.id)
+  })
+  return result
+}
+
 // WATCH
 //= choosenChip_section
 watch(choosenChip_section, () => {
@@ -1820,14 +1841,23 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     /> -->
     <!-- TOTAL -->
     <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-      <p style="margin: 0;">~1 500 000.00 {{ currency_to_show.ticket }}</p>
+      <p style="margin: 0;">~{{ transformToFixed(sumTotalCap()) }}{{ currency_to_show.ticket }}</p>
       <Button v-if="currentAffiliation.id !== 0" type="pseudo-btn" :link="`/fund/${currentAffiliation?.id}`">Подробнее</Button>
 
     </div>
 
-    <p v-if="mesh_list">
-      {{ [...new Set([...mesh_list?.map(obj => obj.tag)])] }}
-    </p> 
+    <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
+
+      <Section 
+        v-for="el in [...new Set([...mesh_list?.map(obj => obj.tag)])]"
+        :fDirection="`column`"
+        @click="choosenChip_section = el"
+      >
+        <p>{{ el }}</p>
+        <p>{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p>
+      </Section>
+
+    </div> 
     
 
     <!-- === INFO SECTION === -->
@@ -1850,7 +1880,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
           <p v-else-if="section.name === 'invested_deposit'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotal(section.id) }} {{ currency_to_show.ticket }}</p>
           <!-- else -->
           <p v-else :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ 0.00 }} {{ currency_to_show.ticket }}</p>
-
+          
           <!--  -->
           <p 
             v-if="section.name === 'invested_stock' || section.name === 'invested_currency'" 
@@ -1995,7 +2025,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                   <!--  -->
                   <div>
                     <!-- CURRENT AMOUNT -->
-                    <div style="font-weight: bold;">{{transformToFixed(calcMeshAvailable(mesh.id), 2)}}{{ currency_to_show.ticket }}</div>
+                    <div style="font-weight: bold;">{{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}</div>
                     <!-- MESH NAME -->
                     <div>{{ mesh.name }}</div>
                     <!-- MESH OWNER -->
