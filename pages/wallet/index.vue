@@ -1148,10 +1148,10 @@ const transaction_ledger_computed = computed(() => {
   transaction_ledger.value?.forEach(transaction => {
     
     meshes_computed.value?.forEach(mesh => {
-      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id) {
+      let from_obj = translateMeshByID(transaction?.from_mesh_id)
+      let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
+      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id || receive_obj?.storageID === mesh.id) {
 
-        let from_obj = translateMeshByID(transaction?.from_mesh_id)
-        let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
 
         if(from_obj && receive_obj) {
 
@@ -1162,6 +1162,8 @@ const transaction_ledger_computed = computed(() => {
             purpose: transaction.purpose,
             fee: transaction.fee,
             comments: transaction.comments,
+            storageID: receive_obj?.storageID,
+            bid: receive_obj?.bid,
             // FROM
             from_mesh_type: from_obj?.type,
             from_mesh_tag: from_obj?.tag,
@@ -1194,6 +1196,7 @@ const transaction_ledger_computed = computed(() => {
             purpose: transaction.purpose,
             fee: transaction.fee,
             comments: transaction.comments,
+            storageID: receive_obj?.storageID,
             // FROM
             from_mesh_type: from_obj?.type,
             from_mesh_tag: from_obj?.tag,
@@ -1240,11 +1243,11 @@ const meshes_computed = computed(() => {
 
 // HELPERS
 //= filter funds by group
-const filteredFundByGroupName = (groupType: string, fundsArray: any) => {
-  const result = [...fundsArray].filter(el => el.tagType === groupType)
+// const filteredFundByGroupName = (groupType: string, fundsArray: any) => {
+//   const result = [...fundsArray].filter(el => el.tagType === groupType)
   
-  return result
-}
+//   return result
+// }
 const filterMeshByWalletType = (type: string, array: any) => {
   const result = [...array].filter(el => el.type === type)
 
@@ -1253,56 +1256,56 @@ const filterMeshByWalletType = (type: string, array: any) => {
 
 //  CALC
 //= calc Profit
-const calcProfit = (fundPrice, fundInvested, fundCurrency) => {
-  if(fundInvested !== 0) {
+// const calcProfit = (fundPrice, fundInvested, fundCurrency) => {
+//   if(fundInvested !== 0) {
 
-    let result = fundPrice - fundInvested
+//     let result = fundPrice - fundInvested
 
-    if(fundPrice - fundInvested > 0) {
-      return `+${result.toFixed(2)}${fundCurrency}`
+//     if(fundPrice - fundInvested > 0) {
+//       return `+${result.toFixed(2)}${fundCurrency}`
 
-    } else if (fundPrice - fundInvested === 0) {
-      return `0.00${fundCurrency}`
+//     } else if (fundPrice - fundInvested === 0) {
+//       return `0.00${fundCurrency}`
 
-    } else if (fundPrice - fundInvested < 0 ) {
-      return `${result.toFixed(2)}${fundCurrency}`
-    } else {
-      return `Нет инвестиций`
-    }
+//     } else if (fundPrice - fundInvested < 0 ) {
+//       return `${result.toFixed(2)}${fundCurrency}`
+//     } else {
+//       return `Нет инвестиций`
+//     }
 
-  } else {
-    return 
-  }
-}
+//   } else {
+//     return 
+//   }
+// }
 //= calc Profit Percent
-const calcProfitPercent = (fundPrice, fundInvested, fundCurrency) => {
-  if(fundInvested !== 0) {
-    let result = (fundPrice - fundInvested)/fundInvested * 100
-    return `${result.toFixed(2)}%`
-  } else {
+// const calcProfitPercent = (fundPrice, fundInvested, fundCurrency) => {
+//   if(fundInvested !== 0) {
+//     let result = (fundPrice - fundInvested)/fundInvested * 100
+//     return `${result.toFixed(2)}%`
+//   } else {
 
-    return 'Нет инвестиций'
-  }
-}
+//     return 'Нет инвестиций'
+//   }
+// }
 //= calc color by profit
-const calcColorByProfit = (fundPrice, fundInvested) => {
-  if(fundInvested !== 0) {
-    if(fundPrice - fundInvested > 0) {
-      return 'var(--color-urgency-low)'
-    } 
-    else if (fundPrice - fundInvested === 0) {
-      return 'var(--color-btn-wo-bg)'
-    }
-    else if (fundPrice - fundInvested < 0) {
-      return 'var(--color-urgency-high)'
-    } else {
+// const calcColorByProfit = (fundPrice, fundInvested) => {
+//   if(fundInvested !== 0) {
+//     if(fundPrice - fundInvested > 0) {
+//       return 'var(--color-urgency-low)'
+//     } 
+//     else if (fundPrice - fundInvested === 0) {
+//       return 'var(--color-btn-wo-bg)'
+//     }
+//     else if (fundPrice - fundInvested < 0) {
+//       return 'var(--color-urgency-high)'
+//     } else {
 
-      return 'orange!important'
-    }
-  } else {
-    return 'var(--color-btn-wo-bg)'
-  }
-}
+//       return 'orange!important'
+//     }
+//   } else {
+//     return 'var(--color-btn-wo-bg)'
+//   }
+// }
 
 // MESH ITEM FUNC
 //= calc mesh invested
@@ -1310,10 +1313,12 @@ const calcMeshInvested = (meshID: number) => {
 
   let result  = 0;
   let transactions = transaction_ledger?.value
+  let mesh = mesh_list?.value?.find(el => el.id === meshID)
 
   // currency_to_show.ticket
 
   // transaction.purpose
+  // transaction.storageID
   
   // transaction.from_mesh_id
   // transaction.from_mesh_currency
@@ -1334,10 +1339,17 @@ const calcMeshInvested = (meshID: number) => {
     // gift
     // withdraw
 
+
+
       if(transaction.purpose === 'deposit' || transaction.purpose === 'deposit weekly'|| transaction.purpose === 'gift' || transaction.purpose === 'withdraw' ) {
         if(transaction.from_mesh_id === meshID) {
           result -= transaction.from_mesh_amount * transaction.from_mesh_price
         }
+        if(transaction.receive_mesh_id === meshID) {
+          result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+        }
+      } 
+      else if(transaction.purpose === 'issue'){
         if(transaction.receive_mesh_id === meshID) {
           result += transaction.receive_mesh_amount * transaction.receive_mesh_price
         }
@@ -1352,10 +1364,12 @@ const calcMeshInvested = (meshID: number) => {
 const calcMeshAvailable = (meshID: number) => {
   let result  = 0;
   let transactions = transaction_ledger?.value
+  let mesh = mesh_list?.value?.find(el => el.id === meshID)
 
   // currency_to_show.ticket
 
   // transaction.purpose
+  // transaction.storageID
   
   // transaction.from_mesh_id
   // transaction.from_mesh_currency
@@ -1371,13 +1385,33 @@ const calcMeshAvailable = (meshID: number) => {
   if(transactions){
 
     transactions.forEach(transaction => {
+      // LOAN TRANSACTIONs
+      if(mesh?.storageID !== 0) {
+        if(transaction.purpose === 'payment') {
+          if(transaction.receive_mesh_id === meshID) {
+            result -= transaction.receive_mesh_amount * transaction.receive_mesh_price
+          } 
+        } else if (transaction.purpose === 'issue') {
+          if(transaction.receive_mesh_id === meshID) {
+            result += transaction.receive_mesh_amount * transaction.receive_mesh_price
 
-      if(transaction.receive_mesh_id === meshID) {
-        result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+            if(mesh?.bid) {
+              result += result * mesh?.bid
+            }
+          }   
+        }
       } 
-      else if(transaction.from_mesh_id === meshID) {
-        result -= transaction.from_mesh_amount * transaction.from_mesh_price
-      } 
+      // OTHER TRANSACTIONs
+      else {
+
+        if(transaction.receive_mesh_id === meshID) {
+          result += transaction.receive_mesh_amount * transaction.receive_mesh_price
+        } 
+        else if(transaction.from_mesh_id === meshID) {
+          result -= transaction.from_mesh_amount * transaction.from_mesh_price
+        } 
+      }
+
     })
   }
 
@@ -1386,11 +1420,21 @@ const calcMeshAvailable = (meshID: number) => {
 // calc mesh profit
 const calcMeshProfit = (meshID: number) => {
   let result = 0;
+  let mesh;
+  if(mesh_list.value?.length) {
+    mesh = mesh_list.value.find(mesh => mesh.id === meshID)
+  }
   let invested = calcMeshInvested(meshID)
   let available = calcMeshAvailable(meshID)
 
+  if(mesh?.bid) {
+    result = -(available - (invested + invested * mesh.bid))
 
-  result = available - invested
+  } else {
+
+    result = available - invested
+  }
+
 
   return result
 
@@ -1399,17 +1443,28 @@ const calcMeshProfit = (meshID: number) => {
 const calcMeshProfitPercent = (meshID: number) => {
 
   let result = 0;
+  let mesh;
+  if(mesh_list.value?.length) {
+    mesh = mesh_list.value.find(mesh => mesh.id === meshID)
+  }
   let invested = calcMeshInvested(meshID)
   let available = calcMeshAvailable(meshID)
 
+  if(mesh?.bid) {
 
-  result = (available - invested) / invested * 100
+    result = -(available - (invested + invested * mesh.bid)) / (invested + invested * mesh.bid) * 100
+
+  } else {
+
+    result = (available - invested) / invested * 100
+  }
 
   return result
 
 }
 
 // TRANSLATE
+//
 //= meshes id in transactions
 const translateMeshByID = (id: number) => {
   let mesh;
@@ -1417,6 +1472,14 @@ const translateMeshByID = (id: number) => {
     mesh = mesh_list.value.find(mesh => mesh.id === id)
   }
   return mesh
+}
+//= storageID
+const translateStorageID = (storageID: number) => {
+  let mesh;
+  if(mesh_list.value?.length) {
+    mesh = mesh_list.value.find(mesh => mesh.id === storageID)
+  }
+  return mesh?.name
 }
 
 // HELPERS
@@ -1839,22 +1902,27 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
       :btn_all_exist="true"
       @changed="emittedChip_bank"
     /> -->
+
     <!-- TOTAL -->
+    <!--  -->
     <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-      <p style="margin: 0;">~{{ transformToFixed(sumTotalCap()) }}{{ currency_to_show.ticket }}</p>
+      <p style="margin: 0;">TOTAL CAP: ~{{ sumTotalCap() }}{{ currency_to_show.ticket }}</p>
       <Button v-if="currentAffiliation.id !== 0" type="pseudo-btn" :link="`/fund/${currentAffiliation?.id}`">Подробнее</Button>
 
     </div>
 
+    <!-- SECTIONs -->
+    <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
 
       <Section 
         v-for="el in [...new Set([...mesh_list?.map(obj => obj.tag)])]"
         :fDirection="`column`"
+        :fAlignItems="`flex-start`"
         @click="choosenChip_section = el"
       >
-        <p>{{ el }}</p>
-        <p>{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p>
+        <p style="margin: 0;">{{ el }} cap</p>
+        <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p>
       </Section>
 
     </div> 
@@ -1904,7 +1972,8 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 
     </div>
 
-    <!--  -->
+    <!-- CHIP btn -->
+    <!-- mesh && transactions  -->
     <div class="current_affiliation_title" style="display: flex; gap: 1rem; align-items: center;">
 
       <h3 v-for="el in fundParagraph" :class="currentFundParagraph === el.name ? 'title_active' : ''">
@@ -1916,13 +1985,11 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 
     </div>
 
-
-    <!-- CURRENT FUND -->
-    <!--  -->
+    <!-- CURRENT SECTION CONTENT-->
+    <!-- ledger && meshes -->
      <section class="current-fund_container">
 
-
-      <!-- LEDGER -->
+      <!-- TRANSACTION LEDGER -->
       <div v-if="currentFundParagraph === 'history'" class="current-fund_wrapper">
 
         <!--if length -->
@@ -1953,6 +2020,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               <div>
                 <p v-if="transaction.from_mesh_name" style="margin: 0;">
                   <span>{{ transaction.from_mesh_owner_id }}{{ transaction.from_mesh_owner_type }}</span>
+                  <span>Комиссия: {{ transaction.fee }}{{ currency_to_show.ticket }}</span>
                   <span>{{ transaction.from_mesh_name }}</span>
                   <span>{{ transaction.from_mesh_type }}</span>
                   <span>{{ transaction.from_mesh_broker_tag }}</span>
@@ -1964,6 +2032,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               <div>
                 <p v-if="transaction.receive_mesh_name" style="margin: 0;">
                   <span>{{ transaction.receive_mesh_owner_id }}{{ transaction.receive_mesh_owner_type }}</span>
+                  <span style="background-color: var(--color-btn-hover-bg)">Storage:{{ transaction.storageID }}</span>
                   <span>{{ transaction.receive_mesh_name }}</span>
                   <span>{{ transaction.receive_mesh_type }}</span>
                   <span>{{ transaction.receive_mesh_broker_tag }}</span>
@@ -2025,11 +2094,29 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                   <!--  -->
                   <div>
                     <!-- CURRENT AMOUNT -->
-                    <div style="font-weight: bold;">{{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}</div>
+                    <div style="font-weight: bold;">
+                      {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}
+                    </div>
                     <!-- MESH NAME -->
-                    <div>{{ mesh.name }}</div>
-                    <!-- MESH OWNER -->
-                    <div style="font-size: 0.8rem; color: var(--color-btn-wo-bg)">{{ mesh.ownerType }}{{ mesh.ownerID }}</div>
+                    <div style="display: flex; align-items: center; gap: .5rem;">
+                      <span>{{ mesh.name }}</span>
+                      <span v-if="mesh.bid !== 0.00" style="font-size: 0.8rem; background-color: var(--color-btn-hover-bg); border-radius: 1rem; padding: 2px 6px;">
+                        {{ mesh.bid * 100 }}%
+                      </span>
+                    </div>
+                    <!-- MESH OWNER && MESH STORAGE -->
+                    <div 
+                      style="font-size: 0.8rem; display: flex; align-items: center; gap: .5rem; margin-top: .5rem;"
+                    >
+                      <span style="color: var(--color-btn-wo-bg)">{{ mesh.ownerType }}{{ mesh.ownerID }}</span>
+                      <span 
+                        v-if="mesh.storageID !== 0"
+                        style="color: var(--color-btn-text); background-color: var(--color-btn-disabled-text); border-radius: 1rem; padding: 3px 6px; text-wrap: nowrap;"
+                        @click.stop="$router.push(`mesh/${mesh.storageID}`)"
+                      >
+                        {{ translateStorageID(mesh.storageID) }}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- MESH TOTAL -->
@@ -2059,75 +2146,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
           <p style="margin-top: 1rem;">У вас нет мешков</p>
         </div>
 
-      <section 
-        v-for="group in wallet_fund_group.filter(el => el.tagName === choosenChip_section)" 
-        class="fund_group_container"
-      >
-        <header>
-          <h4>{{ group.name }}</h4>
-        </header>
-
-        <main style="margin-top: 1rem;">
-          <!-- LENGTH -->
-          <section 
-            v-if="filteredFundByGroupName(group.tagType, conspirators_fund_computed).length"
-            class="fund-list"
-          >
-            
-            <!--  -->
-            <Section 
-              style="cursor: pointer;"
-              v-for="fund in filteredFundByGroupName(group.tagType, conspirators_fund_computed)"
-              @click="$router.push(`mesh/${fund.id}`)"  
-              fDirection="column"
-              fJustifyContent="space-between"
-            >
-              <div class="fund-list_el">
-
-                <!-- LOGO -->
-                <!-- <div class="el_logo">
-                  <div style="background-color: black; width: 2rem; height: 2rem; border-radius: 50%;"></div>
-                </div> -->
-
-                <!-- TITLE -->
-                <div class="el_title">
-
-                  <h5 style="font-size: 1rem;">{{ fund.name }}</h5>
-                  <p style="margin: 0; font-size: 0.8rem; color: var(--color-btn-wo-bg)">{{ fund.brokerTag }} ({{fund?.conspirators }})</p>
-                </div>
-
-                <!-- ACTUAL PRICE (capital) -->
-                <div class="el_price">
-                  <!-- AMOUNT -->
-                  <div style="font-weight: bold;">{{(fund.price).toFixed(2)}}{{ fund.currency }} </div>
-
-                  <!-- PROFIT -->
-                  <div style="font-size: 0.8rem; display: flex; align-items: center;gap: .5rem;" :style="`color: ${calcColorByProfit(fund.price, fund.invested)}`">
-                    <div>{{ calcProfit(fund.price, fund.invested, fund.currency) }}</div> 
-                    <div style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByProfit(fund.price, fund.invested)}`"></div>
-                    <div>{{ calcProfitPercent(fund.price, fund.invested, fund.currency) }}</div>
-                  </div>
-                </div>
-
-                <!-- TOTAL INVESTED -->
-                <div class="el_invested">
-                  <p style="text-align: right;">dep: {{ (fund.invested).toFixed(2) }}{{ fund.currency }}</p>
-                </div>
-              </div>
-
-            </Section>
-          </section>
-          <!-- !LENGTH -->
-          <section v-else>
-            <div>В этом мешке пусто...</div>
-          </section>
-
-        </main>
-
-      </section>
-
       <!-- ОБРАБОТАТЬ! -->
-      <section class="fund_group_container" v-if="wallet_fund_group.filter(el => el.tagName === choosenChip_section).length === 0"><p style="margin-top: 1rem;">Ни одного мешка</p></section>
       <!-- CREDITS -->
       <!--  -->
       <div v-if="choosenChip_section === 'credits'">
@@ -2321,11 +2340,6 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
      </section>
 
     <!-- <div>
-      {{ computedFund }}
-    </div> -->
-
-
-    <!-- <div>
       <p>Дата создания: {{ computedFund.created_at }}</p>
       <p>Основатель: {{ computedFund.creatorID }}</p>
       <p>Брокер: {{ computedFund.stockBroker.title }}</p>
@@ -2514,7 +2528,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .transaction_wrapper {
     display: grid;
     align-items: center;
-    grid-template-columns: 15% 20% 1fr 20%;
+    grid-template-columns: 20% 20% 1fr 20%;
     grid-template-areas: 't_first details details detatils';
   }
   .transaction-first {

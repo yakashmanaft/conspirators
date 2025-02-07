@@ -127,11 +127,22 @@ useHead({
 
     //HELPERS
 
+
+    // DB
+    //
+    //= current mesh
+    const { data: mesh } = useFetch("/api/mesh/mesh", {
+        lazy: false,
+        transform: (mesh) => {
+            return mesh.find(el => el.id === +route.params.id)
+        }
+    })
+
 </script>
 
 
 <template>
-    <Container v-if="current_task">
+    <Container v-if="mesh">
 
         <!-- TITLE PAGE SECTION -->
         <div  class="title-section_container" style="margin-bottom: 0.5rem;">
@@ -139,21 +150,31 @@ useHead({
 
             <h1 style="font-weight: bold; font-size: 42px;" class="show-max-767">
 
-                МЕШОК:
+                {{ mesh.name }}
             </h1> 
             <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
-                <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
-                    <p style="margin: 0;">Состоит в фонде: </p>
-                    <Button type="pseudo-btn" link="/fund/1">НАЗВАНИЕ ФОНДА</Button>
+
+                <!-- OWNER -->
+                <div style="display: flex; gap: 0.5rem;">
+                    <p>Владелец:</p>
+                    <!-- conspirators/bands -->
+                    <div v-if="mesh.ownerType === 'conspirator'">
+                        <Button type="pseudo-btn" :link="`/band/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
+                    </div>
+                    <!-- user -->
+                    <div v-if="mesh.ownerType === 'user'">
+                        <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
+                    </div>
                 </div>
-                <p>Тип: Накопительные счета</p>
-                <p>Брокер: SBER</p>
+                <p>Тип: <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.tag }}</span> <span style="background-color: var(--color-btn-hover-bg)">{{mesh.type}}</span></p>
+                <p>Брокер: {{mesh.broker_tag}}</p>
                 <p>2 468.RUB</p>
                 <p>Ваша доля: 50% (1 234.00RUB)</p>
                 <p>Соучастники: Евгений  Павловский (50%), Сергей Анфалов (50%)</p>
                 <p>Управляющий: Сергей Анфалов</p>
             </h2>
         </div>
+        {{ mesh }}
 
         <!-- CHIP SECTION -->
          <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
