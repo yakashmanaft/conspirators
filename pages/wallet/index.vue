@@ -1389,8 +1389,17 @@ const calcMeshAvailable = (meshID: number) => {
       if(mesh?.storageID !== 0) {
         if(transaction.purpose === 'payment') {
           if(transaction.receive_mesh_id === meshID) {
+            
             result -= transaction.receive_mesh_amount * transaction.receive_mesh_price
           } 
+          // находим mesh, который указан как storage кредитного счета
+          if(mesh_list?.value?.find(el => el.id === mesh?.storageID)) {
+            // назначаем куда сумму оплаты добавить
+            transaction.receive_mesh_id = mesh?.storageID
+            // уменьшаем долг по кредиту
+            result -= transaction.receive_mesh_amount * transaction.receive_mesh_price
+          }
+
         } else if (transaction.purpose === 'issue') {
           if(transaction.receive_mesh_id === meshID) {
             result += transaction.receive_mesh_amount * transaction.receive_mesh_price
@@ -1905,7 +1914,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 
     <!-- TOTAL -->
     <!--  -->
-    <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
+    <div class="total-cap_container" style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
       <p style="margin: 0;">TOTAL CAP: ~{{ sumTotalCap() }}{{ currency_to_show.ticket }}</p>
       <Button v-if="currentAffiliation.id !== 0" type="pseudo-btn" :link="`/fund/${currentAffiliation?.id}`">Подробнее</Button>
 
@@ -2082,15 +2091,15 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
               <Section 
                 v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)"
                 @click="$router.push(`mesh/${mesh.id}`)"
-                fGap="24px"  
+                fGap=".5rem"  
                 fDirection="row"
                 fJustifyContent="space-between"
                 fAlignItems="center"
               >
                 <!-- MESH INFO -->
-                <div style="display: flex; align-items: center; gap: 24px;">
+                <div class="mesh_info">
                   <!-- BROKER TAG -->
-                  <div style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
+                  <div class="mesh_broker-tag" style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
                   <!--  -->
                   <div>
                     <!-- CURRENT AMOUNT -->
@@ -2099,14 +2108,15 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                     </div>
                     <!-- MESH NAME -->
                     <div style="display: flex; align-items: center; gap: .5rem;">
-                      <span>{{ mesh.name }}</span>
+                      <span class="mesh_name">{{ mesh.name }}</span>
                       <span v-if="mesh.bid !== 0.00" style="font-size: 0.8rem; background-color: var(--color-btn-hover-bg); border-radius: 1rem; padding: 2px 6px;">
-                        {{ mesh.bid * 100 }}%
+                      {{ mesh.bid * 100 }}%
                       </span>
                     </div>
                     <!-- MESH OWNER && MESH STORAGE -->
                     <div 
-                      style="font-size: 0.8rem; display: flex; align-items: center; gap: .5rem; margin-top: .5rem;"
+                      class="mesh_footer"
+                      style="font-size: 0.8rem; display: flex;  gap: .5rem; margin-top: .5rem;"
                     >
                       <span style="color: var(--color-btn-wo-bg)">{{ mesh.ownerType }}{{ mesh.ownerID }}</span>
                       <span 
@@ -2125,16 +2135,16 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
                   style="text-wrap: nowrap; text-align: right;"
                 >
                   <!-- PROFIT -->
-                  <div style="font-size: .8rem; display: flex; align-items: center; gap: .5rem;" :style="`color: ${calcColorByMeshProfit(mesh.id)}`">
+                  <div class="mesh_profit" style="font-size: .8rem;" :style="`color: ${calcColorByMeshProfit(mesh.id)}`">
                     <!-- amount -->
                     <div>{{transformToFixed(calcMeshProfit(mesh.id))}}{{ currency_to_show.ticket }}</div>
                     <!-- el separator -->
-                    <div style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByMeshProfit(mesh.id)}`"></div>
+                    <div class="mesh_profit-separator" style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByMeshProfit(mesh.id)}`"></div>
                     <!-- percentage -->
                     <div>{{ transformToFixed(calcMeshProfitPercent(mesh.id)) }}%</div>
                   </div>
                   <!-- INVESTED -->
-                  <div>dep: {{transformToFixed(calcMeshInvested(mesh.id))}}{{ currency_to_show.ticket }}</div>
+                  <div class="mesh_invested">dep: {{transformToFixed(calcMeshInvested(mesh.id))}}{{ currency_to_show.ticket }}</div>
                 </div>
               </Section>
 
@@ -2517,6 +2527,9 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .mesh_group_container {
 
   }
+  .mesh_info {
+    display: flex;
+  }
   
   /* TRANSACTION */
   .transaction_container {
@@ -2562,6 +2575,10 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .show-max-767 {
     display: none;
   }
+  .total-cap_container {
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
   .wallet-section_container {
     margin-top: 1rem;
     padding: 0 0.5rem;
@@ -2588,7 +2605,29 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   }
 
   /* MESH */
-
+  .mesh_info {
+   flex-direction: column;
+   align-items: flex-start;
+   gap: unset; 
+  }
+  .mesh_broker-tag,
+  .mesh_info .mesh_name {
+    font-size: 0.8rem;
+  }
+  .mesh_profit {
+    flex-direction: column;
+    gap: unset;
+  }
+  .mesh_profit-separator {
+    display: none;
+  }
+  .mesh_invested {
+    font-size: 0.8rem;
+  }
+  .mesh_footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 @media screen and (min-width: 576px) {
   .section-header_wrapper {
@@ -2598,6 +2637,10 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 @media screen and (min-width: 576px) and (max-width: 767px) {
   .show-max-767 {
     display: none;
+  }
+  .total-cap_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   .wallet-section_container {
     margin-top: 1rem;
@@ -2628,6 +2671,18 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   /* MESH */
   .mesh_group_container {
 
+  }
+  .mesh_info {
+    align-items: center; 
+    gap: 24px;
+  }
+  .mesh_profit {
+    gap: .5rem;
+    display: flex; 
+    align-items: center;
+  }
+  .mesh_footer {
+    align-items: center;
   }
 
   /* TRANSACTION */
@@ -2664,6 +2719,19 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     /* margin-left: .5rem;
     margin-right: .5rem; */
   }
+  /* MESH */
+  .mesh_info {
+    align-items: center; 
+    gap: 24px;
+  }
+  .mesh_profit {
+    gap: .5rem;
+    display: flex; 
+    align-items: center;
+  }
+  .mesh_footer {
+    align-items: center;
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
   .wallet-section_container {
@@ -2691,6 +2759,19 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     /* margin-left: .5rem;
     margin-right: .5rem; */
   }
+  /* MESH */
+  .mesh_info {
+    align-items: center; 
+    gap: 24px;
+  }
+  .mesh_profit {
+    gap: .5rem;
+    display: flex; 
+    align-items: center;
+  }
+  .mesh_footer {
+    align-items: center;
+  }
 }
 @media screen and (min-width: 1200px) {
   .wallet-section_container {
@@ -2717,6 +2798,19 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   .transaction_container {
     /* margin-left: .5rem;
     margin-right: .5rem; */
+  }
+  /* MESH */
+  .mesh_info {
+    align-items: center; 
+    gap: 24px;
+  }
+  .mesh_profit {
+    gap: .5rem;
+    display: flex; 
+    align-items: center;
+  }
+  .mesh_footer {
+    align-items: center;
   }
 }
 </style>
