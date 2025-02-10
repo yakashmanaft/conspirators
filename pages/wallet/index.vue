@@ -1609,15 +1609,15 @@ onMounted(() => {
 // TRANSLATORS
 //
 //= translate Fund Name
-const translateFundName = (fundId) => {
-  let el = conspirators_fund.value.find(el => el.id === fundId)
-    return el?.name
-}
+// const translateFundName = (fundId) => {
+//   let el = conspirators_fund.value.find(el => el.id === fundId)
+//     return el?.name
+// }
 //= translate fund broker tag
-const translateFundBrokerTag = (fundId) => {
-  let el = conspirators_fund.value.find(el => el.id === fundId)
-    return el?.brokerTag
-}
+// const translateFundBrokerTag = (fundId) => {
+//   let el = conspirators_fund.value.find(el => el.id === fundId)
+//     return el?.brokerTag
+// }
 // const translateStockFundType = (type) => {
 //   if(type) {
 //     if(type === 'iia') {
@@ -1747,6 +1747,68 @@ const set_section_bgColor = (section: any) => {
   }
 
   return color
+}
+const setChoosenWalletSectionColor = (tag: any) => {
+  let color;
+
+  if(tag) {
+    // AVAILABLE
+    if(tag === 'available') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-available-wo)`
+        color = `var(--color-wallet-fund-available)`
+      } else {
+        // color = `var(--color-wallet-fund-available)`
+      }
+    } 
+    // INVESTED STOCK
+    if(tag === 'invested_stock') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    // INVESTED CRYPTO
+    if(tag === 'invested_crypto') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    // INVESTED DEPOSIT
+    if(tag === 'invested_deposit') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    // INVESTED CURRENCY
+    if(tag === 'invested_currency') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    // INVESTED LOAN
+    if(tag === 'invested_loan') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-invested)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+  }
+
+  return color;
 }
 //= set Color By Operation Type
 const setBgColorByOperationType = (operationType: string) => {
@@ -1928,6 +1990,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
         v-for="el in [...new Set([...mesh_list?.map(obj => obj.tag)])]"
         :fDirection="`column`"
         :fAlignItems="`flex-start`"
+        :bg="setChoosenWalletSectionColor(el)"
         @click="choosenChip_section = el"
       >
         <p style="margin: 0;">{{ el }} cap</p>
@@ -2430,8 +2493,11 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   gap: 1rem;
 }
 
-.wallet-section_container:-webkit-scrollbar {
+.wallet-section_container::-webkit-scrollbar {
   display: none;
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
 }
 
 .section-header_wrapper:hover {

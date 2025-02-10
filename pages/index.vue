@@ -41,11 +41,26 @@ const { loggedIn, user, session, clear } = useUserSession();
 
     <h1>conspirators.su</h1><span>не ссы</span>
     <h2>INDEX PAGE</h2>
-    <div class="buttons-container">
 
-      <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
-      <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Ваш отдел маркетинга</Button>
-      <Button type="pseudo-btn" link="/landing_design" bg="bg-stroke" :disabled="false">Дизайним</Button>
+    <div class="section_container">
+
+      <section>
+        <h3>Контролируй финансы</h3>
+        <p>Фиксируй доходы и расходы в одном приложении, отслеживай динамику разввития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p>
+        <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
+      </section>
+  
+      <section>
+        <h3>Закрой потребность в отделе маркетинга</h3>
+        <p>Поручи разработку и ведение маркетинговой концепции специалистам conspirators</p>
+        <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Ваш отдел маркетинга</Button>
+      </section>
+  
+      <section>
+        <h3>Задизайним всё что хочешь</h3>
+        <p>В conspirators ты можешь найти мастера визуальных эффектов, который поможет реализовать и поддерживать фирменный стиль твоего кооператива, начиная от простой полиграфии, заканчивая съёмкой корпоративных видео</p>
+        <Button type="pseudo-btn" link="/landing_design" bg="bg-stroke" :disabled="false">Дизайним</Button>
+      </section>
     </div>
 
   </Container>
@@ -56,9 +71,12 @@ const { loggedIn, user, session, clear } = useUserSession();
     width:100vw;
     overflow-x:hidden;
 } */
-.buttons-container {
+
+.section_container {
   display: flex; 
-  gap: 1rem;
+  flex-direction: column;
+  gap: 2rem;
+
 }
 @media screen and (max-width: 767px) {
   .buttons-container {

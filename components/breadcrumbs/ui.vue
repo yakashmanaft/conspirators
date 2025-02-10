@@ -75,6 +75,8 @@ const translateCrumb = (str: string) => {
       // PROJECTS
       case "projects":
           return 'Проекты'; 
+      case "band":
+        return "Кооперативы"
       // PARTNERS
       case "partners":
           return 'Контакты'
@@ -102,6 +104,8 @@ const compileRoute = (str: string) => {
       // PROJECTS
       case "projects":
           return 'projects'; 
+      case "band":
+        return "band"
       // PARTNERS
       case "partners":
           return 'partners'

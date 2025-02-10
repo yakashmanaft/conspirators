@@ -205,6 +205,14 @@ const translateRoutePath = (path: string) => {
     let id = path.substr(startIndex + 1);
     return `Контакт #${id}`;
   }
+  // BAND
+  else if (path === "/band")  {
+    return "Кооперативы"
+  } else if (path.includes("/band/")) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Кооператив #${id}`;
+  }
   // DEMANDS
   else if (path === "/demands") {
     return "Дела";
