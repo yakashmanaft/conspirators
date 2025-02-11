@@ -125,8 +125,41 @@ useHead({
         }
     })
 
-    //HELPERS
+    // HELPERS
+    //
+    // TRANSLATORS
+    //
+    //= mesh owner
+    const translateOwner = (ownerType: string, ownerID: number) => {
+        if(band.value && partner.value) {
+            let result = 'Неизвестный'
+            if(ownerType === "user") {
+                let owner = partner?.value.find(el => el.id === ownerID)
 
+                if(owner) {
+                    result = `${owner.name} ${owner.surname}`
+                }
+            }
+            if(ownerType === 'conspirator') {
+                let owner = band?.value.find(el => el.id === ownerID)
+
+                if(owner) {
+                    result = owner.name
+                }
+            }
+            return result
+        }
+    }
+    // SET
+    // create link to owner
+    const linkToOwner = (ownerType: string, ownerID: number) => {
+        if(ownerType === 'user') {
+            return `/partners/${ownerID}`
+        } 
+        if(ownerType === 'conspirator') {
+            return `/band/${ownerID}`
+        }  
+    }
 
     // DB
     //
@@ -135,6 +168,20 @@ useHead({
         lazy: false,
         transform: (mesh) => {
             return mesh.find(el => el.id === +route.params.id)
+        }
+    })
+    //= band 
+    const { data: band } = useFetch("/api/band/band", {
+        lazy: false,
+        transform: (band) => {
+            return band
+        }
+    })
+    // partner
+    const { data: partner } = useFetch("/api/partnerGuarded/partner", {
+        lazy: false,
+        transform: (partner) => {
+            return partner
         }
     })
 
@@ -148,7 +195,7 @@ useHead({
         <div  class="title-section_container" style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
 
-            <h1 style="font-weight: bold; font-size: 42px;" class="show-max-767">
+            <h1 style="font-weight: bold; font-size: 42px;">
 
                 {{ mesh.name }}
             </h1> 
@@ -157,14 +204,12 @@ useHead({
                 <!-- OWNER -->
                 <div style="display: flex; gap: 0.5rem;">
                     <p>Владелец:</p>
-                    <!-- conspirators/bands -->
-                    <div v-if="mesh.ownerType === 'conspirator'">
-                        <Button type="pseudo-btn" :link="`/band/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
-                    </div>
-                    <!-- user -->
-                    <div v-if="mesh.ownerType === 'user'">
-                        <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
-                    </div>
+                    <Button
+                        type="pseudo-btn"
+                        :link="linkToOwner(mesh.ownerType, mesh.ownerID)"
+                    >
+                        {{ translateOwner(mesh.ownerType, mesh.ownerID) }}
+                    </Button>
                 </div>
                 <p>Тип: <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.tag }}</span> <span style="background-color: var(--color-btn-hover-bg)">{{mesh.type}}</span></p>
                 <p>Брокер: {{mesh.broker_tag}}</p>

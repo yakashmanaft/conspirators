@@ -39,14 +39,14 @@ const { loggedIn, user, session, clear } = useUserSession();
   <Container>
 
 
-    <h1>conspirators.su</h1><span>не ссы</span>
-    <h2>INDEX PAGE</h2>
+    <h1>conspirators.su</h1>
+    <h2>Бизнес органайзер</h2>
 
     <div class="section_container">
 
       <section>
         <h3>Контролируй финансы</h3>
-        <p>Фиксируй доходы и расходы в одном приложении, отслеживай динамику разввития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p>
+        <p>Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p>
         <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button>
       </section>
   

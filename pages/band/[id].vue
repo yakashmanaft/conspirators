@@ -148,7 +148,7 @@ useHead({
         <div  class="title-section_container" style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
 
-            <h1 style="font-weight: bold; font-size: 42px;" class="show-max-767">
+            <h1 style="font-weight: bold; font-size: 42px;">
 
                 {{ band.name }}
             </h1> 

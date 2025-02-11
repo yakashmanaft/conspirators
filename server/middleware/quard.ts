@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
         '/api/leadGuarded/lead',
         //
         '/api/partnerGurded/partner',
+        '/api/band/band',
         '/api/taskGuarded/task'
     ];
 

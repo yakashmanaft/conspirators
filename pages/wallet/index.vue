@@ -12,7 +12,6 @@ import { Button } from "@/components/button";
 
 // components
 import { Chip } from "~/components/chip";
-import { isInDestructureAssignment } from "vue/compiler-sfc";
 
 //
 const route = useRoute();
@@ -25,58 +24,73 @@ const sessionUser = useUserSession().user;
 // Chips
 //= section fund
 const choosenChip_section = ref('available')
-// = affiliation
-const affiliationFundsChips = ref([
+// = 
+const affiliationBandChips = ref([
   {
+    id: 1,
+    bandID: 0,
     name: 'all',
-    title: 'Всего',
-    id: 0
+    title: 'Всего'
   },
   {
-    name: 'mine',
-    title: 'Мои',
-    id: 1
-  },
-  {
-    name: 'unidrum',
-    title: 'Unidrum',
-    id: 2
-  },
-  {
-    name: 'AC',
-    title: 'АС',
-    id: 3
-  },
-  {
-    name: 'EC',
-    title: 'ЕС',
-    id: 4
-  },
-  {
-    name: 'IS',
-    title: 'ИС',
-    id: 5
-  },
-  {
-    name: 'Conspirators',
-    title: 'Соучастники',
-    id: 6
-  },
-  {
-    name: 'JD',
-    title: 'ЮД',
-    id: 7
-  },
-  {
-    name: 'JS',
-    title: 'ЮС',
-    id: 7
+    id: 2,
+    bandID: 0,
+    name: 'personal',
+    title: 'Личные'
   }
-]) 
+])
+// const affiliationFundsChips = ref([
+//   {
+//     name: 'all',
+//     title: 'Всего',
+//     id: 0
+//   },
+//   {
+//     name: 'mine',
+//     title: 'Мои',
+//     id: 1
+//   },
+//   {
+//     name: 'unidrum',
+//     title: 'Unidrum',
+//     id: 2
+//   },
+//   {
+//     name: 'AC',
+//     title: 'АС',
+//     id: 3
+//   },
+//   {
+//     name: 'EC',
+//     title: 'ЕС',
+//     id: 4
+//   },
+//   {
+//     name: 'IS',
+//     title: 'ИС',
+//     id: 5
+//   },
+//   {
+//     name: 'Conspirators',
+//     title: 'Соучастники',
+//     id: 6
+//   },
+//   {
+//     name: 'JD',
+//     title: 'ЮД',
+//     id: 7
+//   },
+//   {
+//     name: 'JS',
+//     title: 'ЮС',
+//     id: 7
+//   }
+// ]) 
 const currentAffiliation = ref({
   name: 'all',
   title: 'Всего',
-  id: 0
+  bandID: 0,
+  id: 1
 })
 //= fund paragraph
 const fundParagraph = ref([
@@ -1240,6 +1254,35 @@ const transaction_ledger_computed = computed(() => {
 const meshes_computed = computed(() => {
   return mesh_list.value?.filter(el => el.tag === choosenChip_section.value)
 })
+// band list
+const band_computed = computed(() => {
+  return band.value
+})
+//= affiliation band chips
+const affiliation_computed = computed(() => {
+  let array:any = []
+
+  // Добавляем стоковые позиции
+  affiliationBandChips.value.forEach(item => {
+    array.push(item)
+  })
+  // Добавлям позиции на основе банд в БД
+  band_computed.value?.forEach(item => {
+    
+    if([...affiliationBandChips.value].find(el => el.name !== item.name)) {
+      array.push({
+        id: array.length + 1,
+        bandID: item.id,
+        name: item.name,
+        title: item.name
+      })
+    }
+  })
+
+  return array
+})
+
+
 
 // HELPERS
 //= filter funds by group
@@ -1917,6 +1960,13 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     return transaction_ledger
   }
 })
+// band
+const { data: band } = useFetch("/api/band/band", {
+  lazy: false,
+  transform: (band) => {
+    return band
+  }
+})
 </script>
 
 <template>
@@ -1936,12 +1986,13 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     <!-- CHIPs -->
     <Chip
       id="affiliation-chip-block"
-      :tabs="affiliationFundsChips"
+      :tabs="affiliation_computed"
       :default="currentAffiliation"
       :btn_all_exist="false"
       @changed="changeChipAffiliation"
       style="margin-top: 1rem;"
     />
+    {{ currentAffiliation }}
     <!-- <chip
       :tabs="[
         {
@@ -1978,7 +2029,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     <!--  -->
     <div class="total-cap_container" style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
       <p style="margin: 0;">TOTAL CAP: ~{{ sumTotalCap() }}{{ currency_to_show.ticket }}</p>
-      <Button v-if="currentAffiliation.id !== 0" type="pseudo-btn" :link="`/fund/${currentAffiliation?.id}`">Подробнее</Button>
+      <Button v-if="currentAffiliation.bandID !== 0" type="pseudo-btn" :link="`/band/${currentAffiliation?.bandID}`">Подробнее</Button>
 
     </div>
 
