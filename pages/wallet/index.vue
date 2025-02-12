@@ -1588,6 +1588,7 @@ const calcMeshProfitPercent = (meshID: number) => {
       }
     })
   }
+  
   let invested = calcMeshInvested(meshID)
   let available = calcMeshAvailable(meshID)
 
