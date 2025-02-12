@@ -1168,7 +1168,7 @@ const transaction_ledger_computed = computed(() => {
     meshes_computed.value?.forEach(mesh => {
       let from_obj = translateMeshByID(transaction?.from_mesh_id)
       let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
-      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id || receive_obj?.storageID === mesh.id) {
+      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id) {
 
 
         if(from_obj && receive_obj) {
@@ -1392,20 +1392,20 @@ const calcMeshInvested = (meshID: number) => {
 
   let result  = 0;
   let transactions = transaction_ledger?.value
-  let mesh = mesh_list?.value?.find(el => {
-    if(el.id === meshID) {
-      // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
-      //   return el
-      // }
-      if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
-        return el
-      } 
-      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+  // let mesh = mesh_list?.value?.find(el => {
+  //   if(el.id === meshID) {
+  //     // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
+  //     //   return el
+  //     // }
+  //     if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
+  //       return el
+  //     } 
+  //     else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
 
-        return el
-      }
-    }
-  })
+  //       return el
+  //     }
+  //   }
+  // })
 
   // currency_to_show.ticket
 
@@ -1452,6 +1452,10 @@ const calcMeshInvested = (meshID: number) => {
 
   return result
 }
+// calc
+const calc = () => {
+  return 1
+}
 // calc mesh available
 const calcMeshAvailable = (meshID: number) => {
   let result  = 0;
@@ -1468,7 +1472,7 @@ const calcMeshAvailable = (meshID: number) => {
 
         return el
       }
-    }
+    } 
   })
 
   // currency_to_show.ticket
@@ -1514,10 +1518,12 @@ const calcMeshAvailable = (meshID: number) => {
               }
             }
           })) {
-            // переназначаем мешок пполучения
-            transaction.receive_mesh_id = mesh?.storageID
+            // переназначаем мешок получения
+            // transaction.from_mesh_id = mesh?.storageID
             // уменьшаем долг по кредиту
             result -= transaction.receive_mesh_amount * transaction.receive_mesh_price
+            transaction.receive_mesh_id = mesh?.storageID
+            
           }
 
         } 
@@ -1525,10 +1531,10 @@ const calcMeshAvailable = (meshID: number) => {
         else if (transaction.purpose === 'issue') {
           if(transaction.receive_mesh_id === meshID) {
             result += transaction.receive_mesh_amount * transaction.receive_mesh_price
-
             if(mesh?.bid) {
               result += result * mesh?.bid
-            }
+            } 
+
           }   
         }
       } 
@@ -1541,6 +1547,7 @@ const calcMeshAvailable = (meshID: number) => {
         else if(transaction.from_mesh_id === meshID) {
           result -= transaction.from_mesh_amount * transaction.from_mesh_price
         } 
+
       }
 
     })
@@ -2185,6 +2192,7 @@ const { data: band } = useFetch("/api/band/band", {
       >
         <p style="margin: 0;">{{ el }} cap</p>
         <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p>
+        {{ calc() }}
       </Section>
 
       <!-- КРЕДИТОРКА -->
@@ -2202,7 +2210,8 @@ const { data: band } = useFetch("/api/band/band", {
         @click="choosenChip_section = 'debt_loan'"
       >
         <p style="margin: 0;">debt_loan cap</p>
-        <p style="margin: 0;">0.00RUB</p>
+        <p style="margin: 0;">{{ currency_to_show.ticket }}</p>
+        {{ calc() }}
       </Section>
     </div> 
     
@@ -2376,9 +2385,10 @@ const { data: band } = useFetch("/api/band/band", {
                   <!--  -->
                   <div>
                     <!-- CURRENT AMOUNT -->
-                    <div style="font-weight: bold;">
+                    <div style="font-weight: bold;" v-if="mesh.tag !== 'invested_loan'">
                       {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}
                     </div>
+                    <div v-else style="font-weight: bold;">Долг: {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}</div>
                     <!-- MESH NAME -->
                     <div style="display: flex; align-items: center; gap: .5rem;">
                       <span class="mesh_name">{{ mesh.name }}</span>
