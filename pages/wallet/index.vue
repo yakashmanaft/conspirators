@@ -26,14 +26,14 @@ const sessionUser:any = useUserSession().user;
 const choosenChip_section = ref('available')
 // = 
 const affiliationBandChips = ref([
+  // {
+  //   id: 1,
+  //   bandID: 0,
+  //   name: 'all',
+  //   title: 'Всего'
+  // },
   {
     id: 1,
-    bandID: 0,
-    name: 'all',
-    title: 'Всего'
-  },
-  {
-    id: 2,
     bandID: 0,
     name: 'personal',
     title: 'Личные'
@@ -87,8 +87,12 @@ const affiliationBandChips = ref([
 //   }
 // ]) 
 const currentAffiliation = ref({
-  name: 'all',
-  title: 'Всего',
+  // name: 'all',
+  // title: 'Всего',
+  // bandID: 0,
+  // id: 1
+  name: 'personal',
+  title: 'Личные',
   bandID: 0,
   id: 1
 })
@@ -1252,7 +1256,21 @@ const transaction_ledger_computed = computed(() => {
 
 //= meshes array
 const meshes_computed = computed(() => {
-  return mesh_list.value?.filter(el => el.tag === choosenChip_section.value)
+  return mesh_list.value?.filter(el => {
+    if(el.tag === choosenChip_section.value) {
+
+      // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
+      //   return el
+      // }
+      if (currentAffiliation.value.name === 'personal' && el.ownerType === 'user' && el.ownerID === sessionUser.value.id) {
+        return el
+      } 
+      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+
+        return el
+      }
+    }
+  })
 })
 // band list
 const band_computed = computed(() => {
@@ -1362,7 +1380,20 @@ const calcMeshInvested = (meshID: number) => {
 
   let result  = 0;
   let transactions = transaction_ledger?.value
-  let mesh = mesh_list?.value?.find(el => el.id === meshID)
+  let mesh = mesh_list?.value?.find(el => {
+    if(el.id === meshID) {
+      // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
+      //   return el
+      // }
+      if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
+        return el
+      } 
+      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+
+        return el
+      }
+    }
+  })
 
   // currency_to_show.ticket
 
@@ -1413,7 +1444,20 @@ const calcMeshInvested = (meshID: number) => {
 const calcMeshAvailable = (meshID: number) => {
   let result  = 0;
   let transactions = transaction_ledger?.value
-  let mesh = mesh_list?.value?.find(el => el.id === meshID)
+  let mesh = mesh_list?.value?.find(el => {
+    if(el.id === meshID) {
+      // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
+      //   return el
+      // }
+      if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
+        return el
+      } 
+      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+
+        return el
+      }
+    }
+  })
 
   // currency_to_show.ticket
 
@@ -1442,7 +1486,20 @@ const calcMeshAvailable = (meshID: number) => {
             result -= transaction.receive_mesh_amount * transaction.receive_mesh_price
           } 
           // находим mesh, который указан как storage кредитного счета
-          if(mesh_list?.value?.find(el => el.id === mesh?.storageID)) {
+          if(mesh_list?.value?.find(el => {
+            if(el.id === mesh?.storageID) {
+              // if(currentAffiliation.value.name === 'all') {
+              //   return el
+              // }
+              if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
+                return el
+              } 
+              else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+
+                return el
+              }
+            }
+          })) {
             // назначаем куда сумму оплаты добавить
             transaction.receive_mesh_id = mesh?.storageID
             // уменьшаем долг по кредиту
@@ -1480,7 +1537,20 @@ const calcMeshProfit = (meshID: number) => {
   let result = 0;
   let mesh;
   if(mesh_list.value?.length) {
-    mesh = mesh_list.value.find(mesh => mesh.id === meshID)
+    mesh = mesh_list.value.find(mesh => {
+        if(mesh.id === meshID) {
+        //   if(currentAffiliation.value.name === 'all') {
+        //   return mesh
+        // }
+        if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
+          return mesh
+        } 
+        else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
+
+          return mesh
+        }
+      }
+    })
   }
   let invested = calcMeshInvested(meshID)
   let available = calcMeshAvailable(meshID)
@@ -1503,7 +1573,20 @@ const calcMeshProfitPercent = (meshID: number) => {
   let result = 0;
   let mesh;
   if(mesh_list.value?.length) {
-    mesh = mesh_list.value.find(mesh => mesh.id === meshID)
+    mesh = mesh_list.value.find(mesh => {
+      if(mesh.id === meshID) {
+        //   if(currentAffiliation.value.name === 'all') {
+        //   return mesh
+        // }
+        if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
+          return mesh
+        } 
+        else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
+
+          return mesh
+        }
+      }
+    })
   }
   let invested = calcMeshInvested(meshID)
   let available = calcMeshAvailable(meshID)
@@ -1933,7 +2016,20 @@ const sumTotalCap = () => {
 //= calc amount by section 
 const sumSectionAmount = (groupType: string) => {
   let result = 0;
-  mesh_list.value?.filter(el => el.tag === groupType).forEach(mesh => {
+  mesh_list.value?.filter(el => {
+    if(el.tag === groupType) {
+      // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
+      //   return el
+      // }
+      if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
+        return el
+      } 
+      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+
+        return el
+      }
+    }
+  }).forEach(mesh => {
     result += calcMeshAvailable(mesh.id)
   })
   return result
@@ -1975,7 +2071,7 @@ const { data: band } = useFetch("/api/band/band", {
       if(item.sharers && sessionUser.value) {
         let sharers = Object.values(item.sharers)
 
-          if(sharers.find(sharer => sharer.userType === 'conspirator' && sharer.userId === sessionUser.value.id )) {
+          if(sharers.find(sharer => sharer.userType === 'user' && sharer.userId === sessionUser.value.id )) {
 
             return item
           } 
@@ -1994,7 +2090,7 @@ const { data: band } = useFetch("/api/band/band", {
       <h1 style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
     </div>
 
-    <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p>
+    <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p> -->
 
 
 
@@ -2007,7 +2103,7 @@ const { data: band } = useFetch("/api/band/band", {
       @changed="changeChipAffiliation"
       style="margin-top: 1rem;"
     />
-    {{ currentAffiliation }}
+    <!-- {{ currentAffiliation }} -->
     <!-- <chip
       :tabs="[
         {
