@@ -17,7 +17,7 @@ import { Chip } from "~/components/chip";
 const route = useRoute();
 const router = useRouter();
 // 
-const sessionUser = useUserSession().user;
+const sessionUser:any = useUserSession().user;
 // useProfileStore().loadData()
 // const profiles = useProfileStore().profiles
 
@@ -1145,15 +1145,15 @@ const ledger = ref([
 
 // COMPUTED
 // conspirators_fund
-const conspirators_fund_computed = computed(() => {
+// const conspirators_fund_computed = computed(() => {
 
 
-  const array = [...conspirators_fund.value].filter((fund) => {
-    return fund.tagName === choosenChip_section.value
-  })
+//   const array = [...conspirators_fund.value].filter((fund) => {
+//     return fund.tagName === choosenChip_section.value
+//   })
 
-  return array
-})
+//   return array
+// })
 
 //= transaction ledger
 const transaction_ledger_computed = computed(() => {
@@ -1268,7 +1268,13 @@ const affiliation_computed = computed(() => {
   })
   // Добавлям позиции на основе банд в БД
   band_computed.value?.forEach(item => {
-    
+    // if(item.sharers) {
+    //   let sharers = Object.values(item.sharers)
+
+    //   if(sharers.filter(sharer => sharer.userType === 'conspirator' && sharer.userId === sessionUser.id )) {
+    //     console.log(sharers)
+    //   }
+    // }
     if([...affiliationBandChips.value].find(el => el.name !== item.name)) {
       array.push({
         id: array.length + 1,
@@ -1964,7 +1970,17 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 const { data: band } = useFetch("/api/band/band", {
   lazy: false,
   transform: (band) => {
-    return band
+
+    return band.filter(item => {
+      if(item.sharers && sessionUser.value) {
+        let sharers = Object.values(item.sharers)
+
+          if(sharers.find(sharer => sharer.userType === 'conspirator' && sharer.userId === sessionUser.value.id )) {
+
+            return item
+          } 
+        }
+    })
   }
 })
 </script>
@@ -1978,8 +1994,7 @@ const { data: band } = useFetch("/api/band/band", {
       <h1 style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
     </div>
 
-    <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p>
-    <p style="margin: 0; margin-left: 1rem;">{{ currentAffiliation }}</p> -->
+    <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p>
 
 
 

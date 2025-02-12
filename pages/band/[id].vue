@@ -156,6 +156,7 @@ useHead({
 
                 <!-- OWNER -->
                 <div style="display: flex; gap: 0.5rem;">
+                    <p>{{ band.sharers }}</p>
                     <p>Соучастники: Евгений  Павловский (50%), Сергей Анфалов (50%)</p>
                     <!-- conspirators/bands -->
                     <!-- <div v-if="mesh.ownerType === 'conspirator'">
