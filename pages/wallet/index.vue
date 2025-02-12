@@ -1201,7 +1201,11 @@ const transaction_ledger_computed = computed(() => {
             receive_mesh_amount: transaction.receive_mesh_amount,
             receive_mesh_price: transaction.receive_mesh_price,
             receive_mesh_owner_id: receive_obj?.ownerID, 
-            receive_mesh_owner_type: receive_obj?.ownerType, 
+            receive_mesh_owner_type: receive_obj?.ownerType,
+            // LOANER
+            loaner_id: receive_obj?.loanerID,
+            loaner_type: receive_obj?.loanerType,
+            loaner_mesh_id: receive_obj?.loanerMeshID,
             // AUTHOR
             authorID: transaction.authorID,
             authorType: transaction.authorType
@@ -1267,6 +1271,14 @@ const meshes_computed = computed(() => {
       } 
       else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
 
+        return el
+      }
+    } 
+    else if (choosenChip_section.value === 'debt_loan') {
+      if(currentAffiliation.value.name === 'personal' && el.loanerType === 'user' && el.loanerID === sessionUser.value.id) {
+        return el
+      }
+      else if (currentAffiliation.value.name === 'band' && el.loanerType === 'conspirator' && el.loanerID === el.loanerID) {
         return el
       }
     }
@@ -1480,6 +1492,8 @@ const calcMeshAvailable = (meshID: number) => {
     transactions.forEach(transaction => {
       // LOAN TRANSACTIONs
       if(mesh?.storageID !== 0) {
+
+        // PAYMENT (оплата займа)
         if(transaction.purpose === 'payment') {
           if(transaction.receive_mesh_id === meshID) {
             
@@ -1500,13 +1514,15 @@ const calcMeshAvailable = (meshID: number) => {
               }
             }
           })) {
-            // назначаем куда сумму оплаты добавить
+            // переназначаем мешок пполучения
             transaction.receive_mesh_id = mesh?.storageID
             // уменьшаем долг по кредиту
             result -= transaction.receive_mesh_amount * transaction.receive_mesh_price
           }
 
-        } else if (transaction.purpose === 'issue') {
+        } 
+        // ISSUE (Выдача займа)
+        else if (transaction.purpose === 'issue') {
           if(transaction.receive_mesh_id === meshID) {
             result += transaction.receive_mesh_amount * transaction.receive_mesh_price
 
@@ -1939,6 +1955,16 @@ const setChoosenWalletSectionColor = (tag: any) => {
         // color = `var(--color-wallet-fund-invested)`
       }
     }
+    // DEBT LOAN
+    if(tag === 'debt_loan') {
+      if(choosenChip_section.value === tag) {
+        // color = `var(--color-wallet-fund-invested-wo)`
+        color = `var(--color-wallet-fund-debt)`
+      } else {
+        // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+
   }
 
   return color;
@@ -2149,6 +2175,7 @@ const { data: band } = useFetch("/api/band/band", {
     <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
 
+      <!-- ДЕБЕТОРКА -->
       <Section 
         v-for="el in [...new Set([...mesh_list?.map(obj => obj.tag)])]"
         :fDirection="`column`"
@@ -2160,6 +2187,23 @@ const { data: band } = useFetch("/api/band/band", {
         <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p>
       </Section>
 
+      <!-- КРЕДИТОРКА -->
+      <Section
+        v-if="mesh_list?.find(el => {
+          if(currentAffiliation.name === 'personal' && el.loanerType === 'user' && el.loanerID === sessionUser.id) {
+            return el
+          } else if (currentAffiliation.name === 'band' && el.loanerType === 'conspirator' && el.loanerID === el.loanerID) {
+            return el
+          }
+        })"
+        :fDirection="`column`"
+        :fAlignItems="`flex-start`"
+        :bg="setChoosenWalletSectionColor('debt_loan')"
+        @click="choosenChip_section = 'debt_loan'"
+      >
+        <p style="margin: 0;">debt_loan cap</p>
+        <p style="margin: 0;">0.00RUB</p>
+      </Section>
     </div> 
     
 
@@ -2275,6 +2319,10 @@ const { data: band } = useFetch("/api/band/band", {
                 </p>
                 <p style="margin: 0;" v-else>Неизвестный</p> 
               </div>
+              <!-- LOANER -->
+              <div v-if="transaction.loaner_id">
+                <p>Loaner info: {{ transaction.loaner_id }} {{ transaction.loaner_type }}. Mesh: {{ transaction.loaner_mesh_id }}</p>
+              </div>
             </div>
 
             <!-- AUTHOR -->
@@ -2294,7 +2342,6 @@ const { data: band } = useFetch("/api/band/band", {
 
         <!-- LENGTH -->
         <div v-if="meshes_computed?.length">
-
           <section
             v-for="group in [...new Set([...meshes_computed.map(obj => {
               return {

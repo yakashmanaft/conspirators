@@ -152,34 +152,61 @@ useHead({
 
                 {{ band.name }}
             </h1> 
-            <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
-
-                <!-- OWNER -->
-                <div style="display: flex; gap: 0.5rem;">
-                    <p>{{ band.sharers }}</p>
-                    <p>Соучастники: Евгений  Павловский (50%), Сергей Анфалов (50%)</p>
-                    <!-- conspirators/bands -->
-                    <!-- <div v-if="mesh.ownerType === 'conspirator'">
-                        <Button type="pseudo-btn" :link="`/band/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
-                    </div> -->
-                    <!-- user -->
-                    <!-- <div v-if="mesh.ownerType === 'user'">
-                        <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
-                    </div> -->
-                </div>
-                <!-- <p>Тип: <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.tag }}</span> <span style="background-color: var(--color-btn-hover-bg)">{{mesh.type}}</span></p> -->
-                <!-- <p>Брокер: {{mesh.broker_tag}}</p> -->
-                <p>2 468.RUB</p>
-                <p>Ваша доля: 50% (1 234.00RUB)</p>
-                <p>Управляющий: Сергей Анфалов</p>
-            </h2>
         </div>
-        {{ band }}
 
-        <!-- CHIP SECTION -->
-         <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
-        <!-- {{ currentChip }} -->
-        <h3>Структура / Сделки / Имущество</h3>
+    <!-- OWNER -->
+    <div>
+        <h2>Состав участников</h2>
+        <h3>Соучастники</h3>
+        <ul>
+            <li v-for="sharer in band.sharers">
+                {{ sharer }} Доля xxx.xxRUB / 50%
+            </li>
+        </ul>
+        <h3>Управляющий</h3>
+        <ul>
+            <li>Сергей Анфалов</li>
+        </ul>
+        <!-- conspirators/bands -->
+        <!-- <div v-if="mesh.ownerType === 'conspirator'">
+            <Button type="pseudo-btn" :link="`/band/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
+        </div> -->
+        <!-- user -->
+        <!-- <div v-if="mesh.ownerType === 'user'">
+            <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
+        </div> -->
+    </div>
+    <!-- CAP -->
+    <!-- TOTAL CAP -->
+    <div>
+        <h2>Капитализация</h2>
+        <p>~2 468.RUB</p>
+
+    </div>
+    
+    <!-- CHIP SECTION -->
+    <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
+    <!-- {{ currentChip }} -->
+    <h2>Структура</h2>
+    <ul>
+        <li><h3>Мешок 1</h3></li>
+        <li><h3>Мешок 2</h3></li>
+    </ul>
+    
+    <h2>Сделки</h2>
+    <ul>
+        <li>Транзакция 1</li>
+        <li>Транзакция 2</li>
+    </ul>
+
+    <h2>Имущество</h2>
+    <ul>
+        <li>Имущество 1</li>
+        <li>Имущество 2</li>
+    </ul>
+
+    <br>
+    {{ band }}
         
     </Container>
 </template>
