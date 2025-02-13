@@ -56,6 +56,9 @@ const project = ref(null);
 const band = ref(null);
 // POPUP
 const popup_opened = ref(false)
+// CURRENT PROJECT STATUS
+const project_status = ref('Уточняю...')
+
 
 // тмц организации
 // items.value = items.value.filter(
@@ -242,6 +245,21 @@ const computedAccomplishments = computed(() => {
     })
   }
 })
+
+
+// HELPERS
+//= set color by project status
+const setColorByProjectStatus = () => {
+  if(project_status.value === 'Еcть вопросы...') {
+    return `background-color: var(--color-status-canceled);`
+  } 
+  else if (project_status.value === 'Проект завершен') {
+    return `background-color: var(--color-status-finished); color: var(--color-urgency-low)`
+  }  
+  else {
+    return `background-color: var(--color-status-canceled);`
+  }
+}
 
 // ******* DB
 // *** GET
@@ -622,6 +640,14 @@ const cutTaskDesc = (str: string, maxLength: number) => {
     accomplishmentsEndedDateArray.value = accomplishmentsEndedDateArrayFunc()
   })
 
+  watch(computedTasks, () => {
+    if(computedTasks?.value?.find(el => el.status !== 'finished')) {
+      project_status.value = 'Еcть вопросы...'
+    } else {
+      project_status.value = 'Проект завершен'
+    }
+  })
+
 </script>
 
 <template>
@@ -760,6 +786,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
+        <p>Статус: <span style="font-size: .8rem; padding: 4px 8px; border-radius: 1rem;" :style="setColorByProjectStatus()">{{project_status}}</span></p>
         <h3>Уделено # часов</h3>
         <p>Выручка:
           <ul>

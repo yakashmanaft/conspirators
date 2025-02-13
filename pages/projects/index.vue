@@ -505,7 +505,7 @@ const addNewProject = () => {
           >
           <!-- {{ project }} -->
           <div style="padding-left: 3.5rem;">
-            {{ project?.name }}
+            <span>{{ project?.name }}</span><span></span>
           </div>
           
           <!-- Symbol -->
