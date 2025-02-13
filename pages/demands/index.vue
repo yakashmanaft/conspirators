@@ -504,7 +504,7 @@ const { data: landing_list } = useFetch("/api/landingGuarded/landing", {
     transform: (landing_list) => {
         return landing_list.filter((el) => {
             // session user is a sharer
-            if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+            if(el.sharers && el.sharers.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) {
                 return el
             }
         })
@@ -523,7 +523,7 @@ const { data: project_list } = useFetch("/api/projectGuarded/project", {
     transform: (project_list) => {
         return project_list.filter((el) => {
             // session user is a sharer
-            if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+            if(el.sharers && el.sharers.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) {
                 return el
             }
         })

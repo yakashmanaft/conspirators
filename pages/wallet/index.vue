@@ -114,116 +114,116 @@ const currentFundParagraph = ref('meshes')
 
 // WALLET
 //= wallet articles
-const wallet_sections = ref([
-  {
-    id: 1,
-    title: 'Свободные средства',
-    name: 'available',
-    total: 136187.50,
-    aticles: [
+// const wallet_sections = ref([
+//   {
+//     id: 1,
+//     title: 'Свободные средства',
+//     name: 'available',
+//     total: 136187.50,
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 2,
-    title: 'Фонда',
-    total: 203705.14,
-    name: 'invested_stock',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 2,
+//     title: 'Фонда',
+//     total: 203705.14,
+//     name: 'invested_stock',
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 3,
-    title: 'Крипта',
-    total: 203705.14,
-    name: 'invested_crypto',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 3,
+//     title: 'Крипта',
+//     total: 203705.14,
+//     name: 'invested_crypto',
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 4,
-    title: 'Вклады',
-    total: 203705.14,
-    name: 'invested_deposit',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 4,
+//     title: 'Вклады',
+//     total: 203705.14,
+//     name: 'invested_deposit',
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 5,
-    title: 'Валюта',
-    total: 203705.14,
-    name: 'invested_currency',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 5,
+//     title: 'Валюта',
+//     total: 203705.14,
+//     name: 'invested_currency',
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 6,
-    title: 'Выдано займов',
-    total: 203705.14,
-    name: 'credits',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 6,
+//     title: 'Выдано займов',
+//     total: 203705.14,
+//     name: 'credits',
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 6,
-    title: 'Займы',
-    total: 203705.14,
-    name: 'invested_loan',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 6,
+//     title: 'Займы',
+//     total: 203705.14,
+//     name: 'invested_loan',
+//     aticles: [
 
-    ]
-  },
-  {
-    id: 7,
-    title: 'Старт проекты',
-    total: 203705.14,
-    name: 'projects',
-    aticles: [
+//     ]
+//   },
+//   {
+//     id: 7,
+//     title: 'Старт проекты',
+//     total: 203705.14,
+//     name: 'projects',
+//     aticles: [
 
-    ]
-  },
-  { 
-    id: 8,
-    title: 'Долг',
-    total: 0.00,
-    name: 'debt',
-    aticles: [
+//     ]
+//   },
+//   { 
+//     id: 8,
+//     title: 'Долг',
+//     total: 0.00,
+//     name: 'debt',
+//     aticles: [
 
-    ]
-  },
-  // { 
-  //   id: 9,
-  //   title: 'Вывод',
-  //   total: 0.00,
-  //   name: 'withdraw',
-  //   aticles: [
+//     ]
+//   },
+//   // { 
+//   //   id: 9,
+//   //   title: 'Вывод',
+//   //   total: 0.00,
+//   //   name: 'withdraw',
+//   //   aticles: [
 
-  //   ]
-  // },
-  // { 
-  //   id: 10,
-  //   title: '+Депозит',
-  //   total: 0.00,
-  //   name: 'deposit',
-  //   aticles: [
+//   //   ]
+//   // },
+//   // { 
+//   //   id: 10,
+//   //   title: '+Депозит',
+//   //   total: 0.00,
+//   //   name: 'deposit',
+//   //   aticles: [
 
-  //   ]
-  // },
-  // { 
-  //   id: 11,
-  //   title: 'Расходы',
-  //   total: 0.00,
-  //   name: 'expenses',
-  //   aticles: [
+//   //   ]
+//   // },
+//   // { 
+//   //   id: 11,
+//   //   title: 'Расходы',
+//   //   total: 0.00,
+//   //   name: 'expenses',
+//   //   aticles: [
 
-  //   ]
-  // }
-])
+//   //   ]
+//   // }
+// ])
 
 
 
@@ -1258,31 +1258,54 @@ const transaction_ledger_computed = computed(() => {
   }
 })
 
+//= meshes tags
+const mesh_tag_computed = computed(() => {
+
+
+
+  return [
+    'available', 'invested_stock', 'invested_loan', 'invested_crypto', 'debt_loan'
+  ]
+}) 
+
 //= meshes array
 const meshes_computed = computed(() => {
-  return mesh_list.value?.filter(el => {
-    if(el.tag === choosenChip_section.value) {
+  // Собираем всевозможные mesh (available, invested, debt)
+  
+  let result:any = []
+  if(mesh_list.value, loan_list.value) {
+    mesh_list.value?.forEach(item => {
+      result.push(item)
+    })
+    loan_list.value.forEach(item => {
+      result.push(item)
+    })
+  }
+
+  // return mesh_list.value
+  return result
+    // if(el.tag === choosenChip_section.value) {
 
       // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
       //   return el
       // }
-      if (currentAffiliation.value.name === 'personal' && el.ownerType === 'user' && el.ownerID === sessionUser.value.id) {
-        return el
-      } 
-      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+      // if (currentAffiliation.value.name === 'personal' && el.ownerType === 'user' && el.ownerID === sessionUser.value.id) {
+      //   return el
+      // } 
+      // else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
 
-        return el
-      }
-    } 
-    else if (choosenChip_section.value === 'debt_loan') {
-      if(currentAffiliation.value.name === 'personal' && el.loanerType === 'user' && el.loanerID === sessionUser.value.id) {
-        return el
-      }
-      else if (currentAffiliation.value.name === 'band' && el.loanerType === 'conspirator' && el.loanerID === el.loanerID) {
-        return el
-      }
-    }
-  })
+      //   return el
+      // }
+    // } 
+    // else if (choosenChip_section.value === 'debt_loan') {
+    //   if(currentAffiliation.value.name === 'personal' && el.loanerType === 'user' && el.loanerID === sessionUser.value.id) {
+    //     return el
+    //   }
+    //   else if (currentAffiliation.value.name === 'band' && el.loanerType === 'conspirator' && el.loanerID === el.loanerID) {
+    //     return el
+    //   }
+    // }
+  // })
 })
 // band list
 const band_computed = computed(() => {
@@ -1962,7 +1985,7 @@ const setChoosenWalletSectionColor = (tag: any) => {
         // color = `var(--color-wallet-fund-invested)`
       }
     }
-    // DEBT LOAN
+    // // DEBT LOAN
     if(tag === 'debt_loan') {
       if(choosenChip_section.value === tag) {
         // color = `var(--color-wallet-fund-invested-wo)`
@@ -2089,6 +2112,13 @@ const { data: mesh_list } = useFetch("/api/mesh/mesh", {
     return mesh_list
   }
 })
+// loan
+const { data: loan_list } = useFetch("/api/loan/loan", {
+  lazy: false,
+  transform: (loan_list) => {
+    return loan_list
+  }
+})
 // transaction_ledger
 const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   lazy: false,
@@ -2137,7 +2167,7 @@ const { data: band } = useFetch("/api/band/band", {
       @changed="changeChipAffiliation"
       style="margin-top: 1rem;"
     />
-    <!-- {{ currentAffiliation }} -->
+    {{ currentAffiliation }}
     <!-- <chip
       :tabs="[
         {
@@ -2173,7 +2203,7 @@ const { data: band } = useFetch("/api/band/band", {
     <!-- TOTAL -->
     <!--  -->
     <div class="total-cap_container" style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-      <p style="margin: 0;">TOTAL CAP: ~{{ sumTotalCap() }}{{ currency_to_show.ticket }}</p>
+      <p style="margin: 0;">TOTAL CAP: ~xx.xx{{ currency_to_show.ticket }}</p>
       <Button v-if="currentAffiliation.bandID !== 0" type="pseudo-btn" :link="`/band/${currentAffiliation?.bandID}`">Подробнее</Button>
 
     </div>
@@ -2182,42 +2212,25 @@ const { data: band } = useFetch("/api/band/band", {
     <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
 
-      <!-- ДЕБЕТОРКА -->
+      <!-- MESH TAG -->
       <Section 
-        v-for="el in [...new Set([...mesh_list?.map(obj => obj.tag)])]"
+        v-for="el in mesh_tag_computed"
         :fDirection="`column`"
         :fAlignItems="`flex-start`"
         :bg="setChoosenWalletSectionColor(el)"
         @click="choosenChip_section = el"
       >
         <p style="margin: 0;">{{ el }} cap</p>
-        <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p>
-        {{ calc() }}
-      </Section>
-
-      <!-- КРЕДИТОРКА -->
-      <Section
-        v-if="mesh_list?.find(el => {
-          if(currentAffiliation.name === 'personal' && el.loanerType === 'user' && el.loanerID === sessionUser.id) {
-            return el
-          } else if (currentAffiliation.name === 'band' && el.loanerType === 'conspirator' && el.loanerID === el.loanerID) {
-            return el
-          }
-        })"
-        :fDirection="`column`"
-        :fAlignItems="`flex-start`"
-        :bg="setChoosenWalletSectionColor('debt_loan')"
-        @click="choosenChip_section = 'debt_loan'"
-      >
-        <p style="margin: 0;">debt_loan cap</p>
-        <p style="margin: 0;">{{ currency_to_show.ticket }}</p>
-        {{ calc() }}
+        <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
+          -->
+        <p>XX.XX{{ currency_to_show.ticket }}</p>
       </Section>
     </div> 
-    
+        {{ choosenChip_section }}
+        
 
     <!-- === INFO SECTION === -->
-    <div id="fund-block" class="wallet-section_container">
+    <!-- <div id="fund-block" class="wallet-section_container">
 
       <Section 
         v-for="section in wallet_sections" 
@@ -2227,17 +2240,16 @@ const { data: band } = useFetch("/api/band/band", {
         @click="choosenChip_section = section.name"
       >
         
-        <!-- section header -->
         <header>
           <h2 :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="text-wrap: nowrap; font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-          <!-- available -->
+
           <p v-if="section.name  === 'available'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotalAvailable(section.id) }} {{ currency_to_show.ticket }}</p>
-          <!-- deposit -->
+
           <p v-else-if="section.name === 'invested_deposit'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotal(section.id) }} {{ currency_to_show.ticket }}</p>
-          <!-- else -->
+
           <p v-else :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ 0.00 }} {{ currency_to_show.ticket }}</p>
           
-          <!--  -->
+
           <p 
             v-if="section.name === 'invested_stock' || section.name === 'invested_currency'" 
             style="font-size: 0.8rem; font-weight: normal;"
@@ -2252,16 +2264,13 @@ const { data: band } = useFetch("/api/band/band", {
           </p>
         </header>
 
-        <!-- section articles -->   
-        <!-- <HorizontalCard>123</HorizontalCard>
-        <StackedCard>2704Кредит2024 | 275 734.00 P</StackedCard>
-        <StackedCard>Брокерский счет (Тинькофф) | 275 734.00 P</StackedCard> -->
+
       </Section>
 
-    </div>
+    </div> -->
 
-    <!-- CHIP btn -->
-    <!-- mesh && transactions  -->
+    <!-- CHIP -->
+    <!-- MESH && TRANSACTION  -->
     <div class="current_affiliation_title" style="display: flex; gap: 1rem; align-items: center;">
 
       <h3 v-for="el in fundParagraph" :class="currentFundParagraph === el.name ? 'title_active' : ''">
@@ -2273,7 +2282,7 @@ const { data: band } = useFetch("/api/band/band", {
 
     </div>
 
-    <!-- CURRENT SECTION CONTENT-->
+    <!-- CURRENT SECTION CONTENT -->
     <!-- ledger && meshes -->
      <section class="current-fund_container">
 
@@ -2351,6 +2360,12 @@ const { data: band } = useFetch("/api/band/band", {
 
         <!-- LENGTH -->
         <div v-if="meshes_computed?.length">
+
+          <div v-for="mesh in meshes_computed">
+            {{ mesh }}
+          </div>
+
+
           <section
             v-for="group in [...new Set([...meshes_computed.map(obj => {
               return {
@@ -2361,16 +2376,16 @@ const { data: band } = useFetch("/api/band/band", {
             style="margin-top: 1rem;"
             class="mesh_group_container"
           >
-            <!-- mesh group name -->
+
             <header>
               <h4>{{ group.type }}</h4>
             </header>
 
-            <!-- mesh array container -->
+
             <main style="margin-top: 1rem;">
 
-              <!-- MESH ITEM -->
-              <Section 
+
+              <!-- <Section 
                 v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)"
                 @click="$router.push(`mesh/${mesh.id}`)"
                 fGap=".5rem"  
@@ -2378,25 +2393,25 @@ const { data: band } = useFetch("/api/band/band", {
                 fJustifyContent="space-between"
                 fAlignItems="center"
               >
-                <!-- MESH INFO -->
+
                 <div class="mesh_info">
-                  <!-- BROKER TAG -->
+
                   <div class="mesh_broker-tag" style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
-                  <!--  -->
+
                   <div>
-                    <!-- CURRENT AMOUNT -->
+
                     <div style="font-weight: bold;" v-if="mesh.tag !== 'invested_loan'">
                       {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}
                     </div>
                     <div v-else style="font-weight: bold;">Долг: {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}</div>
-                    <!-- MESH NAME -->
+
                     <div style="display: flex; align-items: center; gap: .5rem;">
                       <span class="mesh_name">{{ mesh.name }}</span>
                       <span v-if="mesh.bid !== 0.00" style="font-size: 0.8rem; background-color: var(--color-btn-hover-bg); border-radius: 1rem; padding: 2px 6px;">
                       {{ mesh.bid * 100 }}%
                       </span>
                     </div>
-                    <!-- MESH OWNER && MESH STORAGE -->
+
                     <div 
                       class="mesh_footer"
                       style="font-size: 0.8rem; display: flex;  gap: .5rem; margin-top: .5rem;"
@@ -2412,24 +2427,24 @@ const { data: band } = useFetch("/api/band/band", {
                     </div>
                   </div>
                 </div>
-                <!-- MESH TOTAL -->
+
                 <div
                   v-if="mesh.type !== 'debet_card' && mesh.type !== 'cash'" 
                   style="text-wrap: nowrap; text-align: right;"
                 >
-                  <!-- PROFIT -->
+
                   <div class="mesh_profit" style="font-size: .8rem;" :style="`color: ${calcColorByMeshProfit(mesh.id)}`">
-                    <!-- amount -->
+
                     <div>{{transformToFixed(calcMeshProfit(mesh.id))}}{{ currency_to_show.ticket }}</div>
-                    <!-- el separator -->
+
                     <div class="mesh_profit-separator" style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByMeshProfit(mesh.id)}`"></div>
-                    <!-- percentage -->
+
                     <div>{{ transformToFixed(calcMeshProfitPercent(mesh.id)) }}%</div>
                   </div>
-                  <!-- INVESTED -->
+
                   <div class="mesh_invested">dep: {{transformToFixed(calcMeshInvested(mesh.id))}}{{ currency_to_show.ticket }}</div>
                 </div>
-              </Section>
+              </Section> -->
 
             </main>
           </section>

@@ -254,7 +254,7 @@ const { data: project_list } = useFetch("/api/projectGuarded/project", {
       // return project_list.find(el => el.id === +route.params.id) 
 
       let project = project_list.filter(el => el.id === +route.params.id)
-      let sharerExist = project[0].sharers.filter(el => el.userId === props.auth_user_profile.userId && el.userType === 'conspirator')
+      let sharerExist = project[0].sharers.filter(el => el.userId === props.auth_user_profile.userId && el.userType === 'user')
       
       if(sharerExist[0]) {
 
@@ -454,7 +454,7 @@ const changeCurrentTaskStatus= (currentTask: any) => {
 }
 const changeCurrentTaskElStatus = (task_el: any) => {
   console.log(task_el)
-  alert('В разработке...')
+  alert('Измение статуса выполнения: в разработке...')
 }
 //= add ledger task
 const addCurrentTaskEl = (currentTask: any) => {
@@ -505,7 +505,7 @@ const countCurrentAccomplishment = () => {
     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
   })
 
-  return `Всего ${sum.toFixed(2)} часа работы`
+  return `Итого: ${sum.toFixed(2)} часа работы`
 }
 //
 // //= slice string
@@ -528,15 +528,15 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
 const set_bgColor_by_status = (status: string) => {
   // status finished
   if (status === 'finished') {
-    return `border: 1px solid var(--color-urgency-low-wo); background-color: var(--color-status-finished); color: var(--color-urgency-low-wo)`
+    return `color: var(--color-urgency-low-wo); background-color: unset`
   } 
   // status waiting
   else if (status === 'waiting') {
-    return `border: 1px solid var(--color-urgency-middle); color: var(--color-urgency-middle); background-color: unset`
+    return `color: var(--color-urgency-middle); background-color: unset`
   }
   // status agreement
   else if (status === "agreement") {
-    return `border: 1px solid var(--color-urgency-low-wo); color: var(--color-urgency-low-wo); background-color: unset;`
+    return `color: var(--color-urgency-middle); background-color: unset;`
   }
   // status paused
   else if (status === 'paused') {
@@ -658,9 +658,9 @@ const cutTaskDesc = (str: string, maxLength: number) => {
           />
 
           <!-- COUNT   -->
-          <div v-if="computedAccomplishments?.length" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem; display: flex; flex-direction: column;">
-            <div>{{ countAccomplishment }} в листе</div>
-            <div v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
+          <div v-if="computedAccomplishments?.length" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem; display: flex; gap: 1rem;">
+            <div style="padding: 4px 8px; border-radius: 1rem; background-color: var(--color-btn-hover-bg); width: fit-content; font-size: 0.8rem;">Выполнений: {{ countAccomplishment }}</div>
+            <div style="padding: 4px 8px; border-radius: 1rem; background-color: var(--color-btn-hover-bg); width: fit-content; font-size: 0.8rem;" v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
           </div>
 
           <!-- accomplishment list -->
@@ -670,7 +670,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             <ul v-for="endedDate in accomplishmentsEndedDateArray" class="task_ledger_container" style="list-style: none; padding: 0;">
               <!-- LI1 -->
               <li>
-                <p style="margin-bottom: 1rem; font-size: 1rem; text-align: center; color: var(--color-global-text)">{{ endedDate }}</p>
+                <p style="margin-bottom: 1rem; font-size: .8rem; text-align: center; color: var(--color-global-text)">{{ endedDate }}</p>
                 
                 <!-- UUL2 -->
                 <ul style="padding: 0; list-style: none">
@@ -730,7 +730,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
         </div>
          <!-- LENGTH === 0 -->
         <div v-else>
-          <p>Еще ничего не сделали...</p>
+          <p style="margin-left: 1rem; margin-right: 1rem;">Еще ничего не сделали...</p>
         </div>
       </section>
 
@@ -1098,7 +1098,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   color: var(--color-btn-text);
   background-color: var(--color-btn-wo-bg);
   font-size: 0.8rem;
-  padding: 2px 8px;
+  /* padding: 2px 8px; */
   transition: all .2s ease-in;
   border-radius: 1rem;
 }
@@ -1118,11 +1118,19 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 }
 
 ul > .task_ledger_el {
+  padding: .5rem 1rem;
+  /* padding-bottom: 1rem; */
+  border: .5px solid var(--color-btn-hover-bg);
+  border-radius: 1rem;
+  /* border-bottom: .5px solid var(--color-btn-hover-bg); */
   margin-top: 1rem;
+}
+ul > .task_ledger_el:last-child {
+  /* border: unset; */
 }
 
 .leder_el_footer {
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
 }
 
 @media screen and (max-width: 575px) {

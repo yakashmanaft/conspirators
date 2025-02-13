@@ -93,7 +93,7 @@ useHead({
     transform: (project_list) => {
       // session user is a sharer
       return project_list.filter((el) => {
-        if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+        if(el.sharers && el.sharers.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) {
           return el
         }
       })

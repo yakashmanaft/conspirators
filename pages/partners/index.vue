@@ -824,7 +824,7 @@ const {
       .filter((partner) => {
         // session user is a sharer
 
-        if(partner.sharers && partner.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+        if(partner.sharers && partner.sharers.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) {
             return partner
         } 
 

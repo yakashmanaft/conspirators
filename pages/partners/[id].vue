@@ -367,7 +367,7 @@ const { data: partner_list } = useFetch("/api/partnerGuarded/partner", {
     transform: (partner_list) => {
       
       let partner = partner_list.filter(el => el.id === +route.params.id)
-      let sharerExist = partner[0].sharers.filter(el => el.userId === props.auth_user_profile.userId && el.userType === 'conspirator')
+      let sharerExist = partner[0].sharers.filter(el => el.userId === props.auth_user_profile.userId && el.userType === 'user')
       
       if(sharerExist[0]) {
 
