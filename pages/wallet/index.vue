@@ -1261,11 +1261,15 @@ const transaction_ledger_computed = computed(() => {
 //= meshes tags
 const mesh_tag_computed = computed(() => {
 
+  if(meshes_computed.value) {
 
-
-  return [
-    'available', 'invested_stock', 'invested_loan', 'invested_crypto', 'debt_loan'
-  ]
+    return [...new Set([...meshes_computed.value.map((obj: any) => {
+      return obj.tag
+    })])]
+  }
+  // return [
+  //   'available', 'invested_stock', 'invested_loan', 'invested_crypto', 'debt_loan'
+  // ]
 }) 
 
 //= meshes array
@@ -1274,16 +1278,44 @@ const meshes_computed = computed(() => {
   
   let result:any = []
   if(mesh_list.value, loan_list.value) {
+    // Дебеторки
     mesh_list.value?.forEach(item => {
       result.push(item)
     })
+    // Изначально дебиторка, но если пользователь или банда являются заемщиками - переквалифицируем tag как долговой mesh
     loan_list.value.forEach(item => {
-      result.push(item)
+      if(currentAffiliation.value.name === 'personal' && (item.loanerType === 'user' && item.loanerID === sessionUser.value.id) || currentAffiliation.value.name !== 'personal' && (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID)) {
+        result.push({
+          id: item.id,
+          created_at: item.created_at,
+          name: item.name,
+          type: item.type,
+          // Для должников меняем tag invested_loan на debt_loan
+          tag: 'debt_loan',
+          ownerID: item.ownerID,
+          ownerType: item.ownerType,
+          loanerID: item.loanerID,
+          loanerType: item.loanerType,
+          bid: item.bid
+        })
+      } else{
+        result.push(item)
+      }
     })
+    // Фильтруем полученный массив мешков (result)
+    // Если Мешки являются личными и принадлежат session user или есть займы...
+    if(currentAffiliation.value.name === 'personal') {
+      return result.filter((item: any) => (item.ownerType === 'user' && item.ownerID === sessionUser.value.id) || (item.loanerType === 'user' && item.loanerID === sessionUser.value.id))
+    } 
+    // Если мешки принадлежат банде или у банды есть займы
+    else {
+      return result.filter((item: any) => (item.ownerType === 'conspirator' && item.ownerID === currentAffiliation.value.bandID) || (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID))
+    }
+    
   }
 
+
   // return mesh_list.value
-  return result
     // if(el.tag === choosenChip_section.value) {
 
       // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
@@ -2167,7 +2199,8 @@ const { data: band } = useFetch("/api/band/band", {
       @changed="changeChipAffiliation"
       style="margin-top: 1rem;"
     />
-    {{ currentAffiliation }}
+    <p>currentAffiliation: {{ currentAffiliation }}</p>
+
     <!-- <chip
       :tabs="[
         {
@@ -2211,7 +2244,6 @@ const { data: band } = useFetch("/api/band/band", {
     <!-- SECTIONs -->
     <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
-
       <!-- MESH TAG -->
       <Section 
         v-for="el in mesh_tag_computed"
@@ -2219,14 +2251,15 @@ const { data: band } = useFetch("/api/band/band", {
         :fAlignItems="`flex-start`"
         :bg="setChoosenWalletSectionColor(el)"
         @click="choosenChip_section = el"
+        style="cursor: pointer;"
       >
         <p style="margin: 0;">{{ el }} cap</p>
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
-        <p>XX.XX{{ currency_to_show.ticket }}</p>
+        <p style="margin: 0;">XX.XX{{ currency_to_show.ticket }}</p>
       </Section>
     </div> 
-        {{ choosenChip_section }}
+        <!-- {{ choosenChip_section }} -->
         
 
     <!-- === INFO SECTION === -->
@@ -2273,7 +2306,7 @@ const { data: band } = useFetch("/api/band/band", {
     <!-- MESH && TRANSACTION  -->
     <div class="current_affiliation_title" style="display: flex; gap: 1rem; align-items: center;">
 
-      <h3 v-for="el in fundParagraph" :class="currentFundParagraph === el.name ? 'title_active' : ''">
+      <h3 v-for="el in fundParagraph" :class="currentFundParagraph === el.name ? 'title_active' : ''" style="cursor:pointer;">
         <span @click="currentFundParagraph = el.name">
 
           {{ el.title }}
@@ -2361,13 +2394,8 @@ const { data: band } = useFetch("/api/band/band", {
         <!-- LENGTH -->
         <div v-if="meshes_computed?.length">
 
-          <div v-for="mesh in meshes_computed">
-            {{ mesh }}
-          </div>
-
-
           <section
-            v-for="group in [...new Set([...meshes_computed.map(obj => {
+            v-for="group in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
               return {
                 type: obj.type, 
                 tag: obj.tag
@@ -2384,6 +2412,13 @@ const { data: band } = useFetch("/api/band/band", {
 
             <main style="margin-top: 1rem;">
 
+              <Section
+                v-for="mesh in filterMeshByWalletType(group.type, meshes_computed.filter((item: any) => item.tag === choosenChip_section))"
+                @click="$router.push(`mesh/${mesh.id}`)"
+                style="cursor: pointer;"
+              >
+              {{ mesh }}
+              </Section>
 
               <!-- <Section 
                 v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)"
