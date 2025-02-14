@@ -1,9 +1,19 @@
-# Conspirators
+## Conspirators
 
 # pet_project by Sergey Anfalov
 
+Путь реализации давнейшеей идеи CRM-системы по автоматизации уравления
+
 Conspirators v1.0.0
 based on nuxt3, prisma ORM, mysql bd
+
+Что сейчас реализовано:
+
+1. Создание огорода лендингов (грядок)
+2. Фиксация заявок с этих грядок в отдном месте
+3. Работаем над кошельком...
+
+Размещен по ссылке: https://conspirators.su
 
 ## Setup
 
