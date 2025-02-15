@@ -86,6 +86,7 @@
                     :fJustifyContent="'flex-start'"
                     :fGap="'1rem'"
                     :padding="false"
+                    style="flex: 1;"
                 >
                     
                     <!-- DIAGRAM -->
@@ -138,6 +139,11 @@
                     </ul>
     
                 </Section>
+
+                <!-- <div style="display: grid; grid-template-columns: 200px; gap: 1rem;">
+                    <Section style="max-width: 200px; height: 200px;">1</Section>
+                    <Section style="max-width: 200px; height: 200px;">2</Section>    
+                </div> -->
             </div>
 
         </div>
@@ -294,6 +300,11 @@
     align-self: flex-start;
     margin: 0;
   }
+  .landing-diagram_container {
+    /* display: flex;
+    gap: 1rem;
+    width: 100%; */
+  }  
 
   @media screen and (max-width: 575px) {
     .canvas {
