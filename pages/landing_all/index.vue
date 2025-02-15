@@ -278,10 +278,15 @@
 
   .landing-diagram_wrapper {
     display: flex; 
+    /* align-items: center;
+    justify-content: center; */
     background-color: var(--color-btn-hover-bg); 
     width: 25rem; 
     height: 25rem; 
     position: relative;
+  }
+  .landing-diagram_wrapper svg{
+    margin: 0 auto;
   }
   .landing-list_wrapper {
     width: 100%;
@@ -313,7 +318,8 @@
         margin-right: .5rem;
     }
     .landing-list_wrapper {
-        padding: 0 .5rem!important;
+        padding: 0 .5rem;
+        margin-bottom: 1rem;
     }
     .landing-diagram_wrapper {
         height: 15rem;
@@ -357,6 +363,15 @@
     }
     .landing-list_wrapper {
         padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+    .landing-list-el_wrapper {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .landing-list-el_wrapper div:nth-child(2) {
+        /* background-color: red; */
+        flex: 1 0;
     }
     .landing-diagram_wrapper {
         width: 100%;
