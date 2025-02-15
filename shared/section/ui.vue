@@ -50,6 +50,7 @@
   .section {
     background-color: var(v-bind('props.bg'));
     /* width: 100%; */
+    overflow: hidden;
     display: flex;
     gap: v-bind('props.fGap');
     flex-direction: v-bind('props.fDirection');

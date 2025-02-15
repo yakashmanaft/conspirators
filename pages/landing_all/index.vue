@@ -70,6 +70,7 @@
             <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Мой огород</h1> 
         </div>
 
+        <!-- lENGTH TRUE -->
         <div v-if="computed_landing_list?.length">
 
             <ul style="list-style: none; padding: 0; display: flex; align-items: center; margin-left: 1rem; gap: 1rem;">
@@ -77,75 +78,71 @@
                 <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Деньги</li>
             </ul>
     
-            <div class="diagram-wrapper">
-    
-                <!-- Canvas (DIAGRAM)-->
-                <div class="canvas">
-                    <!-- chart -->
-                    <svg class="chart" viewBox="0 0 60 40">
-                        <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="chooseCurrentLanding(el, index)">
-                            {{ el }}
-                        </circle>
-                    </svg>
-                    <!-- caption -->
-                    <div class="caption">
-                        <div class="caption_content" v-if="choosenEl">
-                            <div >{{ choosenEl.name }}</div>
-                        </div>
-                        <div class="caption_content" v-else>
-                            <div>Все грядки</div>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- LEGEND (FOR diagram) -->
-                <!--  -->
-                <div class="list_container">
-    
-                    <!-- SHOW ALL -->
-                    <div>
+            <div class="landing-diagram_container">
 
-                        <!-- SECTION ГРЯДКА -->
-                        <div class="landing-list-el_wrapper" v-for="(el, index) in computed_landing_list" @click.stop="chooseCurrentLanding(el, index)">
-                            <!-- SECTION HEADER -->
-                            <div class="landing-list-el_header" style="position: relative;">
-                                
-                                <!-- LEADS QTY GROUP -->
-                                <div 
-                                    class="leads-qty_wrapper"
-                                >
-                                    <p style="margin: 0; font-size: 32px; font-weight: normal;">{{ el.leads.length }}</p>
-                                </div>
-
-                                <!-- GROUP CONTENT -->
-                                <div style="flex: 1 0; margin-left: 3rem;">
-                                    <p style="margin: 0;">{{ el.name }}</p>
-                                    <p 
-                                        style="margin: 0; color: var(--color-global-text_second); font-size: 0.8rem;"
-                                    >
-                                        Всего: 
-                                        <span style="color: var(--color-global-text_second)">999999999.99 руб.</span>
-                                    </p>
-                                </div>
-                                
-                                <!-- ROUTER BTN GROUP-->
-                                <div class="router-btn_group">
-
-                                    <Icon
-                                        class="link"
-                                        name="material-symbols-light:arrow-back-ios"
-                                        size="32px"
-                                        color="var(--color-global-text_second)"
-                                        style="transform: rotate(180deg)"
-                                    />
-                                </div>
+                <Section
+                    :fDirection="setFlexDirection()"
+                    :fAlignItem="'flex-start'"
+                    :fJustifyContent="'flex-start'"
+                    :fGap="'1rem'"
+                    :padding="false"
+                >
+                    
+                    <!-- DIAGRAM -->
+                    <div class="landing-diagram_wrapper">
+    
+                        <svg class="chart" viewBox="0 0 40 40">
+                            <circle v-for="(el, index) in computed_landing_list" :key="el.id" class="unit" r="15.9" cx="50%" cy="50%" @click.stop="chooseCurrentLanding(el, index)" @mouseover="choosenEl = el">
+                                {{ el }}
+                            </circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <div class="caption_content" v-if="choosenEl">
+                                <div >{{ choosenEl.name }}</div>
+                            </div>
+                            <div class="caption_content" v-else>
+                                <div>Все грядки</div>
                             </div>
                         </div>
                     </div>
-                </div>
+    
+                    <!-- LANDING LIST -->
+                    <ul class="landing-list_wrapper">
+    
+                        <li 
+                            v-for="(el, index) in computed_landing_list"
+                            class="landing-list-el_wrapper"
+                            @click.stop="chooseCurrentLanding(el, index)"
+                            @mouseover="choosenEl = el" 
+                        >
+                            <div class="leads-qty_wrapper">{{ el.leads.length }}</div>
+                            <div>
+                                <p style="margin: 0;">{{ el.name }}</p>
+                                <p 
+                                    style="margin: 0; color: var(--color-global-text_second); font-size: 0.8rem; text-wrap: nowrap;"
+                                >
+                                    Всего: 
+                                    <span style="color: var(--color-global-text_second)">999999999.99 руб.</span>
+                                </p>
+                            </div>
+                            <div>
+                                <Icon
+                                    class="link"
+                                    name="material-symbols-light:arrow-back-ios"
+                                    size="32px"
+                                    color="var(--color-global-text_second)"
+                                    style="transform: rotate(180deg)"
+                                />
+                            </div>
+                        </li>
+                    </ul>
+    
+                </Section>
             </div>
+
         </div>
 
+        <!-- ELSEs -->
         <div class="no-landing_wrapper" v-else>На вашем огороде нет посадок...</div>
 
 
@@ -153,26 +150,22 @@
 </template>
 
 <style scoped>
-    .landing_container {
-        /* ... */
-    }
+    /* .landing_container {
+
+    } */
     .landing-list-el_wrapper {
-        padding: 1rem;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: fit-content;
+        /* padding: 1rem; */
+    }
+    .landing-list-el_wrapper:first-child {
+        margin: unset;
     }
     .landing-list-el_wrapper:hover {
         cursor:pointer; 
-    }
-    .landing-list-el_header {
-        gap: 1rem; 
-        display: flex; 
-        align-items: center; 
-        justify-content: space-between;
-    }
-
-    /*  */
-    .diagram-wrapper {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
     }
 
 
@@ -247,10 +240,8 @@
         stroke-width: 8;
     }
 
-  .lead-item-header_wrapper,
-  .lead-item_wrapper {
+  .lead-item-header_wrapper{
     display: grid; 
-    /* grid-template-columns: 2rem 6rem 6rem 1fr */
   }
 
   .lead-item-header_wrapper {
@@ -274,14 +265,29 @@
   
   .leads-qty_wrapper {
     width: 3rem; 
-    height: 100%; 
-    position: absolute; 
-    margin-left: -0.5rem;
-    top: 0;
+    height: 3rem;
+    /* height: 100%;  */
+    /* position: absolute;  */
+    /* margin-left: -0.5rem; */
+    /* top: 0; */
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: red;
+    /* background-color: red; */
+  }
+
+  .landing-diagram_wrapper {
+    display: flex; 
+    background-color: var(--color-btn-hover-bg); 
+    width: 25rem; 
+    height: 25rem; 
+    position: relative;
+  }
+  .landing-list_wrapper {
+    width: 100%;
+    list-style: none; 
+    align-self: flex-start;
+    margin: 0;
   }
 
   @media screen and (max-width: 575px) {
@@ -298,9 +304,19 @@
     .lead-item_wrapper {
         grid-template-columns: 2rem 1fr 1fr 1fr   
     }
+    .landing-diagram_container {
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
     .no-landing_wrapper {
         margin-left: .5rem;
         margin-right: .5rem;
+    }
+    .landing-list_wrapper {
+        padding: 0 .5rem!important;
+    }
+    .landing-diagram_wrapper {
+        height: 15rem;
     }
   }
 
@@ -313,6 +329,10 @@
         display: grid; 
         grid-template-columns: 3rem 1fr 1fr 1fr
     }
+    .landing-diagram_container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
     .no-landing_wrapper {
         margin-left: 1rem;
         margin-right: 1rem;
@@ -322,9 +342,6 @@
   @media screen and (max-width: 767px) {
     .show-max-767 {
         display: none;
-    }
-    .diagram-wrapper {
-        grid-template-columns: 1fr;
     }
     .canvas {
         position: relative;
@@ -338,7 +355,10 @@
     .list_container {
         margin-top: 1rem;
     }
-    .landing-list-el_wrapper {
+    .landing-list_wrapper {
+        padding: 0 1rem;
+    }
+    .landing-diagram_wrapper {
         width: 100%;
     }
   }
@@ -353,11 +373,11 @@
         /* margin: 0 auto; */
         display: none; 
     }
-    .diagram-wrapper {
-        display: unset;
-    }   
     .list_container {
         margin-left: 50vw;
+    }
+    .landing-list_wrapper {
+        padding: 1rem 1rem 1rem 0;
     }
   }
   @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -369,7 +389,7 @@
   }
   @media screen and (min-width: 992px) {
     .landing-list-el_wrapper {
-        width: 480px;
+        /* width: 480px; */
     }
     .lead-item-header_wrapper,
     .lead-item_wrapper {
@@ -419,12 +439,13 @@
 
     // shared
     import { Container } from '@/shared/container'
-    // import { Section } from '@/shared/section'
+    import { Section } from '@/shared/section'
     import { InfoPopup } from '~/shared/popup';
 
     // components
     import { Button } from '@/components/button'
     import { BreadCrumbs } from '~/components/breadcrumbs';
+
 
     // PROPS
     const props = defineProps({
@@ -681,11 +702,22 @@
     // reverse array
     const reversedArray = (arr: []) => {
         let tempArray = [...arr]
-        return tempArray.reverse()
+        return tempArray?.reverse()
     }
     // landing links
     const generateLandingLink = (name: string) => {
         return `/${name}`
+    }
+    // change direction of diagram section
+    //= landing diagram section
+    const setFlexDirection = () => {
+        const screenWidth = window.screen.width
+        if(screenWidth <= 767) {
+
+            return `column`
+        } else {
+            return `row`
+        }
     }
 
     // ******* DB
