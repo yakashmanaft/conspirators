@@ -7,25 +7,6 @@ import { BreadCrumbs } from '~/components/breadcrumbs';
 import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
 
-useHead({
-        title: "Задача - ",
-        link: [
-            { 
-                rel: 'stylesheet', 
-                href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-                integrity: "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH",
-                crossorigin: "anonymous",
-                type: "text/css"
-            }
-        ],
-        script: [
-            {
-                src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
-                integrity: "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
-                crossorigin: "anonymous",
-            }
-        ]
-    })
 
     // PROPS
     const props = defineProps({
@@ -85,6 +66,10 @@ useHead({
 
         return task_list.value
     })
+    //= project by task
+    // const current_project = computed(() => {
+    //     return project_list
+    // })
 
 
 
@@ -111,24 +96,48 @@ useHead({
         transform: (task_ledger) => {
 
             if(current_task.value) {
-
-                return task_ledger.filter(el => el.taskId === current_task.value.id)
+                let taskLedger = Object.values(task_ledger)
+                return taskLedger.filter(el => el.taskId === current_task?.value?.id)
             }
         }
     }) 
 
     //= projects
-    const { data: current_project } = useFetch("/api/projectGuarded/project", {
+    const { data: project_list } = useFetch("/api/projectGuarded/project", {
         lazy: false,
         transform: (project_list) => {
-            return project_list.find((el) => {
+
+            let projectList = Object.values(project_list)
+
+            project_list.find((el) => {
                 // session user is a sharer
-                return el.id === current_task.value.projectId
+                return el.id === task_list?.value?.projectId
             })
+
+            return projectList[0]
         }
     })
 
-    //HELPERS
+useHead({
+        // title: current_task.value.name,
+        title: 'Проектная задача',
+        link: [
+            { 
+                rel: 'stylesheet', 
+                href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+                integrity: "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH",
+                crossorigin: "anonymous",
+                type: "text/css"
+            }
+        ],
+        script: [
+            {
+                src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+                integrity: "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
+                crossorigin: "anonymous",
+            }
+        ]
+    })
 
 </script>
 
@@ -148,11 +157,11 @@ useHead({
                 <!--  -->
                 <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
                 <!--  -->
-                <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${current_task?.projectId}`">{{ current_project?.name }}</Button>
+                <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${project_list?.id}`">{{ project_list?.name }}</Button>
                 <!--  -->
                 <div style="color: #fff; font-size: 1rem;font-weight: normal; position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: .5rem;">
-                    <div>{{ current_task.urgency }}</div>
-                    <div>{{ current_task.status }}</div>
+                    <p style="margin: 0; background-color: var(--color-btn-hover-bg);">{{ current_task.urgency }}</p>
+                    <p style="margin: 0; background-color: var(--color-btn-hover-bg);">{{ current_task.status }}</p>
                 </div>
             </h1> 
             <!-- <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
