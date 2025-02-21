@@ -1,6 +1,6 @@
 <template>
     <div class="section_wrapper"> 
-        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '']" >
+        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '']">
 
             <!-- {{ props.current_task}} -->
 
@@ -273,7 +273,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     display: flex; 
     align-items: center; 
     justify-content: center;
-    border-radius: 0.5rem;
+    border-radius: var(--bs-border-radius);
     /* overflow: hidden;s */
   }
   .ticket_canceled {

@@ -42,6 +42,25 @@ import { Chip } from '~/components/chip';
 
     const route = useRoute()
 
+    //= Accomplishment
+    // const accomplishmentParagraph = ref([{
+    //     name: 'all'
+    // }])
+    const accomplishmentParagraphComputed = computed(() => {
+
+        if(task_ledger.value) {
+            let result = ['all', ...new Set([...task_ledger.value.map((obj: any) => {
+                return obj.status
+            })])]
+            return result.map(el => {
+                return {
+                    name: el
+                }
+            })
+        }
+    })
+    const currentAccomplishmentParagraph = ref('all')
+
     // CLICK
     const addTaskLedgerItem = () => {
         alert('В разработке')
@@ -67,11 +86,27 @@ import { Chip } from '~/components/chip';
         return task_list.value
     })
     //= project by task
-    // const current_project = computed(() => {
-    //     return project_list
-    // })
+    const current_project = computed(() => {
+        return project_list.value?.find(el => el.id === task_list?.value?.projectId)
+    })
 
+    // HELPERS
+    //= count выполнение by status tasks
+    const countAccomplishmentTask = (taskLedger: any) => {
 
+        let sum:number = 0
+
+        taskLedger?.forEach((item: any) => {
+            if(item.status === currentAccomplishmentParagraph.value) {
+                sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+            } 
+            else if (currentAccomplishmentParagraph.value === 'all') {
+                sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+            }
+        })
+
+        return sum.toFixed(2)
+    } 
 
     // ******* DB
     // *** GET
@@ -107,20 +142,22 @@ import { Chip } from '~/components/chip';
         lazy: false,
         transform: (project_list) => {
 
-            let projectList = Object.values(project_list)
+            // let projectList = Object.values(project_list)
 
-            project_list.find((el) => {
-                // session user is a sharer
-                return el.id === task_list?.value?.projectId
-            })
+            // project_list.find((el) => {
+            //     // session user is a sharer
+            //     return el.id === task_list?.value?.projectId
+            // })
 
-            return projectList[0]
+            // return project_list
+            // return project_list.filter(el => el.id === task_list?.value?.projectId)[0]
+            return project_list
         }
     })
-
+    
 useHead({
         // title: current_task.value.name,
-        title: 'Проектная задача',
+        title: 'Текуща задача',
         link: [
             { 
                 rel: 'stylesheet', 
@@ -150,24 +187,27 @@ useHead({
             <BreadCrumbs class="show-max-767"/>
 
             <h1>
-
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg);">Решаем задачу</span>
+                <p style="text-wrap: wrap;">
+                    <span style="font-size: 0.7rem; margin: 0 0.5rem 0 0; color: var(--color-btn-disabled-bg);">Решаем задачу</span>
+                    <!--  -->
+                    <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
+                    <!--  -->
+                    <span style="font-size: 0.7rem; margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">для проекта</span>
+                    <!--  -->
+                    <!-- <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${project_list?.id}`">{{ project_list?.name }}</Button> -->
+                    <span style="margin: 0 0.5rem; color: var(--color-btn-wo-bg); cursor: pointer;" @click.stop="$router.push(`/projects/${current_project?.id}`)">{{ current_project?.name }}</span>
+                </p>
                 <!--  -->
-                <span style="margin: 0 0.5rem; color: var(--color-btn-disabled-bg)">{{ current_task?.name  }}</span>
-                <!--  -->
-                <span style="font-size: 0.7rem; margin: 0 0.5rem; white-space: nowrap; color: var(--color-btn-disabled-bg)">для проекта</span>
-                <!--  -->
-                <Button style="margin: 0 0.5rem;" type="pseudo-btn" :link="`/projects/${project_list?.id}`">{{ project_list?.name }}</Button>
-                <!--  -->
-                <div style="color: #fff; font-size: 1rem;font-weight: normal; position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: .5rem;">
-                    <p style="margin: 0; background-color: var(--color-btn-hover-bg);">{{ current_task.urgency }}</p>
-                    <p style="margin: 0; background-color: var(--color-btn-hover-bg);">{{ current_task.status }}</p>
+                <div style="color: #fff; font-size: 1rem;font-weight: normal; position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: .5rem; font-size: .8rem;">
+                    <p style="margin: 0; background-color: var(--color-btn-hover-bg); border-radius: 1rem; padding: 2px 8px;">{{ current_task.urgency }}</p>
+                    <p style="margin: 0; background-color: var(--color-btn-hover-bg); border-radius: 1rem; padding: 2px 8px;">{{ current_task.status }}</p>
                 </div>
             </h1> 
             <!-- <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
                 Кратко: <span>{{ current_task.desc }}</span>
             </h2> -->
         </div>
+
 
         <!-- CHIP SECTION -->
          <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1.5rem;"/>
@@ -194,33 +234,133 @@ useHead({
             <!-- Выполнение SECTION -->
             <section v-if="task_ledger?.length && currentChip.title === 'Выполнение'">
                 <h2>Выполнение:</h2>
-        
-                <ul>
-                    <li v-for="item in task_ledger">{{ item }}</li>
+                
+                <!-- CHIP -->
+                <!-- ACCOMPLISHMENT  -->
+                <div class="current_affiliation_title">
+
+                    <h3 v-for="el in accomplishmentParagraphComputed"
+                        :class="currentAccomplishmentParagraph === el.name ? 'title_active' : ''"
+                    >
+                        <span @click="currentAccomplishmentParagraph = el.name">{{ el.name }}</span>
+                    </h3>
+                </div>
+                
+                <!-- <div class="current_affiliation_title" style="display: flex; gap: 1rem; align-items: center;">
+                    
+                    <h3 v-for="el in fundParagraph" :class="currentFundParagraph === el.name ? 'title_active' : ''" style="cursor:pointer;">
+                        <span @click="currentFundParagraph = el.name">
+                            
+                            {{ el.title }}
+                        </span>
+                    </h3>
+                    
+                </div> -->
+
+                <!-- ACCOMPLISHMENT COUNT -->
+                <div style="display: flex; align-items :center; font-size: 0.8rem; margin-top: 1rem; gap: 1rem;">
+                    <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 4px 8px; border-radius: 1rem;">Выполнений: {{ task_ledger?.filter(el => {
+                        if(el.status === currentAccomplishmentParagraph) {
+                            return el
+                        }
+                        else if (currentAccomplishmentParagraph === 'all') {
+                            return el
+                        }
+                    }).length }}</p>
+                    <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 4px 8px; border-radius: 1rem;">Итого: {{ countAccomplishmentTask(task_ledger) }} часа работы</p>
+                </div>
+
+                <!-- ACCOMPLISHMENT LIST -->
+                <ul v-if="task_ledger?.length" style="list-style: none; padding: 0; margin-top: 1rem;">
+                    <li v-for="item in task_ledger.filter(el => {
+                        if(el.status === currentAccomplishmentParagraph) {
+                            return el
+                        } 
+                        else if (currentAccomplishmentParagraph === 'all') {
+                            return el
+                        }
+                    })">
+
+                        {{ item }}
+                    </li>
                 </ul>
+                <div v-else style="margin-top: 1rem;">
+                    <p>Еще ничего не сделали...</p>
+                </div>
                 <div>
                     <Button type="pseudo-btn" @click="addTaskLedgerItem">Добавить выполнение</Button>
                 </div>
             </section>
         </div>
-        
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br> 
+        <br> 
     </Container>
 </template>
 
 <style scoped>
 
-.content-setion_container  {
-    margin-top: 1rem;
-}
-
 .title-section_container h1{
     position: relative;
     padding: .5rem;
-    padding-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-top: 3rem; */
     margin: 0;
     margin-top: .5rem;
     background-color: var(--color-global-text);
     height: 250px;
+}
+
+.content-setion_container {
+    margin-top: 1rem;
+}
+
+/* accomplishment title */
+.current_affiliation_title {
+    display: flex; 
+    gap: 1rem; 
+    align-items: center;
+    /* justify-content: flex-start; */
+    overflow-x: scroll;
+    max-width: calc(100vw - 1rem)!important;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--color-btn-disabled-bg)
+}
+.current_affiliation_title::-webkit-scrollbar {
+  /* display: none; */
+}
+.current_affiliation_title h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    position: relative;
+} 
+.current_affiliation_title h3:after {
+
+}
+.title_active:after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-wallet-fund-available-wo)
+}
+.title_active span {
+    color: var(--color-wallet-fund-available-wo);
 }
 
 @media screen and (max-width: 767px) {
@@ -229,6 +369,9 @@ useHead({
     } */
     .show-max-767 {
       display: none;
+    }
+    .title-section_container h1{
+        margin-top: -1rem;
     }
     .content-setion_container {
         padding-left: 0.5rem;
@@ -258,6 +401,9 @@ useHead({
     .content-setion_container {
         padding-left: unset;
         padding-right: unset;
+    }
+    .title-section_container h1{
+        margin-top: 1rem;
     }
 }
 </style>
