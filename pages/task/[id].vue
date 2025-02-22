@@ -68,6 +68,11 @@ import { Chip } from '~/components/chip';
     const changeChip = (obj: any) => {
         currentChip.value = obj
     }
+    //= change task el status
+    const changeCurrentTaskElStatus = (task_el: any) => {
+        console.log(task_el)
+        alert('Измение статуса выполнения: в разработке...')
+    }
 
     // COMPUTED
     //= current lead
@@ -107,6 +112,29 @@ import { Chip } from '~/components/chip';
 
         return sum.toFixed(2)
     } 
+    //= set status color in accomplishment item
+    const set_bgColor_by_status = (status: string) => {
+        // status finished
+        if (status === 'finished') {
+            return `color: var(--color-urgency-low-wo); background-color: unset`
+        } 
+        // status waiting
+        else if (status === 'waiting') {
+            return `color: var(--color-urgency-middle); background-color: unset`
+        }
+        // status agreement
+        else if (status === "agreement") {
+            return `color: var(--color-urgency-middle); background-color: unset;`
+        }
+        // status paused
+        else if (status === 'paused') {
+            return `background-color: var(--color-status-paused); `
+        }
+        //else
+        else {
+            return 
+        }
+    }
 
     // ******* DB
     // *** GET
@@ -259,6 +287,7 @@ useHead({
 
                 <!-- ACCOMPLISHMENT COUNT -->
                 <div style="display: flex; align-items :center; font-size: 0.8rem; margin-top: 1rem; gap: 1rem;">
+                    <!-- КОЛ-ВО ВЫПОЛНЕНИЙ -->
                     <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 4px 8px; border-radius: 1rem;">Выполнений: {{ task_ledger?.filter(el => {
                         if(el.status === currentAccomplishmentParagraph) {
                             return el
@@ -267,28 +296,49 @@ useHead({
                             return el
                         }
                     }).length }}</p>
-                    <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 4px 8px; border-radius: 1rem;">Итого: {{ countAccomplishmentTask(task_ledger) }} часа работы</p>
+                    <!-- КНОПКА ДОБАВИТЬ ВЫОЛНЕНИЕ -->
+                    <div style="background-color: var(--color-btn-hover-bg); border-radius: 100%; cursor: pointer;">
+                        <Icon name="material-symbols-light:add-2-rounded" size="24px" @click="addTaskLedgerItem"/>
+                    </div>
+                    <!-- ЧАСЫ РАБОТЫ -->
+                    <p style="margin: 0; padding: 4px 8px; border-radius: 1rem; color: var(--color-global-text_second)">Итого: {{ countAccomplishmentTask(task_ledger) }} часа работы</p>
                 </div>
 
                 <!-- ACCOMPLISHMENT LIST -->
                 <ul v-if="task_ledger?.length" style="list-style: none; padding: 0; margin-top: 1rem;">
-                    <li v-for="item in task_ledger.filter(el => {
-                        if(el.status === currentAccomplishmentParagraph) {
-                            return el
-                        } 
-                        else if (currentAccomplishmentParagraph === 'all') {
-                            return el
-                        }
-                    })">
+                    <li 
+                        v-for="item in task_ledger.filter(el => {
+                            if(el.status === currentAccomplishmentParagraph) {
+                                return el
+                            } 
+                            else if (currentAccomplishmentParagraph === 'all') {
+                                return el
+                            }
+                        }).reverse()"
+                        class="accomplishment-el_wrapper"
+                    >
 
-                        {{ item }}
+                        <!--  -->
+                        <div class="accomplishment-el_hours">
+                            <p>{{ item.ended_at.slice(0,10) }}</p>
+                            <p>{{ item.created_at.slice(11, 16)}} - {{ item.ended_at.slice(11,16) }} {{ item.created_at === item.ended_at ? '' : ` (+${(Math.abs(new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24).toFixed(2)} часа)`}}</p>
+                        </div>
+                        <!--  -->
+                        <div class="accomplishment-el_subject">{{ item.subject }}</div>
+                        <!--  -->
+                        <div 
+                            v-if="currentAccomplishmentParagraph === 'all'"
+                            class="accomplishment-el_status"
+                            style="cursor: pointer;"
+                            :style="set_bgColor_by_status(item.status)"
+                            @click="changeCurrentTaskElStatus(item)"
+                        >
+                            {{ item.status }}
+                        </div>
                     </li>
                 </ul>
                 <div v-else style="margin-top: 1rem;">
                     <p>Еще ничего не сделали...</p>
-                </div>
-                <div>
-                    <Button type="pseudo-btn" @click="addTaskLedgerItem">Добавить выполнение</Button>
                 </div>
             </section>
         </div>
@@ -347,6 +397,9 @@ useHead({
     font-weight: normal;
     position: relative;
 } 
+.current_affiliation_title h3 span {
+    cursor: pointer;
+}
 .current_affiliation_title h3:after {
 
 }
@@ -361,6 +414,36 @@ useHead({
 }
 .title_active span {
     color: var(--color-wallet-fund-available-wo);
+}
+
+.accomplishment-el_wrapper {
+    margin-top: 1rem;
+    display: flex;
+}
+
+@media screen and (max-width: 575px) {
+    /* ACCOMPLISHMENT */
+    .accomplishment-el_wrapper  {
+        flex-direction: column;
+        border: .5px solid var(--color-btn-hover-bg);
+        border-radius: 1rem;
+        padding: .5rem 1rem;
+    }
+    .accomplishment-el_hours {
+        display: flex;
+        gap: .5rem;
+    }
+    .accomplishment-el_hours > p {
+        margin: 0;
+        color: var(--color-btn-disabled-text);
+        text-wrap: nowrap; 
+        font-size: .8rem;
+    }
+    .accomplishment-el_subject {
+    }
+    .accomplishment-el_status {
+        font-size: .8rem;
+    }
 }
 
 @media screen and (max-width: 767px) {
@@ -396,6 +479,28 @@ useHead({
         padding-left: 1rem;
         padding-right: 1rem;
     }
+    /* ACCOMPLISHMENT */
+    .accomplishment-el_wrapper  {
+        flex-direction: column;
+        border: .5px solid var(--color-btn-hover-bg);
+        border-radius: 1rem;
+        padding: .5rem 1rem;
+    }
+    .accomplishment-el_hours {
+        display: flex;
+        gap: .5rem;
+    }
+    .accomplishment-el_hours > p {
+        margin: 0;
+        color: var(--color-btn-disabled-text);
+        text-wrap: nowrap; 
+        font-size: .8rem;
+    }
+    .accomplishment-el_subject {
+    }
+    .accomplishment-el_status {
+        font-size: .8rem;
+    }
 }
 @media screen and (min-width: 768px) {
     .content-setion_container {
@@ -404,6 +509,78 @@ useHead({
     }
     .title-section_container h1{
         margin-top: 1rem;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 991px){
+    /* ACCOMPLISHMENT */
+    .accomplishment-el_wrapper  {
+        flex-direction: column;
+        border: .5px solid var(--color-btn-hover-bg);
+        border-radius: 1rem;
+        padding: .5rem 1rem;
+    }
+    .accomplishment-el_hours {
+        display: flex;
+        gap: .5rem;
+    }
+    .accomplishment-el_hours > p {
+        margin: 0;
+        color: var(--color-btn-disabled-text);
+        text-wrap: nowrap; 
+        font-size: .8rem;
+    }
+    .accomplishment-el_subject {
+    }
+    .accomplishment-el_status {
+        font-size: .8rem;
+    }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px){
+    /* ACCOMPLISHMENT */
+    .accomplishment-el_wrapper  {
+        flex-direction: column;
+        border: .5px solid var(--color-btn-hover-bg);
+        border-radius: 1rem;
+        padding: .5rem 1rem;
+    }
+    .accomplishment-el_hours {
+        display: flex;
+        gap: .5rem;
+    }
+    .accomplishment-el_hours > p {
+        margin: 0;
+        color: var(--color-btn-disabled-text);
+        text-wrap: nowrap; 
+        font-size: .8rem;
+    }
+    .accomplishment-el_subject {
+    }
+    .accomplishment-el_status {
+        font-size: .8rem;
+    }
+}
+@media screen and (min-width: 1200px) {
+    /* ACCOMPLISHMENT */
+    .accomplishment-el_wrapper  {
+        flex-direction: column;
+        border: .5px solid var(--color-btn-hover-bg);
+        border-radius: 1rem;
+        padding: .5rem 1rem;
+    }
+    .accomplishment-el_hours {
+        display: flex;
+        gap: .5rem;
+    }
+    .accomplishment-el_hours > p {
+        margin: 0;
+        color: var(--color-btn-disabled-text);
+        text-wrap: nowrap; 
+        font-size: .8rem;
+    }
+    .accomplishment-el_subject {
+    }
+    .accomplishment-el_status {
+        font-size: .8rem;
     }
 }
 </style>

@@ -698,7 +698,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
               <li>
                 <p style="margin-bottom: 1rem; font-size: .8rem; text-align: center; color: var(--color-global-text)">{{ endedDate }}</p>
                 
-                <!-- UUL2 -->
+                <!-- UL2 -->
                 <ul style="padding: 0; list-style: none">
 
                   <!-- LI2 -->
@@ -784,10 +784,15 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
       </div>
 
+      <!-- GENERAL INFO -->
+      <div class="general-secction_container">
+        <p>Статус: <span style="font-size: .8rem; padding: 4px 8px; border-radius: 1rem;" :style="setColorByProjectStatus()">{{project_status}}</span></p>
+        <!-- <p style="margin: 0;">Уделено часов</p> -->
+      </div>
+
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
-        <p>Статус: <span style="font-size: .8rem; padding: 4px 8px; border-radius: 1rem;" :style="setColorByProjectStatus()">{{project_status}}</span></p>
-        <h3>Уделено # часов</h3>
+        <h3>Статистика</h3>
         <p>Выручка:
           <ul>
             <li>Ставка: почасовая (####,## RUB / час)</li>
@@ -980,6 +985,23 @@ const cutTaskDesc = (str: string, maxLength: number) => {
         </div>
       </div> -->
     </div>
+    <br>
+    <br>
+    <br>
+    <br>  
+    <br>
+    <br>
+    <br>  
+    <br>
+    <br>
+    <br>  
+    <br>
+    <br>
+    <br>
+    <br>  
+    <br>
+    <br>  
+    <br>
   </Container>
 </template>
 
@@ -1184,6 +1206,7 @@ ul > .task_ledger_el:last-child {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
+  .general-secction_container,
   .title-section_container,
   .about-section_container{
     margin: 0 0.5rem;
@@ -1213,6 +1236,7 @@ ul > .task_ledger_el:last-child {
     grid-template-columns: repeat(2, 1fr);
   }
   .title-section_container,
+  .general-secction_container,
   .about-section_container {
     margin: 0 0.5rem;
   }

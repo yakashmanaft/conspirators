@@ -26,7 +26,7 @@
     <li 
       v-if="pathArr.length === 3"
     >
-      #{{ pathArr[pathArr.length - 1] }}
+      {{ translateEndPoint(pathArr[pathArr.length - 2]) }}
     </li>
   </ul>
 
@@ -66,7 +66,7 @@ onMounted(() => {
 // TRANSLATORS
 //= translateCrumb
 const translateCrumb = (str: string) => {
-  console.log(str)
+  // console.log(str)
 
   switch (str) {
       // TASK
@@ -82,15 +82,27 @@ const translateCrumb = (str: string) => {
           return 'Контакты'
       // DEMANDS
       case "demands":
-          return 'Заявки'
+          return 'Доска'
       // MESH
       case "mesh":
           return 'Кошелек'
       // MESH
       case "fund":
           return 'Фонды'
+      // default
       default:
           str
+  }
+}
+//= translateEndPoint
+const translateEndPoint = (str: string) => {
+  switch (str) {
+    // DEMANDS
+    case "demands":
+      return `Заявка #${pathArr.value[pathArr.value.length - 1] }`
+    // default
+    default:
+      return `#${pathArr.value[pathArr.value.length - 1] }`
   }
 }
 

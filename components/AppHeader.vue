@@ -55,7 +55,7 @@ const featuresListAuth = ref([
   },
   {
     path: "/demands",
-    title: "Дела",
+    title: "Доска",
     auth: true,
   },
   // {
@@ -215,7 +215,7 @@ const translateRoutePath = (path: string) => {
   }
   // DEMANDS
   else if (path === "/demands") {
-    return "Дела";
+    return "Доска";
   } else if (path.includes("/demands/")) {
     let startIndex = path.lastIndexOf("/");
     let id = path.substr(startIndex + 1);

@@ -113,6 +113,32 @@ const demandFilterTypes = ref([
   },
 ]);
 
+//= PAGE SECTION CHIPs
+//== chips
+const page_section_chips = ref([
+  {
+    id: 'section-chip-1',
+    name: "task",
+    title: "Задачи",
+  },
+  {
+    id: 'section-chip-2',
+    name: "lead",
+    title: "Лиды",
+  },
+  {
+    id: 'section-chip-3',
+    name: "stats",
+    title: "Статистика",
+  }
+])
+//== current  section chip
+const current_section_chip = ref({
+    id: 'section-chip-1',
+    name: "task",
+    title: "Задачи",
+})
+
 //CHIPS LEADs
 const chips_lead = [
   {
@@ -188,6 +214,10 @@ const changeChipLead = (obj: any) => {
 //= change demands chip
 const changeChip = (obj: any) => {
     currentChip.value = obj
+}
+//= change current section chip
+const changeCurrentSectionChip = (obj: any) => {
+  current_section_chip.value = obj
 }
 
 
@@ -555,7 +585,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
       <!-- BREAD CRUMBS -->
       <BreadCrumbs/>
       <!-- TITLE -->
-      <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Доска дел</h1>
+      <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Доска</h1>
     </div>
 
     <!-- <p>{{ props?.auth_user_profile }}</p> -->
@@ -580,151 +610,170 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     </div> -->
 
     
+    <!-- PAGE SECTION CHIPs -->
+    <Chip
+      :btn_all_exist="false"
+      :tabs="page_section_chips"
+      :default="current_section_chip"
+      @changed="changeCurrentSectionChip"
+      style="margin-top: 1rem;"
+    />
+    <!-- {{ current_section_chip }} -->
+
+    <!-- PERIOD -->
+    <div style="margin-top: 1rem;">
+      <p>За неделю</p>
+    </div>
     
-    
-    
-    <!-- LEAD SECTION -->
     <div style="margin-top: 1rem;">
 
-      <!-- header of section -->
-      <div class="header-section_container">
-        <h2>Заявки с огорода</h2>
-        <div style="display: flex; align-items: center;">
-            <Button type="pseudo-btn" :link="`landing_all`">К огороду</Button>
-            <div>
-            <Icon
-                class="link"
-                name="material-symbols-light:arrow-back-ios"
-                size="24px"
-                color="var(--color-global-text_second)"
-                style="transform: rotate(-180deg)"
-            />
-            </div>
+      <!-- LEAD SECTION -->
+      <div v-if="current_section_chip.name === 'lead'">
+  
+        <!-- header of section -->
+        <div class="header-section_container">
+          <h2>Заявки с огорода</h2>
+          <div style="display: flex; align-items: center;">
+              <Button type="pseudo-btn" :link="`landing_all`">К огороду</Button>
+              <div>
+              <Icon
+                  class="link"
+                  name="material-symbols-light:arrow-back-ios"
+                  size="24px"
+                  color="var(--color-global-text_second)"
+                  style="transform: rotate(-180deg)"
+              />
+              </div>
+          </div>
         </div>
+  
+        <!-- CHIP LEAD SECTION -->
+        <Chip
+          v-if="computedLead?.length"
+          :tabs="chips_lead"
+          :default="currentChipLead"
+          :btn_all_exist="false"
+          @changed="changeChipLead"
+        />
+  
+         <!--  -->
+          <div id="lead-block" class="computedLead_container" v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
+            <!-- :bg="'var(--color-urgency-low)'" -->
+            <Section 
+              :padding="true" 
+              :bg="set_bgColor_by_Urgency(item)" 
+              :fDirection="`column`"
+              :fAlignItems="`flex-start`"
+              v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" 
+              @click="$router.push(`demands/${item.id}`)"
+              style="cursor: pointer; position: relative;"
+            >
+              <!-- LEAD is a NEW (absolute) -->
+              <div v-if="item.status === 'lead'" class="ticket_new">
+                New
+              </div>
+  
+              <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+              <div v-if="item.status === 'paused'" class="rounded ticket_paused">
+                <div style="color: #fff;">ПАУЗА</div>
+              </div>  
+  
+              <!-- CREATED DATE -->
+              <div>
+                <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
+              </div>
+  
+              <!-- FROM  -->
+              <div>
+                <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
+              </div>
+  
+              <!-- FOOTER -->
+              <div>
+  
+                <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
+              </div>
+  
+              <!-- COUNT -->
+              <div>
+                123
+              </div>
+            </Section>
+          </div>
+          <!-- no lead with status PROJECT -->
+          <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'project').length == 0 && currentChipLead.name === 'project'">
+            Заявки не стали проектами...
+          </div>
+          <!-- no lead with status LEAD -->
+          <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'blank').length == 0 && currentChipLead.name === 'blank'">
+            Грац! У вас нет пустышек
+          </div>
+          <!-- ELSE -->
+          <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
       </div>
-
-      <!-- CHIP LEAD SECTION -->
-      <Chip
-        v-if="computedLead?.length"
-        :tabs="chips_lead"
-        :default="currentChipLead"
-        :btn_all_exist="false"
-        @changed="changeChipLead"
-      />
-
-       <!--  -->
-        <div id="lead-block" class="computedLead_container" v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
-          <!-- :bg="'var(--color-urgency-low)'" -->
-          <Section 
-            :padding="true" 
-            :bg="set_bgColor_by_Urgency(item)" 
-            :fDirection="`column`"
-            :fAlignItems="`flex-start`"
-            v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" 
-            @click="$router.push(`demands/${item.id}`)"
-            style="cursor: pointer; position: relative;"
-          >
-            <!-- LEAD is a NEW (absolute) -->
-            <div v-if="item.status === 'lead'" class="ticket_new">
-              New
-            </div>
-
-            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-            <div v-if="item.status === 'paused'" class="rounded ticket_paused">
-              <div style="color: #fff;">ПАУЗА</div>
-            </div>  
-
-            <!-- CREATED DATE -->
-            <div>
-              <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
-            </div>
-
-            <!-- FROM  -->
-            <div>
-              <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
-            </div>
-
-            <!-- FOOTER -->
-            <div>
-
-              <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
-            </div>
-
-            <!-- COUNT -->
-            <div>
-              123
-            </div>
-          </Section>
-        </div>
-        <!-- no lead with status PROJECT -->
-        <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'project').length == 0 && currentChipLead.name === 'project'">
-          Заявки не стали проектами...
-        </div>
-        <!-- no lead with status LEAD -->
-        <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'blank').length == 0 && currentChipLead.name === 'blank'">
-          Грац! У вас нет пустышек
-        </div>
-        <!-- ELSE -->
-        <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
-    </div>
-
-    <!-- TASKS SECTION -->
-     <div>
+  
+      <!-- TASKS SECTION -->
+      <div v-if="current_section_chip.name === 'task'">
       
-      <!-- haeder of the section -->
-      <div class="header-section_container">
-         <h2>Задачи</h2>
-         <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
-      </div>
-
-       <!-- CHIP TASK SECTION -->
-       <Chip
+        <!-- haeder of the section -->
+        <div class="header-section_container">
+            <h2>Задачи</h2>
+            <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
+        </div>
+  
+        <!-- CHIP TASK SECTION -->
+        <Chip
         :tabs="chips_status"
         :default="currentChip" 
         :btn_all_exist="false" 
         @changed="changeChip"
         style="margin-top: 0.5rem;"
         v-if="project_list?.length"
-       />
-       <!-- {{ currentChip }} -->
-       <!--  -->
-      <div class="computedTask_container" v-if="computedTask?.length">
-
-        <SectionColored
-          v-for="item in computedTask" 
-          :current_task="item"
-          :name="item.task_name"
-          :padding="true"
-          :fDirection="`column`"
-          :fGap="'1rem'"
-          style="cursor: pointer; position: relative;"
-          :taskArray="accomplishment_list?.filter(el => el.taskId === item.id)"
-          @click="$router.push(`task/${item.id}`)"
         />
-
-        <!-- ADD NEW TASK ITEM -->
-        <!-- <Section
-          :padding="true"
-          bg="#fff"
-          :fDirection="`column`"
-          style="cursor: pointer; position: relative;"
-          @click="addNewTask()"
-        >
-          <Icon
-              class="icon"
-              name="material-symbols-light:add-2-rounded"
-              size="48px"
-              color="var(--color-global-text_second)"
-              style="margin: auto;"
+        <!-- {{ currentChip }} -->
+        <!--  -->
+        <div class="computedTask_container" v-if="computedTask?.length">
+  
+          <SectionColored
+            v-for="item in computedTask" 
+            :current_task="item"
+            :name="item.task_name"
+            :padding="true"
+            :fDirection="`column`"
+            :fGap="'1rem'"
+            style="cursor: pointer; position: relative;"
+            :taskArray="accomplishment_list?.filter(el => el.taskId === item.id)"
+            @click="$router.push(`task/${item.id}`)"
           />
-        </Section> -->
+  
+          <!-- ADD NEW TASK ITEM -->
+          <!-- <Section
+            :padding="true"
+            bg="#fff"
+            :fDirection="`column`"
+            style="cursor: pointer; position: relative;"
+            @click="addNewTask()"
+          >
+            <Icon
+                class="icon"
+                name="material-symbols-light:add-2-rounded"
+                size="48px"
+                color="var(--color-global-text_second)"
+                style="margin: auto;"
+            />
+          </Section> -->
+        </div>
+        <div class="no-task_wrapper" v-else>Что-то у вас нет задач...</div>
+        <!--  -->
+    
+  
       </div>
-      <div class="no-task_wrapper" v-else>Что-то у вас нет задач...</div>
-       <!--  -->
-   
-
-     </div>
-
+  
+      <!-- STATS SECTION -->
+      <div v-if="current_section_chip.name === 'stats'">
+        <h2>Статистика</h2>
+      </div>
+    </div>
 
     <!-- <br>
     <br>
