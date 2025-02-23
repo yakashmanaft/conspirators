@@ -1,15 +1,15 @@
 <template>
     <div class="section_wrapper"> 
-        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '']">
+        <div class="section shadow rounded" :class="[props.padding ? 'pt-5 pb-4 px-3' : '']">
 
             <!-- {{ props.current_task}} -->
 
             <div v-if="props.current_task">
 
               <!-- CREATED DATE -->
-              <div>
+              <!-- <div>
                 <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ props.current_task?.created_at }}</p>
-              </div>
+              </div> -->
               <!-- DESK-->
               <h3 style="font-size: 1.2rem;">{{ cutTaskDesc(props.current_task?.desc, 40) }}</h3>
 
@@ -18,7 +18,7 @@
               <!-- <h4>*{{ translateProjectID(item.project_id, project_list) }}</h4> -->
 
               <!-- FOOTER -->
-              <div style="display: flex; align-items: flex-end; justify-content: space-between;">
+              <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 1rem;">
 
                 <!-- LEFT -->
                 <div>
@@ -30,12 +30,13 @@
                     <div 
                       class="ticket_urgency"
                       :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
-                    ></div>
+                      style="display: flex; align-items: center; justify-content: center; font-size: .8rem;"
+                    >{{ props.current_task?.urgency }}</div>
                   </div>
 
                   <!-- COUNT -->
                   <div>
-                   {{ countFinishedAccomplishmentTask(props?.taskArray) }} / {{ countAccomplishmentTask(props?.taskArray) }}
+                   paid {{ countFinishedAccomplishmentTask(props?.taskArray) }} из {{ countAccomplishmentTask(props?.taskArray) }}
                   </div>
                 </div>
 
@@ -58,7 +59,7 @@
               <!--  -->
               <!-- DEADLINE -->
               <div v-if="props.current_task?.deadline" class="ticket_deadline">
-                Deadline: {{ props.current_task?.deadline }}
+                Deadline: {{ props.current_task?.deadline.slice(0,10) }}
               </div>
               
               <!-- CANCELED -->
@@ -300,8 +301,8 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     border-radius: 50%;
     /* border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem; */
-    width: 1.3rem; 
-    height: 1.3rem; 
+    width: 1.5rem; 
+    height: 1.5rem; 
     background-color: black
   }
 @media screen and (max-width: 575px) {

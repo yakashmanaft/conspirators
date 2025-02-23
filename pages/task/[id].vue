@@ -286,9 +286,9 @@ useHead({
                 </div> -->
 
                 <!-- ACCOMPLISHMENT COUNT -->
-                <div style="display: flex; align-items :center; font-size: 0.8rem; margin-top: 1rem; gap: 1rem;">
+                <div style="display: flex; align-items :center; font-size: 0.8rem; margin-top: 1rem; gap: .5rem;">
                     <!-- КОЛ-ВО ВЫПОЛНЕНИЙ -->
-                    <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 4px 8px; border-radius: 1rem;">Выполнений: {{ task_ledger?.filter(el => {
+                    <p style="margin: 0; color: var(--color-global-text_second); padding: 4px 8px;">Выполнений: {{ task_ledger?.filter(el => {
                         if(el.status === currentAccomplishmentParagraph) {
                             return el
                         }
@@ -296,12 +296,14 @@ useHead({
                             return el
                         }
                     }).length }}</p>
-                    <!-- КНОПКА ДОБАВИТЬ ВЫОЛНЕНИЕ -->
-                    <div style="background-color: var(--color-btn-hover-bg); border-radius: 100%; cursor: pointer;">
-                        <Icon name="material-symbols-light:add-2-rounded" size="24px" @click="addTaskLedgerItem"/>
-                    </div>
                     <!-- ЧАСЫ РАБОТЫ -->
                     <p style="margin: 0; padding: 4px 8px; border-radius: 1rem; color: var(--color-global-text_second)">Итого: {{ countAccomplishmentTask(task_ledger) }} часа работы</p>
+                    <!-- КНОПКА ДОБАВИТЬ ВЫОЛНЕНИЕ -->
+                    <div
+                        v-if="currentAccomplishmentParagraph !== 'finished'" 
+                        style="background-color: var(--color-btn-hover-bg); border-radius: 100%; cursor: pointer;">
+                        <Icon name="material-symbols-light:add-2-rounded" size="24px" @click="addTaskLedgerItem"/>
+                    </div>
                 </div>
 
                 <!-- ACCOMPLISHMENT LIST -->
@@ -390,7 +392,7 @@ useHead({
     border-bottom: 1px solid var(--color-btn-disabled-bg)
 }
 .current_affiliation_title::-webkit-scrollbar {
-  /* display: none; */
+  display: none;
 }
 .current_affiliation_title h3 {
     font-size: 1rem;

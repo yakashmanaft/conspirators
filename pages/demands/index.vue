@@ -206,6 +206,9 @@ const currentChip = ref({
       id: 'chip-status-1'
 })
 
+//= current task status chip
+const current_task_status_chip = ref('all')
+
 // EVENT CLICKERS
 //= change lead chip
 const changeChipLead = (obj: any) => {
@@ -287,35 +290,55 @@ const computedLead = computed(() => {
     return null
   }
 })
-//= task
+//= TASK
+//== task
 const computedTask = computed(() => {
   // project_list
   // task_list
-  if(project_list.value) {
-    let merged = task_list.value?.reduce((arr: {}[], task) => {
+  // if(project_list.value) {
+  //   let merged = task_list.value?.reduce((arr: {}[], task) => {
 
-      project_list.value?.forEach(item => {
-        if(item.id === task.projectId && (currentChip.value.name === task.status || currentChip.value.name === 'all')) {
-          arr.push({
-            id: task.id,
-            created_at: task.created_at,
-            project_id: task.projectId,
-            task_name: item.name,
-            status: task.status,
-            urgency: task.urgency,
-            deadline: task.deadline,
-            desc: task.desc
-            // desc: task.desc
-          })
-        }
-      })
+  //     project_list.value?.forEach(item => {
+  //       if(item.id === task.projectId && (current_task_status_chip.value === task.status || current_task_status_chip.value === 'all')) {
+  //         arr.push({
+  //           id: task.id,
+  //           created_at: task.created_at,
+  //           project_id: task.projectId,
+  //           task_name: item.name,
+  //           status: task.status,
+  //           urgency: task.urgency,
+  //           deadline: task.deadline,
+  //           desc: task.desc
+  //         })
+  //       }
+  //     })
 
-      return arr.reverse()
-    }, [])
+  //     return arr.reverse()
+  //   }, [])
 
-    return merged
-  } else {
-    return null
+  //   return merged
+  // } else {
+  //   return null
+  // }
+  return task_list?.value?.filter(el => {
+    if(current_task_status_chip.value === el.status) {
+      return el
+    } else if (current_task_status_chip.value === 'all') {
+      return el
+    }
+  })
+})
+//== status chips
+const computed_task_status_chip = computed(() => {
+  if(task_list.value) {
+    let result = ['all', ...new Set([...task_list.value.map((obj: any) => {
+      return obj.status
+    })])]
+    return result.map(el => {
+      return {
+        name: el
+      }
+    })
   }
 })
 
@@ -456,6 +479,12 @@ const locationColorized = (location: string) => {
 //   return color
 // }
 
+// ADD /  CREATE
+//= add task
+const addTask = () => {
+  alert('Добавление задачи... в разработке...')
+}
+
 // SET
 //= urgency
 const set_bgColor_by_Urgency = (lead: any) => {
@@ -506,6 +535,10 @@ const set_bgColor_by_Urgency = (lead: any) => {
 
   return color
 }
+//= change period
+const change_period = () => {
+  alert('Смена  периода... в разработке...')
+}
 
 // HELPERS
 //= cut task desc
@@ -518,6 +551,29 @@ const set_bgColor_by_Urgency = (lead: any) => {
 //     return str
 //   }
 // }
+
+// COUNT
+//= countTaskByHours
+const countTaskByHours = () => {
+
+  // let sum:number = 0;
+
+  //accomplishment_list
+  //computedTask
+  const sum = accomplishment_list?.value?.reduce((acc, el) => {
+    
+    computedTask.value?.forEach(item => {
+      if(el.taskId === item.id) {
+        acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+      }
+    })
+
+    return acc
+    
+  }, 0)
+
+  return sum?.toFixed(2)
+}
 
 // ADD/CREATE
 //= task
@@ -563,6 +619,31 @@ const { data: project_list } = useFetch("/api/projectGuarded/project", {
 const { data: task_list } = useFetch("/api/taskGuarded/task", {
   lazy: false,
   transform: (task_list) => {
+    
+    if(project_list.value) {
+      let merged = task_list.reduce((arr: {}[], task) => {
+        
+        project_list.value?.forEach(item => {
+          
+          if(item.id === task.projectId) {
+            arr.push({
+              id: task.id,
+              created_at: task.created_at,
+              project_id: task.projectId,
+              task_name: item.name,
+              status: task.status,
+              urgency: task.urgency,
+              deadline: task.deadline,
+              desc: task.desc
+            })
+          }
+        })
+        return arr.reverse()
+      }, [])
+
+      return merged
+    }
+
     return task_list
   }
 })
@@ -621,11 +702,19 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     <!-- {{ current_section_chip }} -->
 
     <!-- PERIOD -->
-    <div style="margin-top: 1rem;">
-      <p>За неделю</p>
+    <div class="period_wrapper">
+      
+      <p class="period_title">Период:</p>
+
+      <p class="period_date" style="width: fit-content;">
+
+        <span class="period_date_from" @click="change_period()">01.01.2025</span>
+        <span class="period_date_separator">-</span>
+        <span class="period_date_to" @click="change_period()">Сегодня</span>
+      </p>
     </div>
     
-    <div style="margin-top: 1rem;">
+    <div>
 
       <!-- LEAD SECTION -->
       <div v-if="current_section_chip.name === 'lead'">
@@ -716,62 +805,111 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
       <div v-if="current_section_chip.name === 'task'">
       
         <!-- haeder of the section -->
-        <div class="header-section_container">
+        <!-- <div class="header-section_container">
             <h2>Задачи</h2>
             <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
-        </div>
+        </div> -->
+
+        <!-- TASK LENGTH -->
+        <div v-if="computedTask?.length">
+          <!-- CHIP -->
+          <!-- task by status -->
+          <div class="task_status_chip_container">
+            <h3 
+              v-for="el in computed_task_status_chip"
+              :class="current_task_status_chip === el.name ? 'status_chip_active' : ''"
+            >
+              <span @click="current_task_status_chip = el.name">{{ el.name }}</span>
+            </h3>
+          </div>
+
+          <!-- COUNT by task status-->
+          <div  class="count-task_container">
   
-        <!-- CHIP TASK SECTION -->
-        <Chip
-        :tabs="chips_status"
-        :default="currentChip" 
-        :btn_all_exist="false" 
-        @changed="changeChip"
-        style="margin-top: 0.5rem;"
-        v-if="project_list?.length"
-        />
-        <!-- {{ currentChip }} -->
-        <!--  -->
-        <div class="computedTask_container" v-if="computedTask?.length">
+            <!-- Кол-во задач -->
+            <p>Кол-во задач: {{ computedTask?.length }}</p>
   
-          <SectionColored
-            v-for="item in computedTask" 
-            :current_task="item"
-            :name="item.task_name"
-            :padding="true"
-            :fDirection="`column`"
-            :fGap="'1rem'"
-            style="cursor: pointer; position: relative;"
-            :taskArray="accomplishment_list?.filter(el => el.taskId === item.id)"
-            @click="$router.push(`task/${item.id}`)"
-          />
+            <!-- наработанные часы -->
+            <p>Итого: {{countTaskByHours()}} часа работы</p>
   
-          <!-- ADD NEW TASK ITEM -->
-          <!-- <Section
-            :padding="true"
-            bg="#fff"
-            :fDirection="`column`"
-            style="cursor: pointer; position: relative;"
-            @click="addNewTask()"
-          >
-            <Icon
-                class="icon"
-                name="material-symbols-light:add-2-rounded"
-                size="48px"
-                color="var(--color-global-text_second)"
-                style="margin: auto;"
-            />
-          </Section> -->
-        </div>
-        <div class="no-task_wrapper" v-else>Что-то у вас нет задач...</div>
-        <!--  -->
+            <!-- Кнопка добавить задачу -->
+            <div 
+              v-if="current_task_status_chip !== 'finished'"
+              @click="addTask"
+              style="background-color: var(--color-btn-hover-bg); border-radius: 100%; cursor: pointer;"
+            >
+               <Icon name="material-symbols-light:add-2-rounded" size="24px"/>
+            </div>
+          </div>
+  
+          <!--  -->
+          <div class="computedTask_container">
     
+            <SectionColored
+              v-for="item in computedTask" 
+              :current_task="item"
+              :name="item.task_name"
+              :padding="true"
+              :fDirection="`column`"
+              :fGap="'1rem'"
+              style="cursor: pointer; position: relative;"
+              :taskArray="accomplishment_list?.filter(el => el.taskId === item.id)"
+              @click="$router.push(`task/${item.id}`)"
+            />
+    
+            <!-- ADD NEW TASK ITEM -->
+            <!-- <Section
+              :padding="true"
+              bg="#fff"
+              :fDirection="`column`"
+              style="cursor: pointer; position: relative;"
+              @click="addNewTask()"
+            >
+              <Icon
+                  class="icon"
+                  name="material-symbols-light:add-2-rounded"
+                  size="48px"
+                  color="var(--color-global-text_second)"
+                  style="margin: auto;"
+              />
+            </Section> -->
+          </div>
+        </div>
+        <!-- NO TASK -->
+        <div class="no-task_wrapper" style="display: flex; align-items: center; gap: .5rem;" v-else>
+          <p style="margin: 0;">Что-то у вас нет задач в периоде...</p>
+          <div               
+            @click="addTask"
+            style="background-color: var(--color-btn-hover-bg); border-radius: 100%; cursor: pointer; width: 25px; height: 25px; display: flex; align-items :center; justify-content: center;">
+            <Icon name="material-symbols-light:add-2-rounded" size="24px"/>
+          </div>
+        </div>
   
       </div>
   
       <!-- STATS SECTION -->
       <div v-if="current_section_chip.name === 'stats'">
-        <h2>Статистика</h2>
+        <!-- <h2>Статистика</h2> -->
+        <div class="stats_section" style="display: flex; gap: 1rem; margin-top: 1rem;">
+
+          <!--  -->
+          <Section
+            :fJustifyContent="'flex-start'"
+            :fAlignItems="'flex-start'"
+          >
+            
+            <p style="margin: 0;">Какие-то графики...</p>
+          </Section>
+
+          <!--  -->
+          <Section
+            :fJustifyContent="'center'"
+            :fAlignItems="'center'"
+          >
+            
+            <p style="margin: 0;">Какие-то диаграмы...</p>
+          </Section>
+        </div>
       </div>
     </div>
 
@@ -934,7 +1072,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 }
 
 .no-task_wrapper {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 /* TICKETS */
@@ -984,6 +1122,102 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   padding-right: 0.5rem;
 }
 
+/* PERIOD */
+.period_wrapper {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.period_title {
+  margin: 0;
+}
+.period_date {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.period_title,
+.period_date_from,
+.period_date_separator,
+.period_date_to {
+  color: var(--color-global-text_second);
+}
+
+.period_date_from,
+.period_date_to {
+  cursor: pointer; 
+  font-size: .8rem;
+  margin: 0;
+  background-color: var(--color-btn-hover-bg);
+  border-radius: 1rem;
+  padding: 2px 8px;
+  color: var(--color-btn-bg)
+}
+.period_date_from {
+  margin: 0;
+}
+.period_date_separator {
+  margin: 0;
+}
+.period_date_to {
+  margin: 0;
+}
+
+/* TASK STATUS CHIP */
+.task_status_chip_container {
+  display: flex; 
+  gap: 1rem; 
+  align-items: center;
+  /* justify-content: flex-start; */
+  overflow-x: scroll;
+  max-width: calc(100vw - 1rem)!important;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none; 
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--color-btn-disabled-bg)
+}
+.task_status_chip_container::-webkit-scrollbar {
+  display: none;
+}
+.task_status_chip_container h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  position: relative;
+}
+.task_status_chip_container h3 span {
+  cursor: pointer;
+}
+.task_status_chip_container h3:after {
+
+}
+.status_chip_active:after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-wallet-fund-available-wo);
+}
+.status_chip_active span {
+    color: var(--color-wallet-fund-available-wo);
+}
+
+/* COUNT TASK BY STATUS */
+.count-task_container {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .8rem;
+}
+.count-task_container p {
+  margin: 0;
+  padding: 4px 8px;
+  color: var(--color-global-text_second);
+}
+
 @media screen and (max-width: 575px) {
   /* .filter-types_wrapper,
   .demands_wrapper {
@@ -992,8 +1226,20 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   .header-section_container {
     margin: 0 .5rem;
   }
+  /* PERIOD */
+  .period_wrapper {
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+
+  /* DEMANDS SECTION */
   .demands_wrapper {
     grid-template-columns: 1fr;
+  }
+  /* STATS SECTION */
+  .stats_section {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
   .no-task_wrapper,
   .no-computed-lead_wrapper,
@@ -1009,6 +1255,18 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   .show-max-767 {
     display: none;
   }
+
+  /* TASK STATUS CHHIP */
+  .task_status_chip_container {
+    max-width: calc(100vw)!important;
+    margin: 0 .5rem;
+    margin-top: 1rem;
+  }
+
+  /* COUNT TASK BY STATUS */
+  .count-task_container {
+    margin: 1rem .5rem 0 .5rem;
+  }
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
   .show-max-767 {
@@ -1016,6 +1274,11 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   }
   .header-section_container {
     margin: 0 1rem;
+  }
+  /* PERIOD */
+  .period_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   .no-task_wrapper,
   .no-computed-lead_wrapper  {
@@ -1031,8 +1294,26 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     padding: 0 1rem;
     grid-template-columns: repeat(2, 1fr);
   }
+  /* DEMANDS */
   .demands_wrapper {
     grid-template-columns: repeat(2, 1fr);
+  }
+  /* STATS SECTION */
+  .stats_section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* TASK STATUS CHHIP */
+  .task_status_chip_container {
+    max-width: calc(100vw)!important;
+    margin: 0 1rem;
+    margin-top: 1rem;
+  }
+
+  /* COUNT TASK BY STATUS */
+  .count-task_container {
+    margin: 1rem 1rem 0 1rem;
   }
 } 
 
@@ -1050,6 +1331,16 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     margin-top: 1.5rem;
     grid-template-columns: repeat(3, 1fr);
   }
+
+  /* TASK STATUS CHHIP */
+  .task_status_chip_container {
+    margin-top: 1rem;
+  }
+
+  /* COUNT TASK BY STATUS */
+  .count-task_container {
+    margin: 1rem 0 0 0;
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   .demands_wrapper {
@@ -1065,6 +1356,14 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     margin-top: 1.5rem;
     grid-template-columns: repeat(4, 1fr);
   }
+  /* TASK STATUS CHHIP */
+  .task_status_chip_container {
+    margin-top: 1rem;
+  }
+  /* COUNT TASK BY STATUS */
+  .count-task_container {
+    margin: 1rem 0 0 0;
+  }
 }
 @media screen and (min-width: 1200px) {
   .demands_wrapper {
@@ -1079,6 +1378,14 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   .computedTask_container{
     margin-top: 1.5rem;
     grid-template-columns: repeat(5, 1fr);
+  }
+  /* TASK STATUS CHHIP */
+  .task_status_chip_container {
+    margin-top: 1rem;
+  }
+  /* COUNT TASK BY STATUS */
+  .count-task_container {
+    margin: 1rem 0 0 0;
   }
 }
 </style>
