@@ -9,7 +9,7 @@ import { Chip } from '~/components/chip';
 import { AccessDeniedPlug } from '~/components/plug_access_denied'
 
 useHead({
-        title: "Available mesh",
+        title: "Loan mesh",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -179,39 +179,64 @@ useHead({
     // DB
     //
     //= current mesh
-    const { data: mesh } = useFetch("/api/mesh/mesh", {
+    const { data: loan } = useFetch("/api/loan/loan", {
         lazy: false,
-        transform: (mesh) => {
-            // accessPlug
+        transform: (loan) => {
+            // accessPlug.value = true
 
-            let current_mesh = mesh.filter(el => el.id === +route.params.id)
-
-
-            if(current_mesh[0].ownerType === 'conspirator') {
-
-                let band_by_mesh = band.value?.find(el => el.id === current_mesh[0].ownerID)
-
-                if(band_by_mesh) {
-
-                    if(band_by_mesh?.sharers?.find((sharer: any) => sharer.userType === 'user' && sharer.userId === props.auth_user_profile.userId)) {
-                        return current_mesh[0]
-                    } else {
-                        accessPlug.value = true
-    
-                    }
+            let current_loan = loan.filter(el => el.id === +route.params.id)
+            
+            if(current_loan[0].ownerType === 'user' || current_loan[0].loanerType === 'user') {
+                if(current_loan[0].ownerID === props.auth_user_profile.userId || current_loan[0].loanerID === props.auth_user_profile.userId) {
+                    return current_loan[0]
                 } else {
-                    accessPlug.value = true
+                    // accessPlug.value = true
+                    if (current_loan[0].ownerType === 'conspirator' || current_loan[0].loanerType === 'conspirator') {
+        
+        
+                        let loan_by_mesh = band.value?.find(el => el.id === current_loan[0].ownerID)
+                        
+        
+                        if(loan_by_mesh) {
+                            if(loan_by_mesh?.sharers?.find(sharer => sharer.userType === 'user' && sharer.userId === props.auth_user_profile.userId)) {
+                                return current_loan[0]
+                            } else {
+                                accessPlug.value = true
+                            }
+                        }
+                    }
                 }
             } 
-            else if(current_mesh[0].ownerType === 'user') {
+            // else if ()
+            // else if (current_loan[0].ownerType === 'conspirator') {
+            //     let loan_by_mesh = band.value?.find(el => el.id === current_loan[0].ownerID)
 
-                if(current_mesh[0].ownerID === props.auth_user_profile.userId) {
+            //     if(loan_by_mesh) {
+            //         if(loan_by_mesh?.sharers?.find((sharer: any) => sharer.userType === 'user' && sharer.userId === props.auth_user_profile.userId)) {
+            //             return current_loan[0]
+            //         } else  {
+            //             accessPlug.value = true
+            //         }
+            //     }
+            // }
+            // else if (current_loan[0].loanerType === 'user') {
+            //     if(current_loan[0].loanerID === props.auth_user_profile.userId) {
+            //         return current_loan[0]
+            //     } else {
+            //         accessPlug.value = true
+            //     }
+            // }
+            // else if (current_loan[0].loanerType === 'conspirator') {
+            //     let loan_by_mesh = band.value?.find(el => el.id === current_loan[0].loanerID)
 
-                    return current_mesh[0]
-                } else {
-                    accessPlug.value = true
-                }
-            }
+            //     if(loan_by_mesh) {
+            //         if(loan_by_mesh?.sharers?.find((sharer: any) => sharer.userType === 'user' && sharer.userId === props.auth_user_profile.userId)) {
+            //             return current_loan[0]
+            //         } else  {
+            //             accessPlug.value = true
+            //         }
+            //     }
+            // }
         }
     })
     //= band 
@@ -239,10 +264,10 @@ useHead({
         <AccessDeniedPlug v-if="accessPlug === true"/>
 
         <!-- {{props.auth_user_profile}} -->
-        <div v-if="mesh && !accessPlug">
+        <div v-if="loan && !accessPlug">
 
-            <!-- TITLE PAGE SECTION -->
-            <div  class="title-section_container" style="margin-bottom: 0.5rem;">
+
+            <!-- <div  class="title-section_container" style="margin-bottom: 0.5rem;">
                 <BreadCrumbs class="show-max-767"/>
     
                 <h1 style="font-weight: bold; font-size: 42px;">
@@ -251,7 +276,7 @@ useHead({
                 </h1> 
                 <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
     
-                    <!-- OWNER -->
+
                     <div style="display: flex; gap: 0.5rem;">
                         <p>Собственность:</p>
                         <Button
@@ -271,18 +296,32 @@ useHead({
                     <p>Соучастники: 
                         <ul>
                             <li></li>
-                            <!-- <li v-for="sharer in sharers_list">Fyaf</li> -->
+
                         </ul>
                     </p>
                     <p>Управляющий: Сергей Анфалов</p>
                 </h2>
-            </div>
-            {{ mesh }}
-    
+            </div> -->
+            {{ loan }}
+            <br>
+            <br>
+            <ul>
+                Общее
+                <li>Займ: 00.00 RUB</li>
+                <li>Ставка: 17.00%</li>
+                <li>Кто (Займодавец): {{ translateOwner(loan.ownerType, loan.ownerID) }}</li>
+                <li>Кому (Заемщик): {{ translateOwner(loan.loanerType, loan.loanerID) }}</li>
+                <li>Остаток к выплате: 00.00 RUB</li>
+            </ul>
+            <ul>
+                График платежей
+                <li>Свободный</li>
+                <li>00.00.0000 00.00 RUB</li>
+            </ul>
             <!-- CHIP SECTION -->
              <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
             <!-- {{ currentChip }} -->
-            <h3>Структура / Сделки</h3>
+            <!-- <h3>Структура / Сделки</h3>
     
             <div class="invested_container">
     
@@ -309,7 +348,7 @@ useHead({
                         <li>Пассивный | TPAY | 97.02 RUB | 3шт | 291.06 RUB (Отклонение указанной цены) | (T-Bank) ПАО Московская биржа | +2.03 RUB ()</li>
                     </ul>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         

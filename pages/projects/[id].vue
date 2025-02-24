@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // shared
-import { AccessDeniedPlug } from "~/components/plug_access_denied";
 import { Container } from "@/shared/container";
 import { Section } from "~/shared/section";
 import { SectionColored } from "~/shared/section_colored";
@@ -10,6 +9,7 @@ import { InfoPopup } from "~/shared/popup";
 import { BreadCrumbs } from "~/components/breadcrumbs";
 import { Button } from "~/components/button";
 import { Chip } from "~/components/chip";
+import { AccessDeniedPlug } from "~/components/plug_access_denied";
 
 useHead({
   title: "Проект # ",

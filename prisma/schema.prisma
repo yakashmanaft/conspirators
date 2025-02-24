@@ -209,7 +209,7 @@ model Transaction {
 //= wallet tag:
 // available
 // deposit
-// invested_stock
+// invested_stock_market
 // invested_crypto
 // invested_deposit
 // invested_currency

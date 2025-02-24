@@ -1159,6 +1159,7 @@ const ledger = ref([
 //   return array
 // })
 
+
 //= transaction ledger
 const transaction_ledger_computed = computed(() => {
   let array:any = new Array()
@@ -1845,6 +1846,22 @@ onMounted(() => {
 const changeChipAffiliation = (obj: any) => {
   currentAffiliation.value = obj
 }
+//= set_mesh_link_by_tag
+const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
+  switch (mesh_tag) {
+    case 'available':
+      router.push(`mesh/${mesh_id}`)
+      break
+    case 'invested_loan': 
+      router.push(`loan/${mesh_id}`)
+      break
+    case 'debt_loan':
+      router.push(`loan/${mesh_id}`)
+      break
+    default: 
+      alert('некуда')
+  }
+}
 
 // COLLRIZED
 //
@@ -2394,95 +2411,26 @@ const { data: band } = useFetch("/api/band/band", {
         <!-- LENGTH -->
         <div v-if="meshes_computed?.length">
 
-          <section
-            v-for="group in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
-              return {
-                type: obj.type, 
-                tag: obj.tag
-              }
+          <section 
+            v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
+              return obj.type
             }) ])]"
             style="margin-top: 1rem;"
             class="mesh_group_container"
-          >
-
-            <header>
-              <h4>{{ group.type }}</h4>
-            </header>
-
-
-            <main style="margin-top: 1rem;">
-
-              <Section
-                v-for="mesh in filterMeshByWalletType(group.type, meshes_computed.filter((item: any) => item.tag === choosenChip_section))"
-                @click="$router.push(`mesh/${mesh.id}`)"
-                style="cursor: pointer;"
-              >
-              {{ mesh }}
-              </Section>
-
-              <!-- <Section 
-                v-for="mesh in filterMeshByWalletType(group.type, meshes_computed)"
-                @click="$router.push(`mesh/${mesh.id}`)"
-                fGap=".5rem"  
-                fDirection="row"
-                fJustifyContent="space-between"
-                fAlignItems="center"
-              >
-
-                <div class="mesh_info">
-
-                  <div class="mesh_broker-tag" style="text-wrap: nowrap">{{ mesh.broker_tag }}</div>
-
-                  <div>
-
-                    <div style="font-weight: bold;" v-if="mesh.tag !== 'invested_loan'">
-                      {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}
-                    </div>
-                    <div v-else style="font-weight: bold;">Долг: {{transformToFixed(calcMeshAvailable(mesh.id))}}{{ currency_to_show.ticket }}</div>
-
-                    <div style="display: flex; align-items: center; gap: .5rem;">
-                      <span class="mesh_name">{{ mesh.name }}</span>
-                      <span v-if="mesh.bid !== 0.00" style="font-size: 0.8rem; background-color: var(--color-btn-hover-bg); border-radius: 1rem; padding: 2px 6px;">
-                      {{ mesh.bid * 100 }}%
-                      </span>
-                    </div>
-
-                    <div 
-                      class="mesh_footer"
-                      style="font-size: 0.8rem; display: flex;  gap: .5rem; margin-top: .5rem;"
-                    >
-                      <span style="color: var(--color-btn-wo-bg)">{{ mesh.ownerType }}{{ mesh.ownerID }}</span>
-                      <span 
-                        v-if="mesh.storageID !== 0"
-                        style="color: var(--color-btn-text); background-color: var(--color-btn-disabled-text); border-radius: 1rem; padding: 3px 6px; text-wrap: nowrap;"
-                        @click.stop="$router.push(`mesh/${mesh.storageID}`)"
-                      >
-                        {{ translateStorageID(mesh.storageID) }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  v-if="mesh.type !== 'debet_card' && mesh.type !== 'cash'" 
-                  style="text-wrap: nowrap; text-align: right;"
-                >
-
-                  <div class="mesh_profit" style="font-size: .8rem;" :style="`color: ${calcColorByMeshProfit(mesh.id)}`">
-
-                    <div>{{transformToFixed(calcMeshProfit(mesh.id))}}{{ currency_to_show.ticket }}</div>
-
-                    <div class="mesh_profit-separator" style="width: 5px; height: 5px; border-radius: 50%;" :style="`background-color: ${calcColorByMeshProfit(mesh.id)}`"></div>
-
-                    <div>{{ transformToFixed(calcMeshProfitPercent(mesh.id)) }}%</div>
-                  </div>
-
-                  <div class="mesh_invested">dep: {{transformToFixed(calcMeshInvested(mesh.id))}}{{ currency_to_show.ticket }}</div>
-                </div>
-              </Section> -->
+          > 
+            <header><h4>{{ type }}</h4></header>
+            <main style="margin-top: 1rem">
 
             </main>
+            
+            <ul>
+              <li v-for="item in meshes_computed.filter(el => el.type === type)">
+                {{ item }}
+                <p style="cursor: pointer; font-size: 0.8rem;" @click="set_mesh_link_by_tag(item.id, item.tag)">Перейти</p>
+              </li>
+            </ul>
           </section>
+          
         </div>
         <!-- ELSE -->
         <div v-else>
