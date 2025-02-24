@@ -10,6 +10,9 @@
               <!-- <div>
                 <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ props.current_task?.created_at }}</p>
               </div> -->
+              <!-- STATUS -->
+              <p class="ticket_status">{{ props.current_task?.status }}</p>
+
               <!-- DESK-->
               <h3 style="font-size: 1.2rem;">{{ cutTaskDesc(props.current_task?.desc, 40) }}</h3>
 
@@ -23,16 +26,12 @@
                 <!-- LEFT -->
                 <div>
 
-                  <div>
-                    <!-- STATUS -->
-                    <p style="margin: 0; font-size: 0.8rem;">{{ props.current_task?.status }}</p>
-                    <!-- URGENCY -->
-                    <div 
-                      class="ticket_urgency"
-                      :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
-                      style="display: flex; align-items: center; justify-content: center; font-size: .8rem;"
-                    >{{ props.current_task?.urgency }}</div>
-                  </div>
+                  <!-- URGENCY -->
+                  <div 
+                    class="ticket_urgency"
+                    :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
+                    style="display: flex; align-items: center; justify-content: center; font-size: .8rem;"
+                  >{{ props.current_task?.urgency }}</div>
 
                   <!-- COUNT -->
                   <div>
@@ -74,7 +73,14 @@
 
               <!-- FINISHED -->
               <div v-if="props.current_task?.status === 'finished'" class="ticket_finished">
-                <p>Выполнено</p>
+                <div style="background-color: var(--color-btn-text); border-radius: 100%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;">
+                  <Icon
+                    name="material-symbols-light:done-all-rounded"
+                    size="32px"
+                    color="var(--color-urgency-low)"
+                  />
+                </div>
+                <!-- <p>Выполнено</p> -->
               </div>
 
             </div>
@@ -230,6 +236,13 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     background-color: v-bind('bgColor');
   } */
 
+  .section_wrapper {
+    transition: all .2s ease-in;
+  }
+  .section_wrapper:hover {
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+  }
+
   .section {
     /* background-color: var(v-bind('bgColor')); */
     /* width: 100%; */
@@ -239,6 +252,16 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     justify-content: center;
     gap: v-bind('props.fGap');
     height: 100%;
+    position: relative;
+  }
+
+  .ticket_status {
+    position: absolute;
+    top: 1.4rem;
+    left: 1rem;
+    margin: 0; 
+    font-size: 0.8rem;
+    color: var(--color-global-text_second);
   }
 
   /* TIKET PERIOD */
@@ -275,7 +298,6 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     align-items: center; 
     justify-content: center;
     border-radius: var(--bs-border-radius);
-    /* overflow: hidden;s */
   }
   .ticket_canceled {
     background-color: var(--color-status-canceled); 
@@ -287,11 +309,12 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     background-color: var(--color-status-finished)
   }
   .ticket_canceled p,
-  .ticket_paused p,
-  .ticket_finished p {
+  .ticket_paused p {
     margin: 0;
-    color: var(--color-btn-text);
-    text-transform: uppercase;
+    background-color: var(--color-btn-text);
+    color: var(--color-global-text_second);
+    border-radius: 1rem;
+    padding: 4px 8px;
   }
   /* urgency */
   .ticket_urgency {

@@ -124,7 +124,7 @@ const page_section_chips = ref([
   {
     id: 'section-chip-2',
     name: "lead",
-    title: "Лиды",
+    title: "Лиды с огорода",
   },
   {
     id: 'section-chip-3',
@@ -163,48 +163,48 @@ const currentChipLead = ref({
     title: 'Новые'
   })
 // CHIPS TASKs
-const chips_status = [
-  {
-      name: 'all',
-      title: 'Все',
-      id: 'chip-status-1'
-  },
-  {
-      name: 'waiting',
-      title: 'Ожидание',
-      id: 'chip-status-2'
-  },
-  {
-      name: 'works',
-      title: 'В процессе',
-      id: 'chip-status-3'
-  },  
-  {
-      name: 'agreement',
-      title: 'Согласование',
-      id: 'chip-status-4'
-  },
-  {
-      name: 'finished',
-      title: 'Завершенные',
-      id: 'chip-status-5'
-  },
-  {
-      name: 'canceled',
-      title: 'Отменено',
-      id: 'chip-status-6',
-  },
-  {
-      name: 'paused',
-      title: 'Пауза',
-      id: 'chip-status-7',
-  },  
-]
-const currentChip = ref({
-  name: 'all',
-      title: 'Все',
-      id: 'chip-status-1'
-})
+// const chips_status = [
+//   {
+//       name: 'all',
+//       title: 'Все',
+//       id: 'chip-status-1'
+//   },
+//   {
+//       name: 'waiting',
+//       title: 'Ожидание',
+//       id: 'chip-status-2'
+//   },
+//   {
+//       name: 'works',
+//       title: 'В процессе',
+//       id: 'chip-status-3'
+//   },  
+//   {
+//       name: 'agreement',
+//       title: 'Согласование',
+//       id: 'chip-status-4'
+//   },
+//   {
+//       name: 'finished',
+//       title: 'Завершенные',
+//       id: 'chip-status-5'
+//   },
+//   {
+//       name: 'canceled',
+//       title: 'Отменено',
+//       id: 'chip-status-6',
+//   },
+//   {
+//       name: 'paused',
+//       title: 'Пауза',
+//       id: 'chip-status-7',
+//   },  
+// ]
+// const currentChip = ref({
+//   name: 'all',
+//       title: 'Все',
+//       id: 'chip-status-1'
+// })
 
 //= current task status chip
 const current_task_status_chip = ref('all')
@@ -215,9 +215,9 @@ const changeChipLead = (obj: any) => {
   currentChipLead.value = obj
 }
 //= change demands chip
-const changeChip = (obj: any) => {
-    currentChip.value = obj
-}
+// const changeChip = (obj: any) => {
+//     currentChip.value = obj
+// }
 //= change current section chip
 const changeCurrentSectionChip = (obj: any) => {
   current_section_chip.value = obj
@@ -712,6 +712,18 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
         <span class="period_date_separator">-</span>
         <span class="period_date_to" @click="change_period()">Сегодня</span>
       </p>
+
+      <div 
+        v-if="current_section_chip.name === 'lead'"
+        style="background-color: var(--color-btn-hover-bg); border-radius: 100%; display: flex; align-items: center; justify-self: center; width: 24px; height: 24px; margin-left: auto"
+        @click.stop="$router.push('/landing_all')"
+      >
+        <Icon 
+          name="material-symbols-light:garden-cart-outline-rounded"
+          size="24px"
+          color="var(--color-btn-bg)"
+        />
+      </div>
     </div>
     
     <div>
@@ -720,7 +732,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
       <div v-if="current_section_chip.name === 'lead'">
   
         <!-- header of section -->
-        <div class="header-section_container">
+        <!-- <div class="link_garden_container">
           <h2>Заявки с огорода</h2>
           <div style="display: flex; align-items: center;">
               <Button type="pseudo-btn" :link="`landing_all`">К огороду</Button>
@@ -734,78 +746,85 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
               />
               </div>
           </div>
+        </div> -->
+
+        <!-- К огороду -->
+        <!-- <div class="link_garden_container">
+          <p @click.stop="$router.push('/landing_all')" style="margin: 0;">Перейти в огород</p>
+        </div> -->
+
+        <!-- CHIP -->
+        <!-- lead by status -->
+        <div class="lead_status_chip_container">
+          <h3
+            v-for="el in chips_lead"
+            :class="currentChipLead.name === el.name ? 'status_chip_active' : ''"
+          >
+            <span @click.stop="currentChipLead = el">{{ el.name }}</span>
+          </h3>
         </div>
   
-        <!-- CHIP LEAD SECTION -->
-        <Chip
-          v-if="computedLead?.length"
-          :tabs="chips_lead"
-          :default="currentChipLead"
-          :btn_all_exist="false"
-          @changed="changeChipLead"
-        />
-  
-         <!--  -->
-          <div id="lead-block" class="computedLead_container" v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
-            <!-- :bg="'var(--color-urgency-low)'" -->
-            <Section 
-              :padding="true" 
-              :bg="set_bgColor_by_Urgency(item)" 
-              :fDirection="`column`"
-              :fAlignItems="`flex-start`"
-              v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" 
-              @click="$router.push(`demands/${item.id}`)"
-              style="cursor: pointer; position: relative;"
-            >
-              <!-- LEAD is a NEW (absolute) -->
-              <div v-if="item.status === 'lead'" class="ticket_new">
-                New
-              </div>
-  
-              <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-              <div v-if="item.status === 'paused'" class="rounded ticket_paused">
-                <div style="color: #fff;">ПАУЗА</div>
-              </div>  
-  
-              <!-- CREATED DATE -->
-              <div>
-                <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
-              </div>
-  
-              <!-- FROM  -->
-              <div>
-                <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
-              </div>
-  
-              <!-- FOOTER -->
-              <div>
-  
-                <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
-              </div>
-  
-              <!-- COUNT -->
-              <div>
-                123
-              </div>
-            </Section>
-          </div>
-          <!-- no lead with status PROJECT -->
-          <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'project').length == 0 && currentChipLead.name === 'project'">
-            Заявки не стали проектами...
-          </div>
-          <!-- no lead with status LEAD -->
-          <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'blank').length == 0 && currentChipLead.name === 'blank'">
-            Грац! У вас нет пустышек
-          </div>
-          <!-- ELSE -->
-          <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
+        <!-- LEAD LIST -->
+        <div id="lead-block" class="computedLead_container" v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
+          <!-- :bg="'var(--color-urgency-low)'" -->
+          <Section 
+            :padding="true" 
+            :bg="set_bgColor_by_Urgency(item)" 
+            :fDirection="`column`"
+            :fAlignItems="`flex-start`"
+            v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" 
+            @click="$router.push(`demands/${item.id}`)"
+            style="cursor: pointer; position: relative;"
+          >
+            <!-- LEAD is a NEW (absolute) -->
+            <div v-if="item.status === 'lead'" class="ticket_new">
+              New
+            </div>
+
+            <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
+            <div v-if="item.status === 'paused'" class="rounded ticket_paused">
+              <div style="color: #fff;">ПАУЗА</div>
+            </div>  
+
+            <!-- CREATED DATE -->
+            <div>
+              <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ item.created_at }}</p>
+            </div>
+
+            <!-- FROM  -->
+            <div>
+              <span style="white-space: nowrap;">Грядка: {{ item.from_name }}</span>
+            </div>
+
+            <!-- FOOTER -->
+            <div>
+
+              <p style="margin: 0; font-size: 0.8rem;">{{ item.status }}</p>
+            </div>
+
+            <!-- COUNT -->
+            <div>
+              123
+            </div>
+          </Section>
+        </div>
+        <!-- no lead with status PROJECT -->
+        <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'project').length == 0 && currentChipLead.name === 'project'">
+          Заявки не стали проектами...
+        </div>
+        <!-- no lead with status LEAD -->
+        <div class="no-computed-lead_wrapper" v-else-if="computedLead?.filter(item => item.status === 'blank').length == 0 && currentChipLead.name === 'blank'">
+          Грац! У вас нет пустышек
+        </div>
+        <!-- ELSE -->
+        <div class="no-computed-lead_wrapper" v-else>Ваш огород еще не дал плоды...</div>
       </div>
   
       <!-- TASKS SECTION -->
       <div v-if="current_section_chip.name === 'task'">
       
         <!-- haeder of the section -->
-        <!-- <div class="header-section_container">
+        <!-- <div class="link_garden_container">
             <h2>Задачи</h2>
             <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
         </div> -->
@@ -946,15 +965,29 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     <div v-else style="margin: 0; padding: 1rem">
       <p>А ничего нет...</p>
     </div> -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
   </Container>
 </template>
 
 <style scoped>
-.header-section_container {
-  display: flex; 
-  align-items: center; 
-  gap: 1rem;
-}
+/* .link_garden_container p{
+
+  background-color: var(--color-btn-hover-bg);
+  color: var(--color-btn-bg);
+  width: fit-content;
+  padding: 4px 8px;
+  font-size: .8rem;
+  border-radius: 1rem;
+} */
 .demands_wrapper {
   display: grid;
   gap: 1rem;
@@ -1166,7 +1199,8 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 }
 
 /* TASK STATUS CHIP */
-.task_status_chip_container {
+.task_status_chip_container,
+.lead_status_chip_container {
   display: flex; 
   gap: 1rem; 
   align-items: center;
@@ -1178,18 +1212,22 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   padding-bottom: .5rem;
   border-bottom: 1px solid var(--color-btn-disabled-bg)
 }
-.task_status_chip_container::-webkit-scrollbar {
+.task_status_chip_container::-webkit-scrollbar,
+.lead_status_chip_container::-webkit-scrollbar {
   display: none;
 }
-.task_status_chip_container h3 {
+.task_status_chip_container h3,
+.lead_status_chip_container h3 {
   font-size: 1rem;
   font-weight: normal;
   position: relative;
 }
-.task_status_chip_container h3 span {
+.task_status_chip_container h3 span,
+.lead_status_chip_container h3 span {
   cursor: pointer;
 }
-.task_status_chip_container h3:after {
+.task_status_chip_container h3:after,
+.lead_status_chip_container h3:after {
 
 }
 .status_chip_active:after {
@@ -1223,9 +1261,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   .demands_wrapper {
     padding: 0 0.5rem;
   } */
-  .header-section_container {
-    margin: 0 .5rem;
-  }
+  /* .link_garden_container {
+    margin: 1rem .5rem 0 .5rem;
+  } */
   /* PERIOD */
   .period_wrapper {
     margin-left: .5rem;
@@ -1256,8 +1294,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     display: none;
   }
 
-  /* TASK STATUS CHHIP */
-  .task_status_chip_container {
+  /* TASK && LEAD STATUS CHHIP */
+  .task_status_chip_container,
+  .lead_status_chip_container {
     max-width: calc(100vw)!important;
     margin: 0 .5rem;
     margin-top: 1rem;
@@ -1272,9 +1311,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   .show-max-767 {
     display: none;
   }
-  .header-section_container {
-    margin: 0 1rem;
-  }
+  /* .link_garden_container {
+    margin: 1rem 1rem 0 1rem;
+  } */
   /* PERIOD */
   .period_wrapper {
     margin-left: 1rem;
@@ -1304,8 +1343,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     padding-right: 1rem;
   }
 
-  /* TASK STATUS CHHIP */
-  .task_status_chip_container {
+  /* TASK && LEAD STATUS CHHIP */
+  .task_status_chip_container,
+  .lead_status_chip_container {
     max-width: calc(100vw)!important;
     margin: 0 1rem;
     margin-top: 1rem;
@@ -1318,6 +1358,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 } 
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
+  /* .link_garden_container {
+    margin-top: 1rem;
+  } */
   .demands_wrapper {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1332,8 +1375,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     grid-template-columns: repeat(3, 1fr);
   }
 
-  /* TASK STATUS CHHIP */
-  .task_status_chip_container {
+  /* TASK && LEAD STATUS CHHIP */
+  .task_status_chip_container,
+  .lead_status_chip_container {
     margin-top: 1rem;
   }
 
@@ -1343,6 +1387,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
+  /* .link_garden_container {
+    margin-top: 1rem;
+  } */
   .demands_wrapper {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -1356,8 +1403,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     margin-top: 1.5rem;
     grid-template-columns: repeat(4, 1fr);
   }
-  /* TASK STATUS CHHIP */
-  .task_status_chip_container {
+  /* TASK && LEAD  STATUS CHHIP */
+  .task_status_chip_container,
+  .lead_status_chip_container {
     margin-top: 1rem;
   }
   /* COUNT TASK BY STATUS */
@@ -1366,6 +1414,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   }
 }
 @media screen and (min-width: 1200px) {
+  /* .link_garden_container {
+    margin-top: 1rem;
+  } */
   .demands_wrapper {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -1379,8 +1430,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     margin-top: 1.5rem;
     grid-template-columns: repeat(5, 1fr);
   }
-  /* TASK STATUS CHHIP */
-  .task_status_chip_container {
+  /* TASK && LEAD STATUS CHIP */
+  .task_status_chip_container,
+  .lead_status_chip_container {
     margin-top: 1rem;
   }
   /* COUNT TASK BY STATUS */

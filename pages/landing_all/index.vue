@@ -73,7 +73,7 @@
         <!-- lENGTH TRUE -->
         <div v-if="computed_landing_list?.length">
 
-            <ul style="list-style: none; padding: 0; display: flex; align-items: center; margin-left: 1rem; gap: 1rem;">
+            <ul class="chip_container" style="list-style: none; padding: 0;">
                 <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Лиды</li>
                 <li style="border: 1px solid gray; border-radius: 16px; padding: 2px 12px;">Деньги</li>
             </ul>
@@ -159,6 +159,12 @@
     /* .landing_container {
 
     } */
+    .chip_container {
+        margin-top: 1rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 1rem;
+    }
     .landing-list-el_wrapper {
         margin-top: 1rem;
         display: flex;
@@ -307,6 +313,10 @@
   }  
 
   @media screen and (max-width: 575px) {
+    .chip_container {
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
     .canvas {
         /* height: 100vh; */
     }
@@ -338,6 +348,10 @@
   }
 
   @media screen and (min-width: 576px) and (max-width: 767px) {
+    .chip_container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
     .list_container {
         padding: 0 1rem;
     }

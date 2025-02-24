@@ -45,8 +45,12 @@
     background-color: v-bind('props.bg');
   }
 
-  .section-wrapper {
-  } 
+  /* .section-wrapper {
+    transition: all .2s ease-in;
+  }  */
+  /* .section_wrapper:hover {
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+  } */
   .section {
     background-color: var(v-bind('props.bg'));
     /* width: 100%; */
