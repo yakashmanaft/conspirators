@@ -350,16 +350,14 @@ useHead({
   .show-max-767 {
     display: none;
   }
-}
-@media screen and (min-width: 576px) and (max-width: 767px) {
-    .title-section_container {
-        /* padding-left: 0.5rem; */
-        /* padding-right: 0.5rem; */
-    }
-    .content-setion_container {
-        /* padding-left: 1rem; */
-        /* padding-right: 1rem; */
-    }
+  .title-section_container {
+      /* padding-left: 0.5rem; */
+      /* padding-right: 0.5rem; */
+  }
+  .content-setion_container {
+      /* padding-left: 1rem; */
+      /* padding-right: 1rem; */
+  }
 }
 @media screen and (min-width: 768px) {
     .content-setion_container {

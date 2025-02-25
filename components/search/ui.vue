@@ -94,7 +94,7 @@ const  emit_inputString = (name) => {
     }
     .search_wrapper > input {
         background-color: var(--color-btn-disabled-bg);
-        border-radius: 0.5rem;
+        border-radius: 1rem;
     }
 }
 </style>

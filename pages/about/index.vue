@@ -1,6 +1,7 @@
 <template>
     <Container>
         <h1>Вот мы тут</h1>
+        <p><span><nuxt-link to="tg://resolve?domain=Kashmanaft">@Kashmanaft</nuxt-link></span></p>
     </Container>
 </template>
 

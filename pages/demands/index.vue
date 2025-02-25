@@ -1266,8 +1266,8 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   } */
   /* PERIOD */
   .period_wrapper {
-    margin-left: .5rem;
-    margin-right: .5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 
   /* DEMANDS SECTION */
@@ -1276,18 +1276,18 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   }
   /* STATS SECTION */
   .stats_section {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .no-task_wrapper,
   .no-computed-lead_wrapper,
   .computedLead_container  {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .computedTask_container{
     grid-template-columns: 1fr;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     gap: 1rem;
   }
   .show-max-767 {
@@ -1298,13 +1298,13 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   .task_status_chip_container,
   .lead_status_chip_container {
     max-width: calc(100vw)!important;
-    margin: 0 .5rem;
+    margin: 0 1rem;
     margin-top: 1rem;
   }
 
   /* COUNT TASK BY STATUS */
   .count-task_container {
-    margin: 1rem .5rem 0 .5rem;
+    margin: 1rem 1rem 0 1rem;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px){

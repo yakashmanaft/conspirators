@@ -1990,7 +1990,7 @@ const setChoosenWalletSectionColor = (tag: any) => {
       }
     } 
     // INVESTED STOCK
-    if(tag === 'invested_stock') {
+    if(tag === 'invested_stock_market') {
       if(choosenChip_section.value === tag) {
         // color = `var(--color-wallet-fund-invested-wo)`
         color = `var(--color-wallet-fund-invested)`

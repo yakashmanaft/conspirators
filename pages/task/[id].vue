@@ -242,7 +242,7 @@ useHead({
         <!-- {{ currentChip }} -->
         
         <!-- CONTENT SECTION -->
-        <div class="content-setion_container">
+        <div class="content-section_container">
 
             <!-- Общее SECTION -->
             <section v-if="currentChip.title === 'Общее'">
@@ -374,7 +374,7 @@ useHead({
     height: 250px;
 }
 
-.content-setion_container {
+.content-section_container {
     margin-top: 1rem;
 }
 
@@ -458,9 +458,9 @@ useHead({
     .title-section_container h1{
         margin-top: -1rem;
     }
-    .content-setion_container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+    .content-section_container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     .title-section_container{
         /* height: 180px; */
@@ -477,7 +477,7 @@ useHead({
         /* padding-left: 0.5rem; */
         /* padding-right: 0.5rem; */
     }
-    .content-setion_container {
+    .content-section_container {
         padding-left: 1rem;
         padding-right: 1rem;
     }
@@ -505,7 +505,7 @@ useHead({
     }
 }
 @media screen and (min-width: 768px) {
-    .content-setion_container {
+    .content-section_container {
         padding-left: unset;
         padding-right: unset;
     }

@@ -314,8 +314,8 @@
 
   @media screen and (max-width: 575px) {
     .chip_container {
-        margin-left: .5rem;
-        margin-right: .5rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
     .canvas {
         /* height: 100vh; */
@@ -331,12 +331,12 @@
         grid-template-columns: 2rem 1fr 1fr 1fr   
     }
     .landing-diagram_container {
-        margin-left: .5rem;
-        margin-right: .5rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
     .no-landing_wrapper {
-        margin-left: .5rem;
-        margin-right: .5rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
     .landing-list_wrapper {
         padding: 0 .5rem;

@@ -87,20 +87,29 @@ const onClickRegister = () => {
       align-items: center;
       justify-content: center;
     ">
-    
-    <div class="section_wrapper">
+
+    <div style="margin-top: 1rem;" class="section_wrapper">
       
       <div class="section shadow py-4 px-4 mb-4 bg-body-tertiary rounded">
         <form         
           style="
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             gap: 1rem;
           ">
+
+          <router-link class="back-btn_wrapper" to="/">
+            
+            <div class="back-btn_icon">
+              <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-btn-text)"/>
+            </div>
+            <p class="back-btn_text">На главную</p>
+          </router-link>
           <!-- TITLE -->
-          <h1>Вход</h1>
+          <h1 style="margin: 0;">Вход</h1>
     
           <!-- LOGIN -->
           <input 
@@ -132,9 +141,16 @@ const onClickRegister = () => {
           </div>
           </form>
   
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 2rem;">
+      
+            <nuxt-link to="tg://resolve?domain=Kashmanaft" style="font-size: .8rem; display: flex; flex-direction: column; align-items: center;">
+              <p style="margin: 0; color: var(--color-global-text_second);">Принять участие в бета-тесте</p>
+              <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 2px 8px; width: fit-content; border-radius: 1rem; margin-top: .3rem;">@Kashmanaft</p>
+            </nuxt-link>
+          </div>
       </div>
     </div>
-    <router-link to="/">На главную</router-link>
+
   </div>
 </template>
 
@@ -144,14 +160,62 @@ const onClickRegister = () => {
     flex-direction: column;
     justify-content: center;
 }
+.back-btn_wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.back-btn_icon {
+  height: 30px; 
+  width: 30px; 
+  border-radius: 100%;
+  background-color: var(--color-btn-hover-bg); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+.back-btn_text {
+  font-size: .8rem;
+  margin: 0;
+  color: var(--color-global-text_second)
+}
 
-
-  @media screen and (max-width: 767px) {
-    .section {
+@media screen and (max-width: 575px) {
+  .section {
         background-color: unset!important;
         padding: unset!important;
         box-shadow: unset!important;
     }
-
+  .back-btn_wrapper {
+    left: 0;
+    top: .1rem;
   }
+  .back-btn_text {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .section {
+        background-color: unset!important;
+        padding: unset!important;
+        box-shadow: unset!important;
+    }
+    .back-btn_wrapper {
+      left: 0;
+      top: .1rem;
+    }
+    .back-btn_text {
+        display: none;
+    }
+}
+
+  @media screen and (min-width: 767px) {
+    .back-btn_wrapper {
+      left: -1.5rem;
+      top: -5rem;
+    }
+  }
+
 </style>
