@@ -12,13 +12,13 @@
         <div style="display: flex; align-items: center; margin-top: 1rem; margin-left: 1rem; margin-right: 1rem; padding-bottom :1rem; border-bottom: 1px solid var(--color-global-text_second);">
             <Button type="pseudo-btn" :link="`${generateLandingLink(choosenEl?.name)}`">{{ choosenEl?.name }}</Button>
             <div>
-            <Icon
+                <Icon
                 class="link"
                 name="material-symbols-light:arrow-back-ios"
                 size="24px"
                 color="var(--color-global-text_second)"
                 style="transform: rotate(-180deg)"
-            />
+                />
             </div>
         </div>
 
@@ -36,7 +36,7 @@
                     </li>
                     <li 
                         v-for="(item, index) in reversedArray(choosenEl.leads)"
-                        @click="$router.push(`/demands/${item.lead_id}`)"
+                        @click="$router.push(`/demands/${item.lead_id}`);"
                         class="lead-item_wrapper"    
                     >
                         <div>

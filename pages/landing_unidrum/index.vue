@@ -74,6 +74,14 @@
     //     }
     // })
 
+    // onMoiunted
+    onMounted(() => {
+        // на всякий случай сбрасываем фиксацию прокрутки страницы при открытой модалке...
+        let body = document.getElementsByTagName('body')[0]
+        body.style.margin = 'unset'
+        body.style.height = 'unset'
+        body.style.overflow = 'unset'
+    })
 
 </script>
 

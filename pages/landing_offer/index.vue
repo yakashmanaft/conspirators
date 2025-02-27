@@ -189,6 +189,15 @@
     // form data
     console.log(route.path)
 
+    // onMoiunted
+    onMounted(() => {
+        // на всякий случай сбрасываем фиксацию прокрутки страницы при открытой модалке...
+        let body = document.getElementsByTagName('body')[0]
+        body.style.margin = 'unset'
+        body.style.height = 'unset'
+        body.style.overflow = 'unset'
+    })
+
     const { data: landing_list } = useFetch("/api/landing/landing", {
         lazy: false,
         transform: (landing_list) => {
