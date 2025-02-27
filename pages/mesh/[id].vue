@@ -149,7 +149,7 @@ useHead({
         if(band.value && partner.value) {
             let result = 'Неизвестный'
             if(ownerType === "user") {
-                let owner = partner?.value.find(el => el.id === ownerID)
+                let owner = partner?.value.find(el => el.userId === ownerID)
 
                 if(owner) {
                     result = `${owner.name} ${owner.surname}`
@@ -284,32 +284,7 @@ useHead({
             <!-- {{ currentChip }} -->
             <h3>Структура / Сделки</h3>
     
-            <div class="invested_container">
-    
-                <div class="invested_wrapper">
-                    <p>Акции</p>
-                    <ul>
-                        <li>Borussia Dortmund GmbH | BVB@DE | 3.23 EUR | 1шт | 3.23 EUR | (T-Bank) ПАО СПБ Биржа | -2.35 EUR (42.11%)</li>
-                        <li>Hello Group | MOMO | 6,98 USD | 1шт | 16.26 USD | (T-Bank) ПАО СПБ Биржа | -6.46 USD (28.99%)</li>
-                        <li>Газпром | GAZP | 170,53 RUB | 1шт | 16.26 RUB | (T-Bank) ПАО СПБ Биржа | +494.10 (40.47%)</li>
-                    </ul>
-                </div>
-    
-                <div class="invested_wrapper">
-                    <p>Облигации</p>
-                    <ul>
-                        <li>АФК Система | Выпуск 7 - RU000A0ZYQY7 | 930.00 RUB | 6.1 RUB (НКД) | 1шт | 936.10 RUB (936.05 RUB) | (T-Bank) ПАО Московская биржа |  -44.40RUB (4.56%)</li>
-                        <li>Все Инструменты.ру | 001Р -  RU000A107GJ7 | 968.50 RUB | 5.2 RUB (НКД) | 1шт | 973.70 RUB (973.65 RUB) | (T-Bank) ПАО Московская биржа | -33.50 RUB (3.34%)</li>
-                    </ul>
-                </div>
-    
-                <div class="invested_wrapper">
-                    <p>Фонды</p>
-                    <ul>
-                        <li>Пассивный | TPAY | 97.02 RUB | 3шт | 291.06 RUB (Отклонение указанной цены) | (T-Bank) ПАО Московская биржа | +2.03 RUB ()</li>
-                    </ul>
-                </div>
-            </div>
+
         </div>
 
         

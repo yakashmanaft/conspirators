@@ -23,7 +23,9 @@ export default defineEventHandler(async (event) => {
         //
         '/api/partnerGurded/partner',
         '/api/band/band',
-        '/api/taskGuarded/task'
+        '/api/taskGuarded/task',
+        '/api/loan/loan',
+        '/api/funds/brokerage'
     ];
 
     // check if th pathname is in the list of protected routes

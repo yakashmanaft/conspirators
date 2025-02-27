@@ -49,7 +49,7 @@
                 </div>
                 <div>
                     <Icon size="32px" name="material-symbols-light:action-key-outline-rounded"/>
-                    <p style="margin: 0;">Сад (Огород)</p>
+                    <p style="margin: 0;">Огород</p>
                 </div>
                 <div>
                     <Icon size="32px" name="material-symbols-light:folder-managed-outline-sharp"/>
@@ -213,7 +213,7 @@
             flex-direction: column;
             border-radius: .8rem;
             align-items: center;
-            padding: 1rem;
+            padding: .5rem;
             justify-content: center;
             color: var(--color-btn-bg);
             background-color: var(--color-btn-hover-bg);
@@ -242,6 +242,12 @@
         .articles_container {
             margin-left: 1rem;
             margin-right: 1rem;
+        }
+        /* blocks_wrapper */
+        .blocks_wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
         }
     }
     @media screen and (min-width: 576px) and (max-width: 767px) {

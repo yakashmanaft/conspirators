@@ -1159,6 +1159,9 @@ const ledger = ref([
 //   return array
 // })
 
+const isOwnerExist = () => {
+
+}
 
 //= transaction ledger
 const transaction_ledger_computed = computed(() => {
@@ -1312,9 +1315,7 @@ const meshes_computed = computed(() => {
     else {
       return result.filter((item: any) => (item.ownerType === 'conspirator' && item.ownerID === currentAffiliation.value.bandID) || (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID))
     }
-    
   }
-
 
   // return mesh_list.value
     // if(el.tag === choosenChip_section.value) {
@@ -1858,6 +1859,9 @@ const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
     case 'debt_loan':
       router.push(`loan/${mesh_id}`)
       break
+    case 'invested_stock_market':
+      router.push(`brokerage/${mesh_id}`)
+      break
     default: 
       alert('некуда')
   }
@@ -2149,6 +2153,10 @@ watch(choosenChip_section, () => {
 })
 watch(currentAffiliation, () => {
   console.log(currentAffiliation.value)
+  // Сбрасываем CAP на ервый ээлемент если есть
+  if(mesh_tag_computed?.value?.length) {
+    choosenChip_section.value = mesh_tag_computed?.value[0]
+  }
   currentFundParagraph.value = 'meshes'
 })
 
@@ -2278,7 +2286,17 @@ const { data: band } = useFetch("/api/band/band", {
     </div> 
         <!-- {{ choosenChip_section }} -->
         
-
+    <div>
+      <ul>
+        <li v-for="el in band">
+            <p style="margin: 0;">{{ el.name }}</p>
+            <div v-for="sharer in el.sharers">
+              {{ sharer }}
+            </div>
+            
+        </li>
+      </ul>
+    </div>
     <!-- === INFO SECTION === -->
     <!-- <div id="fund-block" class="wallet-section_container">
 

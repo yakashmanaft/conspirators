@@ -89,7 +89,6 @@ const { loggedIn, user, session, clear } = useUserSession();
 
 .section_container {
   display: grid; 
-  grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
@@ -97,7 +96,7 @@ const { loggedIn, user, session, clear } = useUserSession();
 }
 .section_container > section {
   border-radius: .5rem;
-  /* border: 1px solid black; */
+  border: 1px solid var(--color-btn-hover-bg);
   overflow: hidden;
   padding-bottom: 1rem;
 }
@@ -149,20 +148,38 @@ const { loggedIn, user, session, clear } = useUserSession();
     flex-direction: column;
     gap: 2rem;
   }
+  .section_container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .section_container > section > h3 {
+    font-size: 1.5rem;
+  }
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
   .buttons-container {
     flex-direction: column;
     gap: 2rem;
   }
+  .section_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .section_container > section > h3 {
+    font-size: 1.5rem;
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 991px)  {
-
+  .section_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-  
+  .section_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media screen and (min-width: 1200px) {
-
+  .section_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>
