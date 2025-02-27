@@ -57,6 +57,7 @@ useHead({
     })
 
     const route = useRoute()
+    const router = useRouter()
     const accessPlug = ref(false)
 
     //= stocks list
@@ -166,7 +167,7 @@ useHead({
         }
     }
     // SET
-    // create link to owner
+    //= create link to owner
     const linkToOwner = (ownerType: string, ownerID: number) => {
         if(ownerType === 'user') {
             return `/partners/${ownerID}`
@@ -175,6 +176,41 @@ useHead({
             return `/band/${ownerID}`
         }  
     }
+    //= create link to investor
+    const link_to_investor = (mesh_id: number) => {
+        let current_mesh = mesh?.value?.find(el => el.id === mesh_id)
+
+        if(current_mesh?.ownerType === 'conspirator') {
+
+            let band_investor = band.value?.find(el => el.id === current_mesh.ownerID)
+
+            router.push(`/band/${band_investor?.id}`)
+        }
+        else if (current_mesh?.ownerType === 'user') {
+            let user_investor = partner.value?.find(el => el.userId === current_mesh.ownerID)
+
+            router.push(`/partners/${user_investor?.id}`)
+        }
+    }
+
+    // TRANSLATE
+    //= translate invested meshes
+    const translate_invested_meshes = (mesh_id: number) => {
+        let current_mesh = mesh?.value?.find(el => el.id === mesh_id)
+
+        if(current_mesh?.ownerType === 'conspirator') {
+
+            let band_investor = band.value?.find(el => el.id === current_mesh.ownerID)
+            return band_investor?.name
+        } 
+        else if (current_mesh?.ownerType === 'user') {
+
+            let user_investor = partner.value?.find(el => el.userId === current_mesh.ownerID)
+
+            return `${user_investor?.surname} ${user_investor?.name}`
+        }
+
+    }
 
     // DB
     //
@@ -182,14 +218,15 @@ useHead({
     const { data: mesh } = useFetch("/api/mesh/mesh", {
         lazy: false,
         transform: (mesh) => {
-            return mesh.find(el => el.id === +route.params.id)
+            // return mesh.find(el => el.id === +route.params.id)
+            return mesh
         }
     })
     const { data: brokerage } = useFetch("/api/funds/brokerage", {
         lazy: false,
         transform: (brokerage) => {
             // accessPlug.value = true
-            return brokerage.filter(el => el.owner_mash_id === +route.params.id)
+            return brokerage.filter(el => el.id === +route.params.id)[0]
             // let current_loan = loan.filter(el => el.id === +route.params.id)
             
             // if(current_loan[0].ownerType === 'user' || current_loan[0].loanerType === 'user') {
@@ -272,7 +309,24 @@ useHead({
         <!-- {{props.auth_user_profile}} -->
         <div v-if="brokerage && !accessPlug">
 
+            <div class="title-section_container">
+                <BreadCrumbs class="show-max-767"/>
+                <h1 style="font-weight: bold; font-size: 42px;">
+                    {{ brokerage.name }}
+                </h1>
+            </div>
 
+            <div>
+                <p style="margin: 0;">Инвесторы:</p>
+                <ul>
+                    <li v-for="investor in brokerage.invested_mash" @click="link_to_investor(investor.id)">
+                        {{translate_invested_meshes(investor.id)}}
+                    </li>
+                </ul>
+            </div>
+
+
+            {{ brokerage }}
             <!-- <div  class="title-section_container" style="margin-bottom: 0.5rem;">
                 <BreadCrumbs class="show-max-767"/>
     
@@ -308,7 +362,7 @@ useHead({
                     <p>Управляющий: Сергей Анфалов</p>
                 </h2>
             </div> -->
-            <div style="border: 1px solid gray; margin: 1rem;">
+            <!-- <div style="border: 1px solid gray; margin: 1rem;">
 
                 <p>Инвестиционный мешок #{{ mesh?.id }}</p>
                 <ul>
@@ -318,10 +372,10 @@ useHead({
                     <li>broker_tag: {{ mesh?.broker_tag }}</li>
                     <li>owner: {{ mesh?.ownerType }} {{ mesh?.ownerID }}</li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Брокерские счета в мешке -->
-            <p>Брокерские счета</p>
+            <!-- <p>Брокерские счета</p>
             <div v-for="el in brokerage" style="border: 1px solid gray; margin: 1rem;">
                 <ul>
                     <li>{{ el.name }}</li>
@@ -366,7 +420,7 @@ useHead({
                 </ul>
                 </div>
                 </div>
-            </div>
+            </div> -->
 
 
             <!-- CHIP SECTION -->

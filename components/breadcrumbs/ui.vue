@@ -89,6 +89,9 @@ const translateCrumb = (str: string) => {
       // MESH
       case "fund":
           return 'Фонды'
+      // BROKERAGE
+      case "brokerage":
+          return 'Кошелек'
       // default
       default:
           str
@@ -100,6 +103,9 @@ const translateEndPoint = (str: string) => {
     // DEMANDS
     case "demands":
       return `Заявка #${pathArr.value[pathArr.value.length - 1] }`
+    // brokerage
+    case "brokerage":
+      return `Брокерский счет`
     // default
     default:
       return `#${pathArr.value[pathArr.value.length - 1] }`
@@ -130,6 +136,9 @@ const compileRoute = (str: string) => {
       // MESH
       case "fund":
           return 'fund'
+      // BROKERAGE
+      case "brokerage":
+          return 'wallet'
       default:
           str
   }

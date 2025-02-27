@@ -1860,7 +1860,20 @@ const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
       router.push(`loan/${mesh_id}`)
       break
     case 'invested_stock_market':
-      router.push(`brokerage/${mesh_id}`)
+      let brokerage_id = 0
+
+      brokerage.value?.forEach(item => {
+        if(item.invested_mash) {
+          if(item.invested_mash.find(el => el.id === mesh_id)) {
+            brokerage_id = item.id
+          }
+        }
+      })
+      if(brokerage_id === 0) {
+        alert('Мешок не привязан к брокерскому счету')
+      } else {
+        router.push(`brokerage/${brokerage_id}`)
+      }
       break
     default: 
       alert('некуда')
@@ -2200,6 +2213,15 @@ const { data: band } = useFetch("/api/band/band", {
     })
   }
 })
+// brokerage
+const {data: brokerage} = useFetch("/api/funds/brokerage", {
+  lazy: false,
+  transform: (brokerage) => {
+    return brokerage
+  }
+})
+
+
 </script>
 
 <template>
@@ -2286,17 +2308,6 @@ const { data: band } = useFetch("/api/band/band", {
     </div> 
         <!-- {{ choosenChip_section }} -->
         
-    <div>
-      <ul>
-        <li v-for="el in band">
-            <p style="margin: 0;">{{ el.name }}</p>
-            <div v-for="sharer in el.sharers">
-              {{ sharer }}
-            </div>
-            
-        </li>
-      </ul>
-    </div>
     <!-- === INFO SECTION === -->
     <!-- <div id="fund-block" class="wallet-section_container">
 
@@ -2694,6 +2705,15 @@ const { data: band } = useFetch("/api/band/band", {
     <!-- </div> -->
     <!-- list of else -->
     <!-- <div v-else>Ни того, ни другого...</div> -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>    
+    <br>
+    <br>
+    <br>
   </Container>
 </template>
 

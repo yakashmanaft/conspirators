@@ -203,7 +203,7 @@ const translateRoutePath = (path: string) => {
   } else if (path.includes("/partners/")) {
     let startIndex = path.lastIndexOf("/");
     let id = path.substr(startIndex + 1);
-    return `Контакт #${id}`;
+    return `Контакт`;
   }
   // BAND
   else if (path === "/band")  {
@@ -211,7 +211,7 @@ const translateRoutePath = (path: string) => {
   } else if (path.includes("/band/")) {
     let startIndex = path.lastIndexOf("/");
     let id = path.substr(startIndex + 1);
-    return `Кооператив #${id}`;
+    return `Кооператив`;
   }
   // DEMANDS
   else if (path === "/demands") {
@@ -246,6 +246,14 @@ const translateRoutePath = (path: string) => {
     let startIndex = path.lastIndexOf("/");
     let id = path.substr(startIndex + 1);
     return `Банк #${id}`;
+  }
+  // BROKERAGE
+  else if (path === "/brokerage") {
+    return "Брокерские счета"
+  } else if (path.includes("/brokerage/")) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Брокерский счет`;
   }
   // WAREHOUSE
   else if (path === "/warehouse") {
