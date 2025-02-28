@@ -1,4 +1,6 @@
 <template>
+
+<!--  -->
     <Container>
 
         <!-- TITLE PAGE SECTION -->
@@ -6,35 +8,110 @@
             <BreadCrumbs/>
             <h1 style="margin: 0;">conspirators.CRM</h1> 
         </div>
-
-        <div class="main-banner_container">
-
-            <div class="main-banner_wrapper">
-
-                <h2 style="color: var(--color-btn-text);">Прокачай осознанность в финансах</h2>
     
-                <div class="main-banner_subtitle">
-                    <p style="font-size: .8rem; font-weight: normal; color: var(--color-global-text_second);">Формируй привычки вместе с conspirators.CRM</p>
-                    <Button v-if="useAuthStore().loggedIn !== true" type="pseudo-btn" link="/login" bg="bg-stroke" :disabled="false">Войти</Button>
+    </Container>
+
+
+    <!--  -->
+    <div class="main-banner_container" style="margin-top: -5rem; margin-bottom: -3rem;">
+
+        <div class="main-banner_wrapper">
+
+            <h2 style="color: var(--color-btn-text);">Прокачай осознанность в финансах</h2>
+
+            <div class="main-banner_subtitle">
+                <p style="font-size: .8rem; font-weight: normal; color: var(--color-global-text_second);">Формируй привычки вместе с conspirators</p>
+                <Button style="margin-top: 2rem;" v-if="useAuthStore().loggedIn !== true" type="pseudo-btn" link="/login" bg="bg-stroke" :disabled="false">Войти</Button>
+                <div v-else @click="$router.push(`/wallet`)">
+                    <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->
+    <Container>
+
+
+        
+        <!--  -->
+        <div style="margin: 2rem 1rem; position: relative;">
+
+            <div style="position: absolute; top: 0; right: -2rem; width: 50%; height: 100%; background-color: var(--color-operation-type-donation); border-radius: 1rem; z-index: -1;">
+
+            </div>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0; padding-top: 1rem;">Фиксируй</p>
+            <p style="color: var(--color-global-text_second); margin: 0;">Не требует много усилий, достаточно уделять несколько минут в день</p>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Контролируй</p>
+            <p style="color: var(--color-global-text_second); margin: 0;">Все финансы для понимания привычек, целей и задач в одном месте</p>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Владей</p>
+            <p style="color: var(--color-global-text_second); margin: 0; padding-bottom: 2rem;">Полной картиной о состоянии текущих и запланированных дел</p>
+        </div>
+
+        <!--  -->
+        <div style="margin-top: 1rem;" class="value_wrapper">
+            <h3>Чем полезен conspirator.CRM</h3>
+            <div>
+                <div>        
+                    <h4>Финансовая грамотность</h4>
+                    <p class="value_tag">Статья</p>
+                    <p>Помогает увидеть реальное положение дел. Потоки собственных финансов и инввевстиционные средства, вложенные в различные инструменты. Наличие или отсутствие долговых средств. Записи помогают видеть траты и доходы по категориям, распределять их по бандам и быть в курсе изменений в фондах. Давайте вместе погружаться в мир инвестиций</p>
+                    <ul>
+                        <li>Учимся инвестировать</li>
+                        <li>Магия сложного процента</li>
+                    </ul>
+                    <div class="value_btn" @click="$router.push(`/journal`)">
+                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div>
+                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Читать</p>
+                    </div>
+                </div>
+                <div>
+                    <h4>Самоконтроль</h4>
+                    <p class="value_tag">База знаний</p>
+                    <p>Анализ своих привычек, выяввление основных трат. Запись доходов и расходов помогают планировать будущие инвестиции и траты.</p>
+                    <ul>
+                        <li>Контроль еженедельных взносов</li>
+                        <li>Анализ данных</li>
+                    </ul>
+                    <div class="value_btn" @click="$router.push(`/help`)">
+                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div>
+                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Изучать</p>
+                    </div>
+                </div>
+                <div>
+                    <h4>Высвобождение памяти</h4>
+                    <p class="value_tag">conspirator.CRM</p>
+                    <p>Фиксация заявок и задач, запись их выполнения - отличныйы способ высвободить как время от контроля других участников банд, так и памят от постоянных попыток контролировать выполнения и оплаты по проектам</p>
+                    <ul>
+                        <li>Записывай все транзакции</li>
+                        <li>Следи за развитием проектов</li>
+                        <li>Контролируй работу с ресурсами</li>
+                    </ul>
+                    <div class="value_btn" @click="$router.push(`/login`)">
+                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div>
+                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Войти</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <ul class="article-list_wrapper" style="margin-top: 1rem;">
-            <li>
-                <Button type="pseudo-btn" link="/help">Что умеет CRM?</Button>
-            </li>
-            <li>
-                <Button type="pseudo-btn" link="#anchor_blocks">Блоки</Button>
-            </li>
-            <li>
-                <Button type="pseudo-btn" link="#anchor_starts">С чего начать</Button>
-            </li>
+        <!--  -->
+        <ul style="background-color: var(--color-global-text); margin: 1rem; border-radius: 1rem; padding:0; padding: 1rem; margin-top: 2rem; font-weight: 100;">
+            <p style="color: var(--color-btn-text)">Подключай блоки, расширяй контроль финансового управления</p>
+            <li  style="color: var(--color-btn-text);margin-left: 1rem;" @click="$router.push(`/help`)">Что умеет conspirators.CRM</li>
+            <li style="color: var(--color-btn-text);margin-left: 1rem;" >Что умеет conspirators.CRM</li>
         </ul>
 
-        <div id="anchor_blocks" class="articles_container">
-            <h3>CRM: block</h3>
-            <div class="blocks_wrapper">
+        <!--  -->
+        <div class="articles_container" style="margin-top: 2rem;">
+            <h3>Используй то, что тебе действительно требуется</h3>
+            <div class="blocks_wrapper" style="margin-top: 2rem;">
                 <div>
                     <Icon size="32px" name="material-symbols-light:calendar-month-outline"/>
                     <p style="margin: 0;">Календарь</p>
@@ -69,45 +146,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="anchor_starts" style="margin-top: 1rem;" class="articles_container">
-            <h3>CRM: for what</h3>
-            <p style="background-color: var(--color-btn-hover-bg); color: var(--color-btn-bg); padding: 1rem; border-radius: 1rem;">Знания - как опора жизни. Записывай - это не требует много усилий, достаточно уделять несколько минут в день. Контроль финансов для понимания привычек, целей и задач. Обладай всей картиной дел.</p>
-            <ul style="list-style: none; padding: 0; ">
-                <li>        
-                    <div style="background-color: var(--color-global-text); width: 100%; height: 100px;">
-
-                    </div>
-                    <h4>Финансовая грамотность</h4>
-                    <p>Помогает увидеть реальное положение дел. Потоки собственных финансов и инввевстиционные средства, вложенные в различные инструменты. Наличие или отсутствие долговых средств. Записи помогают видеть траты и доходы по категориям, распределять их по бандам и быть в курсе изменений в фондах. Давайте вместе погружаться в мир инвестиций</p>
-                    <ul>
-                        <li>Учимся инвестировать</li>
-                        <li>Магия сложного процента</li>
-                    </ul>
-                </li>
-                <li>
-                    <h4>Самоконтроль</h4>
-                    <p>Анализ своих привычек, выяввление основных трат. Запись доходов и расходов помогают планировать будущие инвестиции и траты.</p>
-                    <ul>
-                        <li>Контроль еженедельных взносов</li>
-                        <li>Анализ данных</li>
-                    </ul>
-                </li>
-                <li>
-                    <h4>Высвобождение памяти</h4>
-                    <p>Фиксация заявок и задач, запись их выполнения - отличныйы способ высвободить как время от контроля других участников банд, так и памят от постоянных попыток контролировать выполнения и оплаты по проектам</p>
-                    <ul>
-                        <li>Записывай все транзакции</li>
-                        <li>Следи за развитием проектов</li>
-                        <li>Контролируй работу с ресурсами</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-
-
-        
     </Container>
 </template>
 
@@ -162,7 +200,6 @@
     .main-banner_container {
         background-color: var(--color-global-text);
         width: 100%; 
-        height: 200px;
         position: relative;
     }
     .main-banner_wrapper {
@@ -195,6 +232,9 @@
         .show-max-767 {
             display: none;
         }
+        .main-banner_container {
+            height: 300px;
+        }
         .main-banner_wrapper {
             flex-direction: column;
             justify-content: center;
@@ -213,11 +253,26 @@
         }
         /* blocks_wrapper */
         .blocks_wrapper {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            width: 100vw;
+            margin-left: -1rem;
+            margin-right: -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            display: flex;
+            overflow-x: scroll;
             gap: 1rem;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none; 
+        }
+        .blocks_wrapper::-webkit-scrollbar {
+            display: none;
+            -webkit-appearance: none;
+            width: 0;
+            height: 0;
         }
         .blocks_wrapper > div {
+            height: 200px;
+            min-width: 200px;
             display: flex;
             flex-direction: column;
             border-radius: .8rem;
@@ -231,10 +286,73 @@
             font-size: .8rem;
             color: var(--color-btn-bg);
         }
+
+        /*  */
+        .value_wrapper {
+            margin: 1rem;
+        }
+        .value_wrapper > div{
+            margin-top: 2rem;
+            width: 100vw;
+            margin-left: -1rem;
+            margin-right: -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            display: flex;
+            overflow-x: scroll;
+            gap: 1rem;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none; 
+        }
+
+        .value_wrapper > div::-webkit-scrollbar {
+            display: none;
+            -webkit-appearance: none;
+            width: 0;
+            height: 0;
+        }
+
+        .value_wrapper > div > div{
+            min-width: 300px;
+            background-color: var(--color-operation-type-donation);
+            border-radius: 1rem;
+            padding: 1rem;
+            position: relative; 
+            padding-bottom: 4rem;
+        }
+        .value_wrapper > div > div > .value_tag {
+            background-color: var(--color-wallet-fund-invested); 
+            width: fit-content; 
+            color: var(--color-btn-text); 
+            font-size: .8rem; 
+            border-radius: 1rem; 
+            padding: 2px 8px;
+        }
+        .value_wrapper > div > div > ul {
+            padding: 0;
+            padding-left: 1rem
+        }
+        .value_wrapper > div > div > .value_btn {
+            display: flex; 
+            align-items: center; 
+            gap: .5rem; 
+            position: absolute; 
+            bottom: 1rem; 
+            left: 1rem;
+            display: flex; 
+            align-items: center; 
+            gap: .5rem; 
+            position: absolute; 
+            bottom: 1rem; 
+            left: 1rem;
+        }
     }
     @media screen and (min-width: 576px) and (max-width: 767px) {
         .show-max-767 {
             display: none;
+        }
+        .main-banner_container {
+            height: 400px;
         }
         .main-banner_wrapper {
             flex-direction: column;
@@ -259,32 +377,90 @@
             gap: 1rem;
         }
     }
-    @media screen and (min-width: 576px) and (max-width: 767px) {
-
-    }
     @media screen and (min-width: 768px) and (max-width: 991px) {
+        .main-banner_container {
+            height: 400px;
+            margin-top: -5.5rem!important;
+        }
+        .main-banner_wrapper {
+            justify-content: flex-end;
+            flex-direction: column;
+        }
         .main-banner_wrapper h2 {
-            width: 50%;
+            /* width: 50%; */
             line-height: 150%;
+            text-align: right;
         }
         .main-banner_subtitle {
-            text-align: right;
+            /* background-color: var(--color-btn-text); */
+            /* height: 400px; */
+            display: flex;
+            gap: 2rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* padding: 1.5rem 2rem!important; */
+            /* margin-right: 2rem; */
+        }
+        .main-banner_subtitle p {
+            margin: 0;
+            /* font-size: 1rem!important; */
+        }
+        .main-banner_subtitle div {
+            margin-top: 1rem!important
         }
     }
     @media screen and (min-width: 992px) and (max-width: 1199px) {
+        .main-banner_container {
+            height: 400px;
+            margin-top: -5.6rem!important;
+        }
         .main-banner_wrapper {
             gap: 5rem;
         }
         .main-banner_subtitle {
-            text-align: right;
+            /* background-color: var(--color-btn-text); */
+            height: 400px;
+            display: flex;
+            /* gap: .5rem; */
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 1.5rem 2rem!important;
+            margin-right: 2rem;
+        }
+        .main-banner_subtitle p {
+            margin: 0;
+            /* font-size: 1rem!important; */
+        }
+        .main-banner_subtitle div {
+            margin-top: 1rem!important
         }
     }
     @media screen and (min-width: 1200px) {
+        .main-banner_container {
+            height: 400px;
+            margin-top: -5.6rem!important;
+        }
         .main-banner_wrapper {
             gap: 5rem;
         }
         .main-banner_subtitle {
-            text-align: right;
+            /* background-color: var(--color-btn-text); */
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 1.5rem 2rem!important;
+            margin-right: 2rem;
+        }
+        .main-banner_subtitle p {
+            margin: 0;
+            /* font-size: 1rem!important; */
+        }
+        .main-banner_subtitle div {
+            margin-top: 1rem!important
         }
     }
 </style>

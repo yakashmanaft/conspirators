@@ -103,8 +103,16 @@ const featuresListNoAuth = ref([
     path: '/landing_design'
   },
   {
+    title: 'Разработка',
+    path: '/landing_dev'
+  },
+  {
     title: 'CRM',
-    path: 'landing_crm'
+    path: '/landing_crm'
+  },
+  {
+    title: 'Журнал',
+    path: '/journal'
   },
   // {
   //   title: 'Политика конфиденциальности',

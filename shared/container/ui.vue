@@ -8,7 +8,7 @@
 .container {
   max-width: 1399px;
   margin: 0 auto;
-  margin-bottom: 10rem;
+  margin-bottom: 5rem;
 }
 @media screen and (max-width: 575px) {
   .container {

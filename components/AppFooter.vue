@@ -67,13 +67,25 @@ const menuList = ref([
     path: '/landing_offer'
   },
   {
+    title: 'Услуги художника',
+    path: '/landing_design'
+  },
+  {
+    title: 'Разработка',
+    path: '/landing_dev'
+  },
+  {
     title: 'conspirators.CRM',
-    path: 'landing_crm'
+    path: '/landing_crm'
   },
   // {
   //   title: 'Оставить заявку',
   //   path: 'landing_offer'
   // },
+  {
+    title: 'conspirators.Journal',
+    path: '/journal'
+  },
   {
     title: 'Политика конфиденциальности',
     path: '/policy'
