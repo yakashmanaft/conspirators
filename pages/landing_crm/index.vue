@@ -8,6 +8,20 @@
             <BreadCrumbs/>
             <h1 style="margin: 0;">conspirators.CRM</h1> 
         </div>
+
+        <!--  -->
+        <div style="margin: 2rem 1rem; position: relative;">
+
+            <div style="position: absolute; top: 0; right: -2rem; width: 50%; height: 100%; background-color: var(--color-operation-type-donation); border-radius: 1rem; z-index: -1;">
+
+            </div>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0; padding-top: 1rem;">Фиксируй</p>
+            <p style="color: var(--color-global-text_second); margin: 0;">Не требует много усилий, достаточно уделять несколько минут в день</p>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Контролируй</p>
+            <p style="color: var(--color-global-text_second); margin: 0;">Все финансы для понимания привычек, целей и задач в одном месте</p>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Владей</p>
+            <p style="color: var(--color-global-text_second); margin: 0; padding-bottom: 2rem;">Полной картиной о состоянии текущих и запланированных дел</p>
+        </div>
     
     </Container>
 
@@ -32,21 +46,6 @@
     <!--  -->
     <Container>
 
-
-        
-        <!--  -->
-        <div style="margin: 2rem 1rem; position: relative;">
-
-            <div style="position: absolute; top: 0; right: -2rem; width: 50%; height: 100%; background-color: var(--color-operation-type-donation); border-radius: 1rem; z-index: -1;">
-
-            </div>
-            <p style="font-size: 2rem; font-weight: bold; margin: 0; padding-top: 1rem;">Фиксируй</p>
-            <p style="color: var(--color-global-text_second); margin: 0;">Не требует много усилий, достаточно уделять несколько минут в день</p>
-            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Контролируй</p>
-            <p style="color: var(--color-global-text_second); margin: 0;">Все финансы для понимания привычек, целей и задач в одном месте</p>
-            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Владей</p>
-            <p style="color: var(--color-global-text_second); margin: 0; padding-bottom: 2rem;">Полной картиной о состоянии текущих и запланированных дел</p>
-        </div>
 
         <!--  -->
         <div style="margin-top: 1rem;" class="value_wrapper">
@@ -234,6 +233,7 @@
         }
         .main-banner_container {
             height: 300px;
+            margin-top: -3rem!important;
         }
         .main-banner_wrapper {
             flex-direction: column;
@@ -353,6 +353,7 @@
         }
         .main-banner_container {
             height: 400px;
+            margin-top: -3rem!important;
         }
         .main-banner_wrapper {
             flex-direction: column;
