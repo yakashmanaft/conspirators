@@ -349,10 +349,10 @@
         body.style.height = 'unset'
         body.style.overflow = 'unset'
 
-        window.onscroll = function (e) {
-            console.log(window.scrollY);
-            console.log(e.target)
-        };
+        // window.onscroll = function (e) {
+        //     console.log(window.scrollY);
+        //     console.log(e.target)
+        // };
     })
 
     // form data
