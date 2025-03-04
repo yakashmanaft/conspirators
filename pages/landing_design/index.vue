@@ -15,21 +15,13 @@
             <h1 style="margin: 0;">Дизайнить</h1> 
         </div>
 
-    </Container>
-
-    <div class="features_container" style="color:var(--color-global-text_second);">
-
-
-    </div>
-    
-    <Container>
         <h2 style="display: block; font-size: 2rem;">
     
             <span style="font-weight: 200; line-height: 1.5; color: var(--color-global-text_second)">
                 До 75% заказчиков принимают решение о покупке увидев упаковку?*                Самый верный способ реализовать всю айдентику (фирменный стиль) -
-                <span style="background-color: var(--color-btn-hover-bg); width: fit-content;">творить визуал.</span> 
-                Единый концепт корпоративного визауала (базовые, расширенные и дополнительные элементы) для каждой ниши или канала коммуникации
-                <p style="background-color: var(--color-btn-hover-bg); width: fit-content;">Чего дизайнить изволите, сэр?</p>
+                <span style="color: var(--color-btn-bg); background-color: var(--color-btn-hover-bg); width: fit-content;">творить визуал.</span> 
+                Единый концепт корпоративного визуала (базовые, расширенные и дополнительные элементы) для каждой ниши или канала коммуникации
+                <p style="color: var(--color-btn-bg); background-color: var(--color-btn-hover-bg); width: fit-content;">Чего дизайнить изволите, сэр?</p>
             </span>
         </h2>
 
@@ -48,8 +40,8 @@
                             <img src="@/assets/img/cards_project_1/01_1.webp" width="300" height="400" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
                         </summary>
                         <div class="gallery-item__info">
-                            <h3>Визуализация твоих идей для карточек товара, милорд :P</h3>
-                            <p>Отрисовываем слайды карточки товарова для всех популярных маркетплейсов (OZON, WILDBERRIES)</p>
+                            <h3>Визуализация твоих идей, друг</h3>
+                            <p>Опиши свои хотелки, получи результат. Вноси правки и приближайся к томум самому визуалу.</p>
                         </div>
                     </details>
                     <!--  -->
@@ -58,8 +50,8 @@
                             <img src="@/assets/img/cards_project_1/02_1.webp" width="300" height="400" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
                         </summary>
                         <div class="gallery-item__info">
-                            <h3>Дизайн упаковки, сэр!</h3>
-                            <p>Делаем вместе упаковку, которую покупают</p>
+                            <h3>Упайкуйся, сэр!</h3>
+                            <p>Визуализируя ваши пожелания - делаем упаковку, которую покупают.</p>
                         </div>
                     </details>
                     <!--  -->
@@ -68,19 +60,24 @@
                             <img src="@/assets/img/cards_project_1/03_1.webp" width="300" height="400" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
                         </summary>
                         <div class="gallery-item__info">
-                            <h3> Фирменный стиль, создатель</h3>
-                            <p>Запускаете или обновляете проект?  Закроем вопрос реализации фирменного визуала</p>
+                            <h3>Ведем единую концепцию</h3>
+                            <p>Все элементы должны работать как единая система и поддерживать общую концепцию бренда сквозь всю коммуникацию</p>
                         </div>
                     </details>
                     <!--  -->
                     <details class="gallery-item" name="gallery" open style="background-color: var(--color-btn-hover-bg)">
                         <summary class="gallery-item__summary" style="display: flex;align-items: center; justify-content: center;"> 
-                            <div>></div>
+                            <div>
+                                <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var( --color-btn-bg)"/>
+                            </div>
                             <!-- <img src="@/assets/img/cards_project_1/01_1.webp" width="300" height="400" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет"> -->
                         </summary>
                         <div class="gallery-item__info">
-                            <h3>Составить ТЗ на пробный дизвайн</h3>
-                            <p>Начнем с тз, оплата у нас почасовая</p>
+                            <h3 style="color: var( --color-btn-bg)">Составить ТЗ на пробный дизайн</h3>
+                            <p style="color: var( --color-btn-bg)">Начнем сначала, дабы понять ваш вектор</p>
+                        </div>
+                        <div class="gallery-item_btn" @click.stop="openPopup" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var( --color-btn-bg)"/>
                         </div>
                     </details>
                 </div>
@@ -88,45 +85,122 @@
         </div>
 
 
+        <div style="margin-top: 3rem;">
 
-        <h3>Мы займемся разработкой визуала, с тебя - мысль, перебирать варианты, выбирать лучшее</h3>
-        <h4 style="font-weight: 200">Визуальных дел конспираторы высвободят твое время</h4>
-        <br>
-        <br>
-        <br>
-        <ul>
-            <li>
-                <p>Составить ТЗ на пробный дизайн</p>
-                <p>Набросать концепции  визуального сопровождения товаров или услуг</p>
-            </li>
-            <li>
-                <p>Концепции фирменного стиля в полиграфии (приводим элементы образа предприятия к общему визуалу)</p>
-            </li>
-            <li>
-                <p>Дизайн упаковки, сэр!</p>
-                <p>Делаем вместе упаковку, которую покупают</p>
-                <p>Разработка визуальной упаковки проектов</p>
-                <p>Сопровождение стиля для всех каналов коммуникации</p>
-            </li>
-            <li>
-                <p>Продаешь на маркетплейсах?</p>
-                <p>Карточки товаров для маркетплейсов</p>
-                <p>Визуализация твоих идей для карточек товара, милорд :P</p>
-            </li>
-            <li>
-                <p>Web и визуальное сопровождение в сети</p>
-                <p>Лендинги с карточками товаров</p>
-                <p>Информационные лендинги</p>
-                <p>Лендинги лид-формы</p>
-            </li>
-            <li>
-                <p>Медиа материалы для усиления визала бренда</p>
-                <p>Съемка и продакшн видео</p>
-                <p>Фотосъемки + применение в каналах коммуникации</p>
-            </li>
-        </ul>
+            <h3 style="background-color: var(--color-btn-hover-bg); color:var(--color-btn-bg); width: fit-content;">Мы займемся разработкой визуала</h3>
+            <p style="font-weight: 200;width: fit-content;"><span>C тебя</span> - мысль, перебирать варианты и выбирать лучшее. Конспираторы высвободят твое время.</p>
+        </div>
 
-        <p>
+        <!--  -->
+        <div class="features_container" style="color:var(--color-global-text_second);">
+
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+                    <div class="feature_text">
+    
+                        <p>Отправьте нам ТЗ для тестовых набросков</p>
+                        <p>Почасовая оплата работы консиратора</p>
+                        <p>Предоставляет отчет и чек (если надо)</p>
+                    </div>
+                    <div class="feature_media"></div>
+                    <div class="feature_btn" @click.prevent="openPopup">
+                        <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="red"/>
+                    </div>
+                </div>  
+                <div class="feature_body">123</div>
+            </div>
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+
+                    <div class="feature_text">
+                        <p>Концепции фирменного стиля в полиграфии</p>
+                        <p>(приводим элементы образа предприятия к общему визуалу)</p>
+                    </div>
+                    <div class="feature_media">
+    
+                    </div>
+                </div>
+                <div class="feature_body">
+                    123
+                </div>
+            </div>            
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+                    <div class="feature_text">
+                        <p>Дизайн упаковки, сэр!</p>
+                        <p>Делаем вместе упаковку, которую покупают</p>
+                        <p>Разработка визуальной упаковки проектов</p>
+                        <p>Сопровождение стиля для всех каналов коммуникации</p>
+                    </div>
+                    <div class="feature_media">
+    
+                    </div>
+                </div>
+                <div class="feature_body">123</div>
+            </div>
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+                    <div class="feature_text">
+                        <p>Продаешь на маркетплейсах?</p>
+                        <p>Карточки товаров для маркетплейсов</p>
+                        <p>Визуализация твоих идей для карточек товара, милорд :P</p>
+                    </div>
+                    <div class="feature_media">
+    
+                    </div>
+                </div>
+                <div class="feature_body">123</div>
+            </div>
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+                    <div class="feature_text">
+                        <p>Web и визуальное сопровождениe</p>
+                        <p>Лендинги с карточками товаров</p>
+                        <p>Информационные лендинги</p>
+                        <p>Лендинги лид-формы</p>
+                    </div>
+                    <div class="feature_media">
+    
+                    </div>
+                </div>
+                <div class="featuree_body">123</div>
+            </div>
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+                    <div class="feature_text">
+                        <p>Соцсети и вмизуальный концепт развития аккаунтов</p>
+                        <p>Фото- и видео- разработка материалов</p>
+                    </div>
+                    <div class="feature_media">
+    
+                    </div>
+                </div>
+                <div class="feature_body">123</div>
+            </div>
+            <!--  -->
+            <div class="feature_wrapper">
+                <div class="feature_header">
+                    <div class="feature_text">
+                        <p>Медиа материалы для усиления визала бренда</p>
+                        <p>Съемка и продакшн видео</p>
+                        <p>Фотосъемки + применение в каналах коммуникации</p>
+                    </div>
+                    <div class="feature_media">
+    
+                    </div>
+                </div>
+                <div class="feature_body">1232</div>
+            </div>
+
+        </div>
+
+        <p style="font-weight: 200; font-size: .8rem; margin-top: 1rem;">
             <span>*Библиографические ссылки</span>
             <ul>
                 <li>1. Глазами покупателя: как упаковка влияет на продажи. URL: https://p-pspb.ru/blog/glazami-pokupatelya-kak-upakovka-vliyaet-na-prodazhi/ (дата обращения: 10. 03. 2023).</li>
@@ -136,12 +210,10 @@
             </ul>
         </p>
 
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p>
 
-        <Button @click.prevent="openPopup" type="original-btn">Хочу дизайн</Button>
+        <!-- <Button @click.prevent="openPopup" type="original-btn">Хочу дизайн</Button> -->
 
-        <h4 style="margin-top: 1rem;" >LLorem</h4>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea eos quae expedita odit. s mollitia voluptate vitae error ex blanditiis quidem, excepturi quas tenetur maiores facere ratione, tempora aut! Pariatur, quisquam? Quos, facere officiis fuga nisi cupiditate, provident nulla facilis id ad, eos vel. Quis ipsum rem minus dignissimos tempore ab optio pariatur natus nisi magni molestias sint asperiores sequi, voluptatibus esse eveniet! Delectus ratione, ducimus earum voluptate officiis iste rerum voluptatum necessitatibus tempore debitis mollitia, molestiae minima id accusamus voluptatibus exercitationem? Neque totam vel quae isi illo repellendus fugiat, id repudiandae temporibus autem neque sint facere repellat provident molestias inventore mpedit. Nesciunt voluptatem praesentium laudantium rerum quibusdam soluta. Recusandae fugit eligendi delectus explicabo error impedit esse iusto, aliquam perferendis non. Dolore, inventore! Ratione nobis architecto expedita iste veniam voluptatem modi sapiente!</p>
+
 
         <p>
             Единый концепт корпоративного визуального стиля (фирменный стиль) – это целостная система визуальных элементов, которые формируют узнаваемый образ компании. Он включает несколько ключевых компонентов:
@@ -276,6 +348,11 @@
         body.style.margin = 'unset'
         body.style.height = 'unset'
         body.style.overflow = 'unset'
+
+        window.onscroll = function (e) {
+            console.log(window.scrollY);
+            console.log(e.target)
+        };
     })
 
     // form data
@@ -327,11 +404,6 @@
 
 }
 
-/* features_container */
-.features_container {
-    margin-top: -5rem;
-}
-
 
 /* GALLERY */
 .gallery {
@@ -361,6 +433,10 @@ height: 160px;
 .gallery-item[open] {
   width: 300px;
   height: 400px;
+}
+
+.gallery-item[open] .gallery-item_btn {
+    left: 50%;
 }
 
 .gallery-item__summary {
@@ -398,5 +474,67 @@ height: 160px;
 .gallery-item__info h3,
 .gallery-item__info p {
     color: var(--color-btn-text);
+}
+
+@media screen and (max-width: 575px) {
+
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) {
+    .features_container {
+        /* background-color: var(--color-btn-hover-bg); */
+        display: flex;
+        gap: 3rem;
+        /* margin-top: 8rem; */
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        max-width: 100vw!important;
+    }
+    .features_container::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .feature_wrapper {
+    }
+    .feature_header  {
+        background-color: gray;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 450px;
+        height: 250px;
+        border-radius: 1rem;
+        overflow: hidden;
+        position: relative;
+
+    }
+    .feature_body {
+
+    }
+    .feature_btn {
+        position: absolute;
+        bottom: .5rem;
+        left: .5rem;
+    }
+    .feature_text {
+        width: 60%;
+    }
+    .feature_media {
+        border-radius: 1rem;
+        width: 40%;
+        height: 100%;
+        background-color: black; 
+    }
 }
 </style>
