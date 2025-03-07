@@ -92,7 +92,7 @@
         </div>
 
         <!--  -->
-        <div class="features_container" style="color:var(--color-global-text_second);">
+        <div id="features-block" class="features_container" style="color:var(--color-global-text_second);">
 
             <!--  -->
             <div class="feature_wrapper">
@@ -349,10 +349,12 @@
         body.style.height = 'unset'
         body.style.overflow = 'unset'
 
-        // window.onscroll = function (e) {
-        //     console.log(window.scrollY);
-        //     console.log(e.target)
-        // };
+        const scrollFeaturesContainer = document.getElementById("features-block");
+
+        scrollFeaturesContainer?.addEventListener("wheel", (evt) => {
+            evt.preventDefault();
+            scrollFeaturesContainer.scrollLeft += evt.deltaY;
+        });
     })
 
     // form data

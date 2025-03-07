@@ -50,7 +50,7 @@
         <!--  -->
         <div style="margin-top: 1rem;" class="value_wrapper">
             <h3>Чем полезен conspirator.CRM</h3>
-            <div>
+            <div id="value-block">
                 <div>        
                     <h4>Финансовая грамотность</h4>
                     <p class="value_tag">Статья</p>
@@ -110,7 +110,7 @@
         <!--  -->
         <div class="articles_container" style="margin-top: 2rem;">
             <h3>Используй то, что тебе действительно требуется</h3>
-            <div class="blocks_wrapper" style="margin-top: 2rem;">
+            <div id="article-block" class="blocks_wrapper" style="margin-top: 2rem;">
                 <div>
                     <Icon size="32px" name="material-symbols-light:calendar-month-outline"/>
                     <p style="margin: 0;">Календарь</p>
@@ -183,6 +183,20 @@
         body.style.margin = 'unset'
         body.style.height = 'unset'
         body.style.overflow = 'unset'
+
+        //
+        const scrollValueContainer = document.getElementById("value-block");
+        const scrollArticlesContainer = document.getElementById("article-block");
+
+        scrollValueContainer?.addEventListener("wheel", (evt) => {
+            evt.preventDefault();
+            scrollValueContainer.scrollLeft += evt.deltaY;
+        });
+
+        scrollArticlesContainer?.addEventListener('wheel', (evt) => {
+            evt.preventDefault()
+            scrollArticlesContainer.scrollLeft += evt.deltaY
+        })
     })
 
 </script>
