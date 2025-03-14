@@ -105,7 +105,7 @@ window.addEventListener('click', (e) => {
 }
 .popup_content::-webkit-scrollbar { 
     width: 0; 
-};
+}
 .popup_content { 
     -ms-overflow-style: none; 
 }
