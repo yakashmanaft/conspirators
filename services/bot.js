@@ -23,6 +23,11 @@ bot.start((ctx) =>
   )
 );
 
+// Обработчик простого текста
+bot.on("text", (ctx) => {
+  return ctx.reply(ctx.message.text);
+});
+
 // Запуск бота
 const launch = () => {
   
