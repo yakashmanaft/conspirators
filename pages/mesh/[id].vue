@@ -250,10 +250,11 @@ useHead({
                     {{ mesh.name }}
                 </h1> 
                 <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
-    
+                    <!-- BROKER -->
+                    <p>{{ mesh.broker_tag }}</p>
                     <!-- OWNER -->
                     <div style="display: flex; gap: 0.5rem;">
-                        <p>Собственность:</p>
+                        <!-- <p>Собственность:</p> -->
                         <Button
                             type="pseudo-btn"
                             :link="linkToOwner(mesh.ownerType, mesh.ownerID)"
@@ -261,6 +262,7 @@ useHead({
                             {{ translateOwner(mesh.ownerType, mesh.ownerID) }}
                         </Button>
                     </div>
+                    <br>
                     <p style="margin: 0; display: flex; align-items: center; gap: .5rem;">
                         <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.tag }}</span>
                         <span style="background-color: var(--color-btn-hover-bg)">{{mesh.type}}</span>

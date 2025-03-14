@@ -14,7 +14,7 @@
 // import TelegramBot from 'node-telegram-bot-api';
 
 // // Создать бота с полученным ключом
-const token = '7746458695:AAFXKyLGJ99zv0JziIa5hFSfxOOQAyYPUK8'
+const token = '7746458695:AAGWGZbJ6CwmOMO1Bx-grpXA15aOuTz29wg'
 // // const bot = new Telegraf("7746458695:AAFXKyLGJ99zv0JziIa5hFSfxOOQAyYPUK8")
 
 // const bot = new TelegramBot(token, { polling: true });
@@ -91,18 +91,26 @@ bot.catch((err) => { const ctx = err.ctx;
 // grammY will call the listeners when users send messages to your bot.
 
 // Handle the /start command.
-bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
+bot.command("start", (ctx) => ctx.reply("Вы написали /start"));
+// Массив возможных фраз оn пользователя
+// bot.command(['say_hello', 'hello', 'say_hi'], async (ctx) => {
+
+//     await ctx.reply('Hello');
+
+// });
+bot.command("help", (ctx) => ctx.reply("Вы попросили /help! Выезжаем !"))
+bot.command("balance", (ctx) => ctx.reply("Подгружаю /balance! Ждите..."))
 // Handle other messages.
-bot.on("message", (ctx) => ctx.reply("Got another message!"));
+bot.on("message", (ctx) => ctx.reply("Вы что-то написали... Не могу разглядеть..."));
 
 // Now that you specified how to handle messages, you can start your bot.
 // This will connect to the Telegram servers and wait for messages.
 
 // Start the bot.
 
-// bot.start();
 
+
+// Запускаем бота (Вмонтирован в ссылку перехода в телеграм на бота в /help)
 export const launch_bot = () => {
-  // return console.log('gooooo')
   bot.start()
 }

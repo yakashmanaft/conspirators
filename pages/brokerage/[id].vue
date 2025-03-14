@@ -325,6 +325,15 @@ useHead({
                 </ul>
             </div>
 
+            <div>
+                <p style="margin: 0;">Тарифы</p>
+                <ul>
+                    <li>fee: {{ brokerage.fee }}</li>
+                    <li>tax: {{ brokerage.tax }}</li>
+                    <li>Тариф у брокера: Инвестор</li>
+                </ul>
+            </div>
+
 
             {{ brokerage }}
             <!-- <div  class="title-section_container" style="margin-bottom: 0.5rem;">

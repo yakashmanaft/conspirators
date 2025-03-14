@@ -184,7 +184,7 @@ model BrokerageAccount {
   broker_tag    String   @db.VarChar(60)
   fee           Float    @default(0.00)
   tax           Float    @default(0.00)
-  rate          Json?
+  // rate          Json?
   // player        Partner    @relation(fields: [playerId], references: [id])
   // status        TaskStatus @default(waiting)
   // Task          Task       @relation(fields: [taskId], references: [id])

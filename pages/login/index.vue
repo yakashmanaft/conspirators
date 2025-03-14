@@ -143,9 +143,9 @@ const onClickRegister = () => {
   
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 2rem;">
       
-            <nuxt-link to="tg://resolve?domain=Kashmanaft" style="font-size: .8rem; display: flex; flex-direction: column; align-items: center;">
+            <nuxt-link to="tg://resolve?domain=Kashmanaft" style="font-size: .8rem; display: flex; flex-direction: column; align-items: flex-end;">
               <p style="margin: 0; color: var(--color-global-text_second);">Принять участие в бета-тесте</p>
-              <p style="margin: 0; background-color: var(--color-btn-hover-bg); padding: 2px 8px; width: fit-content; border-radius: 1rem; margin-top: .3rem;">@Kashmanaft</p>
+              <p style="font-weight: bold; margin: 0; color: var(--color-global-text_second); width: fit-content; border-radius: 1rem;">@Kashmanaft</p>
             </nuxt-link>
           </div>
       </div>

@@ -188,7 +188,7 @@ import { Container } from "@/shared/container";
 import { BreadCrumbs } from "@/components/breadcrumbs";
 
 // Func
-import {launch_bot}  from '~/server/bot'
+import {launch_bot}  from '@/server/bot'
 
 const run_bot_func =  () => {
   console.log(123)

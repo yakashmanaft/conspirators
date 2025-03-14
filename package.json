@@ -1,7 +1,11 @@
 {
-  "name": "nuxt-app",
+  "name": "conspirators",
   "private": true,
   "type": "module",
+  "description":"Сервис для повышения финансовой грамотности средствами автоматизации и web",
+  "keywords": ["уроки финансовой грамотности, повышение эффективности, развитие"],
+  "author": "conspirators",
+  "license":"",
   "overrides": {
     "vue": "^3.4.19"
   },

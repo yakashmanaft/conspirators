@@ -49,6 +49,9 @@ export default defineNuxtConfig({
   //     pathPrefix: false,
   //   }, 
   // ],
+  routeRules: {
+    '/api/**': { cors: true }
+  },
   runtimeConfig: {
     // sessionPassword: 'a69ada35922e90fd13b2953afc169bdda4243cfe61afbc0a550f9525a2f2c83d'
     public: {

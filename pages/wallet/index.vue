@@ -2454,7 +2454,8 @@ const {data: brokerage} = useFetch("/api/funds/brokerage", {
             
             <ul>
               <li v-for="item in meshes_computed.filter(el => el.type === type)">
-                {{ item }}
+                {{ item.name }} || {{ item?.broker_tag }} || {{ item.tag }} {{ item.ownerType }} {{ item.ownerID }}
+                <!-- {{ item }} -->
                 <p style="cursor: pointer; font-size: 0.8rem;" @click="set_mesh_link_by_tag(item.id, item.tag)">Перейти</p>
               </li>
             </ul>
