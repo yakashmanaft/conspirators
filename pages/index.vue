@@ -53,52 +53,45 @@ const { loggedIn, user, session, clear } = useUserSession();
 
       <!-- <Search style="margin: 0;"/> -->
 
-      <section style="background-color: var(--color-wallet-fund-available); position: relative;">
-        <h3 style="color: var(--color-global-text); margin-top: 1rem;">Контролируй финансы и задачи</h3>
+      <section style="background-color: var(--color-wallet-fund-available);">
+        <h3 style="color: var(--color-global-text);">Контролируй финансы и задачи</h3>
         <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p>
-        <!-- <Button type="pseudo-btn" link="/landing_crm" bg="bg-full" :disabled="false">conspirators.CRM</Button> -->
 
-        <div style="display: flex; align-items: center; gap: .5rem; position: absolute; bottom: .5rem; left: 0;" @click="$router.push(`/landing_crm`)">
-          <div style="background-color: var(--color-urgency-low); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+        <div class="section_btn" @click="$router.push(`/landing_crm`)">
+          <div class="section_icon" style="background-color: var(--color-urgency-low);">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
           </div>
-          <p style="color: var(--color-urgency-low); margin: 0; font-size: .8rem;">Войти</p>
+          <p style="color: var(--color-urgency-low);">Войти</p>
         </div>
       </section>
   
-      <section style="background-color: var(--color-btn-hover-bg); position: relative;">
+      <section style="background-color: var(--color-btn-hover-bg);">
         <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Закрой потребность в отделе маркетинга</h3>
         <p style="color: var(--color-btn-bg)">Поручи разработку и ведение маркетинговой концепции специалистам conspirators</p>
-        <!-- <Button type="pseudo-btn" link="/landing_offer" bg="bg-stroke" :disabled="false">Ваш отдел маркетинга</Button> -->
-        <div style="display: flex; align-items: center; gap: .5rem; position: absolute; bottom: .5rem; left: 0;" @click="$router.push(`/landing_offer`)">
-          <div style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+        <div class="section_btn" @click="$router.push(`/landing_offer`)">
+          <div class="section_icon">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-bg)"/>
           </div>
-          <!-- <p style="color: var(--color-global-text_second); margin: 0; font-size: 1rem;">Войти</p> -->
         </div>
       </section>
   
-      <section style="background-color: var(--color-wallet-fund-debt); position: relative;">
-        <h3 style="color: var(--color-wallet-fund-debt-wo); margin-top: 1rem;">Задизайним всё что хочешь</h3>
+      <section style="background-color: var(--color-wallet-fund-debt);">
+        <h3 style="color: var(--color-wallet-fund-debt-wo);">Задизайним всё что хочешь</h3>
         <p style="color: var(--color-wallet-fund-debt-wo);">Мастера визуальных эффектов помогут реализовать и поддерживать фирменный стиль твоего кооператива, начиная от простой полиграфии, заканчивая съёмкой корпоративных видео</p>
-        <!-- <Button type="pseudo-btn" link="/landing_design" bg="bg-stroke" :disabled="false">Дизайним</Button> -->
-        <div style="display: flex; align-items: center; gap: .5rem; position: absolute; bottom: .5rem; left: 0;" @click="$router.push(`/landing_design`)">
-          <div style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+        <div class="section_btn" @click="$router.push(`/landing_design`)">
+          <div class="section_icon">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-wallet-fund-debt-wo)"/>
           </div>
-          <!-- <p style="color: var(--color-global-text_second); margin: 0; font-size: 1rem;">Войти</p> -->
         </div>
       </section>
 
-      <section style="background-color: var(--color-operation-type-donation); position: relative;">
-        <h3 style="margin-top: 1rem;">Разработка сайтов и приложений</h3>
+      <section style="background-color: var(--color-operation-type-donation);">
+        <h3>Разработка сайтов и приложений</h3>
         <p>Делаем сайты и приложения под ключ с дальнейшим сервисным обслуживанием</p>
-        <!-- <Button type="pseudo-btn" link="/landing_design" bg="bg-stroke" :disabled="false">Подробнее</Button> -->
-        <div style="display: flex; align-items: center; gap: .5rem; position: absolute; bottom: .5rem; left: 0;" @click="$router.push(`/landing_design`)">
-          <div style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+        <div class="section_btn" @click="$router.push(`/landing_design`)">
+          <div class="section_icon">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text)"/>
           </div>
-          <!-- <p style="color: var(--color-global-text_second); margin: 0; font-size: 1rem;">Войти</p> -->
         </div>
       </section>
     </div>
@@ -115,16 +108,13 @@ const { loggedIn, user, session, clear } = useUserSession();
 .section_container {
   display: grid; 
   gap: 1rem;
-  /* margin-left: 1rem;
-  margin-right: 1rem; */
   margin-top: 1rem; 
 }
 .section_container > section {
   border-radius: 1rem;
-  /* border: 1px solid var(--color-btn-hover-bg); */
   overflow: hidden;
-  /* padding-bottom: .8rem; */
   padding-bottom: 5rem;
+  position: relative;
 }
 .section_container > section > h3 {
   height: 100px;
@@ -133,16 +123,32 @@ const { loggedIn, user, session, clear } = useUserSession();
   font-size: 2rem;
   padding: 0 1rem;
   margin: 0;
-  /* border-bottom: 1px solid var(--color-btn-hover-bg); */
-  /* background-color: var(--color-global-text_second); */
+  margin-top: 1rem;
 }
 .section_container > section > p {
   padding: 0 1rem;
   margin: 0;
 }
-.section_container > section > div {
+.section_btn {
   margin: 1rem;
-  /* margin-top: 0; */
+  display: flex; 
+  align-items: center; 
+  gap: .5rem; 
+  position: absolute; 
+  bottom: .5rem; 
+  left: 0;
+}
+.section_btn > .section_icon {
+  width: 42px; 
+  height: 42px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 100%;
+}
+.section_btn > p {
+  margin: 0; 
+  font-size: .8rem;
 }
 .header_container {
   background-color: var(--color-global-text);

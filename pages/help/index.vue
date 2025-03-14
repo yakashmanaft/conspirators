@@ -30,6 +30,15 @@
         </ul>
       </section>
 
+      <!-- TG BOTs -->
+      <section>
+        <h3>Bots to help:</h3>
+        <p>Упрощают работу с сервисом</p>
+        <ul>
+          <li @click="run_bot_func()">Написать боту</li>
+        </ul>
+      </section>
+
       <!-- ICONS, IMG -->
       <section>
         <h3>Материалы</h3>
@@ -149,6 +158,7 @@
 </template>
 
 <script lang="ts" setup>
+import { launch } from '@/services/bot'
 useHead({
   title: "Помощь",
   link: [
@@ -175,6 +185,11 @@ import { Container } from "@/shared/container";
 
 // Components
 import { BreadCrumbs } from "@/components/breadcrumbs";
+
+const run_bot_func = () => {
+  console.log(123)
+  launch()
+}
 
 // ПЕРЕМЕННЫЕ
 
