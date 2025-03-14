@@ -317,12 +317,20 @@ useHead({
             </div>
 
             <div>
+                <p>TOTAL CAP: 999,999,999.00</p>
+            </div>
+
+            <div>
                 <p style="margin: 0;">Инвесторы:</p>
                 <ul>
                     <li v-for="investor in brokerage.invested_mash" @click="link_to_investor(investor.id)">
                         {{translate_invested_meshes(investor.id)}}
                     </li>
                 </ul>
+            </div>
+
+            <div>
+                <p>{{ brokerage.broker_tag }}</p>
             </div>
 
             <div>

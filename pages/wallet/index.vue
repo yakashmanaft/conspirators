@@ -1879,6 +1879,16 @@ const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
       alert('некуда')
   }
 }
+//= set loaner subject by 
+const set_attr_data = (item: any) => {
+  if(item.tag === 'invested_loan') {
+    return `Заёмщик: ${item.loanerType} ${item.loanerID}`
+  } 
+  else if (item.tag === 'debt_loan') {
+
+    return `Заимодавец: ${item.ownerType} ${item.ownerID}`
+  }
+}
 
 // COLLRIZED
 //
@@ -2246,7 +2256,7 @@ const {data: brokerage} = useFetch("/api/funds/brokerage", {
       @changed="changeChipAffiliation"
       style="margin-top: 1rem;"
     />
-    <p>currentAffiliation: {{ currentAffiliation }}</p>
+    <!-- <p>currentAffiliation: {{ currentAffiliation }}</p> -->
 
     <!-- <chip
       :tabs="[
@@ -2448,17 +2458,28 @@ const {data: brokerage} = useFetch("/api/funds/brokerage", {
             class="mesh_group_container"
           > 
             <header><h4>{{ type }}</h4></header>
-            <main style="margin-top: 1rem">
-
+            <main>
+              <ul class="mesh_container" style="padding: 0; list-style: none;">
+                <li 
+                  class="mesh_wrapper"
+                  style="cursor: pointer;"
+                  v-for="item in meshes_computed.filter(el => el.type === type)"
+                  @click="set_mesh_link_by_tag(item.id, item.tag)"
+                > 
+                  <div
+                    class="mesh_broker-sign"
+                  >
+                  {{ item.broker_tag?.[0] }}
+                  </div>
+                  <div class="mesh_content">
+                    <p class="mesh_content-el">{{ item.name }}</p>
+                    <p class="mesh_content-el">999,999,999.00{{ currency_to_show.ticket }}</p>
+                  </div>
+                  <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
+                </li>
+              </ul>
             </main>
             
-            <ul>
-              <li v-for="item in meshes_computed.filter(el => el.type === type)">
-                {{ item.name }} || {{ item?.broker_tag }} || {{ item.tag }} {{ item.ownerType }} {{ item.ownerID }}
-                <!-- {{ item }} -->
-                <p style="cursor: pointer; font-size: 0.8rem;" @click="set_mesh_link_by_tag(item.id, item.tag)">Перейти</p>
-              </li>
-            </ul>
           </section>
           
         </div>
@@ -2920,6 +2941,47 @@ const {data: brokerage} = useFetch("/api/funds/brokerage", {
     margin-left: .5rem;
     margin-right: .5rem;
   }
+
+  /* MESH */
+  ul+.mesh_container {
+
+  }
+  .mesh_wrapper {
+    /* background-color: rgb(244, 153, 153); */
+    position: relative;
+    padding-left: calc(3rem + .6rem);
+    margin-top: 1rem;
+  }
+  .mesh_broker-sign {
+    background-color: var(--color-btn-hover-bg);
+    color: var(--color-btn-text);
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    border-radius: 100%;
+  }
+  .mesh_content {
+    /* background-color: rgb(165, 165, 243); */
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .mesh_content-el {
+    margin: 0;
+    align-self: center;
+  }
+  .mesh_content-el:last-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+
 
   /* TRANSACTION */
   .transaction_container {
