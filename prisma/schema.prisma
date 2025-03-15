@@ -65,15 +65,16 @@ model Lead {
 }
 
 model Project {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(60)
-  created_at DateTime @default(now()) @db.DateTime(0)
-  sharers    Json?
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(60)
+  created_at    DateTime @default(now()) @db.DateTime(0)
+  sharers       Json?
+  invested_mesh Json?
   // [{"userType": "conspirator", "userId": 1}]
   // Банда заказчика, если нет - Общее (1)
-  band       Band     @relation(fields: [bandId], references: [id])
-  bandId     Int
-  task       Task[]
+  band          Band     @relation(fields: [bandId], references: [id])
+  bandId        Int
+  task          Task[]
 }
 
 model Partner {
@@ -180,7 +181,7 @@ model BrokerageAccount {
   // owner_id      Int      @default(0)
   // owner_type    String   @db.VarChar(60)
   invested_mash Json?
-  tag           String   @db.VarChar(60) // invested_stock_market
+  tag           String   @db.VarChar(60) // tag invested_stock_market
   broker_tag    String   @db.VarChar(60)
   fee           Float    @default(0.00)
   tax           Float    @default(0.00)
@@ -204,6 +205,17 @@ model BrokerageAccount {
   //    "value":0.9
   //  }
   // ]
+}
+
+model Crypto {
+  id            Int      @id @default(autoincrement())
+  created_at    DateTime @default(now()) @db.DateTime(0)
+  name          String   @db.VarChar(60)
+  invested_mash Json?
+  tag           String   @db.VarChar(60) // tag invested_crypto
+  broker_tag    String   @db.VarChar(60)
+  fee           Float    @default(0.00)
+  tax           Float    @default(0.00)
 }
 
 model Transaction {
@@ -265,7 +277,7 @@ model Transaction {
 // mutual_fund
 // brokerage_account
 // crypto-wallet
-// crypto-stock
+// crypto_stock
 // crypto-stacking
 // deposit-capitalize
 // deposit-wocapitalize
@@ -274,6 +286,7 @@ model Transaction {
 // currency-hkd
 // loan-interest
 // loan-free
+// start-up
 
 //= purpose of payment
 // deposit (income размывает долю)

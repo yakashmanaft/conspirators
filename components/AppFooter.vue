@@ -14,8 +14,8 @@ const hotBtnList = ref([
   // },
   {
     name: 'demands',
-    icon_name: 'material-symbols-light:personal-places-outline-rounded',
-    icon_clicked_name: 'material-symbols-light:personal-places-rounded',
+    icon_name: 'material-symbols-light:library-books-outline-rounded',
+    icon_clicked_name: 'material-symbols-light:library-books-rounded',
     target: "demands",
   },
   // {
@@ -26,8 +26,8 @@ const hotBtnList = ref([
   // },
   {
     name: "projects",
-    icon_name: "material-symbols-light:folder-managed-outline-sharp",
-    icon_clicked_name: "material-symbols-light:folder-managed-sharp",
+    icon_name: 'material-symbols-light:business-center-outline-rounded',
+    icon_clicked_name: 'material-symbols-light:business-center-rounded',
     target: "projects",
   },
   {
@@ -42,12 +42,12 @@ const hotBtnList = ref([
   //   icon_clicked_name: "material-symbols-light:group-rounded",
   //   target: "partners",
   // },
-  {
-    name: 'landing_all',
-    icon_name: 'material-symbols-light:action-key-outline-rounded',
-    icon_clicked_name: 'material-symbols-light:action-key-rounded',
-    target: "landing_all"
-  },
+  // {
+  //   name: 'landing_all',
+  //   icon_name: 'material-symbols-light:personal-places-outline-rounded',
+  //   icon_clicked_name: 'material-symbols-light:personal-places-rounded',
+  //   target: "landing_all"
+  // },
   {
     name: "wallet",
     icon_name: "material-symbols-light:account-balance-wallet-outline",

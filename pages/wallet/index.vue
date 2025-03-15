@@ -1869,10 +1869,45 @@ const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
           }
         }
       })
+
       if(brokerage_id === 0) {
         alert('Мешок не привязан к брокерскому счету')
       } else {
         router.push(`brokerage/${brokerage_id}`)
+      }
+      break
+    case 'invested_crypto':
+      let crypto_mesh_id = 0
+
+      crypto_mesh.value?.forEach(item => {
+        if(item.invested_mash) {
+          if(item.invested_mash.find(el => el.id === mesh_id)) {
+            crypto_mesh_id = item.id
+          }
+        }
+      })
+
+      if(crypto_mesh_id === 0) {
+        alert('Мешок не привязан к крипто-аккаунту')
+      } else {
+        router.push(`crypto/${crypto_mesh_id}`)
+      }
+      break
+    case 'invested_project':
+      let project_mesh_id = 0
+
+      project_mesh.value?.forEach(item => {
+        if(item.invested_mesh) {
+          if(item.invested_mesh.find(el => el.id === mesh_id)) {
+            project_mesh_id = item.id
+          }
+        }
+      })
+
+      if(project_mesh_id === 0) {
+        alert('Мешок не привязан к кошельку')
+      } else {
+        router.push(`projects/${project_mesh_id}`)
       }
       break
     default: 
@@ -2032,6 +2067,15 @@ const setChoosenWalletSectionColor = (tag: any) => {
         color = `var(--color-wallet-fund-invested)`
       } else {
         // color = `var(--color-wallet-fund-invested)`
+      }
+    }
+    // INVESTED  PROJECT
+    if(tag === 'invested_project') {
+      if(choosenChip_section.value === tag) {
+        color = `var(--color-wallet-fund-invested)`
+      }
+      else {
+        //
       }
     }
     // INVESTED DEPOSIT
@@ -2199,6 +2243,29 @@ const { data: loan_list } = useFetch("/api/loan/loan", {
     return loan_list
   }
 })
+// brokerage
+const {data: brokerage} = useFetch("/api/funds/brokerage", {
+  lazy: false,
+  transform: (brokerage) => {
+    return brokerage
+  }
+})
+// crypto_mesh
+const { data: crypto_mesh} = useFetch("/api/funds/crypto_mesh", {
+  lazy: false,
+  transform: (crypto_mesh)  => {
+    return crypto_mesh
+  }
+})
+//project
+const { data: project_mesh } = useFetch("/api/projectGuarded/project", {
+  lazy: false,
+  transform: (project_mesh) => {
+    return project_mesh
+  }
+})
+
+// 
 // transaction_ledger
 const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
   lazy: false,
@@ -2206,6 +2273,9 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
     return transaction_ledger
   }
 })
+
+
+//
 // band
 const { data: band } = useFetch("/api/band/band", {
   lazy: false,
@@ -2223,13 +2293,7 @@ const { data: band } = useFetch("/api/band/band", {
     })
   }
 })
-// brokerage
-const {data: brokerage} = useFetch("/api/funds/brokerage", {
-  lazy: false,
-  transform: (brokerage) => {
-    return brokerage
-  }
-})
+
 
 
 </script>
@@ -2446,7 +2510,6 @@ const {data: brokerage} = useFetch("/api/funds/brokerage", {
 
       <!-- MESHES -->
       <div v-if="currentFundParagraph === 'meshes'" class="current-fund_wrapper">
-
         <!-- LENGTH -->
         <div v-if="meshes_computed?.length">
 
