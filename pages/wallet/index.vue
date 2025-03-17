@@ -1741,10 +1741,13 @@ onMounted(() => {
   const scrollContainer = document.getElementById("fund-block");
   const scrollAffiliationContainer = document.getElementById("affiliation-chip-block")
 
-  scrollContainer?.addEventListener("wheel", (evt) => {
-      evt.preventDefault();
-      scrollContainer.scrollLeft += evt.deltaY;
-  });
+  if(mesh_list.value) {
+    scrollContainer?.addEventListener("wheel", (evt) => {
+        evt.preventDefault();
+        scrollContainer.scrollLeft += evt.deltaY;
+    });
+
+  }
 
   scrollAffiliationContainer?.addEventListener("wheel", (evt) => {
       evt.preventDefault();
@@ -1955,6 +1958,23 @@ const set_attr_data = (item: any) => {
       return owner ? owner.name : 'Неизвестный банк'
     }
 
+  }
+}
+// set mesh broker sign bgc
+const set_mesh_broker_sign_bgc = (tag: string) => {
+
+  if(tag === 'debt_loan') {
+   return 'background-color: var(--color-wallet-fund-debt);'
+  } 
+  else if (tag.includes('invested')) {
+    return 'background-color: var(--color-wallet-fund-invested);'
+  }
+  else if (tag === 'available') {
+    return 'background-color: var(--color-wallet-fund-available);'
+  }  
+  else {
+
+    return 'background-color: red'
   }
 }
 
@@ -2357,7 +2377,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
 
 
 
-    <!-- CHIPs -->
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
     <Chip
       id="affiliation-chip-block"
       :tabs="affiliation_computed"
@@ -2368,46 +2388,14 @@ const { data: bank } = useFetch("/api/banks/bank", {
     />
     <!-- <p>currentAffiliation: {{ currentAffiliation }}</p> -->
 
-    <!-- <chip
-      :tabs="[
-        {
-          title: 'Личный',
-          name: 'personal',
-          id: null
-        },
-        {
-          title: 'bankOfTwo(EC)',
-          name: 'bank-of-two_ec',
-          id: 1
-        },
-        {
-          title: 'bankOfTwo(MC)',
-          name: 'bank-of-two_mc',
-          id: 7 
-        },
-        {
-          title: 'bankOfTwo(EC)',
-          name: 'bank-of-two_ec',
-          id: 1
-        },
-      ]"
-      :default="{
-        title: 'Все',
-        name: 'all',
-        id: null,
-      }" 
-      :btn_all_exist="true"
-      @changed="emittedChip_bank"
-    /> -->
-
-    <!-- TOTAL -->
+    <!-- TOTAL КАПИТАЛИЗАЦИЯ ПО ФОНДУ -->
     <!--  -->
     <div class="total-cap_container">
-      <p style="margin: 0; font-size: 1.2rem;">TOTAL: ~999,999,999.99{{ currency_to_show.ticket }}</p>
-      <p class="btn_to_fund" @click="$router.push(`/band/${currentAffiliation?.bandID}`);" v-if="currentAffiliation.bandID !== 0">Подробнее</p>
+      <p style="margin: 0; font-size: 1.2rem;"><span>TOTAL:</span> <span>~999,999,999.99{{ currency_to_show.ticket }}</span></p>
+      <p class="btn_to_fund" @click="$router.push(`/band/${currentAffiliation?.bandID}`);" v-if="currentAffiliation.bandID !== 0">Перейти в {{ currentAffiliation.name }}</p>
     </div>
 
-    <!-- SECTIONs -->
+    <!-- НАЗВАНИЯ ГРУПП СЕКЦИЙ В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
       <!-- MESH TAG -->
@@ -2425,7 +2413,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
         <p style="margin: 0; font-weight: bold; font-size: 1.2rem;">999,999,999.99{{ currency_to_show.ticket }}</p>
       </Section>
     </div> 
-        <!-- {{ choosenChip_section }} -->
+    <!-- {{ choosenChip_section }} -->
         
     <!-- === INFO SECTION === -->
     <!-- <div id="fund-block" class="wallet-section_container">
@@ -2468,7 +2456,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     </div> -->
 
     <!-- CHIP -->
-    <!-- MESH && TRANSACTION  -->
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ MESH && TRANSACTION  -->
     <div class="current_affiliation_title" style="display: flex; gap: 1rem; align-items: center;">
 
       <h3 v-for="el in fundParagraph" :class="currentFundParagraph === el.name ? 'title_active' : ''" style="cursor:pointer;">
@@ -2576,6 +2564,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                 > 
                   <div
                     class="mesh_broker-sign"
+                    :style="set_mesh_broker_sign_bgc(item.tag)"
                   >
                   {{ item.broker_tag?.[0] }}
                   </div>
@@ -2583,7 +2572,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                     <p class="mesh_content-el">{{ item.name }}</p>
                     <p class="mesh_content-el">999,999,999.00{{ currency_to_show.ticket }}</p>
                   </div>
-                  <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
+                  <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
                 </li>
               </ul>
             </main>
@@ -3026,14 +3015,38 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .total-cap_container {
     display: flex; 
     align-items: center; 
+    justify-content: space-between;
     gap: 1rem;
   }
   .total-cap_container > .btn_to_fund {
     margin: 0;
     color: var(--color-btn-bg);
-    background-color: var(--color-btn-hover-bg);
+    /* background-color: var(--color-btn-hover-bg); */
     padding: 2px 8px;
     border-radius: 1rem;
+    text-align: right;
+    transition: all .2s ease-in;
+  }
+  .total-cap_container > .btn_to_fund:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+
+  .mesh_wrapper {
+    /* background-color: rgb(244, 153, 153); */
+    position: relative;
+  }
+  .mesh_broker-sign {
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--color-btn-hover-bg);
+    color: var(--color-btn-text);
+  }
+
+  .mesh_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
   }
 
 /*  */
@@ -3046,6 +3059,22 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-left: .5rem;
     margin-right: .5rem;
     justify-content: space-between;
+  }
+  .total-cap_container > p:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+  .total-cap_container > p:first-child > span:first-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+  .total-cap_container > p > span:last-child {
+    font-size: 1.5rem!important;
+  }
+  .total-cap_container > .btn_to_fund {
+    color: var(--color-btn-bg);
+    background-color: var(--color-btn-hover-bg);
+    font-size: .8rem;
   }
   .wallet-section_container {
     margin-top: 1.5rem;
@@ -3071,29 +3100,25 @@ const { data: bank } = useFetch("/api/banks/bank", {
 
   }
   .mesh_wrapper {
-    /* background-color: rgb(244, 153, 153); */
-    position: relative;
     padding-left: calc(3rem + .6rem);
     margin-top: 1rem;
   }
   .mesh_broker-sign {
-    background-color: var(--color-btn-hover-bg);
-    color: var(--color-btn-text);
+
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
-    width: 3rem;
-    height: 3rem;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 0;
-    border-radius: 100%;
+    /* border-radius: 100%; */
+    border-radius: .5rem;
+    transition: all .2s ease-in;
   }
   .mesh_content {
     /* background-color: rgb(165, 165, 243); */
     display: flex;
-    /* flex-wrap: wrap; */
     justify-content: space-between;
     align-items: flex-start;
   }
@@ -3152,6 +3177,22 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-right: 1rem;
     margin-top: 1.5rem;
   }
+  .total-cap_container > p:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+  .total-cap_container > p:first-child > span:first-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+  .total-cap_container > p > span:last-child {
+    font-size: 2rem!important;
+  }
+  .total-cap_container > .btn_to_fund {
+    color: var(--color-btn-bg);
+    background-color: var(--color-btn-hover-bg);
+    font-size: .8rem;
+  }
   .wallet-section_container {
     margin-top: 1.5rem;
     padding: 0 1rem;
@@ -3179,6 +3220,10 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
 
   /* MESH */
+  .mesh_wrapper {
+    padding-left: calc(3rem + .6rem);
+    margin-top: 1rem;
+  }
   .mesh_group_container {
 
   }
@@ -3191,6 +3236,23 @@ const { data: bank } = useFetch("/api/banks/bank", {
     display: flex; 
     align-items: center;
   }
+  .mesh_broker-sign {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    /* border-radius: 100%; */
+    border-radius: .7rem;
+  }
+  .mesh_content-el {
+    margin: 0;
+  }
+  .mesh_content {
+
+  }
   .mesh_footer {
     align-items: center;
   }
@@ -3201,8 +3263,33 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
+  .total-cap_container {
+    margin-top: 2rem;
+    position: relative;
+  }
+  .total-cap_container > p {
+    display: flex;
+    flex-direction: column;
+  }
+  .total-cap_container > p:first-child > span:first-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+  .total-cap_container > p > span:last-child {
+    font-size: 3rem!important;
+  }
+  .total-cap_container > .btn_to_fund {
+    position: absolute;
+    bottom: -1.25rem;
+    left: 0;
+    font-size: .8rem;
+  }
+  .total-cap_container > .btn_to_fund:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-left: -1rem;
     padding-left: 1rem;
     margin-right: -.5rem;
@@ -3230,6 +3317,42 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-right: .5rem; */
   }
   /* MESH */
+  .mesh_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .mesh_wrapper {
+    border-radius: 1rem;
+    border: 1px solid var(--color-btn-hover-bg);
+    padding: 1rem;
+    transition: all .2s ease-in;
+  }
+  .mesh_wrapper  > p {
+    margin: 0;
+    margin-top: .5rem;
+  }
+  .mesh_wrapper > .mesh_broker-sign {
+    border-radius: .5rem;
+  }
+  .mesh_wrapper:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+  .mesh_wrapper:hover > .mesh_broker-sign {
+    border: 1px solid var(--color-btn-text);
+  }
+  .mesh_content {
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+  .mesh_content {
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+  .mesh_content-el {
+    margin: 0;
+  }
   .mesh_info {
     align-items: center; 
     gap: 24px;
@@ -3244,8 +3367,31 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px){
+  .total-cap_container {
+    margin-top: 2rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+  }
+  .total-cap_container > .btn_to_fund {
+    position: absolute;
+    bottom: -1.75rem;
+    left: 0;
+    font-size: .8rem;
+  }
+  .total-cap_container > p {
+    display: flex;
+    flex-direction: column;
+  }
+  .total-cap_container > p:first-child > span:first-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+  .total-cap_container > p > span:last-child {
+    font-size: 3rem!important;
+  }
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
@@ -3270,6 +3416,38 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-right: .5rem; */
   }
   /* MESH */
+  .mesh_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .mesh_wrapper {
+    border-radius: 1rem;
+    border: 1px solid var(--color-btn-hover-bg);
+    padding: 1rem;
+    transition: all .2s ease-in;
+  }
+  .mesh_wrapper  > p {
+    margin: 0;
+    margin-top: .5rem;
+  }
+  .mesh_wrapper > .mesh_broker-sign {
+    border-radius: .5rem;
+  }
+  .mesh_wrapper:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+  .mesh_wrapper:hover > .mesh_broker-sign {
+    border: 1px solid var(--color-btn-text);
+  }
+  .mesh_content {
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+  .mesh_content-el {
+    margin: 0;
+  }
   .mesh_info {
     align-items: center; 
     gap: 24px;
@@ -3284,8 +3462,35 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
 }
 @media screen and (min-width: 1200px) {
+  .total-cap_container {
+    margin-top: 2rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+  }
+  .total-cap_container > p {
+    display: flex;
+    flex-direction: column;
+  }
+  .total-cap_container > p:first-child > span:first-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+  .total-cap_container > p > span:last-child {
+    font-size: 3rem!important;
+  }
+  .total-cap_container > .btn_to_fund {
+    position: absolute;
+    bottom: -1.75rem;
+    left: 0;
+    font-size: .8rem;
+  }
+  /* .total-cap_container > .btn_to_fund  {
+    background-color: unset;
+    position: relative;
+  } */
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
     padding-bottom: 1.5rem;
@@ -3309,7 +3514,40 @@ const { data: bank } = useFetch("/api/banks/bank", {
     /* margin-left: .5rem;
     margin-right: .5rem; */
   }
+
   /* MESH */
+  .mesh_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .mesh_wrapper {
+    border-radius: 1rem;
+    border: 1px solid var(--color-btn-hover-bg);
+    padding: 1rem;
+    transition: all .2s ease-in;
+  }
+  .mesh_wrapper  > p {
+    margin: 0;
+    margin-top: .5rem;
+  }
+  .mesh_wrapper > .mesh_broker-sign {
+    border-radius: .5rem;
+  }
+  .mesh_wrapper:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+  .mesh_wrapper:hover > .mesh_broker-sign {
+    border: 1px solid var(--color-btn-text);
+  }
+  .mesh_content {
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+  .mesh_content-el {
+    margin: 0;
+  }
   .mesh_info {
     align-items: center; 
     gap: 24px;

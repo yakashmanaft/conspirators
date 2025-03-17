@@ -155,7 +155,7 @@ const set_bgColor_by_urgency = (urgency: string) => {
 
     //= low
     if(urgency === 'low') {
-      color = 'var(--color-urgency-low)'
+      color = 'var(--color-wallet-fund-available)'
     }
     //= middle
     if(urgency === 'middle'){

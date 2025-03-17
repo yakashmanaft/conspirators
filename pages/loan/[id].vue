@@ -149,7 +149,7 @@ useHead({
         if(band.value && partner.value) {
             let result = 'Неизвестный'
             if(ownerType === "user") {
-                let owner = partner?.value.find(el => el.id === ownerID)
+                let owner = partner?.value.find(el => el.userId === ownerID)
 
                 if(owner) {
                     result = `${owner.name} ${owner.surname}`
@@ -282,13 +282,13 @@ useHead({
         <div v-if="loan && !accessPlug">
 
 
+            <BreadCrumbs class="show-max-767"/>
+            <h1 style="font-weight: bold; font-size: 42px;">
+
+                {{ loan.name }}
+            </h1> 
             <!-- <div  class="title-section_container" style="margin-bottom: 0.5rem;">
-                <BreadCrumbs class="show-max-767"/>
     
-                <h1 style="font-weight: bold; font-size: 42px;">
-    
-                    {{ mesh.name }}
-                </h1> 
                 <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
     
 
@@ -317,22 +317,21 @@ useHead({
                     <p>Управляющий: Сергей Анфалов</p>
                 </h2>
             </div> -->
-            {{ loan }}
-            <br>
-            <br>
             <ul>
                 Общее
                 <li>Займ: 00.00 RUB</li>
                 <li>Ставка: 17.00%</li>
                 <li>Кто (Займодавец): {{ translateOwner(loan.ownerType, loan.ownerID) }}</li>
                 <li>Кому (Заемщик): {{ translateOwner(loan.loanerType, loan.loanerID) }}</li>
-                <li>Остаток к выплате: 00.00 RUB</li>
+                <li>Остаток к выплате: <span style="background-color: var(--color-wallet-fund-debt-wo); color: var(--color-btn-text);">00.00 RUB</span></li>
             </ul>
             <ul>
                 График платежей
                 <li>Свободный</li>
                 <li>00.00.0000 00.00 RUB</li>
             </ul>
+
+            {{ loan }}
             <!-- CHIP SECTION -->
              <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
             <!-- {{ currentChip }} -->
