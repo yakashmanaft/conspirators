@@ -1,65 +1,73 @@
 <template>
     <div class="section_wrapper"> 
-        <div class="section shadow rounded" :class="[props.padding ? 'pt-5 pb-4 px-3' : '']">
+        <div class="section" :class="[props.padding ? 'pt-3 pb-2 px-3' : '']">
 
             <!-- {{ props.current_task}} -->
 
-            <div v-if="props.current_task">
+            <div v-if="props.current_task" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
 
               <!-- CREATED DATE -->
               <!-- <div>
                 <p style="margin: 0; white-space: nowrap; font-size: 0.8rem;">{{ props.current_task?.created_at }}</p>
               </div> -->
-              <!-- STATUS -->
-              <p class="ticket_status">{{ props.current_task?.status }}</p>
 
-              <!-- DESK-->
-              <h3 style="font-size: 1.2rem;">{{ cutTaskDesc(props.current_task?.desc, 40) }}</h3>
+              <!-- TITILES -->
+              <div>
 
-              <!-- TITLE -->
-              <h4 style="font-size: 0.6rem; display: block; font-weight: normal;" >*{{ props?.name }}</h4>
-              <!-- <h4>*{{ translateProjectID(item.project_id, project_list) }}</h4> -->
+                <!-- TITLE -->
+                <h4 style="font-size: 0.6rem; display: block; font-weight: normal; margin: 0; color: var(--color-global-text_second)">*{{ props?.name }}</h4>
+                <!-- DESK-->
+                <h3 style="font-size: 1.2rem; margin-top: .3rem">{{ cutTaskDesc(props.current_task?.desc, 40) }}</h3>
+              </div>
+
 
               <!-- FOOTER -->
-              <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 1rem;">
+              <div style="display: flex; flex-direction: column; align-items: space-between; justify-content: space-between;">
 
-                <!-- LEFT -->
-                <div>
+                <div class="label_count-wrapper">
 
-                  <!-- URGENCY -->
-                  <div 
-                    class="ticket_urgency"
-                    :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
-                    style="display: flex; align-items: center; justify-content: center; font-size: .8rem;"
-                  >{{ props.current_task?.urgency }}</div>
+                  <!-- Label -->
+                  <div
+                    style="font-size: 0.8rem;"
+                    :style="
+                      setTaskAccomplishmentLabel(
+                        countFinishedAccomplishmentTask(props?.taskArray),
+                        countAccomplishmentTask(props?.taskArray)
+                      ) === 'Долг' ? `color: var(--color-urgency-middle)` : `color: var(--color-urgency-low-wo)`
+                    ">
+                    {{ setTaskAccomplishmentLabel(countFinishedAccomplishmentTask(props?.taskArray), countAccomplishmentTask(props?.taskArray)) }}
+                  </div>
 
                   <!-- COUNT -->
-                  <div>
-                   paid {{ countFinishedAccomplishmentTask(props?.taskArray) }} из {{ countAccomplishmentTask(props?.taskArray) }}
+                  <div style="font-size: 0.8rem;">
+                    paid {{ countFinishedAccomplishmentTask(props?.taskArray) }} из {{ countAccomplishmentTask(props?.taskArray) }}
                   </div>
                 </div>
 
-                <!-- RIGHT -->
-                <!-- Label -->
-                <div
-                  :style="
-                    setTaskAccomplishmentLabel(
-                      countFinishedAccomplishmentTask(props?.taskArray),
-                      countAccomplishmentTask(props?.taskArray)
-                    ) === 'Долг' ? `color: var(--color-urgency-middle)` : `color: var(--color-urgency-low-wo)`
-                  ">
-                  {{ setTaskAccomplishmentLabel(countFinishedAccomplishmentTask(props?.taskArray), countAccomplishmentTask(props?.taskArray)) }}
+                <div class="status_deadline-wrapper">
+                  <!-- STATUS -->
+                  <p class="ticket_status">{{ props.current_task?.status }}</p>
+                  <!-- DEADLINE -->
+                  <p class="ticket_deadline">Успеть до: {{ props.current_task?.deadline.slice(0,10) }}</p>
                 </div>
 
-
+                <!-- URGENCY -->
+                <div 
+                  class="ticket_urgency"
+                  :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
+                  style="display: flex; align-items: center; justify-content: center; font-size: .6rem;"
+                >
+                  {{ props.current_task?.urgency }}
+                </div>
               </div>
+
 
               <!-- ADDONS -->
               <!--  -->
               <!-- DEADLINE -->
-              <div v-if="props.current_task?.deadline" class="ticket_deadline">
+              <!-- <div v-if="props.current_task?.deadline" class="ticket_deadline">
                 Deadline: {{ props.current_task?.deadline.slice(0,10) }}
-              </div>
+              </div> -->
               
               <!-- CANCELED -->
               <div v-if="props.current_task?.status === 'canceled'" class="ticket_canceled">
@@ -82,7 +90,7 @@
                 </div>
                 <!-- <p>Выполнено</p> -->
               </div>
-
+              
             </div>
         </div>
     </div>
@@ -238,9 +246,10 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
 
   .section_wrapper {
     transition: all .2s ease-in;
+    border-radius: 1rem;
   }
   .section_wrapper:hover {
-    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
   }
 
   .section {
@@ -253,33 +262,34 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     gap: v-bind('props.fGap');
     height: 100%;
     position: relative;
+    overflow: hidden;
+    border: 1px solid var(--color-btn-hover-bg);
+    border-radius: 1rem;
   }
 
+  .label_count-wrapper,
+  .status_deadline-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  /* TICKET STATUS */
   .ticket_status {
-    position: absolute;
-    top: 1.4rem;
-    left: 1rem;
     margin: 0; 
     font-size: 0.8rem;
     color: var(--color-global-text_second);
   }
+  /* TICKET DEADLINE */
+  .ticket_deadline {
+    width: fit-content;
+    color: var(--color-btn-bg); 
+    font-size: 0.8rem;
+    margin: 0;
+  }
 
   /* TIKET PERIOD */
   /*  */
-  /* TICKET DEADLINE */
-  .ticket_deadline {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%;
-    background-color: black; 
-    color: var(--color-btn-text); 
-    font-size: 0.6rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
   /* TICKET PLUG */
   /* .rounded {
     
@@ -297,7 +307,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
     display: flex; 
     align-items: center; 
     justify-content: center;
-    border-radius: var(--bs-border-radius);
+    /* border-radius: var(--bs-border-radius); */
   }
   .ticket_canceled {
     background-color: var(--color-status-canceled); 
@@ -318,15 +328,12 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   }
   /* urgency */
   .ticket_urgency {
-    position: absolute;
-    top: 1.4rem;
-    right: 1rem;
-    border-radius: 50%;
-    /* border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem; */
-    width: 1.5rem; 
-    height: 1.5rem; 
-    background-color: black
+    margin-top: .3rem;
+    width: fit-content; 
+    padding: 2px 8px;
+    background-color: black;
+    color: black;
+    align-self: flex-end;
   }
 @media screen and (max-width: 575px) {
 }

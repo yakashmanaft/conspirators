@@ -104,6 +104,13 @@ model Band {
   Project    Project[]
 }
 
+model Bank {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(60)
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  update_at  DateTime? @updatedAt
+}
+
 model Task {
   id                Int                 @id @default(autoincrement())
   name              String?             @db.VarChar(60)

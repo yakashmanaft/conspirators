@@ -162,19 +162,27 @@ useHead({
                     result = owner.name
                 }
             }
+            if(ownerType === 'bank') {
+                let owner = bank?.value?.find(el => el.id === ownerID)
+
+                if(owner) {
+                    result = owner.name
+                }
+            }
+
             return result
         }
     }
     // SET
     // create link to owner
-    const linkToOwner = (ownerType: string, ownerID: number) => {
-        if(ownerType === 'user') {
-            return `/partners/${ownerID}`
-        } 
-        if(ownerType === 'conspirator') {
-            return `/band/${ownerID}`
-        }  
-    }
+    // const linkToOwner = (ownerType: string, ownerID: number) => {
+    //     if(ownerType === 'user') {
+    //         return `/partners/${ownerID}`
+    //     } 
+    //     if(ownerType === 'conspirator') {
+    //         return `/band/${ownerID}`
+    //     }  
+    // }
 
     // DB
     //
@@ -246,11 +254,18 @@ useHead({
             return band
         }
     })
-    // partner
+    //= partner
     const { data: partner } = useFetch("/api/partnerGuarded/partner", {
         lazy: false,
         transform: (partner) => {
             return partner
+        }
+    })
+    //= bank
+    const { data: bank } = useFetch("/api/banks/bank", {
+        lazy: false,
+        transform: (bank) => {
+            return bank
         }
     })
 

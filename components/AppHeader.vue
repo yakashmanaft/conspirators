@@ -241,6 +241,18 @@ const translateRoutePath = (path: string) => {
     let id = path.substr(startIndex + 1);
     return `Мешок #${id}`;
   }
+  // CRYPTO MESHки
+  else if (path.includes('/crypto/')) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Мешок в крипте #${id}`;
+  }
+  // КРЕДИТЫ
+  else if (path.includes('/loan/')) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Кредит #${id}`;
+  }
   // FUNDS
   else if (path.includes('/fund/')) {
     let startIndex = path.lastIndexOf("/");
@@ -248,13 +260,13 @@ const translateRoutePath = (path: string) => {
     return `Фонд соучастников #${id}`;
   }
   // BANKS
-  else if (path === "/banks") {
-    return "Банки"
-  } else if (path.includes("/banks/")) {
-    let startIndex = path.lastIndexOf("/");
-    let id = path.substr(startIndex + 1);
-    return `Банк #${id}`;
-  }
+  // else if (path === "/banks") {
+  //   return "Банки"
+  // } else if (path.includes("/banks/")) {
+  //   let startIndex = path.lastIndexOf("/");
+  //   let id = path.substr(startIndex + 1);
+  //   return `Банк #${id}`;
+  // }
   // BROKERAGE
   else if (path === "/brokerage") {
     return "Брокерские счета"

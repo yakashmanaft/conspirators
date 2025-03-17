@@ -697,7 +697,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
       :tabs="page_section_chips"
       :default="current_section_chip"
       @changed="changeCurrentSectionChip"
-      style="margin-top: 1rem;"
+      style="margin-top: 1.5rem;"
     />
     <!-- {{ current_section_chip }} -->
 
@@ -726,7 +726,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
       </div>
     </div>
     
-    <div>
+    <div style="margin-top: 1.5rem;">
 
       <!-- LEAD SECTION -->
       <div v-if="current_section_chip.name === 'lead'">
@@ -1157,7 +1157,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 
 /* PERIOD */
 .period_wrapper {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
   align-items: center;
   gap: .5rem;

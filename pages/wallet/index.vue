@@ -1341,9 +1341,17 @@ const meshes_computed = computed(() => {
     // }
   // })
 })
-// band list
+//= band list
 const band_computed = computed(() => {
   return band.value
+})
+//= partner list
+const partner_computed = computed(() => {
+  return partner.value
+})
+//= bank list
+const bank_computed = computed(() => {
+  return bank.value
 })
 //= affiliation band chips
 const affiliation_computed = computed(() => {
@@ -1384,11 +1392,11 @@ const affiliation_computed = computed(() => {
   
 //   return result
 // }
-const filterMeshByWalletType = (type: string, array: any) => {
-  const result = [...array].filter(el => el.type === type)
+// const filterMeshByWalletType = (type: string, array: any) => {
+//   const result = [...array].filter(el => el.type === type)
 
-  return result
-}
+//   return result
+// }
 
 //  CALC
 //= calc Profit
@@ -1508,10 +1516,6 @@ const calcMeshInvested = (meshID: number) => {
   }
 
   return result
-}
-// calc
-const calc = () => {
-  return 1
 }
 // calc mesh available
 const calcMeshAvailable = (meshID: number) => {
@@ -1648,42 +1652,42 @@ const calcMeshProfit = (meshID: number) => {
 
 }
 // calc mesh profit in percentage
-const calcMeshProfitPercent = (meshID: number) => {
+// const calcMeshProfitPercent = (meshID: number) => {
 
-  let result = 0;
-  let mesh;
-  if(mesh_list.value?.length) {
-    mesh = mesh_list.value.find(mesh => {
-      if(mesh.id === meshID) {
-        //   if(currentAffiliation.value.name === 'all') {
-        //   return mesh
-        // }
-        if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
-          return mesh
-        } 
-        else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
+//   let result = 0;
+//   let mesh;
+//   if(mesh_list.value?.length) {
+//     mesh = mesh_list.value.find(mesh => {
+//       if(mesh.id === meshID) {
+//         //   if(currentAffiliation.value.name === 'all') {
+//         //   return mesh
+//         // }
+//         if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
+//           return mesh
+//         } 
+//         else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
 
-          return mesh
-        }
-      }
-    })
-  }
+//           return mesh
+//         }
+//       }
+//     })
+//   }
   
-  let invested = calcMeshInvested(meshID)
-  let available = calcMeshAvailable(meshID)
+//   let invested = calcMeshInvested(meshID)
+//   let available = calcMeshAvailable(meshID)
 
-  if(mesh?.bid) {
+//   if(mesh?.bid) {
 
-    result = -(available - (invested + invested * mesh.bid)) / (invested + invested * mesh.bid) * 100
+//     result = -(available - (invested + invested * mesh.bid)) / (invested + invested * mesh.bid) * 100
 
-  } else {
+//   } else {
 
-    result = (available - invested) / invested * 100
-  }
+//     result = (available - invested) / invested * 100
+//   }
 
-  return result
+//   return result
 
-}
+// }
 
 // TRANSLATE
 //
@@ -1696,20 +1700,20 @@ const translateMeshByID = (id: number) => {
   return mesh
 }
 //= storageID
-const translateStorageID = (storageID: number) => {
-  let mesh;
-  if(mesh_list.value?.length) {
-    mesh = mesh_list.value.find(mesh => mesh.id === storageID)
-  }
-  return mesh?.name
-}
+// const translateStorageID = (storageID: number) => {
+//   let mesh;
+//   if(mesh_list.value?.length) {
+//     mesh = mesh_list.value.find(mesh => mesh.id === storageID)
+//   }
+//   return mesh?.name
+// }
 
 // HELPERS
 //
 //= transform number to float
-const transformToFixed = (num: number) => {
-  return num.toFixed(2)
-}
+// const transformToFixed = (num: number) => {
+//   return num.toFixed(2)
+// }
 
 useHead({
   title: "Мой кошелек",
@@ -1917,11 +1921,40 @@ const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
 //= set loaner subject by 
 const set_attr_data = (item: any) => {
   if(item.tag === 'invested_loan') {
-    return `Заёмщик: ${item.loanerType} ${item.loanerID}`
+
+    let loaner
+
+    if(item.loanerType === 'conspirator') {
+
+      loaner = band_computed?.value?.find(el => el.id === item.loanerID)
+      return loaner ? loaner.name : 'Неизвестная банда'
+
+    } 
+
+    else if (item.loanerType === 'user') {
+      loaner = partner_computed?.value?.find(el => el.userId === item.loanerID)
+
+      return loaner ? `${loaner.surname} ${loaner?.name[0]}. ${loaner?.middleName?.[0]}.` : 'Неизвестный участник'
+    }
+
   } 
   else if (item.tag === 'debt_loan') {
 
-    return `Заимодавец: ${item.ownerType} ${item.ownerID}`
+    let owner;
+
+    if(item.ownerType === 'conspirator') {
+      owner = band_computed?.value?.find(el => el.id === item.ownerID)
+      return owner ? owner.name : 'Неизвестная банда'
+    } 
+    else if (item.ownerType === 'user') {
+      owner = partner_computed?.value?.find(el => el.userId === item.ownerID)
+      return owner ? `${owner.surname} ${owner?.name[0]}. ${owner?.middleName?.[0]}.` : 'Неизвестный участник'
+    } 
+    else if (item.ownerType === 'bank') {
+      owner = bank_computed?.value?.find(el => el.id === item.ownerID)
+      return owner ? owner.name : 'Неизвестный банк'
+    }
+
   }
 }
 
@@ -2276,7 +2309,7 @@ const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
 
 
 //
-// band
+//= band
 const { data: band } = useFetch("/api/band/band", {
   lazy: false,
   transform: (band) => {
@@ -2293,7 +2326,20 @@ const { data: band } = useFetch("/api/band/band", {
     })
   }
 })
-
+//= user
+const { data: partner } = useFetch("/api/partnerGuarded/partner", {
+  lazy: false,
+  transform: (partner) => {
+    return partner
+  }
+})
+//= bank
+const { data: bank } = useFetch("/api/banks/bank", {
+  lazy: false,
+  transform: (bank) => {
+    return bank
+  }
+})
 
 
 </script>
@@ -2318,7 +2364,7 @@ const { data: band } = useFetch("/api/band/band", {
       :default="currentAffiliation"
       :btn_all_exist="false"
       @changed="changeChipAffiliation"
-      style="margin-top: 1rem;"
+      style="margin-top: 2rem;"
     />
     <!-- <p>currentAffiliation: {{ currentAffiliation }}</p> -->
 
@@ -2356,10 +2402,9 @@ const { data: band } = useFetch("/api/band/band", {
 
     <!-- TOTAL -->
     <!--  -->
-    <div class="total-cap_container" style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-      <p style="margin: 0;">TOTAL CAP: ~xx.xx{{ currency_to_show.ticket }}</p>
-      <Button v-if="currentAffiliation.bandID !== 0" type="pseudo-btn" :link="`/band/${currentAffiliation?.bandID}`">Подробнее</Button>
-
+    <div class="total-cap_container">
+      <p style="margin: 0; font-size: 1.2rem;">TOTAL: ~999,999,999.99{{ currency_to_show.ticket }}</p>
+      <p class="btn_to_fund" @click="$router.push(`/band/${currentAffiliation?.bandID}`);" v-if="currentAffiliation.bandID !== 0">Подробнее</p>
     </div>
 
     <!-- SECTIONs -->
@@ -2374,10 +2419,10 @@ const { data: band } = useFetch("/api/band/band", {
         @click="choosenChip_section = el"
         style="cursor: pointer;"
       >
-        <p style="margin: 0;">{{ el }} cap</p>
+        <p style="margin: 0;">{{ el }}</p>
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
-        <p style="margin: 0;">XX.XX{{ currency_to_show.ticket }}</p>
+        <p style="margin: 0; font-weight: bold; font-size: 1.2rem;">999,999,999.99{{ currency_to_show.ticket }}</p>
       </Section>
     </div> 
         <!-- {{ choosenChip_section }} -->
@@ -2977,17 +3022,33 @@ const { data: band } = useFetch("/api/band/band", {
     grid-area: details;
   }
 
+  /* TOTAL CAP */
+  .total-cap_container {
+    display: flex; 
+    align-items: center; 
+    gap: 1rem;
+  }
+  .total-cap_container > .btn_to_fund {
+    margin: 0;
+    color: var(--color-btn-bg);
+    background-color: var(--color-btn-hover-bg);
+    padding: 2px 8px;
+    border-radius: 1rem;
+  }
+
 /*  */
 @media screen and (max-width: 575px) {
   .show-max-767 {
     display: none;
   }
   .total-cap_container {
+    margin-top: 1.5rem;
     margin-left: .5rem;
     margin-right: .5rem;
+    justify-content: space-between;
   }
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding: 0 0.5rem;
     padding-bottom: 1.5rem;
     gap: .5rem;
@@ -3089,9 +3150,10 @@ const { data: band } = useFetch("/api/band/band", {
   .total-cap_container {
     margin-left: 1rem;
     margin-right: 1rem;
+    margin-top: 1.5rem;
   }
   .wallet-section_container {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding: 0 1rem;
     padding-bottom: 1.5rem;
   }
