@@ -176,6 +176,14 @@
     import { Button } from '@/components/button';
     import { BreadCrumbs } from '~/components/breadcrumbs';
 
+    // PROPS
+    const props = defineProps({
+        auth_user_profile: {
+            type: Object,
+            default: {}
+        },
+    })
+
     // onMounted
     onMounted(() => {
         // на всякий случай сбрасываем фиксацию прокрутки страницы при открытой модалке...

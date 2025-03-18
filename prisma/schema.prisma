@@ -265,7 +265,6 @@ model Transaction {
 // deposit
 // invested_stock_market
 // invested_crypto
-// invested_deposit
 // invested_currency
 // invested_loan
 // invested_project
