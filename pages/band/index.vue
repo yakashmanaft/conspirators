@@ -6,9 +6,75 @@
     <div class="show-max-767" style="margin-bottom: 0.5rem;">
 
       <BreadCrumbs/>
-      <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Кооперативы соучастников</h1>
+      <h1 style="margin: 0; font-weight: bold; font-size: 42px;">Банды</h1>
     </div>
-    <DevModePlug/>
+    <!-- <DevModePlug/> -->
+
+    <!-- Отображение списка банд -->
+    <!-- fetch data is error -->
+    <div v-if="error">
+      <p>Error Code {{ error.statusCode }}</p>
+      <p>Error Message {{ error.message }}</p>
+    </div>
+
+    <!-- data is loading -->
+    <div v-if="pending">
+      <p>Loading...</p>
+    </div>
+
+    <!-- data is loaded -->
+    <div v-else>
+      
+      <!-- BAND CONTAINER -->
+      <div class="band_container">
+
+        <!-- Search -->
+        <!-- <div class="band-search_wrapper">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Поиск"
+            v-model="searchInput"
+          />
+          <Icon
+            name="ic:baseline-search"
+            size="24px"
+            color="var(--color-global-text_second)"
+          />
+        </div> -->
+
+        <Search @searchInputChanged="onInputFunc"/>
+
+        <!-- list -->
+        <div class="band-list_wrapper">
+
+          <!-- Если ничего не найдено в поиске-->
+          <div>
+            <div v-if="searchInput && !band_computed.length">
+              По запросу ничего не найдено
+            </div>
+          </div>
+
+          <!-- BAND LIST -->
+          <div class="band-list_item" v-for="band in band_computed">
+
+            <div class="item_name" style="grid-area: name;">
+              <p class="link" @click="$router.push(`/band/${band.id}`)"><span>{{ band.name }}</span></p>
+            </div>
+            <div class="item_sharers" style="grid-area: sharers_length;">{{ band.sharers ? band?.sharers?.length : 0 }} {{ set_measure(band?.sharers?.length) }}</div>
+            <div style="grid-area: market_cap;">
+              999,999,999.99{{ currency_to_show.ticket }}
+            </div>
+          </div>
+
+          <!-- Если вообще нет банд -->
+          <div v-if="searchInput === '' && !band_computed.length">
+            <p>У вас нет банды</p>
+            <Button link="" type="pseudo-btn" bg="bg-full" @click="add_new_band">Создать</Button>
+          </div>
+        </div>
+      </div>  
+    </div>
 
   </Container>
 </template>
@@ -18,9 +84,10 @@
 // shared
 import { Container } from "@/shared/container";
 // components
-import { DevModePlug } from '@/components/plug_dev_mode';
+// import { DevModePlug } from '@/components/plug_dev_mode';
 import { BreadCrumbs } from "~/components/breadcrumbs";
 import { Button } from "@/components/button";
+import { Search } from "@/components/search"
 // utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
@@ -164,6 +231,33 @@ onMounted(() => {
   }
 });
 
+// currency to show
+const currency_to_show =  ref({
+  ticket:  'RUB'
+})
+
+// CREATE
+//= add_new_band
+const add_new_band = () => {
+  alert('В разработке...')
+}
+
+// SET
+//= set_measure
+const set_measure = (number) => {
+  console.log(number % 10)
+
+  if(number % 10 === 1) {
+    return 'участник'
+  }
+  else if (number % 10 >= 2 && number % 10 < 5) {
+    return 'участника'
+  } 
+  else {
+    return 'участников'
+  }
+}
+
 // const refreshCompanies = () => refreshNuxtData("companies");
 /**
  * @desc Get users
@@ -204,6 +298,7 @@ onMounted(() => {
 //       // });
 //   },
 // });
+
 
 /**
  * @desc Get partnrs
@@ -290,6 +385,22 @@ onMounted(() => {
 //       )
 //   }
 // })
+//= band
+const band_computed = computed(() => {
+
+  if(searchInput.value === '') {
+    
+    return band.value
+  } else {
+    return band.value.filter((el) => 
+      el.name
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+    )
+  }
+
+})
 
 //=
 // const computedUsers = computed(() =>
@@ -457,6 +568,22 @@ onMounted(() => {
 //   if (user) refresh();
 // }
 
+const { data: band, pending, refresh, error } = useFetch("/api/band/band", {
+  lazy: false,
+  transform: (band) => {
+    return band.filter(item  => {
+      if(item.sharers && sessionUser.value) {
+        let sharers = Object.values(item.sharers)
+
+        if(sharers.find(sharer => sharer.userType === 'user' && sharer.userId === sessionUser.value.id )) {
+
+          return item
+        } 
+      }
+    })
+  }
+})
+
 // TRANSLATE
 // const translateModuleName = (name) => {
 //   if (accessModulesArray.value) {
@@ -469,14 +596,11 @@ onMounted(() => {
 //   }
 // };
 
-// CREATE
-//= new contact
-// const addNewPartner = () => {
-//   alert('В разработке...')
-// }
-
 // WATHERS
-
+// on search input
+const onInputFunc = (e) => {
+  searchInput.value = e
+}
 // watch(company.value, () => {
 //   // console.log(company.value.title);
 //   if (company.value.title) {
@@ -542,10 +666,12 @@ useHead({
   cursor: pointer;
 }
 .link:hover {
-  color: var(--bs-primary);
+  /* color: var(--bs-primary); */
+  color: var(--color-btn-bg);
 }
 .link:hover span{
-  color: var(--bs-primary);
+  /* color: var(--bs-primary); */
+  color: var(--color-btn-bg);
 }
 .mt-1rem {
   margin-top: 1rem;
@@ -583,16 +709,16 @@ useHead({
 }
 
 /* SEARCH */
-.partners-search_wrapper {
+/* .band-search_wrapper {
   position: relative;
-  /* align-self: flex-start;
+  align-self: flex-start;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-between !important; */
-}
+  justify-content: space-between !important; 
+}*/
 
-.partners-search_wrapper input {
+/* .partners-search_wrapper input {
   padding-left: 2.2rem;
   border: unset;
   border-radius: unset;
@@ -602,38 +728,46 @@ useHead({
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   border-bottom: 1px solid var(--bs-border-color);
-}
+} */
 
-.partners-search_wrapper input::placeholder {
+/* .partners-search_wrapper input::placeholder {
   color :var(--color-global-text_second);
-}
+} */
 
-.partners-search_wrapper svg {
+/* .partners-search_wrapper svg {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   left: 0.5rem;
-}
+} */
 
 /* PARTNERS LIST */
-.partners_container {
+.band_container {
   margin-top: 1rem;
 }
-.partners-list_wrapper {
+.band-list_wrapper {
   margin-top: 1rem;
 }
-.list_item {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* margin: 1rem 0; */
+.band-list_item {
+  display: grid;
   padding: 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all .2s ease-in;
 }
-.list_item:hover {
+.band-list_item:hover {
   background-color: var(--color-item-hover-bg);
   cursor: pointer;
+}
+.band-list_item > .item_name > .link {
+  margin: 0;
+  font-weight: fit-content;
+}
+.band-list_item > .item_name > .link {
+  font-weight: bold;
+}
+.band-list_item > .item_sharers {
+  font-size: .8rem;
+  color: var(--color-global-text_second);
 }
 .item_name {
 }
@@ -726,7 +860,7 @@ useHead({
   .item_icons {
     gap: 0.2rem;
   }
-  .partners-search_wrapper {
+  .band-search_wrapper {
     margin: 0.5rem;
   }
   /* .partners-search_wrapper > svg > path {
@@ -739,6 +873,30 @@ useHead({
   .add-btn_container {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
+  }
+  .band-list_item {
+    margin-left: 1rem;
+    margin-right: 1rem; 
+    grid-template-areas:
+      "name market_cap"
+      "sharers_length market_cap"
+    ;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .band-list_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .band-list_item {
+    grid-template-areas:
+      "name market_cap"
+      "sharers_length market_cap"
+    ;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 @media screen and (max-width: 767px) {
@@ -782,6 +940,20 @@ useHead({
     margin-left: 1rem;
     margin-right: 1rem;
   }
+
+  /* BAND CONTAINER */
+  .band_container {
+
+  }
+  .band-search_wrapper {
+
+  }
+  .band-list_wrapper {
+
+  }
+  .band-list_item {
+
+  }
 }
 @media screen and (min-width: 768px) {
   .toggle-title {
@@ -789,6 +961,42 @@ useHead({
   }
   .list_item {
     border: unset;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .band-list_item {
+    grid-template-areas:
+      "name sharers_length market_cap"
+    ;
+    justify-content: space-between;
+    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    border-bottom: none;
+    gap: 1rem;
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .band-list_item {
+    grid-template-areas:
+      "name sharers_length market_cap"
+    ;
+    justify-content: space-between;
+    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    border-bottom: none;
+    gap: 1rem;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .band-list_item {
+    grid-template-areas:
+      "name sharers_length market_cap"
+    ;
+    justify-content: space-between;
+    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    border-bottom: none;
+    gap: 1rem;
   }
 }
 </style>

@@ -2336,7 +2336,7 @@ const { data: band } = useFetch("/api/band/band", {
 
     return band.filter(item => {
       if(item.sharers && sessionUser.value) {
-        let sharers = Object.values(item.sharers)
+          let sharers = Object.values(item.sharers)
 
           if(sharers.find(sharer => sharer.userType === 'user' && sharer.userId === sessionUser.value.id )) {
 
@@ -3208,7 +3208,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-right: 1rem;
   }
   .fund_list {
-    gap: 1rem;
+    gap: .5rem;
     grid-template-columns: 1fr;
     /* grid-template-columns: repeat(2, 1fr); */
   }
@@ -3221,8 +3221,21 @@ const { data: bank } = useFetch("/api/banks/bank", {
 
   /* MESH */
   .mesh_wrapper {
-    padding-left: calc(3rem + .6rem);
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: calc(3rem + .6rem + 1rem);
+    padding-right: 1rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
     margin-top: 1rem;
+    transition: all .2s ease-in;
+  }
+
+  .mesh_wrapper:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+  .mesh_wrapper > p {
+    margin: 0;
   }
   .mesh_group_container {
 
@@ -3243,7 +3256,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 0;
+    left: 1rem;
     /* border-radius: 100%; */
     border-radius: .7rem;
   }

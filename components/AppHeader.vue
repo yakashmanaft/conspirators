@@ -49,6 +49,11 @@ const featuresListAuth = ref([
     auth: true,
   },
   {
+    path: "/band",
+    title: "Мои банды",
+    auth: true
+  },
+  {
     path: "/partners",
     title: "Контакты",
     auth: true,
@@ -868,76 +873,6 @@ a:visited {
   }
 }
 
-@media screen and (min-width: 768px) {
-  .header-wrapper {
-    padding: 1rem;
-  }
-  .current-route_container {
-    display: none;
-  }
-  .burger {
-    display: none;
-  }
-  .links_container {
-    width: 100%;
-  }
-  .links_wrapper {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .account-menu {
-    position: relative;
-  }
-  .account-menu_list {
-    position: absolute;
-    top: 2rem;
-    right: 0;
-    background-color: #fff;
-    /* transition: all 0.3s ease-in; */
-    /* border: 1px solid black; */
-  }
-  .account-menu_user {
-    /* padding: 1rem; */
-    /* width: 300px; */
-    box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
-    /* align-items: flex-end !important; */
-    padding: 1rem 10px;
-    border-radius: 16px;
-  }
-  .account-menu_user .user_info {
-    display: flex;
-    flex-direction: column;
-    /* align-items: flex-end; */
-  }
-
-  .account-menu_user .user_list {
-    margin-top: 0.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .user_logout {
-    margin-top: 1rem;
-    /* cursor: pointer; */
-  }
-  .user_logout span {
-    cursor: pointer;
-  }
-
-  /* Технические  */
-  .display-none {
-    display: none;
-    /* opacity: 0; */
-  }
-
-  .display-block {
-    display: block;
-    /* opacity: 1; */
-  }
-}
-
 .user-login__container {
   display: flex;
   align-items: center;
@@ -1060,5 +995,82 @@ label a {
   display: block;
   color: var(--bs-primary);
   text-decoration: none;
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .header-features__list > li {
+    font-size: .9rem;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .header-wrapper {
+    padding: 1rem;
+  }
+  .current-route_container {
+    display: none;
+  }
+  .burger {
+    display: none;
+  }
+  .links_container {
+    width: 100%;
+  }
+  .links_wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .account-menu {
+    position: relative;
+  }
+  .account-menu_list {
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    background-color: #fff;
+    /* transition: all 0.3s ease-in; */
+    /* border: 1px solid black; */
+  }
+  .account-menu_user {
+    /* padding: 1rem; */
+    /* width: 300px; */
+    box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    /* align-items: flex-end !important; */
+    padding: 1rem 10px;
+    border-radius: 16px;
+  }
+  .account-menu_user .user_info {
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-end; */
+  }
+
+  .account-menu_user .user_list {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .user_logout {
+    margin-top: 1rem;
+    /* cursor: pointer; */
+  }
+  .user_logout span {
+    cursor: pointer;
+  }
+
+  /* Технические  */
+  .display-none {
+    display: none;
+    /* opacity: 0; */
+  }
+
+  .display-block {
+    display: block;
+    /* opacity: 1; */
+  }
 }
 </style>

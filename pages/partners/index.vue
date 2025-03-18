@@ -453,7 +453,7 @@
       <!-- PARTNERS -->
       <div class="partners_container">
         <!-- Search -->
-        <div class="partners-search_wrapper">
+        <!-- <div class="partners-search_wrapper">
           <input
             type="text"
             class="form-control"
@@ -465,7 +465,9 @@
             size="24px"
             color="var(--color-global-text_second)"
           />
-        </div>
+        </div> -->
+
+        <Search @searchInputChanged="onInputFunc"/>
 
         <!-- list -->
         <div class="partners-list_wrapper">
@@ -625,6 +627,7 @@ import { Container } from "@/shared/container";
 import { DevModePlug } from '@/components/plug_dev_mode';
 import { BreadCrumbs } from "~/components/breadcrumbs";
 import { Button } from "@/components/button";
+import { Search } from '@/components/search'
 // utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
@@ -732,6 +735,8 @@ const searchOrganizationsInput = ref("");
 
 // accessed modules
 const tempModulesArray = ref([]);
+
+
 
 onMounted(() => {
   // users.value = await getUsers()
@@ -1074,6 +1079,11 @@ const translateModuleName = (name) => {
 };
 
 // CREATE
+// WATHERS
+// on search input
+const onInputFunc = (e) => {
+  searchInput.value = e
+}
 //= new contact
 const addNewPartner = () => {
   alert('В разработке...')
@@ -1146,10 +1156,12 @@ useHead({
   cursor: pointer;
 }
 .link:hover {
-  color: var(--bs-primary);
+  /* color: var(--bs-primary); */
+  color: var(--color-btn-bg);
 }
 .link:hover span{
-  color: var(--bs-primary);
+  /* color: var(--bs-primary); */
+  color: var(--color-btn-bg);
 }
 .mt-1rem {
   margin-top: 1rem;
@@ -1187,16 +1199,16 @@ useHead({
 }
 
 /* SEARCH */
-.partners-search_wrapper {
-  position: relative;
+/* .partners-search_wrapper { */
+  /* position: relative; */
   /* align-self: flex-start;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between !important; */
-}
+/* } */
 
-.partners-search_wrapper input {
+/* .partners-search_wrapper input {
   padding-left: 2.2rem;
   border: unset;
   border-radius: unset;
@@ -1206,9 +1218,9 @@ useHead({
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   border-bottom: 1px solid var(--bs-border-color);
-}
+} */
 
-.partners-search_wrapper input::placeholder {
+/* .partners-search_wrapper input::placeholder {
   color :var(--color-global-text_second);
 }
 
@@ -1217,7 +1229,7 @@ useHead({
   top: 50%;
   transform: translateY(-50%);
   left: 0.5rem;
-}
+} */
 
 /* PARTNERS LIST */
 .partners_container {
@@ -1234,6 +1246,7 @@ useHead({
   /* margin: 1rem 0; */
   padding: 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all .2s ease-in;
 }
 .list_item:hover {
   background-color: var(--color-item-hover-bg);
@@ -1330,9 +1343,9 @@ useHead({
   .item_icons {
     gap: 0.2rem;
   }
-  .partners-search_wrapper {
+  /* .partners-search_wrapper {
     margin: 0.5rem;
-  }
+  } */
   /* .partners-search_wrapper > svg > path {
     fill: red!important;
   } */
@@ -1374,14 +1387,14 @@ useHead({
     display: block !important;
     color: var(--bs-body-bg) !important;
   }
-  .partners-search_wrapper {
+  /* .partners-search_wrapper {
     margin-left: 1rem;
     margin-right: 1rem;
   }
   .partners-search_wrapper > input {
     background-color: var(--color-btn-disabled-bg);
     border-radius: 0.5rem;
-  }
+  } */
   .partners-list_wrapper {
     margin-left: 1rem;
     margin-right: 1rem;
