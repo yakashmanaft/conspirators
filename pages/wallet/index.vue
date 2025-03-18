@@ -3366,7 +3366,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     align-items: center;
   }
 }
-@media screen and (min-width: 992px) and (max-width: 1199px){
+@media screen and (min-width: 992px) and (max-width: 1199px) {
   .total-cap_container {
     margin-top: 2rem;
     justify-content: space-between;

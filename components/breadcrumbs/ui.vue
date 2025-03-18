@@ -86,11 +86,17 @@ const translateCrumb = (str: string) => {
       // MESH
       case "mesh":
           return 'Кошелек'
-      // MESH
+      // FUND
       case "fund":
           return 'Фонды'
       // BROKERAGE
       case "brokerage":
+          return 'Кошелек'
+      // CRYPTO
+      case "crypto":
+          return 'Кошелек'
+      // LOAN
+      case 'loan':
           return 'Кошелек'
       // default
       default:
@@ -103,9 +109,18 @@ const translateEndPoint = (str: string) => {
     // DEMANDS
     case "demands":
       return `Заявка #${pathArr.value[pathArr.value.length - 1] }`
+    // available
+    case 'mesh':
+      return 'Свободные средства'
     // brokerage
     case "brokerage":
       return `Брокерский счет`
+    // crypto
+    case 'crypto':
+      return `Счет в крипте`
+    // loan
+    case 'loan':
+      return 'Кредит'
     // default
     default:
       return `#${pathArr.value[pathArr.value.length - 1] }`
@@ -138,6 +153,12 @@ const compileRoute = (str: string) => {
           return 'fund'
       // BROKERAGE
       case "brokerage":
+          return 'wallet'
+      // CRYPTO
+      case "crypto":
+          return 'wallet'
+      // LOAN
+      case "loan":
           return 'wallet'
       default:
           str

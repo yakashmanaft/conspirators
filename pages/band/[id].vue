@@ -57,6 +57,21 @@ useHead({
 
     const route = useRoute()
 
+    onMounted(() => {
+        const historyGrapContainer = document.getElementById('history-graph');
+        const capitalizationGraphContainer = document.getElementById('capitalization-graph')
+
+        historyGrapContainer?.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            historyGrapContainer.scrollLeft += evt.deltaY;
+        })
+
+        capitalizationGraphContainer?.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            capitalizationGraphContainer.scrollLeft += evt.deltaY; 
+        })
+    })
+
     // CLICK
     const addTaskLedgerItem = () => {
         alert('В разработке')
@@ -183,6 +198,404 @@ useHead({
         <p>~2 468.RUB</p>
 
     </div>
+
+    <p>Капитализация</p>
+    <div id="capitalization-graph" class="capitalization-container">
+
+        <div class="year_balance-wrapper">
+            <p>2023</p>
+            <ul>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 30%"></div>
+                    </div>
+                    <p>Янв.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 40%"></div>
+                    </div>
+                    <p>Фев.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 43%"></div>
+                    </div>
+                    <p>Мар.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 55%"></div>
+                    </div>
+                    <p>Апр.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 58%"></div>
+                    </div>
+                    <p>Май.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 60%"></div>
+                    </div>
+                    <p>Июн.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 67%"></div>
+                    </div>
+                    <p>Июл.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 45%"></div>
+                    </div>
+                    <p>Авг.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 69%"></div>
+                    </div>
+                    <p>Сен.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 70%"></div>
+                    </div>
+                    <p>Окт.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 89%"></div>
+                    </div>
+                    <p>Ноя.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 70%"></div>
+                    </div>
+                    <p>Дек.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="year_balance-wrapper">
+            <p>2024</p>
+            <ul>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 40%"></div>
+                    </div>
+                    <p>Янв.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 50%"></div>
+                    </div>
+                    <p>Фев.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 43%"></div>
+                    </div>
+                    <p>Мар.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 55%"></div>
+                    </div>
+                    <p>Апр.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 58%"></div>
+                    </div>
+                    <p>Май.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 60%"></div>
+                    </div>
+                    <p>Июн.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 67%"></div>
+                    </div>
+                    <p>Июл.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 75%"></div>
+                    </div>
+                    <p>Авг.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 29%"></div>
+                    </div>
+                    <p>Сен.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 70%"></div>
+                    </div>
+                    <p>Окт.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 20%"></div>
+                    </div>
+                    <p>Ноя.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 97%"></div>
+                    </div>
+                    <p>Дек.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="year_balance-wrapper">
+            <p>2023</p>
+            <ul>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 30%"></div>
+                    </div>
+                    <p>Янв.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 40%"></div>
+                    </div>
+                    <p>Фев.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="cap_value" style="height: 43%"></div>
+                    </div>
+                    <p>Мар.</p>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+
+    <p>Доход-Расходы</p>
+    <div id="history-graph" class="history_balance-container">
+
+        <div class="year_balance-wrapper">
+            <p>2023</p>
+            <ul>
+                <li>
+                    <div>
+                        <div class="income" style="height: 20%;"></div>
+                        <div class="expense" style="height: 30%;"></div>
+                    </div>
+                    <p>Янв.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 50%;"></div>
+                        <div class="expense" style="height: 20%;"></div>
+                    </div>
+                    <p>Фев.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Мар.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 30%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Апр.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 20%;"></div>
+                        <div class="expense" style="height: 55%;"></div>
+                    </div>
+                    <p>Май.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 70%;"></div>
+                        <div class="expense" style="height: 85%;"></div>
+                    </div>
+                    <p>Июн.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Июл.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 45%;"></div>
+                        <div class="expense" style="height: 15%;"></div>
+                    </div>
+                    <p>Авг.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 70%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Сен.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Окт.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 77%;"></div>
+                        <div class="expense" style="height: 35%;"></div>
+                    </div>
+                    <p>Ноя.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 25%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Дек.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="year_balance-wrapper">
+            <p>2024</p>
+            <ul>
+                <li>
+                    <div>
+                        <div class="income" style="height: 20%;"></div>
+                        <div class="expense" style="height: 30%;"></div>
+                    </div>
+                    <p>Янв.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 50%;"></div>
+                        <div class="expense" style="height: 20%;"></div>
+                    </div>
+                    <p>Фев.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Мар.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 30%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Апр.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 20%;"></div>
+                        <div class="expense" style="height: 55%;"></div>
+                    </div>
+                    <p>Май.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 70%;"></div>
+                        <div class="expense" style="height: 85%;"></div>
+                    </div>
+                    <p>Июн.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Июл.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 45%;"></div>
+                        <div class="expense" style="height: 15%;"></div>
+                    </div>
+                    <p>Авг.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 70%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Сен.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Окт.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 77%;"></div>
+                        <div class="expense" style="height: 35%;"></div>
+                    </div>
+                    <p>Ноя.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 25%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Дек.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="year_balance-wrapper">
+            <p>2025</p>
+            <ul>
+                <li>
+                    <div>
+                        <div class="income" style="height: 20%;"></div>
+                        <div class="expense" style="height: 30%;"></div>
+                    </div>
+                    <p>Янв.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 50%;"></div>
+                        <div class="expense" style="height: 20%;"></div>
+                    </div>
+                    <p>Фев.</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="income" style="height: 60%;"></div>
+                        <div class="expense" style="height: 25%;"></div>
+                    </div>
+                    <p>Мар.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
     
     <!-- CHIP SECTION -->
     <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
@@ -232,11 +645,9 @@ useHead({
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
-  .show-max-767 {
-    display: none;
-  }
-}
-@media screen and (min-width: 576px) and (max-width: 767px) {
+    .show-max-767 {
+      display: none;
+    }
     .title-section_container {
         /* padding-left: 0.5rem; */
         /* padding-right: 0.5rem; */
@@ -245,11 +656,97 @@ useHead({
         /* padding-left: 1rem; */
         /* padding-right: 1rem; */
     }
-}
-@media screen and (min-width: 768px) {
-    .content-setion_container {
-        /* padding-left: unset; */
-        /* padding-right: unset; */
+
+    /*  */
+    .history_balance-container,
+    .capitalization-container {
+        /* background-color: var(--color-btn-hover-bg); */
+        color: var(--color-global-text);
+        display: flex;
+        gap: .5rem;
+        overflow-x: scroll;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100vw!important;
+        -ms-overflow-style: none; 
+        scrollbar-width: none;
     }
+    .history_balance-container::-webkit-scrollbar,
+    .capitalization-container::-webkit-scrollbar  {
+        display: none;
+    }
+    .year_balance-wrapper {
+
+    }
+    .year_balance-wrapper > p {
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+    }
+    .year_balance-wrapper ul{
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 1rem;
+    }
+    .year_balance-wrapper ul li {
+        height: 10rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .year_balance-wrapper ul li div {
+        width: 2rem;
+        gap: .1rem;
+        height: 100%;
+        display: flex;
+        align-items:  flex-end;
+    }
+    .year_balance-wrapper > ul > li > div > .income {
+        background-color: var(--color-wallet-fund-available);
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+        transition: all .2s ease-in;
+
+    }
+    .year_balance-wrapper > ul > li > div > .expense {
+        background-color: var(--color-wallet-fund-debt);
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+        transition: all .2s ease-in;
+    }
+    .year_balance-wrapper ul li div > .income:hover {
+        cursor: pointer;    
+        background-color: var(--color-urgency-low);
+    }
+    .year_balance-wrapper ul li div > .expense:hover {
+        cursor: pointer;    
+        background-color: var(--color-urgency-high);
+    }
+    .year_balance-wrapper > ul > li > div > .cap_value {
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+        transition: all .2s ease-in;
+        background-color: var(--color-paused-wrapper-bg);
+    }
+    .year_balance-wrapper > ul > li > div > .cap_value:hover {
+        background-color: var(--color-operation-type-donation);
+        cursor: pointer;
+    }
+    .year_balance-wrapper ul li p{
+        font-size: .8rem;
+        margin: 0;
+        color: var(--color-global-text_second);
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) {
+
 }
 </style>

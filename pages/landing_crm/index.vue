@@ -36,7 +36,7 @@
             <div class="main-banner_subtitle">
                 <p style="font-size: .8rem; font-weight: normal; color: var(--color-global-text_second);">Формируй привычки вместе с conspirators</p>
                 <Button style="margin-top: 2rem;" v-if="useAuthStore().loggedIn !== true" type="pseudo-btn" link="/login" bg="bg-stroke" :disabled="false">Войти</Button>
-                <div v-else @click="$router.push(`/wallet`)">
+                <div v-else @click="$router.push(`/wallet`)" style="cursor: pointer;">
                     <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
                 </div>
             </div>
@@ -240,6 +240,12 @@
         margin-top: 1rem;
     }
 
+    /*  */
+    .value_wrapper > div > div > .value_btn {
+        cursor: pointer;
+        width: fit-content
+    }
+
     @media screen and (max-width: 575px) {
 
         .show-max-767 {
@@ -359,6 +365,7 @@
             position: absolute; 
             bottom: 1rem; 
             left: 1rem;
+            cursor: pointer;
         }
     }
     @media screen and (min-width: 576px) and (max-width: 767px) {

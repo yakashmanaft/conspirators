@@ -95,8 +95,33 @@ useHead({
         return []
     })
     // sharers list
-    const sharers_list_computed = computed(() => {
-        return 
+    const sharer_list_computed = computed(() => {
+        
+        let owner = [];
+
+        if(mesh?.value?.ownerType === 'conspirator') {
+
+            let array = band?.value?.find(el => el.id === mesh?.value?.ownerID)
+
+            array?.sharers?.forEach(item => {
+
+                let el = translateOwner(item.userType, item.userId)
+
+                owner.push(el)
+            })
+            return owner
+        }
+        else if (mesh?.value?.ownerType === 'user') {
+
+            let el = partner?.value?.find(el => el.userId === mesh.value?.ownerID)
+
+            owner.push(`${el?.surname} ${el?.name?.[0]}. ${el?.middleName?.[0]}`)
+
+            return owner
+        } 
+        else {
+            return 'Неизвестный соучастник'
+        }
     })
 
 
@@ -152,7 +177,7 @@ useHead({
                 let owner = partner?.value.find(el => el.userId === ownerID)
 
                 if(owner) {
-                    result = `${owner.name} ${owner.surname}`
+                    result = `${owner.surname} ${owner?.name?.[0]}. ${owner?.middleName?.[0]}.`
                 }
             }
             if(ownerType === 'conspirator') {
@@ -249,35 +274,30 @@ useHead({
     
                     {{ mesh.name }}
                 </h1> 
+
                 <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
-                    <!-- BROKER -->
-                    <p>{{ mesh.broker_tag }}</p>
-                    <!-- OWNER -->
-                    <div style="display: flex; gap: 0.5rem;">
-                        <!-- <p>Собственность:</p> -->
+
+                    <p style="margin: 0; display: flex; align-items: center; gap: .5rem;">
                         <Button
                             type="pseudo-btn"
                             :link="linkToOwner(mesh.ownerType, mesh.ownerID)"
                         >
                             {{ translateOwner(mesh.ownerType, mesh.ownerID) }}
                         </Button>
-                    </div>
-                    <br>
-                    <p style="margin: 0; display: flex; align-items: center; gap: .5rem;">
                         <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.tag }}</span>
                         <span style="background-color: var(--color-btn-hover-bg)">{{mesh.type}}</span>
                         <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.broker_tag }}</span>
                     </p>
-                    <p>2 468.RUB</p>
-                    <p>Ваша доля: 50% (1 234.00RUB)</p>
-                    <p>Соучастники: 
-                        <ul>
-                            <li></li>
-                            <!-- <li v-for="sharer in sharers_list">Fyaf</li> -->
-                        </ul>
-                    </p>
-                    <p>Управляющий: Сергей Анфалов</p>
                 </h2>
+
+                <p>2 468.RUB</p>
+                <p>Соучастники: 
+                    <ul>
+                        <li v-for="sharer in sharer_list_computed">
+                            {{ sharer }} 0.00%
+                        </li>
+                    </ul>
+                </p>
             </div>
             {{ mesh }}
     
@@ -286,7 +306,6 @@ useHead({
             <!-- {{ currentChip }} -->
             <h3>Структура / Сделки</h3>
     
-
         </div>
 
         
@@ -294,10 +313,6 @@ useHead({
 </template>
 
 <style scoped>
-
-.content-setion_container  {
-    margin-top: 1rem;
-}
 
 .title-section_container h1{
     /* position: relative;
@@ -331,16 +346,14 @@ useHead({
       /* padding-left: 0.5rem; */
       /* padding-right: 0.5rem; */
   }
-  .content-setion_container {
-      /* padding-left: 1rem; */
-      /* padding-right: 1rem; */
-  }
 }
-@media screen and (min-width: 768px) {
-    .content-setion_container {
-        /* padding-left: unset; */
-        /* padding-right: unset; */
-    }
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) {
 
 }
 </style>

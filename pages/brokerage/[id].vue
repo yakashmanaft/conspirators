@@ -324,7 +324,7 @@ useHead({
                 <p style="margin: 0;">Инвесторы:</p>
                 <ul>
                     <li v-for="investor in brokerage.invested_mash" @click="link_to_investor(investor.id)">
-                        {{translate_invested_meshes(investor.id)}}
+                        {{translate_invested_meshes(investor.id)}} 0.00%
                     </li>
                 </ul>
             </div>

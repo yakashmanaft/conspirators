@@ -137,6 +137,7 @@ const { loggedIn, user, session, clear } = useUserSession();
   position: absolute; 
   bottom: .5rem; 
   left: 0;
+  cursor: pointer;
 }
 .section_btn > .section_icon {
   width: 42px; 
