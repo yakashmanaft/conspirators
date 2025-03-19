@@ -58,18 +58,22 @@ useHead({
     const route = useRoute()
 
     onMounted(() => {
+
+        
         const historyGrapContainer = document.getElementById('history-graph');
         const capitalizationGraphContainer = document.getElementById('capitalization-graph')
+        
 
-        historyGrapContainer.addEventListener('wheel', (evt) => {
-            evt.preventDefault();
-            historyGrapContainer.scrollLeft += evt.deltaY;
-        })
+        historyGrapContainer?.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                historyGrapContainer.scrollLeft += evt.deltaY;
+            })
+    
+            capitalizationGraphContainer?.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                capitalizationGraphContainer.scrollLeft += evt.deltaY; 
+            })
 
-        capitalizationGraphContainer.addEventListener('wheel', (evt) => {
-            evt.preventDefault();
-            capitalizationGraphContainer.scrollLeft += evt.deltaY; 
-        })
     })
 
     // CLICK
@@ -157,7 +161,7 @@ useHead({
 
 
 <template>
-    <Container v-if="band">
+    <Container>
 
         <!-- TITLE PAGE SECTION -->
         <div  class="title-section_container" style="margin-bottom: 0.5rem;">
@@ -165,250 +169,258 @@ useHead({
 
             <h1 style="font-weight: bold; font-size: 42px;">
 
-                {{ band.name }}
+                {{ band?.name }}
             </h1> 
         </div>
 
         <!-- TOTAL CAP -->
-        <div>
-        <div class="container_header">
-            <h2>Капитализация</h2>
-            <div style="display: flex; align-items: center;">
-                <p style="margin: 0;font-size: 2rem; font-weight: bold;">~2 468.RUB</p>
-                <div style="display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;">
-                    <!-- name="material-symbols-light:filter-alt-outline" -->
-                    <Icon             
-                        name="material-symbols-light:filter-alt"
-                        size="2.5rem"
-                        color="var(--color-global-text)"/>
-                        <div style="position: absolute; bottom: .3rem; right: .3rem; height: .8rem; width: .8rem; background-color: var(--color-urgency-middle); border-radius: 100%;"></div>
+        <div class="cap_container">
+            <div class="cap-header_wrapper">
+
+                <!-- ЗАГОЛОВОК + КАПА -->
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <h2>Капитализация</h2>
+                    <p style="margin: 0;font-size: 2rem; font-weight: bold;">~2 468.RUB</p>
+                </div>
+                <!-- ФИЛЬТР СЕКЦИЙ МЕШКОВ -->
+                <div class="filter_cap-container">
+                    <label for="filter_cap_chip-menu">
+                        <div style="display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;">
+
+                            <Icon             
+                                name="material-symbols-light:filter-alt"
+                                size="2rem"
+                                color="var(--color-global-text)"
+                            />
+                            <div style="position: absolute; bottom: .2rem; right: .1rem; height: .8rem; width: .8rem; background-color: var(--color-urgency-middle); border-radius: 100%;"></div>
+                        </div>
+                    </label>
+                    <input id="filter_cap_chip-menu" type="checkbox">
+                    <div class="capitalization_chip-container">
+                        <div>
+                            <input type="checkbox" id="available_cap">
+                            <label for="available_cap">available</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="deposit_cap">
+                            <label for="deposit_cap">deposit</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="invested_stock_market_cap">
+                            <label for="invested_stock_market_cap">invested_stock</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="invested_currency_cap">
+                            <label for="invested_currency_cap">invested_currency</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="invested_loan_cap">
+                            <label for="invested_loan_cap">invested_loan</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="invested_crypto_cap">
+                            <label for="invested_crypto_cap">invested_crypto</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="invested_project_cap">
+                            <label for="invested_project_cap">invested_project</label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-        </div>
-
-        <div class="capitalization_chip-container">
-            <div>
-                <input type="checkbox" id="available_cap">
-                <label for="available_cap">available</label>
-            </div>
-            <div>
-                <input type="checkbox" id="deposit_cap">
-                <label for="deposit_cap">deposit</label>
-            </div>
-            <div>
-                <input type="checkbox" id="invested_stock_market_cap">
-                <label for="invested_stock_market_cap">invested_stock</label>
-            </div>
-            <div>
-                <input type="checkbox" id="invested_currency_cap">
-                <label for="invested_currency_cap">invested_currency</label>
-            </div>
-            <div>
-                <input type="checkbox" id="invested_loan_cap">
-                <label for="invested_loan_cap">invested_loan</label>
-            </div>
-            <div>
-                <input type="checkbox" id="invested_crypto_cap">
-                <label for="invested_crypto_cap">invested_crypto</label>
-            </div>
-            <div>
-                <input type="checkbox" id="invested_project_cap">
-                <label for="invested_project_cap">invested_project</label>
-            </div>
-        </div>
-
-        <div style="margin-top: 2rem;" id="capitalization-graph" class="capitalization-container">
-    
-            <div class="year_balance-wrapper">
-                <ul>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 30%"></div>
-                        </div>
-                        <p>Янв.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 40%"></div>
-                        </div>
-                        <p>Фев.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 43%"></div>
-                        </div>
-                        <p>Мар.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 55%"></div>
-                        </div>
-                        <p>Апр.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 58%"></div>
-                        </div>
-                        <p>Май.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 60%"></div>
-                        </div>
-                        <p>Июн.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 67%"></div>
-                        </div>
-                        <p>Июл.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 45%"></div>
-                        </div>
-                        <p>Авг.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 69%"></div>
-                        </div>
-                        <p>Сен.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 70%"></div>
-                        </div>
-                        <p>Окт.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 89%"></div>
-                        </div>
-                        <p>Ноя.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 70%"></div>
-                        </div>
-                        <p>Дек.</p>
-                    </li>
-                </ul>
-                <p>2023</p>
-            </div>
-    
-            <div class="year_balance-wrapper">
-                <ul>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 40%"></div>
-                        </div>
-                        <p>Янв.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 50%"></div>
-                        </div>
-                        <p>Фев.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 43%"></div>
-                        </div>
-                        <p>Мар.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 55%"></div>
-                        </div>
-                        <p>Апр.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 58%"></div>
-                        </div>
-                        <p>Май.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 60%"></div>
-                        </div>
-                        <p>Июн.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 67%"></div>
-                        </div>
-                        <p>Июл.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 75%"></div>
-                        </div>
-                        <p>Авг.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 29%"></div>
-                        </div>
-                        <p>Сен.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 70%"></div>
-                        </div>
-                        <p>Окт.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 20%"></div>
-                        </div>
-                        <p>Ноя.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 97%"></div>
-                        </div>
-                        <p>Дек.</p>
-                    </li>
-                </ul>
-                <p>2024</p>
-            </div>
-    
-            <div class="year_balance-wrapper">
-                <ul>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 30%"></div>
-                        </div>
-                        <p>Янв.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 40%"></div>
-                        </div>
-                        <p>Фев.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="cap_value" style="height: 43%"></div>
-                        </div>
-                        <p>Мар.</p>
-                    </li>
-    
-                </ul>
-                <p>2023</p>
+            
+            <div class="legend">cap_value-legend</div>
+            <div style="margin-top: 2rem;" id="capitalization-graph" class="capitalization-container">
+                <div class="year_balance-wrapper">
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 30%"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 40%"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 43%"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 55%"></div>
+                            </div>
+                            <p>Апр.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 58%"></div>
+                            </div>
+                            <p>Май.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 60%"></div>
+                            </div>
+                            <p>Июн.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 67%"></div>
+                            </div>
+                            <p>Июл.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 45%"></div>
+                            </div>
+                            <p>Авг.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 69%"></div>
+                            </div>
+                            <p>Сен.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 70%"></div>
+                            </div>
+                            <p>Окт.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 89%"></div>
+                            </div>
+                            <p>Ноя.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 70%"></div>
+                            </div>
+                            <p>Дек.</p>
+                        </li>
+                    </ul>
+                    <p>2023</p>
+                </div>
+        
+                <div class="year_balance-wrapper">
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 40%"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 50%"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 43%"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 55%"></div>
+                            </div>
+                            <p>Апр.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 58%"></div>
+                            </div>
+                            <p>Май.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 60%"></div>
+                            </div>
+                            <p>Июн.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 67%"></div>
+                            </div>
+                            <p>Июл.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 75%"></div>
+                            </div>
+                            <p>Авг.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 29%"></div>
+                            </div>
+                            <p>Сен.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 70%"></div>
+                            </div>
+                            <p>Окт.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 20%"></div>
+                            </div>
+                            <p>Ноя.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 97%"></div>
+                            </div>
+                            <p>Дек.</p>
+                        </li>
+                    </ul>
+                    <p>2024</p>
+                </div>
+        
+                <div class="year_balance-wrapper">
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 30%"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 40%"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="cap_value" style="height: 43%"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+        
+                    </ul>
+                    <p>2023</p>
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- OWNER -->
     <div>
         <h2>Состав участников</h2>
         <h3>Соучастники</h3>
         <ul>
-            <li v-for="sharer in band.sharers">
+            <li v-for="sharer in band?.sharers">
                 {{ sharer }} Доля xxx.xxRUB / 50%
             </li>
         </ul>
@@ -430,7 +442,7 @@ useHead({
     <!-- CAP -->
     <!-- INCOME-EXPENSE -->
     <div>
-        <div class="container_header">
+        <div class="cap-header_wrapper">
             <h2>Доход-Расходы</h2>
             <p style="display: flex; flex-direction: column; align-items: flex-end;"><span>Доход: ~2 468.RUB</span> <span>Расход: ~2 468.RUB</span></p>
         </div>
@@ -726,23 +738,51 @@ useHead({
     }
 
     /* GRAPH */
-    .container_header {
+    .cap_container {
+
+    }
+    .cap-header_wrapper {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        /* align-items: flex-end; */
         margin-left: 1rem;
         margin-right: 1rem;
     }
-    .container_header > p {
+    .cap-header_wrapper > p {
         margin: 0;
     }
+
+    /*  */
+    #filter_cap_chip-menu {
+        display: none;
+    }
+    #filter_cap_chip-menu:checked + .capitalization_chip-container{
+        background-color: var(--color-btn-text);
+        right: -1rem;
+        transition: all .2s ease-in-out;
+        border-top-left-radius: 1rem;
+    }
+
+    .filter_cap-container {
+        position: relative;
+        align-self: flex-end;
+    }
+    .filter_cap-container label {
+        cursor: pointer;
+    }
     .capitalization_chip-container {
+        position: absolute;
+        flex-direction: column;
+        right: -100rem;
+        bottom: -13rem;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         overflow-x: scroll;
         max-width: 100vw!important;
         -ms-overflow-style: none; 
         scrollbar-width: none;
+        box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+        padding: 1rem;
     }
     .capitalization_chip-container::-webkit-scrollbar  {
         display: none;
