@@ -11,6 +11,8 @@ import { Button } from "~/components/button";
 import { Chip } from "~/components/chip";
 import { AccessDeniedPlug } from "~/components/plug_access_denied";
 
+import { calc_working_hours } from '~/helpers/calc_working_hours'
+
 useHead({
   title: "Проект # ",
   link: [
@@ -724,7 +726,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
                         <span
                           style="color: var(--color-btn-disabled-text);"
                         >
-                          {{ task_el.created_at === task_el.ended_at ? '' : ` (+${(Math.abs(new Date(task_el.ended_at) - new Date(task_el.created_at)) / (1000 * 60 * 60) % 24).toFixed(2)} часа)`}}
+                          {{ calc_working_hours(task_el.created_at, task_el.ended_at) }}
                         </span>
                       </p>
 

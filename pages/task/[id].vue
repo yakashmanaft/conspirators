@@ -8,6 +8,9 @@ import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
 
 
+// helpers func
+import { calc_working_hours } from '@/helpers/calc_working_hours'
+
     // PROPS
     const props = defineProps({
         auth_user_profile: {
@@ -323,7 +326,10 @@ useHead({
                         <!--  -->
                         <div class="accomplishment-el_hours">
                             <p>{{ item.ended_at.slice(0,10) }}</p>
-                            <p>{{ item.created_at.slice(11, 16)}} - {{ item.ended_at.slice(11,16) }} {{ item.created_at === item.ended_at ? '' : ` (+${(Math.abs(new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24).toFixed(2)} часа)`}}</p>
+                            <p>
+                                {{ item.created_at.slice(11, 16)}} - {{ item.ended_at.slice(11,16) }} 
+                                {{ calc_working_hours(item.created_at, item.ended_at) }}
+                            </p>
                         </div>
                         <!--  -->
                         <div class="accomplishment-el_subject">{{ item.subject }}</div>
