@@ -56,29 +56,46 @@ useHead({
     })
 
     const route = useRoute()
+    const router = useRouter()
 
     onMounted(() => {
 
         
+        
+        // ПРОКРУТКА ПО ГОРИЗОНТАЛИ
+        //= ПЕРМЕННЫЕ
         const historyGrapContainer = document.getElementById('history-graph');
         const capitalizationGraphContainer = document.getElementById('capitalization-graph')
-        const filter_cap_chip_menu = document.getElementById('filter_cap_chip-menu')
-
+        const sharersItemListWrapper = document.getElementById('sharers-item_list')
+        // ДЕЙСТВИЯ
         historyGrapContainer?.addEventListener('wheel', (evt) => {
                 evt.preventDefault();
                 historyGrapContainer.scrollLeft += evt.deltaY;
             })
-    
         capitalizationGraphContainer?.addEventListener('wheel', (evt) => {
             evt.preventDefault();
             capitalizationGraphContainer.scrollLeft += evt.deltaY; 
         })
+        sharersItemListWrapper?.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            sharersItemListWrapper.scrollLeft += evt.deltaY;    
+        })
 
+        // КЛИК ПО ПОДЛОЖКЕ ПОЛУПРОЗРАЧНОЙ
+        //= ПЕРЕМЕННЫЕ
+        const filter_cap_chip_menu = document.getElementById('filter_cap_chip-menu')
+        const sharers_list_btn = document.getElementById('sharers_list-btn')
+
+        //= ДЕЙСТВИЕ
         document.addEventListener('click', (e) => {
 
 
             if(e.target?.classList?.contains('capitalization_chip-container')) {
                 filter_cap_chip_menu.checked = !filter_cap_chip_menu.checked
+            }
+
+            if(e.target?.classList.contains('sharers_list-container')) {
+                sharers_list_btn.checked = !sharers_list_btn.checked
             }
 
         })
@@ -109,7 +126,65 @@ useHead({
         // return task_list.value
         return []
     })
+    //= band_list_computed
+    const band_list_computed = computed(() => {
 
+        return band_list.value
+    })
+    // partner_list_computed
+    const partner_list_computed = computed(() => {
+        
+        return partner_list.value
+    })
+
+
+    // HELPERS
+    //= translate Sharer Name
+    const translateSharerName = (userID:number, userType: string) => {
+        // user, conspirator, bank
+        if(userType === 'conspirator') {
+            let sharer = band_list_computed?.value?.find(el => el.id === userID)
+            return sharer ? sharer?.name : 'Неизвестная банда'
+        } 
+        else if (userType === 'user') {
+            let sharer = partner_list_computed?.value?.find(el => el.userId === userID)
+            return sharer ? `${sharer?.name} ${sharer?.surname}` : 'Неизвестный'
+        }
+        else {
+
+            return `Мутный${userType} ${userID}`
+        }
+    }
+
+    //= set route eto sharer
+    const setSharerRoute = (userID:number, userType: string) => {
+
+        if(userType === "conspirator") {
+            let sharer = band_list_computed?.value?.find(el => el.id === userID)
+
+            if(sharer) {
+                router.push(`/band/${sharer.id}`)
+            } else {
+                alert('Не могу найти такую банду...')
+            }
+        } 
+        else if (userType === 'user') {
+            let sharer = partner_list_computed?.value?.find(el => el.userId === userID)
+
+            if(sharer) {
+
+                if(sharer?.userId === props.auth_user_profile.userId) {
+                    router.push('/account')
+                } else {
+                    router.push(`/partners/${sharer.id}`)
+                }
+            } else {
+                alert('Не могу найти такого соучастника в контактах...')
+            }
+        } else {
+            alert('Куда ты хочешь? Некуда же...')
+        }
+    }
 
 
     // ******* DB
@@ -157,11 +232,25 @@ useHead({
 
     // DB
     //
-    //= current mesh
+    //= current band
     const { data: band } = useFetch("/api/band/band", {
         lazy: false,
         transform: (band) => {
             return band.find(el => el.id === +route.params.id)
+        }
+    })
+    //= all bands (реализовать для переиспользования)
+    const { data: band_list } = useFetch("/api/band/band", {
+        lazy: false,
+        transform: (band_list) => {
+            return band_list
+        }
+    })
+    //= all partners
+    const { data: partner_list } = useFetch('/api/partnerGuarded/partner', {
+        lazy: false,
+        transform: (partner_list) => {
+            return partner_list
         }
     })
 
@@ -207,7 +296,7 @@ useHead({
                     <div class="capitalization_chip-container">
 
                         <div class="capitalization_chip">
-                            <h4 style="width: 150px">Выберите типы мешков к показу</h4>
+                            <h4>Выберите <br>типы мешков <br>к показу</h4>
                             <div>
                                 <input type="checkbox" id="available_cap">
                                 <label for="available_cap">available</label>
@@ -430,12 +519,51 @@ useHead({
         <div class="sharers_container">
             <div class="sharers-header_wrapper">
                 <h2 style="margin: 0; color: var(--color-global-text_second); ">Состав участников</h2>
-            </div>
-            <ul class="sharers-item_wrapper">
-                <li v-for="sharer in band?.sharers" class="sharers_item">
+                <div>
+                    <label for="sharers_list-btn">Список</label>
+                    <input id="sharers_list-btn" type="checkbox">
 
+                    <!-- МОДАЛКА СО СПИСКОМ СОУЧАСТНИКОВ В БАНДЕ -->
+                    <div class="sharers_list-container">
+
+                        <div class="sharers_list-wrapper">
+                            <h3>Список соучастников <br> {{ band?.name }}</h3>
+                            <ul>
+                                <li v-for="(sharer, index) in band?.sharers">
+                                    {{ index + 1 }}
+                                    {{ sharer }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul id="sharers-item_list" class="sharers-item_wrapper">
+                <li 
+                    v-for="sharer in band?.sharers" 
+                    class="sharers_item"
+                    @click="setSharerRoute(sharer.userId, sharer.userType)"
+                >
+                    <div class="sharers-item_position">
+                        <!-- viewer, founder, investor и другие-->
+                        {{ sharer.position }}
+                    </div>
                     <div class="sharers-item_name">
-                        {{ sharer.userId }} {{ sharer.userType }}
+                        <div class="avatar">
+                            <Icon
+                                v-if="sharer.userType === 'user'"
+                                size="24px"
+                                color="var(--color-btn-text)"
+                                name="material-symbols-light:person-rounded"
+                            />
+                            <Icon
+                                v-else
+                                size="24px"
+                                color="var(--color-btn-text)"
+                                name="material-symbols-light:group-rounded"
+                            />
+                        </div>
+                        {{ translateSharerName(sharer.userId, sharer.userType) }}
                     </div>
                     <div class="sharers-item_allocation">
                         <p style="margin: 0;" v-if="sharer.allocation > 0">
@@ -445,47 +573,13 @@ useHead({
                             <span v-else>В доле</span>
                         </p>
                         <p style="margin: 0;" v-else>
-                            Сотрудник
+
+                            <span v-if="sharer.position !== 'viewer'">
+                                Сотрудник
+                            </span>
+                            <span v-else>Прочее</span>
                         </p>
                     </div>
-                    <div class="sharers-item_position">
-                        <!-- viewer, founder, investor и другие-->
-                        {{ sharer.position }}
-                    </div>
-                </li>
-                <li class="sharers_item">
-                    <div class="sharers-item_name">
-
-                        Сергей Анфалов
-                    </div>
-
-                    <div class="sharers-item_allocation">
-
-                        50%
-                    </div>
-
-                    Управляющий
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
-                </li>
-                <li class="sharers_item">
-                    Сергей Анфалов
                 </li>
             </ul>
 
@@ -826,9 +920,7 @@ useHead({
         left: 0;
         top: 0;
         z-index: 999;
-        /* background-color: var(--color-btn-text); */
         transition: all .2s ease-in-out;
-        /* border-top-left-radius: 1rem; */
     }
     #filter_cap_chip-menu:checked + .capitalization_chip-container > .capitalization_chip {
         left: 0;
@@ -909,6 +1001,53 @@ useHead({
         margin-left: 1rem;
         margin-right: 1rem;
         margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .sharers_container > .sharers-header_wrapper > div > label {
+        color: var(--color-btn-bg);
+        font-size: .8rem;
+        padding: 2px 8px;
+        border-radius: 1rem;
+        background-color: var(--color-btn-hover-bg);
+        cursor: pointer;
+    }
+    .sharers_container > .sharers-header_wrapper > div > input {
+        display: none;
+    }
+    #sharers_list-btn:checked +.sharers_list-container {
+        display: flex;
+        position: fixed;
+        opacity: 1;
+        left: 0;
+        top: 0;
+        z-index: 999;
+        transition: all .2s ease-in-out;
+    }
+    .sharers_container > .sharers-header_wrapper > div > .sharers_list-container {
+        position: fixed;
+        z-index: -1;
+        background: var(--color-bg-popup);
+        backdrop-filter: blur(2px);
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    #sharers_list-btn:checked +.sharers_list-container > .sharers_list-wrapper {
+        left: 0;
+    }
+    .sharers_container > .sharers-header_wrapper > div > .sharers_list-container > .sharers_list-wrapper {
+        transition: all .5s ease-in-out;
+        position: absolute;
+        height: 100%;
+        left: -100%;
+        background-color: var(--color-btn-text);
+        box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        /* width: 50%; */
     }
     .sharers_container > .sharers-item_wrapper {
         list-style: none;
@@ -932,9 +1071,8 @@ useHead({
         height: 0;
     }
     .sharers_item {
-        /* background-color: var(--color-operation-type-donation); */
         border: 1px solid var(--color-operation-type-donation);
-        padding: .5rem;
+        padding: .5rem 1rem;
         border-radius: .5rem;
     }
     .sharers_item:hover {
@@ -943,12 +1081,32 @@ useHead({
     }
     .sharers-item_name {
         text-wrap: nowrap;
+        color: var(--color-btn-bg);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    .sharers-item_name > .avatar {
+        width: 32px;
+        height: 32px;
+        background-color: var(--color-operation-type-donation);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
     }
     .sharers-item_allocation {
-
+        font-size: .8rem;
+        text-align: right;
+    }
+    .sharers-item_allocation p span{
+        color: var(--color-global-text_second);
     }
     .sharers-item_position {
-
+        text-align: right;
+        color: var(--color-global-text_second);
+        font-size: .8rem;
     }
 
     /*  */

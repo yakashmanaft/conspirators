@@ -5,7 +5,7 @@
     <div class="show-max-767">
       <BreadCrumbs/>
       <!-- TITLE -->
-      <h1>Аккаунт</h1>
+      <h1>Мой аккаунт</h1>
     </div>
 
     <!-- data is loading -->
@@ -224,7 +224,7 @@
 
       <!-- INFO -->
       <div>
-        <h2>Данные пользователя</h2>
+        <h2>Мои данные</h2>
         {{ $props.auth_user_profile }}
     
         {{ user_info }}
