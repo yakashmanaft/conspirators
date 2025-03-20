@@ -190,7 +190,8 @@ const translateRoutePath = (path: string) => {
   } else if (path === "/contract") {
     return "Соглашение";
   } else if (path === "/account") {
-    return "Настройки";
+    // return "Настройки";
+    return 'Аккаунт'
   } 
   // DASHBOARD
   else if (path === "/dashboard") {

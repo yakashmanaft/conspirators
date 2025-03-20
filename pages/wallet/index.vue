@@ -1854,6 +1854,8 @@ onMounted(() => {
 const changeChipAffiliation = (obj: any) => {
   currentAffiliation.value = obj
 }
+
+// SET
 //= set_mesh_link_by_tag
 const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
   switch (mesh_tag) {
@@ -1960,7 +1962,7 @@ const set_attr_data = (item: any) => {
 
   }
 }
-// set mesh broker sign bgc
+//= set mesh broker sign bgc
 const set_mesh_broker_sign_bgc = (tag: string) => {
 
   if(tag === 'debt_loan') {
@@ -1975,6 +1977,18 @@ const set_mesh_broker_sign_bgc = (tag: string) => {
   else {
 
     return 'background-color: red'
+  }
+}
+//= set route to owner (user / conspirator)
+const set_owner_route = () => {
+  // Если фонды 
+  if(currentAffiliation?.value.bandID !== 0) {
+    router.push(`/band/${currentAffiliation?.value.bandID}`)
+  } 
+  // Если на личную страницу
+  else if (currentAffiliation?.value.name === 'personal') {
+    
+    router.push(`/account`)
   }
 }
 
@@ -2392,7 +2406,19 @@ const { data: bank } = useFetch("/api/banks/bank", {
     <!--  -->
     <div class="total-cap_container">
       <p style="margin: 0; font-size: 1.2rem;"><span>TOTAL:</span> <span>~999,999,999.99{{ currency_to_show.ticket }}</span></p>
-      <p class="btn_to_fund" @click="$router.push(`/band/${currentAffiliation?.bandID}`);" v-if="currentAffiliation.bandID !== 0">Перейти в {{ currentAffiliation.name }}</p>
+      <!-- <p 
+        class="btn_to_fund" 
+        @click="$router.push(`/band/${currentAffiliation?.bandID}`);" 
+        v-if="currentAffiliation.bandID !== 0"
+      >
+        Перейти в {{ currentAffiliation.name }}
+      </p> -->
+      <p 
+        class="btn_to_fund" 
+        @click="set_owner_route" 
+      >
+        Перейти в {{ currentAffiliation.name === 'personal' ? 'аккаунт' : currentAffiliation.title }}
+      </p>
     </div>
 
     <!-- НАЗВАНИЯ ГРУПП СЕКЦИЙ В КОНКРЕТНОМ ФОНДЕ -->

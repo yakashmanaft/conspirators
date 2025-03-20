@@ -62,18 +62,26 @@ useHead({
         
         const historyGrapContainer = document.getElementById('history-graph');
         const capitalizationGraphContainer = document.getElementById('capitalization-graph')
-        
+        const filter_cap_chip_menu = document.getElementById('filter_cap_chip-menu')
 
         historyGrapContainer?.addEventListener('wheel', (evt) => {
                 evt.preventDefault();
                 historyGrapContainer.scrollLeft += evt.deltaY;
             })
     
-            capitalizationGraphContainer?.addEventListener('wheel', (evt) => {
-                evt.preventDefault();
-                capitalizationGraphContainer.scrollLeft += evt.deltaY; 
-            })
+        capitalizationGraphContainer?.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            capitalizationGraphContainer.scrollLeft += evt.deltaY; 
+        })
 
+        document.addEventListener('click', (e) => {
+
+
+            if(e.target?.classList?.contains('capitalization_chip-container')) {
+                filter_cap_chip_menu.checked = !filter_cap_chip_menu.checked
+            }
+
+        })
     })
 
     // CLICK
@@ -167,7 +175,7 @@ useHead({
         <div  class="title-section_container" style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
 
-            <h1 style="font-weight: bold; font-size: 42px;">
+            <h1 style="margin: 0; margin-top: 1rem; font-weight: bold; font-size: 42px;">
 
                 {{ band?.name }}
             </h1> 
@@ -179,7 +187,7 @@ useHead({
 
                 <!-- ЗАГОЛОВОК + КАПА -->
                 <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <h2>Капитализация</h2>
+                    <h2 style="margin: 0; color: var(--color-global-text_second); ">Капитализация</h2>
                     <p style="margin: 0;font-size: 2rem; font-weight: bold;">~2 468.RUB</p>
                 </div>
                 <!-- ФИЛЬТР СЕКЦИЙ МЕШКОВ -->
@@ -192,46 +200,49 @@ useHead({
                                 size="2rem"
                                 color="var(--color-global-text)"
                             />
-                            <div style="position: absolute; bottom: .2rem; right: .1rem; height: .8rem; width: .8rem; background-color: var(--color-urgency-middle); border-radius: 100%;"></div>
+                            <div style="position: absolute; bottom: .2rem; right: .2rem; height: .6rem; width: .6rem; background-color: var(--color-urgency-middle); border-radius: 100%;"></div>
                         </div>
                     </label>
                     <input id="filter_cap_chip-menu" type="checkbox">
                     <div class="capitalization_chip-container">
-                        <div>
-                            <input type="checkbox" id="available_cap">
-                            <label for="available_cap">available</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="deposit_cap">
-                            <label for="deposit_cap">deposit</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="invested_stock_market_cap">
-                            <label for="invested_stock_market_cap">invested_stock</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="invested_currency_cap">
-                            <label for="invested_currency_cap">invested_currency</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="invested_loan_cap">
-                            <label for="invested_loan_cap">invested_loan</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="invested_crypto_cap">
-                            <label for="invested_crypto_cap">invested_crypto</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="invested_project_cap">
-                            <label for="invested_project_cap">invested_project</label>
+
+                        <div class="capitalization_chip">
+                            <h4 style="width: 150px">Выберите типы мешков к показу</h4>
+                            <div>
+                                <input type="checkbox" id="available_cap">
+                                <label for="available_cap">available</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="deposit_cap">
+                                <label for="deposit_cap">deposit</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="invested_stock_market_cap">
+                                <label for="invested_stock_market_cap">invested_stock</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="invested_currency_cap">
+                                <label for="invested_currency_cap">invested_currency</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="invested_loan_cap">
+                                <label for="invested_loan_cap">invested_loan</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="invested_crypto_cap">
+                                <label for="invested_crypto_cap">invested_crypto</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="invested_project_cap">
+                                <label for="invested_project_cap">invested_project</label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             
-            <div class="legend">cap_value-legend</div>
-            <div style="margin-top: 2rem;" id="capitalization-graph" class="capitalization-container">
+            <div id="capitalization-graph" class="capitalization-container">
                 <div class="year_balance-wrapper">
                     <ul>
                         <li>
@@ -398,50 +409,100 @@ useHead({
                         </li>
                         <li>
                             <div>
-                                <div class="cap_value" style="height: 40%"></div>
+                                <div class="cap_value" style="height: 100%"></div>
                             </div>
                             <p>Фев.</p>
                         </li>
                         <li>
                             <div>
-                                <div class="cap_value" style="height: 43%"></div>
+                                <div class="cap_value cap_choosen_month" style="height: 43%"></div>
                             </div>
                             <p>Мар.</p>
                         </li>
         
                     </ul>
-                    <p>2023</p>
+                    <p>2025</p>
                 </div>
             </div>
         </div>
 
-    <!-- OWNER -->
-    <div>
-        <h2>Состав участников</h2>
-        <h3>Соучастники</h3>
-        <ul>
-            <li v-for="sharer in band?.sharers">
-                {{ sharer }} Доля xxx.xxRUB / 50%
-            </li>
-        </ul>
-        <h3>Управляющий</h3>
-        <ul>
-            <li>Сергей Анфалов</li>
-        </ul>
-        <!-- conspirators/bands -->
-        <!-- <div v-if="mesh.ownerType === 'conspirator'">
-            <Button type="pseudo-btn" :link="`/band/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
-        </div> -->
-        <!-- user -->
-        <!-- <div v-if="mesh.ownerType === 'user'">
-            <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
-        </div> -->
-    </div>
+        <!-- SHARERS -->
+        <div class="sharers_container">
+            <div class="sharers-header_wrapper">
+                <h2 style="margin: 0; color: var(--color-global-text_second); ">Состав участников</h2>
+            </div>
+            <ul class="sharers-item_wrapper">
+                <li v-for="sharer in band?.sharers" class="sharers_item">
+
+                    <div class="sharers-item_name">
+                        {{ sharer.userId }} {{ sharer.userType }}
+                    </div>
+                    <div class="sharers-item_allocation">
+                        <p style="margin: 0;" v-if="sharer.allocation > 0">
+                            <span v-if="sharer.userId === props.auth_user_profile.userId">
+                                Доля {{ sharer.allocation * 100 }}%
+                            </span>
+                            <span v-else>В доле</span>
+                        </p>
+                        <p style="margin: 0;" v-else>
+                            Сотрудник
+                        </p>
+                    </div>
+                    <div class="sharers-item_position">
+                        <!-- viewer, founder, investor и другие-->
+                        {{ sharer.position }}
+                    </div>
+                </li>
+                <li class="sharers_item">
+                    <div class="sharers-item_name">
+
+                        Сергей Анфалов
+                    </div>
+
+                    <div class="sharers-item_allocation">
+
+                        50%
+                    </div>
+
+                    Управляющий
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+                <li class="sharers_item">
+                    Сергей Анфалов
+                </li>
+            </ul>
+
+            <!-- conspirators/bands -->
+            <!-- <div v-if="mesh.ownerType === 'conspirator'">
+                <Button type="pseudo-btn" :link="`/band/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
+            </div> -->
+            <!-- user -->
+            <!-- <div v-if="mesh.ownerType === 'user'">
+                <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
+            </div> -->
+        </div>
 
 
     <!-- CAP -->
     <!-- INCOME-EXPENSE -->
-    <div>
+    <div style="margin-top: 1rem;">
         <div class="cap-header_wrapper">
             <h2>Доход-Расходы</h2>
             <p style="display: flex; flex-direction: column; align-items: flex-end;"><span>Доход: ~2 468.RUB</span> <span>Расход: ~2 468.RUB</span></p>
@@ -723,14 +784,16 @@ useHead({
   .show-max-767 {
     display: none;
   }
+  .title-section_container {
+    margin: 0 1rem;
+  }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
     .show-max-767 {
       display: none;
     }
     .title-section_container {
-        /* padding-left: 0.5rem; */
-        /* padding-right: 0.5rem; */
+        margin: 0 1rem;
     }
     .content-setion_container {
         /* padding-left: 1rem; */
@@ -757,10 +820,18 @@ useHead({
         display: none;
     }
     #filter_cap_chip-menu:checked + .capitalization_chip-container{
-        background-color: var(--color-btn-text);
-        right: -1rem;
+        display: flex;
+        position: fixed;
+        opacity: 1;
+        left: 0;
+        top: 0;
+        z-index: 999;
+        /* background-color: var(--color-btn-text); */
         transition: all .2s ease-in-out;
-        border-top-left-radius: 1rem;
+        /* border-top-left-radius: 1rem; */
+    }
+    #filter_cap_chip-menu:checked + .capitalization_chip-container > .capitalization_chip {
+        left: 0;
     }
 
     .filter_cap-container {
@@ -771,23 +842,39 @@ useHead({
         cursor: pointer;
     }
     .capitalization_chip-container {
-        position: absolute;
-        flex-direction: column;
-        right: -100rem;
-        bottom: -13rem;
-        display: flex;
-        align-items: flex-start;
-        overflow-x: scroll;
-        max-width: 100vw!important;
-        -ms-overflow-style: none; 
-        scrollbar-width: none;
-        box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
-        padding: 1rem;
+        /* display: none; */
+        /* left: -100%; */
+        /* align-items: flex-start; */
+        /* overflow-x: scroll; */
+        /* max-width: 100vw!important; */
+        /* -ms-overflow-style: none;  */
+        /* scrollbar-width: none; */
+        /* padding: 1rem; */
+        /* left: -100%; */
+        position: fixed;
+        z-index: -1;
+        background: var(--color-bg-popup);
+        backdrop-filter: blur(2px);
+        width: 100%;
+        height: 100%;
+        opacity: 0;
     }
     .capitalization_chip-container::-webkit-scrollbar  {
         display: none;
     }
-    .capitalization_chip-container > div {
+    .capitalization_chip-container > .capitalization_chip {
+        transition: all .5s ease-in-out;
+        position: absolute;
+        height: 100%;
+        left: -100%;
+        background-color: var(--color-btn-text);
+        box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+    }
+    .capitalization_chip-container > .capitalization_chip > div {
         display: flex;
         align-items: center;
     }
@@ -803,11 +890,68 @@ useHead({
         max-width: 100vw!important;
         -ms-overflow-style: none; 
         scrollbar-width: none;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     .history_balance-container::-webkit-scrollbar,
     .capitalization-container::-webkit-scrollbar  {
         display: none;
     }
+    .capitalization-container {
+        margin-top: 1rem;
+    }
+
+    /*  */
+    .sharers_container {
+
+    }
+    .sharers_container > .sharers-header_wrapper {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-top: 1rem;
+    }
+    .sharers_container > .sharers-item_wrapper {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 1rem;
+        margin-top: .5rem;
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        max-width: 100vw!important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 1rem;
+    }
+    .sharers_container > .sharers-item_wrapper::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .sharers_item {
+        /* background-color: var(--color-operation-type-donation); */
+        border: 1px solid var(--color-operation-type-donation);
+        padding: .5rem;
+        border-radius: .5rem;
+    }
+    .sharers_item:hover {
+        cursor: pointer;    
+        box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    }
+    .sharers-item_name {
+        text-wrap: nowrap;
+    }
+    .sharers-item_allocation {
+
+    }
+    .sharers-item_position {
+
+    }
+
+    /*  */
     .year_balance-wrapper {
 
     }
@@ -830,7 +974,7 @@ useHead({
         align-items: center;
     }
     .year_balance-wrapper ul li div {
-        width: 2rem;
+        width: 1.5rem;
         gap: .1rem;
         height: 100%;
         display: flex;
@@ -861,11 +1005,14 @@ useHead({
         border-top-left-radius: .3rem;
         border-top-right-radius: .3rem;
         transition: all .2s ease-in;
-        background-color: var(--color-paused-wrapper-bg);
+        background-color: var(--color-operation-type-donation);
     }
     .year_balance-wrapper > ul > li > div > .cap_value:hover {
-        background-color: var(--color-operation-type-donation);
+        background-color: var(--color-status-paused);
         cursor: pointer;
+    }
+    .year_balance-wrapper > ul > li > div > .cap_choosen_month {
+        background-color: var(--color-urgency-low-wo);
     }
     .year_balance-wrapper ul li p{
         font-size: .8rem;

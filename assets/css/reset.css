@@ -31,7 +31,7 @@ h5,
 h6,
 p,
 span {
-    color: var(--color-global-text)
+    color: var(--color-global-text);
 }
 
 /* links */

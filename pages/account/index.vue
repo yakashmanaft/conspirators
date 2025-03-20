@@ -1,5 +1,6 @@
 <template>
   <Container>
+    <!-- <DevModePlug/> -->
 
     <div class="show-max-767">
       <BreadCrumbs/>
@@ -7,17 +8,12 @@
       <h1>Аккаунт</h1>
     </div>
 
-    <!-- <DevModePlug/> -->
-    {{ $props.auth_user_profile }}
+    <!-- data is loading -->
+    <div v-if="pending">
+      <p>Loading...</p>
+    </div>
 
-
-    <!-- fetch data is error -->
-    <!-- <div v-if="error">
-      <p>Error Code {{ error.statusCode }}</p>
-      <p>Error Message {{ error.message }}</p>
-    </div> -->
-
-    <div>
+    <div v-else>
       <!-- MODALS -->
       <div style="display: flex; gap: 2rem">
         <!-- ADD NEW LOCATION MODAL -->
@@ -226,53 +222,70 @@
         </div>
       </div>
 
-      <!-- waiting for a data -->
-      <!-- <div v-if="pending">
-        <p>Loading...</p>
-      </div> -->
-
-      <!-- Data is fetched -->
+      <!-- INFO -->
       <div>
-        <!-- список locations -->
-        <div style="margin-top: 2rem">
-          <h3>Locations</h3>
-
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">title</th>
-                <th scope="col">type</th>
-                <th scope="col">address</th>
-                <th scope="col">Собственник</th>
-              </tr>
-            </thead>
-            <!-- <tbody>
-              <tr v-for="(location, index) in locations" :key="index">
-                <td scope="col">{{ index + 1 }}</td>
-                <td scope="col">{{ location.title }}</td>
-                <td scope="col">{{ location.type }}</td>
-                <td scope="col">{{ location.address }}</td>
-                <td scope="col">
-                  <span
-                    class="link"
-                    @click="onClickOwner(location.ownerID, location.ownerType)"
-                  >
-                    {{ translateOwner(location.ownerID, location.ownerType) }}
-                  </span>
-                </td>
-              </tr>
-            </tbody> -->
-          </table>
+        <h2>Данные пользователя</h2>
+        {{ $props.auth_user_profile }}
+    
+        {{ user_info }}
+      </div>
+  
+      <!-- STATs -->
+      <div>
+        <h2>Статистика</h2>
+        <p style="cursor:pointer;" @click="router.push('/wallet')">Перейти в кошелек</p>
+        <!-- CAP -->
+        <div>
+          <h3>Капитализация</h3>
+          <p style="background-color: red;">График по капитализации как в бандах</p>
         </div>
 
-        <!-- список видов работ -->
-        <div style="margin-top: 2rem">
-          <h3>Виды работ / прайс</h3>
-          <p>Требуется понимание где их размещать. отдельную БД?</p>
+        <!-- INCOME / EXPENSEs -->
+        <div>
+          <h3>Доходы / Расходы</h3>
+          <p style="background-color: orangered;">График по доходам / расходам как в бандах</p>
         </div>
       </div>
+      <!-- список locations -->
+      <div style="margin-top: 2rem">
+        <h3>Locations</h3>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">title</th>
+              <th scope="col">type</th>
+              <th scope="col">address</th>
+              <th scope="col">Собственник</th>
+            </tr>
+          </thead>
+          <!-- <tbody>
+            <tr v-for="(location, index) in locations" :key="index">
+              <td scope="col">{{ index + 1 }}</td>
+              <td scope="col">{{ location.title }}</td>
+              <td scope="col">{{ location.type }}</td>
+              <td scope="col">{{ location.address }}</td>
+              <td scope="col">
+                <span
+                  class="link"
+                  @click="onClickOwner(location.ownerID, location.ownerType)"
+                >
+                  {{ translateOwner(location.ownerID, location.ownerType) }}
+                </span>
+              </td>
+            </tr>
+          </tbody> -->
+        </table>
+      </div>
+      <!-- список видов работ -->
+      <div style="margin-top: 2rem">
+        <h3>Виды работ / прайс</h3>
+        <p>Требуется понимание где их размещать. отдельную БД?</p>
+      </div>
+
     </div>
+
   </Container>
 </template>
 
@@ -346,6 +359,7 @@ const location = ref({
 
 const { users } = storeToRefs(useUsersStore());
 const { loadData } = useUsersStore();
+const pending = ref(true)
 // const { data: organizations } = useLazyAsyncData("organizations", () =>
 //   $fetch("/api/organizations/organizations")
 // );
@@ -355,6 +369,19 @@ onMounted(async () => {
   // refresh();
   // data from store
   await loadData();
+
+  setTimeout(() => {
+
+    if(
+      props.auth_user_profile.userId &&
+      user_info.value
+    ) {
+
+      pending.value = false
+    } else {
+      router.push('/login')
+    }
+  }, 500)
   // refreshOrganizations();
 });
 
@@ -396,34 +423,34 @@ const clearModalInputs = (location: any) => {
 };
 
 // translates
-const translateOwner = (ownerID: number, ownerType: string) => {
-  if (ownerID && ownerType && users.value && organizations.value) {
-    if (ownerType === "user") {
-      let userItem = users.value.find((item) => item.id === ownerID);
-      return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}`;
-    } else if (ownerType === "company") {
-      let organizationItem = organizations.value.find(
-        (item) => item.id === ownerID
-      );
-      return organizationItem.title;
-    }
-  } else if (ownerID === 0 && !ownerType) {
-    return `Не соучастник`;
-  }
-};
+// const translateOwner = (ownerID: number, ownerType: string) => {
+//   if (ownerID && ownerType && users.value && organizations.value) {
+//     if (ownerType === "user") {
+//       let userItem = users.value.find((item) => item.id === ownerID);
+//       return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}`;
+//     } else if (ownerType === "company") {
+//       let organizationItem = organizations.value.find(
+//         (item) => item.id === ownerID
+//       );
+//       return organizationItem.title;
+//     }
+//   } else if (ownerID === 0 && !ownerType) {
+//     return `Не соучастник`;
+//   }
+// };
 
 // OnClick event
-const onClickOwner = (ownerID: number, ownerType: string) => {
-  if (ownerID && ownerType) {
-    if (ownerType === "user") {
-      router.push(`/partners/${ownerID}`);
-    } else if (ownerType === "company") {
-      router.push(`/organizations/${ownerID}`);
-    }
-  } else if (ownerID === 0 && !ownerType) {
-    alert("Сторонний контакт. Не является соучастником.");
-  }
-};
+// const onClickOwner = (ownerID: number, ownerType: string) => {
+//   if (ownerID && ownerType) {
+//     if (ownerType === "user") {
+//       router.push(`/partners/${ownerID}`);
+//     } else if (ownerType === "company") {
+//       router.push(`/organizations/${ownerID}`);
+//     }
+//   } else if (ownerID === 0 && !ownerType) {
+//     alert("Сторонний контакт. Не является соучастником.");
+//   }
+// };
 
 // Check before submit creating new location
 watch(location.value, () => {
@@ -433,6 +460,15 @@ watch(location.value, () => {
     createNewLocationBtnIsDisabled.value = true;
   }
 });
+
+// DB
+const { data: user_info } = useFetch('/api/partnerGuarded/partner', {
+  lazy: false,
+  transform: (user_info) => {
+    return user_info.find(el => el.userId === props.auth_user_profile.userId)
+  }
+})
+
 </script>
 
 <style scoped>

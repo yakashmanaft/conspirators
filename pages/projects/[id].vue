@@ -781,8 +781,8 @@ const cutTaskDesc = (str: string, maxLength: number) => {
       <div class="title-section_container">
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
           <BreadCrumbs/>
-          <h1 style="margin: 0;">{{computedProject?.name}}</h1> 
         </div>
+        <h1 style="margin: 0; font-weight: bold; font-size: 42px;">{{computedProject?.name}}</h1> 
 
       </div>
 
@@ -1185,6 +1185,9 @@ ul > .task_ledger_el:last-child {
 }
 
 @media screen and (max-width: 575px) {
+  .show-max-767 {
+    display: none;
+  }
   .toggle-title {
     margin-top: 1rem;
     /* margin: 1rem 1rem 0 1rem; */
@@ -1211,7 +1214,7 @@ ul > .task_ledger_el:last-child {
   .general-secction_container,
   .title-section_container,
   .about-section_container{
-    margin: 0 0.5rem;
+    margin: 0 1rem;
   }
   /* .leder_el_header {
     margin-top: 0.5rem;
@@ -1221,6 +1224,9 @@ ul > .task_ledger_el:last-child {
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
+  .show-max-767 {
+    display: none;
+  }
   .switch-title_el:first-child {
     margin-left: unset;
   }
@@ -1240,7 +1246,7 @@ ul > .task_ledger_el:last-child {
   .title-section_container,
   .general-secction_container,
   .about-section_container {
-    margin: 0 0.5rem;
+    margin: 0 1rem;
   }
   /* .leder_el_header {
     margin-top: 0.5rem;

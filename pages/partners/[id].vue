@@ -362,7 +362,7 @@ const computedPartner = computed(() => {
 // async function getItems() {
 //   return await $fetch("/api/warehouse/item");
 // }
-const { data: partner_list } = useFetch("/api/partnerGuarded/partner", {
+const { data: partner_list, pending, refresh, error } = useFetch("/api/partnerGuarded/partner", {
     lazy: false,
     transform: (partner_list) => {
       
@@ -565,9 +565,27 @@ const createMyNewBand = () => {
       <BreadCrumbs/>
     </div>
 
-    <div v-if="accessPlug === false">
-      {{ computedPartner }}
+    <!-- fetch data is error -->
+    <div v-if="error">
+      <p>Error Code {{ error.statusCode }}</p>
+      <p>Error Message {{ error.message }}</p>
     </div>
+
+    <!-- data is loading -->
+    <div v-if="pending">
+      <p>Loading...</p>
+    </div>
+
+    <!-- data is loaded -->
+    <div v-else>
+      <div v-if="accessPlug === false">
+        {{ computedPartner }}
+      </div>
+  
+      
+    </div>
+
+
     <!-- PAGE TITLE -->
     <!-- <div class="page-title">
       <h1>
