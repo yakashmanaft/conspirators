@@ -70,6 +70,8 @@ model Project {
   created_at    DateTime @default(now()) @db.DateTime(0)
   sharers       Json?
   invested_mesh Json?
+  customer      Json?
+  executor      Json?
   // [{"userType": "conspirator", "userId": 1}]
   // Банда заказчика, если нет - Общее (1)
   band          Band     @relation(fields: [bandId], references: [id])

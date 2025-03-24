@@ -580,6 +580,11 @@ const createMyNewBand = () => {
     <div v-else>
       <div v-if="accessPlug === false">
         {{ computedPartner }}
+        <!-- My bands -->
+        <div>
+          <h3>Банды</h3>
+          <p style="background-color: green">Отображаем банды, где участвует пользователь</p>
+        </div>
       </div>
   
       

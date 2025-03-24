@@ -11,6 +11,7 @@ import { Search } from "~/components/search";
 // utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
+import { translateName }  from '@/utils/translators'
 
 useHead({
   title: "Мои проекты",
@@ -93,7 +94,11 @@ useHead({
     transform: (project_list) => {
       // session user is a sharer
       return project_list.filter((el) => {
-        if(el.sharers && el.sharers.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) {
+        if(
+          (el.sharers && el.sharers.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) ||
+          (el.customer && el.customer.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId)) ||
+          (el.executor && el.executor.find((item) => item.userType === 'user' && item.userId === props.auth_user_profile.userId))
+        ) {
           return el
         }
       })
@@ -147,6 +152,8 @@ onMounted(async () => {
   // refresh();
   // await refreshOrganizations();
   // await loadData();
+  await useBandStore().loadBandData()
+  await usePartnerStore().loadPartnerData()
 });
 
 // CHECK
@@ -496,22 +503,26 @@ const addNewProject = () => {
             </div>
           </div>
   
-          <!-- Список пользователей -->
+          <!-- Список проектов -->
           <div
             v-for="(project, index) in computedProjects"
             :key="index"
             class="project-item_container"
             @click="$router.push(`/projects/${project.id}`)"
           >
-          <!-- {{ project }} -->
-          <div style="padding-left: 3.5rem;">
-            <span>{{ project?.name }}</span><span></span>
-          </div>
+            <!-- {{ project }} -->
+            <div style="padding-left: 3.5rem; display: flex; flex-direction: column;">
+              <span>{{ project?.name }}</span>
+              <p style="margin: 0; display: flex; flex-direction: column;">
+                <span style="font-size: .8rem; color: var(--color-global-text_second);">Заказчик: {{ translateName(project?.customer?.[0].userType, project?.customer?.[0].userId)}}</span>
+                <span style="font-size: .8rem; color: var(--color-global-text_second);">Исполнитель: {{ translateName(project?.executor?.[0].userType, project?.executor?.[0].userId)}}</span>
+              </p>
+            </div>
           
-          <!-- Symbol -->
-          <div class="project-symbol_wrapper">
-            <div class="project-symbol_content">{{ project?.name[0] }}</div>
-          </div>  
+            <!-- Symbol -->
+            <div class="project-symbol_wrapper">
+              <div class="project-symbol_content">{{ project?.name[0] }}</div>
+            </div>  
 
           <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
 
@@ -564,7 +575,7 @@ const addNewProject = () => {
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   /* margin-top: 1rem; */
-  padding: 1rem;
+  padding: .5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in;
   position: relative;

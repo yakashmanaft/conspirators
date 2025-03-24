@@ -234,6 +234,10 @@
       <div>
         <h2>Статистика</h2>
         <p style="cursor:pointer;" @click="router.push('/wallet')">Перейти в кошелек</p>
+        <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+          <p style="margin: 0; font-size: 2rem; font-weight: bold;">0.5</p>
+          <p style="margin: 0; font-size: .8rem; text-align: center">SR</p>
+        </div>
         <!-- CAP -->
         <div>
           <h3>Капитализация</h3>
@@ -244,6 +248,18 @@
         <div>
           <h3>Доходы / Расходы</h3>
           <p style="background-color: orangered;">График по доходам / расходам как в бандах</p>
+        </div>
+
+        <!-- WAREHOUSE -->
+        <div>
+          <h3>Склад</h3>
+          <p style="background-color: blue">Здесь показываем имеющиеся в собственности предметы (например инструмент)</p>
+        </div>
+
+        <!-- My bands -->
+        <div>
+          <h3>Банды</h3>
+          <p style="background-color: green">Отображаем банды, где участвует пользователь</p>
         </div>
       </div>
       <!-- список locations -->

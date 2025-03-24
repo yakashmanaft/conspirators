@@ -7,6 +7,9 @@ import { BreadCrumbs } from '~/components/breadcrumbs';
 import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
 
+// utils
+import { translateName } from '@/utils/translators';
+
 useHead({
         title: "Кооператив конспираторов",
         link: [
@@ -26,6 +29,9 @@ useHead({
             }
         ]
     })
+
+    //
+    const sessionUser:any = useUserSession().user;
 
     // PROPS
     const props = defineProps({
@@ -51,15 +57,120 @@ useHead({
             title: 'Выполнение'
         }
     ]
-    const currentChip = ref({
-        title: 'Выполнение'
+    const project_role_chip_computed = computed(() => {
+
+        let array:any = []
+
+        if(projects?.value?.length) {
+
+            projects?.value.forEach(item => {
+
+                if(item.sharers.find(el => el.userType === 'conspirator' && el.userId === +route.params.id)) {
+                    array.push('sharers')
+                }
+                if(item.executor.find(el => el.userType === 'conspirator' && el.userId === +route.params.id)) {
+                    array.push('executor')
+                }
+                if(item.customer.find(el => el.userType === 'conspirator' && el.userId === +route.params.id)) {
+                    array.push('customer')
+                }
+            })
+            
+        }
+        let new_array = [...new Set(array)]
+
+        return new_array.map((obj, index) => {
+            if(obj === 'executor') {
+                currentChipProjectRole.value = {
+                    id: index + 1,
+                    name: obj,
+                    title: 'Исполняем'
+                }
+                return {
+                    id: index + 1,
+                    name: obj,
+                    title: 'Исполняем'
+                }
+            }
+            else if (obj === 'customer') {
+                currentChipProjectRole.value = {
+                    id: index + 1,
+                    name: obj,
+                    title: 'Заказываем'
+                }
+                return {
+                    id: index + 1,
+                    name: obj,
+                    title: 'Заказываем'
+                }
+            } 
+            else if (obj === 'sharers') {
+                currentChipProjectRole.value = {
+                    id: index + 1,
+                    name: obj,
+                    title: 'Соучаствуем'
+                }
+                return {
+                    id: index + 1,
+                    name: obj,
+                    title: 'Соучаствуем'
+                }
+            }
+            else {
+                currentChipProjectRole.value = {
+                    id: index + 1,
+                    name: obj,
+                    title: obj
+                }
+                return {
+                    id: index + 1,
+                    name: obj,
+                    title:  obj
+                }
+            }
+        })
     })
+    //= fund paragraph
+    const band_paragraph = ref([
+        {
+            id: 1,
+            name: 'income_expenses',
+            title: 'Доходы-расходы'
+        },
+        {
+            id: 2,
+            name: 'structure',
+            title: 'Структура'
+        },
+        {
+            id: 3,
+            name: 'projects',
+            title: 'Проекты'
+        },
+        // {
+        //     id: 4,
+        //     name: 'transactions',
+        //     title: 'Транзакции'
+        // },
+        {
+            id: 4,
+            name: 'warehouse',
+            title: 'Имущество'
+        }
+    ])
+    //= current bad paragraph
+    const currentBandParagraph = ref('income_expenses')
+    // const currentChip = ref({
+    //     title: 'Выполнение'
+    // })
+    const currentChipProjectRole = ref()
 
     const route = useRoute()
     const router = useRouter()
 
-    onMounted(() => {
-
+    onMounted(async () => {
+        await useBandStore().loadBandData()
+        await usePartnerStore().loadPartnerData()
         
         
         // ПРОКРУТКА ПО ГОРИЗОНТАЛИ
@@ -99,15 +210,20 @@ useHead({
             }
 
         })
+
+        if(project_role_chip_computed.value) {
+
+            currentChipProjectRole.value = project_role_chip_computed.value[0]
+        }
     })
 
     // CLICK
     const addTaskLedgerItem = () => {
         alert('В разработке')
     }
-    const changeChip = (obj: any) => {
-        currentChip.value = obj
-    }
+    // const changeChip = (obj: any) => {
+    //     currentChip.value = obj
+    // }
 
     // COMPUTED
     //= current lead
@@ -129,12 +245,18 @@ useHead({
     //= band_list_computed
     const band_list_computed = computed(() => {
 
+
         return band_list.value
     })
     // partner_list_computed
     const partner_list_computed = computed(() => {
         
         return partner_list.value
+    })
+    //= project_list_conputed
+    const project_list_computed = computed(() => {
+        
+        return projects.value
     })
 
 
@@ -187,48 +309,43 @@ useHead({
     }
 
 
+    //= changeChipProjectRole
+    const changeChipProjectRole = (obj: any) => {
+        currentChipProjectRole.value = obj
+    }
+
+
     // ******* DB
     // *** GET
 
     // task list
-    const { data: task_list } = useFetch("/api/taskGuarded/task", {
-        lazy: false,
-        transform: (task_list) => {
-            // return landing_list.filter((el) => {
-            //     // session user is a sharer
-            //     if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
-            //         return el
-            //     }
-            // })
-            return task_list.find(el => el.id === +route.params.id)
-        }
-    })
+    // const { data: task_list } = useFetch("/api/taskGuarded/task", {
+    //     lazy: false,
+    //     transform: (task_list) => {
+    //         // return landing_list.filter((el) => {
+    //         //     // session user is a sharer
+    //         //     if(el.sharers && el.sharers.find((item) => item.userType === 'conspirator' && item.userId === props.auth_user_profile.userId)) {
+    //         //         return el
+    //         //     }
+    //         // })
+    //         return task_list.find(el => el.id === +route.params.id)
+    //     }
+    // })
 
     // task ledger item
-    const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
-        lazy: false,
-        transform: (task_ledger) => {
+    // const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
+    //     lazy: false,
+    //     transform: (task_ledger) => {
 
-            if(current_task.value) {
+    //         if(current_task.value) {
 
-                return task_ledger.filter(el => el.taskId === current_task.value.id)
-            }
-        }
-    }) 
-
-    //= projects
-    const { data: current_project } = useFetch("/api/projectGuarded/project", {
-        lazy: false,
-        transform: (project_list) => {
-            return project_list.find((el) => {
-                // session user is a sharer
-                return el.id === current_task.value.projectId
-            })
-        }
-    })
+    //             return task_ledger.filter(el => el.taskId === current_task.value.id)
+    //         }
+    //     }
+    // }) 
 
     //HELPERS
-
+    // restart wheel event
 
     // DB
     //
@@ -236,7 +353,27 @@ useHead({
     const { data: band } = useFetch("/api/band/band", {
         lazy: false,
         transform: (band) => {
-            return band.find(el => el.id === +route.params.id)
+            // console.log(sessionUser.value)
+            return band.find(el => {
+                if(el.id === +route.params.id) {
+
+                    if(el.sharers && sessionUser.value) {
+
+                        let sharers = Object.values(el.sharers)
+
+                        if(sharers.find(sharer => sharer.userType === 'user' && sharer.userId === sessionUser.value.id )) {
+                            return el
+
+                        } else {
+                            router.push('/band')
+                        }
+
+                    } else {
+
+                        router.push('/band')
+                    }
+                } 
+            })
         }
     })
     //= all bands (реализовать для переиспользования)
@@ -253,7 +390,39 @@ useHead({
             return partner_list
         }
     })
+    //= band's projects
+    const { data: projects } = useFetch("/api/projectGuarded/project", {
+        lazy: false,
+        transform: (project_list) => {
+            return project_list.filter((el) => {
 
+                if(
+                    (el.sharers && el.sharers.find(item => item.userType === 'conspirator' && item.userId === +route.params.id)) ||
+                    el.customer && el.customer.find(item => item.userType === 'conspirator' && item.userId === +route.params.id) ||
+                    el.executor && el.executor.find(item => item.userType === 'conspirator' && item.userId === +route.params.id)
+                ) {
+                    return el
+                }
+            })
+        }
+    })
+
+    // WATHERS
+    //= currentBandParagraph
+    watch(currentBandParagraph, () => {
+
+        
+        if(currentBandParagraph.value === 'income_expenses') {
+            setTimeout(() => {
+                const historyGrapContainer = document.getElementById('history-graph');
+
+                historyGrapContainer?.addEventListener('wheel', (evt) => {
+                    evt.preventDefault();
+                    historyGrapContainer.scrollLeft += evt.deltaY;
+                })
+            }, 100)
+        }
+    })
 </script>
 
 
@@ -529,9 +698,22 @@ useHead({
                         <div class="sharers_list-wrapper">
                             <h3>Список соучастников <br> {{ band?.name }}</h3>
                             <ul>
-                                <li v-for="(sharer, index) in band?.sharers">
-                                    {{ index + 1 }}
-                                    {{ sharer }}
+                                <li 
+                                    v-for="(sharer, index) in band?.sharers"
+                                    class="sharers-list_item"
+                                >
+                                    <div class="sharers-list_item-index">
+                                        {{ index + 1 }}.
+                                    </div>
+                                    <div class="sharers-list_item-name" @click="setSharerRoute(sharer.userId, sharer.userType)">
+                                        {{ translateSharerName(sharer.userId, sharer.userType) }} 
+                                    </div>
+                                    <div class="sharers-list_item-position">
+                                        {{ sharer.position }}
+                                    </div>
+                                    <div class="sharers-list_item-allocation">
+                                        {{ sharer.allocation }}
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -544,28 +726,28 @@ useHead({
                     class="sharers_item"
                     @click="setSharerRoute(sharer.userId, sharer.userType)"
                 >
-                    <div class="sharers-item_position">
-                        <!-- viewer, founder, investor и другие-->
-                        {{ sharer.position }}
+                    <div class="avatar">
+                        <Icon
+                            v-if="sharer.userType === 'user'"
+                            size="54px"
+                            color="var(--color-btn-text)"
+                            name="material-symbols-light:person-rounded"
+                        />
+                        <Icon
+                            v-else
+                            size="54px"
+                            color="var(--color-btn-text)"
+                            name="material-symbols-light:group-rounded"
+                        />
                     </div>
+                    <!-- <div class="sharers-item_position"> -->
+                        <!-- viewer, founder, investor и другие-->
+                        <!-- {{ sharer.position }} -->
+                    <!-- </div> -->
                     <div class="sharers-item_name">
-                        <div class="avatar">
-                            <Icon
-                                v-if="sharer.userType === 'user'"
-                                size="24px"
-                                color="var(--color-btn-text)"
-                                name="material-symbols-light:person-rounded"
-                            />
-                            <Icon
-                                v-else
-                                size="24px"
-                                color="var(--color-btn-text)"
-                                name="material-symbols-light:group-rounded"
-                            />
-                        </div>
                         {{ translateSharerName(sharer.userId, sharer.userType) }}
                     </div>
-                    <div class="sharers-item_allocation">
+                    <!-- <div class="sharers-item_allocation">
                         <p style="margin: 0;" v-if="sharer.allocation > 0">
                             <span v-if="sharer.userId === props.auth_user_profile.userId">
                                 Доля {{ sharer.allocation * 100 }}%
@@ -579,7 +761,7 @@ useHead({
                             </span>
                             <span v-else>Прочее</span>
                         </p>
-                    </div>
+                    </div> -->
                 </li>
             </ul>
 
@@ -593,268 +775,371 @@ useHead({
             </div> -->
         </div>
 
-
-    <!-- CAP -->
-    <!-- INCOME-EXPENSE -->
-    <div style="margin-top: 1rem;">
-        <div class="cap-header_wrapper">
-            <h2>Доход-Расходы</h2>
-            <p style="display: flex; flex-direction: column; align-items: flex-end;"><span>Доход: ~2 468.RUB</span> <span>Расход: ~2 468.RUB</span></p>
+        <!-- CHIP titles -->
+        <div class="current_band_paragraph" style="display: flex; gap: 1rem; align-items: center;">
+            <h2 v-for="el in band_paragraph" :class="currentBandParagraph === el.name ? 'title_active' : ''" style="cursor:pointer;">
+                <span @click="currentBandParagraph = el.name;">{{ el.title }}</span>
+            </h2>
         </div>
-        <div id="history-graph" class="history_balance-container">
-    
-            <div class="year_balance-wrapper">
-                <p>2023</p>
+
+        <!-- current Band Paragraph -->
+        <!-- INCOME-EXPENSE -->
+        <div style="margin-top: 1.5rem;" v-if="currentBandParagraph === 'income_expenses'">
+
+            <!-- cap -->
+            <p style="margin-left: 1rem; margin-right: 1rem; font-size: .8rem;">
+                <span style="background-color: var(--color-urgency-low-wo); color: var(--color-btn-text); padding: 2px 8px;">+2 468.99 RUB</span> 
+                <span style="background-color: var(--color-wallet-fund-debt-wo); color: var(--color-btn-text); padding: 2px 8px;">-2 468.00 RUB</span>
+            </p>
+
+            <!-- history graph -->
+            <div id="history-graph" class="history_balance-container">
+        
+                <div class="year_balance-wrapper">
+                    <p>2023</p>
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 30%;"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 50%;"></div>
+                                <div class="expense" style="height: 20%;"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 30%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Апр.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 55%;"></div>
+                            </div>
+                            <p>Май.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 85%;"></div>
+                            </div>
+                            <p>Июн.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Июл.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 45%;"></div>
+                                <div class="expense" style="height: 15%;"></div>
+                            </div>
+                            <p>Авг.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Сен.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Окт.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 77%;"></div>
+                                <div class="expense" style="height: 35%;"></div>
+                            </div>
+                            <p>Ноя.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 25%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Дек.</p>
+                        </li>
+                    </ul>
+                </div>
+        
+                <div class="year_balance-wrapper">
+                    <p>2024</p>
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 30%;"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 50%;"></div>
+                                <div class="expense" style="height: 20%;"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 30%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Апр.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 55%;"></div>
+                            </div>
+                            <p>Май.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 85%;"></div>
+                            </div>
+                            <p>Июн.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Июл.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 45%;"></div>
+                                <div class="expense" style="height: 15%;"></div>
+                            </div>
+                            <p>Авг.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Сен.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Окт.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 77%;"></div>
+                                <div class="expense" style="height: 35%;"></div>
+                            </div>
+                            <p>Ноя.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 25%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Дек.</p>
+                        </li>
+                    </ul>
+                </div>
+        
+                <div class="year_balance-wrapper">
+                    <p>2025</p>
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 30%;"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 50%;"></div>
+                                <div class="expense" style="height: 20%;"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- transaction -->
+            <div style="margin-top: 1rem; margin-left: 1rem; margin-right: 1rem;">
+                <h3>История транзакций</h3>
                 <ul>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 20%;"></div>
-                            <div class="expense" style="height: 30%;"></div>
-                        </div>
-                        <p>Янв.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 50%;"></div>
-                            <div class="expense" style="height: 20%;"></div>
-                        </div>
-                        <p>Фев.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Мар.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 30%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Апр.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 20%;"></div>
-                            <div class="expense" style="height: 55%;"></div>
-                        </div>
-                        <p>Май.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 70%;"></div>
-                            <div class="expense" style="height: 85%;"></div>
-                        </div>
-                        <p>Июн.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Июл.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 45%;"></div>
-                            <div class="expense" style="height: 15%;"></div>
-                        </div>
-                        <p>Авг.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 70%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Сен.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Окт.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 77%;"></div>
-                            <div class="expense" style="height: 35%;"></div>
-                        </div>
-                        <p>Ноя.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 25%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Дек.</p>
-                    </li>
+                    <li>01.01.2025</li>
+                    <li>12.12.2024</li>
                 </ul>
             </div>
-    
-            <div class="year_balance-wrapper">
-                <p>2024</p>
-                <ul>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 20%;"></div>
-                            <div class="expense" style="height: 30%;"></div>
-                        </div>
-                        <p>Янв.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 50%;"></div>
-                            <div class="expense" style="height: 20%;"></div>
-                        </div>
-                        <p>Фев.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Мар.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 30%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Апр.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 20%;"></div>
-                            <div class="expense" style="height: 55%;"></div>
-                        </div>
-                        <p>Май.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 70%;"></div>
-                            <div class="expense" style="height: 85%;"></div>
-                        </div>
-                        <p>Июн.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Июл.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 45%;"></div>
-                            <div class="expense" style="height: 15%;"></div>
-                        </div>
-                        <p>Авг.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 70%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Сен.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Окт.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 77%;"></div>
-                            <div class="expense" style="height: 35%;"></div>
-                        </div>
-                        <p>Ноя.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 25%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Дек.</p>
-                    </li>
-                </ul>
-            </div>
-    
-            <div class="year_balance-wrapper">
-                <p>2025</p>
-                <ul>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 20%;"></div>
-                            <div class="expense" style="height: 30%;"></div>
-                        </div>
-                        <p>Янв.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 50%;"></div>
-                            <div class="expense" style="height: 20%;"></div>
-                        </div>
-                        <p>Фев.</p>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="income" style="height: 60%;"></div>
-                            <div class="expense" style="height: 25%;"></div>
-                        </div>
-                        <p>Мар.</p>
-                    </li>
-                </ul>
-            </div>
+
+
         </div>
-    </div>
-    
-    <!-- CHIP SECTION -->
-    <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
-    <!-- {{ currentChip }} -->
-    <h2>Структура</h2>
-    <ul>
-        <li><h3>Мешок 1</h3></li>
-        <li><h3>Мешок 2</h3></li>
-    </ul>
 
-    <h2>Проекты</h2>
-    <ul>
-        <li>
-            <h3>Проект 1</h3>
-            <h4>Задачи</h4>
-            <ul>
-                <li><h5>Задача 1</h5></li>
-                <li><h5>Задача 2</h5></li>
-            </ul>
-        </li>
-        <li>
-            <h3>Проект 2</h3>
-            <h4>Задачи</h4>
-            <ul>
-                <li><h5>Задача 1</h5></li>
-                <li><h5>Задача 2</h5></li>
-            </ul>
-        </li>
-    </ul>
-    
-    <h2>Сделки</h2>
-    <ul>
-        <li>Транзакция 1</li>
-        <li>Транзакция 2</li>
-    </ul>
+        <!-- STRUCTURE -->
+        <div 
+            v-if="currentBandParagraph === 'structure'"
+            style="margin-top: 1rem;"
+        >
 
-    <h2>Имущество</h2>
-    <ul>
-        <li>Имущество 1</li>
-        <li>Имущество 2</li>
-    </ul>
+            <h2>Структура</h2>
+            <ul>
+                <li><h3>Мешок 1</h3></li>
+                <li><h3>Мешок 2</h3></li>
+            </ul>
+        </div>
+
+        <!-- PROJECTS -->
+        <div 
+            v-if="currentBandParagraph === 'projects'"
+            style="margin-top: 1.5rem;"    
+        >
+            <!-- <h2>Проекты</h2> -->
+            <ul v-if="project_role_chip_computed?.length > 0" style="list-style: none; margin: 0; padding: 0;">
+
+                <!-- chip tag -->
+                <!-- this band is customer / executor / sharer -->
+                <Chip
+                    style="margin-bottom: 1rem;"
+                    id="project-role-chip"
+                    :tabs="project_role_chip_computed"
+                    :default="currentChipProjectRole"
+                    @changed="changeChipProjectRole"
+                />
+
+                <!-- {{ currentChipProjectRole }} -->
+                <li v-for="el in project_list_computed?.filter(el => {
+
+                    if(currentChipProjectRole.name === 'customer') {
+                        return el.customer?.find(c => c.userType === 'conspirator' && c.userId === +route.params.id)
+                    }
+                    else if (currentChipProjectRole.name === 'executor') {
+                        return el.executor?.find(c => c.userType === 'conspirator' && c.userId === +route.params.id)
+                    }
+                    else if (currentChipProjectRole.name === 'sharers') {
+                        return el.sharers?.find(c => c.userType === 'conspirator' && c.userId === +route.params.id)
+                    }
+                    // return el
+                })" style="margin-left: 1rem; margin-right: 1rem;">
+                    <p>
+                        <b>{{ el.name }}</b> 
+                        <br>
+                        <span style="color: var(--color-global-text_second); font-size: .8rem;">Заказчик: 
+                            <span 
+                                v-for="customer in el.customer"
+                                style="cursor: pointer;"
+                                @click="setSharerRoute(customer.userId, customer.userType)"
+                            >
+                                <!-- {{ customer.userType }} {{ customer.userId }} -->
+                                {{ translateName(customer.userType, customer.userId) }}
+                            </span>
+                        </span> 
+                        <br>
+                        <span style="color: var(--color-global-text_second); font-size: .8rem;">Исполнитель:
+                            <span 
+                                v-for="executor in el.executor" 
+                                style="cursor: pointer;"
+                                @click="setSharerRoute(executor.userId, executor.userType)"
+                            >
+                                <!-- {{ executor.userType }} {{ executor.userId }} -->
+                                {{ translateName(executor.userType, executor.userId) }}
+                            </span>
+                        </span>
+                        <br>
+                        <span style="color: var(--color-global-text_second); font-size: .8rem;">Соучастники проекта: 
+                            <span 
+                                v-for="sharer in el.sharers"
+                                style="cursor: pointer;"
+                                @click="setSharerRoute(sharer.userId, sharer.userType)"
+                            >
+                                <!-- {{ sharer.userType }} {{ sharer.userId }} -->
+                                {{ translateName(sharer.userType, sharer.userId) }}
+                            </span>
+                        </span>
+                        <br>
+                        <span @click="$router.push(`/projects/${el.id}`)" style="font-size: .8rem; cursor: pointer;">Перейти</span>
+                    </p>
+                    
+                    <!-- {{ el }} -->
+                </li>
+            </ul>
+            <ul v-else>
+                <li>Нет проектов</li>
+            </ul>
+        </div>
+
+        <!-- WAREHOUSE -->
+        <div 
+            v-if="currentBandParagraph === 'warehouse'"
+            style="margin-top: 1rem;"
+        >
+            <h2>Имущество</h2>
+            <ul>
+                <li>Имущество 1</li>
+                <li>Имущество 2</li>
+            </ul>
+        </div>
+
 
     <br>
-    {{ band }}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
         
     </Container>
 </template>
@@ -979,6 +1264,7 @@ useHead({
         overflow-x: scroll;
         margin-left: 0;
         margin-right: 0;
+        margin-top: 1.5rem;
         max-width: 100vw!important;
         -ms-overflow-style: none; 
         scrollbar-width: none;
@@ -1016,6 +1302,8 @@ useHead({
     .sharers_container > .sharers-header_wrapper > div > input {
         display: none;
     }
+
+    /* MODAL SHARERS_LIST */
     #sharers_list-btn:checked +.sharers_list-container {
         display: flex;
         position: fixed;
@@ -1047,15 +1335,63 @@ useHead({
         padding: 1rem;
         display: flex;
         flex-direction: column;
-        /* width: 50%; */
+        width: 70%;
     }
+
+    .sharers_list-container > .sharers_list-wrapper > h3 {
+        border-bottom: 1px solid var(--color-btn-bg);
+        margin: 0;
+        padding-bottom: 1rem;
+    }
+
+    .sharers_list-container > .sharers_list-wrapper > ul {
+        padding: 0;
+        margin: 0;
+        margin-top: 1rem;
+    }
+
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item {
+        display: grid;
+        gap: .5rem;
+        grid-template-columns: 1rem 5fr 2fr 30px;
+        align-items: center;
+        list-style: none;
+        color: var(--color-global-text_second);
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding: .2rem 0 .2rem 1rem;
+        transition: all .2s ease-in-out;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item:hover {
+        background-color: var(--color-btn-hover-bg);
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-index {
+
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-name {
+        width: fit-content;
+        transition: all .2s ease-in-out;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-name:hover {
+        color: var(--color-btn-bg);
+        cursor: pointer;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-position {
+        justify-self: flex-end;
+        font-size: .8rem;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-allocation {
+        font-size: .8rem;
+    }
+
+    /*  */
     .sharers_container > .sharers-item_wrapper {
         list-style: none;
         padding: 0;
         margin: 0;
         display: flex;
-        gap: 1rem;
-        margin-top: .5rem;
+        gap: 1.5rem;
+        margin-top: 2rem;
         -ms-overflow-style: none;  /* IE and Edge */
         overflow: scroll; 
         scrollbar-width: none; 
@@ -1071,51 +1407,63 @@ useHead({
         height: 0;
     }
     .sharers_item {
-        border: 1px solid var(--color-operation-type-donation);
-        padding: .5rem 1rem;
+        /* border: 1px solid var(--color-operation-type-donation); */
+        /* padding: .5rem 1rem; */
         border-radius: .5rem;
+        display: flex; 
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
     }
     .sharers_item:hover {
         cursor: pointer;    
-        box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        /* box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2); */
     }
-    .sharers-item_name {
-        text-wrap: nowrap;
-        color: var(--color-btn-bg);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-    .sharers-item_name > .avatar {
-        width: 32px;
-        height: 32px;
+    .sharers_item > .avatar {
+        width: 64px;
+        height: 64px;
         background-color: var(--color-operation-type-donation);
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 100%;
     }
-    .sharers-item_allocation {
+    .sharers-item_name {
+        /* text-wrap: nowrap; */
+        color: var(--color-global-text_second);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: space-between; */
+        /* gap: 1rem; */
+        font-size: .8rem;
+        width: 20px;
+        text-align: center;
+        margin-top: .5rem;
+    }
+    /* .sharers-item_position {
+        text-align: right;
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+        margin-top: .5rem;
+    } */
+    /* .sharers-item_allocation {
         font-size: .8rem;
         text-align: right;
-    }
-    .sharers-item_allocation p span{
+    } */
+    /* .sharers-item_allocation p span{
         color: var(--color-global-text_second);
-    }
-    .sharers-item_position {
-        text-align: right;
-        color: var(--color-global-text_second);
-        font-size: .8rem;
-    }
+    } */
 
     /*  */
     .year_balance-wrapper {
-
+        border-left: .5px solid var(--color-btn-disabled-bg);
+        padding-left: .5rem;
     }
     .year_balance-wrapper > p {
         color: var(--color-global-text_second);
         font-size: .8rem;
+        margin: 0;
     }
     .year_balance-wrapper ul{
         display: flex;
@@ -1176,6 +1524,32 @@ useHead({
         font-size: .8rem;
         margin: 0;
         color: var(--color-global-text_second);
+    }
+
+    /* BAND PARAGRAPH CHIP */
+    .current_band_paragraph {
+        padding-bottom: .5rem;
+        border-bottom: 1px solid var(--color-btn-disabled-bg);
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-top: 1rem;
+    }
+    .current_band_paragraph h2 {
+        font-size: 1rem;
+        font-weight: normal;
+        position: relative;
+    } 
+    .title_active:after {
+        content: '';
+        position: absolute;
+        bottom: -1rem;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--color-wallet-fund-available-wo)
+    }
+    .title_active span {
+        color: var(--color-wallet-fund-available-wo);
     }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {

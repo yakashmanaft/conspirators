@@ -1,24 +1,36 @@
-const { users } = storeToRefs(useUsersStore());
-const { organizations } = storeToRefs(useOrganizationsStore())
+// const { users } = storeToRefs(useUsersStore());
 
-export const translateSharersInProject = (sharerType, sharerID) => {
+// import { usePartnerStore } from "~/stores/partners"
 
-    // USER
-    if(sharerType === 'user') {
-        if(users.value) {
-            let user = users.value.find(user => user.id === sharerID)
-            return `${user.surname} ${user.name[0]}. ${user.middleName[0]}.`
+// const { organizations } = storeToRefs(useOrganizationsStore())
+const { band } = storeToRefs(useBandStore())
+const { partner } = storeToRefs(usePartnerStore())
+
+export const translateName = (sharerType, sharerID) => {
+    if(sharerType && sharerID) {
+        console.log(sharerType, sharerID)
+        // USER
+        if(sharerType === 'user') {
+            if(partner.value) {
+                console.log(partner.value)       
+                let user = partner.value.find(user => user.userId === sharerID)
+                return `${user?.surname} ${user?.name[0]}. ${user?.middleName[0]}.`
+            }
+        } 
+        // COMPANY
+        if(sharerType === 'conspirator'){
+            console.log(band.value)
+            if(band.value) {
+                let company = band.value.find(company => company.id === sharerID)
+                return `${company?.name}`
+            }
+        } 
+        // ПРОЧЕЕ
+        else {
+            return `${sharerType}-${sharerID}`
         }
-    } 
-    // COMPANY
-    else if(sharerType == 'company'){
-        if(organizations.value) {
-            let company = organizations.value.find(company => company.id === sharerID)
-            return `${company.title}`
-        }
-    } 
-    // ПРОЧЕЕ
+    }
     else {
-        return `${sharerType}-${sharerID}`
+        return 'Не указан'
     }
 }
