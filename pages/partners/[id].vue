@@ -579,12 +579,145 @@ const createMyNewBand = () => {
     <!-- data is loaded -->
     <div v-else>
       <div v-if="accessPlug === false">
-        {{ computedPartner }}
-        <!-- My bands -->
-        <div>
-          <h3>Банды</h3>
-          <p style="background-color: green">Отображаем банды, где участвует пользователь</p>
+
+        <div class="avatar_container">
+          <div class="avatar">
+            <p>{{ computedPartner?.surname[0] }}{{ computedPartner?.name[0] }}</p>
+          </div>
+          <div 
+            class="avatar_btn" 
+            @click="$router.push('/account')"
+            v-if="computedPartner.userId === sessionUser.id"
+          >
+            В аккаунт
+          </div>
         </div>
+
+        <div class="name_container">
+
+          <h2 v-if="computedPartner.name || computedPartner.surname">{{ computedPartner.name }} {{ computedPartner.surname }}</h2>
+        </div>
+
+        <div class="action-container">
+          <ul>
+            <li v-if="computedPartner.email">Письмо</li>
+            <li v-if="computedPartner.phone">Вызов</li>
+            <li>Чат</li>
+          </ul>
+        </div>
+
+        <div class="phone-container">
+
+          <div v-if="computedPartner.phone">
+
+            <div class="phone_wrapper">
+              <div class="phone_btn">
+                <div class="phone_btn-icon">
+                  <!-- <Icon
+                    size="24px"
+                    name="material-symbols-light:call"
+  
+                  /> -->
+                  Сотовый
+                </div>
+                <p style="margin: 0;">
+                  {{ computedPartner.phone }}
+                </p>
+              </div>
+              <div class="phone_social-btns">
+                WhatsApp
+                Telegram
+              </div>
+            </div>
+
+            <div class="phone_wrapper">
+              <div class="phone_btn">
+                <div class="phone_btn-icon">
+                  <!-- <Icon
+                    size="24px"
+                    name="material-symbols-light:call"
+  
+                  /> -->
+                  Сотовый
+                </div>
+                <p style="margin: 0;">
+                  {{ computedPartner.phone }}
+                </p>
+              </div>
+              <div class="phone_social-btns">
+                WhatsApp
+                Telegram
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="phone_wrapper">
+            Телефон не указзан
+          </div>
+        </div>
+
+        <div class="email-container">
+
+          <div v-if="computedPartner.email" >
+            <div class="email_wrapper">
+              <div class="email_btn">
+                <div class="email_btn-icon">
+                  <Icon
+                    size="24px"
+                    name="material-symbols-light:mail"
+                    color="var(--color-global-text)"
+                  />
+                </div>
+                <p style="margin: 0; width: fit-content;">
+                  {{ computedPartner.email }}
+                </p>
+              </div>
+            </div>
+            <div class="email_wrapper">
+              <div class="email_btn">
+                <div class="email_btn-icon">
+                  <Icon
+                    size="24px"
+                    name="material-symbols-light:mail"
+  
+                  />
+                </div>
+                <p style="margin: 0;">
+                  {{ computedPartner.email }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="email_wrapper">
+            Почта не указана
+          </div>
+        </div>
+        
+        <div class="band_container">
+
+          <!-- V IF -->
+          <div v-if="computedPartner.email">
+            <div class="band_wrapper">
+              Банк ЕС
+            </div>
+            <div class="band_wrapper">
+              Zipmarket.ru
+            </div>
+            <div class="band_wrapper">
+              Conspirators
+            </div>
+          </div>
+
+          <!-- V ELSE -->
+          <div v-else class="band_wrapper">
+            Кооперативы не указаны
+          </div>
+        </div>
+
+
+
+        <!-- {{ computedPartner }} -->
       </div>
   
       
@@ -800,10 +933,45 @@ const createMyNewBand = () => {
 </template>
 
 <style scoped>
+
+/*  */
 .link:hover {
   color: var(--bs-primary);
   cursor: pointer;
 }
+
+/* 
+ */
+.avatar_container {
+
+}
+
+.avatar {
+  margin: 16px auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  height: 150px;
+  background: var(--color-global-text_second);
+  aspect-ratio:  1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid black; */
+}
+
+.avatar p {
+  margin: 0;
+  color: var(--color-btn-text);
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+
+/* 
+ */
+
+
+/* 
+ */
 .page-title {
   display: flex;
   align-items: center;
@@ -1034,6 +1202,156 @@ const createMyNewBand = () => {
   .org_btn-new-band svg {
     color: var(--bs-body-bg) !important;
   }
+  /* 
+   */
+  .avatar_container {
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .avatar_btn:hover {
+    cursor: pointer;
+  }
+
+  /* 
+   */
+  .name_container {
+    margin: 0 auto;
+    margin-top: 1rem;
+    width: fit-content;
+  }
+  
+  /* 
+   */
+  .action-container {
+    margin: 0 auto;
+  }
+  .action-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top :1rem;
+  }
+  .action-container ul li {
+    border-radius: 1rem;
+    border: 1px solid var(--color-urgency-low-wo);
+    color: var(--color-urgency-low-wo);
+    /* padding: 1rem; */
+    padding: 2px 12px;
+  }
+  .action-container ul li:hover {
+    cursor: pointer;
+    /* box-shadow: var(--hover-shadow); */
+    background-color: var(--color-urgency-low-wo);
+    color: var(--color-btn-text);
+  }
+
+  /* 
+   */
+  .phone-container {
+    margin-top: 2rem;
+    border-radius: 1rem;
+    background-color: var(--color-operation-type-donation);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 1rem;
+  }
+  .phone-container div {
+  }
+  .phone_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .phone_wrapper:first-child {
+    margin-bottom: 1rem;
+  }
+  .phone_wrapper:not(:first-child) {
+    border-top: 1px solid black;
+    padding-top: 1rem;
+  }
+  /* .phone_wrapper:not(first-child) {
+    margin-top: 1rem;
+  } */
+  .phone_btn  {
+    /* display: flex;
+    align-items: center; */
+  }
+  
+  .phone_btn-icon {
+    font-size: .8rem;
+    padding: 0;
+  }
+  .phone_btn {
+
+  }
+  .phone_social-btns {
+    font-size: .8rem;
+  }
+
+  /* 
+   */
+  .email-container {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    /* display: flex; */
+  }
+  .email-container div {
+    /* display: flex;  */
+    /* flex-direction: column;  */
+    /* width: 100%; */
+    gap: 1rem;
+  }
+  .email_wrapper {
+    border-radius: 1rem;
+    background-color: var(--color-orange-standart);
+    padding: 1rem;
+    /* width: 100%; */
+    margin-top: 1rem;
+  }
+  .email_btn {
+    display: flex;
+    /* background-color: red; */
+  }
+  .email_btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: green; */
+  }
+
+  /* 
+   */
+  .band_container {
+    margin-top: 1rem;
+    background-color: var(--color-btn-disabled-bg);
+    color: var(--color-global-text);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  .band_wrapper {
+   border-bottom: 1px solid var(--color-btn-disabled-text);
+   padding-bottom: 1rem;
+   padding-top: 1rem;
+  }
+  .band_wrapper:first-child {
+    padding-top: unset;
+  }
+  .band_wrapper:last-child {
+   border-bottom: unset;
+   padding-bottom: unset;
+   /* padding-bottom: 1rem;
+   padding-top: 1rem; */
+  }
+  
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .page-title {
@@ -1042,5 +1360,12 @@ const createMyNewBand = () => {
   .org_container {
     grid-template-columns: repeat(3, 1fr);
   }
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) {
+
 }
 </style>

@@ -58,4 +58,9 @@
     
     /* other */
     --color-error:  rgba(226, 17, 17, 0.9);
+
+    --color-orange-standart: rgb(255, 165, 0);
+
+    /* SHADOWS */
+    --hover-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
 }

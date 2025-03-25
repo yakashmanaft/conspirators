@@ -477,21 +477,30 @@
               По запросу ничего не найдено
             </div>
           </div>
-
+          <!-- {{ sessionUser }} -->
           <!-- Список пользователей -->
           <div
             class="list_item"
+            :class="partner.userId === sessionUser.id ? 'my-profile_wrapper ' : 'other-profile_wrapper'"
             v-for="(partner, index) in computedPartners"
             :key="index"
+            @click="$router.push(`/partners/${partner.id}`)"  
           >
-            <!--  -->       
             <div>
+              <!-- AVATAR -->       
+              <div :class="partner.userId === sessionUser.id ? 'avatar' : 'avatar-none'">
+                <Icon
+                    size="100%"
+                    color="var(--color-btn-text)"
+                    name="material-symbols-light:person-rounded"
+                />
+              </div>
               <!-- ФИО -->
               <div class="item_name">
                 <p
                   class="link"
                   style="margin: 0"
-                  @click="$router.push(`/partners/${partner.id}`)"
+                  
                 >
                   <span style="font-weight: bold">{{ partner.surname }}</span>
                   {{ partner.name }} {{ partner.middleName }}
@@ -845,12 +854,12 @@ const {
       })
       .map((partner) => {
         return {
-          id: partner.id,
-          email: partner.email,
+          id: partner.id, 
           name: partner.name,
           middleName: partner.middleName,
           surname: partner.surname,
           phone: partner.phone,
+          userId: partner.userId
         };
       });
   },
@@ -1399,13 +1408,97 @@ useHead({
     margin-left: 1rem;
     margin-right: 1rem;
   }
+    /*  
+  */
+  .my-profile_wrapper {
+    /* background-color: red; */
+  }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  /* 
+   */
+  .partners-list_wrapper {
+    position: relative;
+    /* margin-top: 2rem; */
+    /* padding-top: 150px; */
+    /* padding-top: v-bind("computedPartners.length > 0 ? '160px' : 'unset'") */
+
+  }
+  .my-profile_wrapper {
+    /* background-color: blue; */
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+    /* padding: 1rem; */
+    height: 150px;
+    padding: 1rem 0;
+    padding-left: 1rem;
+    border-bottom: unset; 
+  }
+  .avatar {
+    width: 150px;
+    min-height: 100%;
+    border-radius: 50%;
+    background-color: var(--color-global-text_second);
+  }
+  .avatar-none {
+    display: none;
+  }
+  .my-profile_wrapper:hover {
+    /* background-color: unset; */
+  }
+  .my-profile_wrapper > div {
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    /* padding: 1rem; */
+  }
+  /* .my-profile_wrapper > div:before {
+    content: 'Моя карточка';
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 150px; 
+    height: 150px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    background: var(--color-global-text_second);
+  } */
+  .my-profile_wrapper > div > .item_name > p {
+    /* padding-left: 10rem; */
+    /* background-color: green; */
+    /* height: 150px; */
+    /* line-height: 150px; */
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .my-profile_wrapper > div > .item_name > p > span {
+    text-transform: uppercase;
+  }
+  .other-profile_wrapper {
+    /* margin-top: 20rem; */
+    /* background-color: red; */
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
   .toggle-title {
     margin-top: 1rem;
   }
   .list_item {
     border: unset;
   }
+  /*  
+  */
+  .my-profile_wrapper {
+    background-color: red;
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) {
+
 }
 </style>

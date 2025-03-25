@@ -591,7 +591,7 @@ a:visited {
   top: 0;
   width: 100%;
   /* background-color: var(--bs-primary-bg-subtle);  */
-  box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2); */
   background-color: white;
   z-index: 99;
 }

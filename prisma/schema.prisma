@@ -85,6 +85,7 @@ model Partner {
   middleName        String?             @db.VarChar(60)
   surname           String?             @db.VarChar(60)
   phone             String?             @db.VarChar(15)
+  email             String?             @db.VarChar(60)
   sharers           Json?
   band              Band                @relation(fields: [bandId], references: [id])
   bandId            Int                 @default(0)
