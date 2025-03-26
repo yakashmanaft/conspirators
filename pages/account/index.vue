@@ -254,28 +254,88 @@
         <div>
           <h3>Склад</h3>
           <p style="background-color: blue">Здесь показываем имеющиеся в собственности предметы (например инструмент)</p>
+          <ul class="warehouse-list_container" v-if="warehouse?.length">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <p>Мои / Отвечаю</p>
+              <p>999 999 999.99</p>
+            </div>
+            <li class="warehouse-item_wrapper" style="font-weight: bold;">
+              <div></div>
+              <div>Наименование</div>
+              <div>Кол-во</div>
+              <div>Местонахождение</div>
+              <div>owner</div>
+              <div>responsible</div>
+              <div>Цена закупа</div>
+            </li>
+            <li class="warehouse-item_wrapper" v-for="(item, i) in warehouse">
+              <div>
+                {{ i + 1 }}
+              </div>
+              <div>
+                {{ item.title }}
+              </div>
+              <div>
+                {{ item.qty }}
+                {{ item.measure }}
+              </div>
+              <div>
+                {{ translateCurrentLocation(item.locationId) }}
+              </div>
+              <div>
+                {{ item.ownerType }} {{ item.ownerID }}
+              </div>
+              <div>
+                {{ item.responsibleType }} {{ item.responsibleID }}
+              </div>
+              <div>
+                {{ item.qty }}{{ item.measure }} * {{ item.price }} = {{ item.qty * +item.price }}
+              </div>
+              <!-- {{ item }} -->
+            </li>
+          </ul>
+          <ul v-else>
+            <li>Предметы не указаны</li>
+          </ul>
         </div>
 
         <!-- My bands -->
         <div>
           <h3>Банды</h3>
           <p style="background-color: green">Отображаем банды, где участвует пользователь</p>
+
+          <ul v-if="band.length">
+            <li v-for="(band_item, j) in band">
+              {{ band_item.name }} | {{ band_item?.sharers?.length }}{{ set_measure(band_item?.sharers?.length) }}  | CAP:999 999 999.99 RUB
+              <div v-for="sharer in band_item?.sharers.filter(el => el.userType === 'user' && el.userId === props.auth_user_profile.userId)">{{ sharer.position }} {{ sharer.allocation }}</div>
+            </li>
+          </ul>
+          <ul v-else>
+            <li>В бандах не состоите</li>
+          </ul>
         </div>
       </div>
       <!-- список locations -->
       <div style="margin-top: 2rem">
         <h3>Locations</h3>
 
-        <table class="table">
+        <table class="table" v-if="computed_locations?.length">
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">title</th>
               <th scope="col">type</th>
               <th scope="col">address</th>
-              <th scope="col">Собственник</th>
             </tr>
           </thead>
+          <tbody>
+            <tr v-for="(location, index) in computed_locations">
+              <td scope="col">{{ index + 1 }}</td>
+              <td scope="col">{{ location.title }}</td>
+              <td scope="col">{{ location.type }}</td>
+              <td scope="col">{{ location.address }}</td>
+            </tr>
+          </tbody>
           <!-- <tbody>
             <tr v-for="(location, index) in locations" :key="index">
               <td scope="col">{{ index + 1 }}</td>
@@ -293,6 +353,10 @@
             </tr>
           </tbody> -->
         </table>
+
+        <ul v-else>
+          <li>Места не указаны</li>
+        </ul>
       </div>
       <!-- список видов работ -->
       <div style="margin-top: 2rem">
@@ -381,6 +445,15 @@ const pending = ref(true)
 // );
 // const refreshOrganizations = () => refreshNuxtData("organizations");
 
+// COMPUTED
+const computed_locations = computed(() => {
+  return locations.value?.filter(el => {
+    if(el.ownerType === 'user') {
+      return el.ownerID === props.auth_user_profile.userId
+    }
+  })
+})
+
 onMounted(async () => {
   // refresh();
   // data from store
@@ -468,6 +541,37 @@ const clearModalInputs = (location: any) => {
 //   }
 // };
 
+// HELPERS
+// translateCurrentLocation
+const translateCurrentLocation = (locationID: number) => {
+  if(locationID && locations) {
+
+    let location = locations.value.find(el => el.id === locationID)
+
+    return location.title
+
+  } else {
+    return 'Не укуказано'
+  }
+}
+
+// SET
+//= set_measure
+const set_measure = (number) => {
+  console.log(number % 10)
+
+  if(number % 10 === 1) {
+    return 'участник'
+  }
+  else if (number % 10 >= 2 && number % 10 < 5) {
+    return 'участника'
+  } 
+  else {
+    return 'участников'
+  }
+}
+ 
+
 // Check before submit creating new location
 watch(location.value, () => {
   if (location.value.title && location.value.type && location.value.address) {
@@ -478,10 +582,48 @@ watch(location.value, () => {
 });
 
 // DB
+//
+//= USER INFO
 const { data: user_info } = useFetch('/api/partnerGuarded/partner', {
   lazy: false,
   transform: (user_info) => {
     return user_info.find(el => el.userId === props.auth_user_profile.userId)
+  }
+})
+//
+//= LOCATIONS
+const { data: locations } = useFetch("/api/locations/locations", {
+  lazy: false,
+  transform: (locations) => {
+    // return locations.filter(el => {
+    //   if(el.ownerType === 'user') {
+    //     return el.ownerID === props.auth_user_profile.userId
+    //   }
+    // })
+    return locations
+  }
+})
+//= WAREHOUSE
+const { data: warehouse } = useFetch("/api/warehouse/item", {
+  lazy: false,
+  transform: (warehouse) => {
+    return warehouse.filter(el => (el.ownerType === 'user' && el.ownerID === props.auth_user_profile.userId) || (el.responsibleType === 'user' && el.responsibleID === props.auth_user_profile.userId))
+  }
+})
+//= BAND
+const { data: band } = useFetch("/api/band/band", {
+  lazy: false,
+  transform: (band) => {
+
+    return band.filter(item => {
+      if(item.sharers && props.auth_user_profile.userId) {
+        let sharers = Object.values(item.sharers)
+
+        if(sharers.find(sharer => sharer.userType === 'user' && sharer.userId === props.auth_user_profile.userId)) {
+          return item
+        }
+      }
+    })
   }
 })
 
@@ -492,9 +634,33 @@ const { data: user_info } = useFetch('/api/partnerGuarded/partner', {
   cursor: pointer;
 }
 
+@media screen and (min-width: 576px) {
+
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .warehouse-list_container {
+    /* background-color: red; */
+    list-style: none;
+    padding: 0;
+  }
+  .warehouse-item_wrapper {
+    display: grid;
+    grid-template-columns: 10px 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+}
 @media screen and (max-width: 767px)  {
   .show-max-767 {
       display: none;
   }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) {
+
 }
 </style>

@@ -140,7 +140,7 @@ useHead({
         {
             id: 2,
             name: 'structure',
-            title: 'Структура'
+            title: 'Кооперативы'
         },
         {
             id: 3,
@@ -155,7 +155,7 @@ useHead({
         {
             id: 4,
             name: 'warehouse',
-            title: 'Имущество'
+            title: 'Склад'
         }
     ])
     //= current bad paragraph
@@ -246,8 +246,31 @@ useHead({
     const band_list_computed = computed(() => {
 
 
-        return band_list.value
+        return band_list.value?.filter(item => {
+            if(item.sharers && route.params.id) {
+                let sharers = Object.values(item.sharers)
+
+                if(sharers.find(sharer => sharer.userType === 'conspirator' && sharer.userId === +route.params.id)) {
+                    return item
+                }
+            }
+        })
     })
+    //=m y_band_list_computed
+    const my_band_list_computed = computed(() => {
+
+        return band_list.value?.filter(item => {
+            if(item.sharers && route.params.id) {
+                let sharers = Object.values(item.sharers)
+
+                if(sharers.find(sharer => sharer.userType === 'conspirator' && sharer.userId === +route.params.id)) {
+
+                    return item
+                }
+            }
+        })
+    })
+
     // partner_list_computed
     const partner_list_computed = computed(() => {
         
@@ -278,6 +301,7 @@ useHead({
         }
     }
 
+    // SET
     //= set route eto sharer
     const setSharerRoute = (userID:number, userType: string) => {
 
@@ -305,6 +329,21 @@ useHead({
             }
         } else {
             alert('Куда ты хочешь? Некуда же...')
+        }
+    }
+
+    //= set_measure
+    const set_measure = (number) => {
+        console.log(number % 10)
+
+        if(number % 10 === 1) {
+            return 'участник'
+        }
+        else if (number % 10 >= 2 && number % 10 < 5) {
+            return 'участника'
+        } 
+        else {
+            return 'участников'
         }
     }
 
@@ -1020,11 +1059,18 @@ useHead({
             v-if="currentBandParagraph === 'structure'"
             style="margin-top: 1rem;"
         >
-
-            <h2>Структура</h2>
-            <ul>
-                <li><h3>Мешок 1</h3></li>
-                <li><h3>Мешок 2</h3></li>
+            <ul v-if="my_band_list_computed.length">
+                <li v-for="(item, j) in my_band_list_computed">
+                    <!-- <h3>Мешок 1</h3> -->
+                    <p>{{ item.name }} | {{ item.sharers.length }} {{ set_measure(item.sharers.length) }} | CAP: 999 999 999.99 RUB |
+                        <div v-for="sharer in item?.sharers.filter(el => el.userType === 'conspirator' && el.userId === +route.params.id)">
+                            {{ sharer.position }} {{ sharer.allocation }}
+                        </div>
+                    </p>
+                </li>
+            </ul>
+            <ul v-else>
+                <li>Не состоит в бандах</li>
             </ul>
         </div>
 

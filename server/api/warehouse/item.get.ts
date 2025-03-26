@@ -4,5 +4,5 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async () => {
     // ... Do whatever you want here
 
-   return await prisma.warehouseItems.findMany()
+   return await prisma.warehouse.findMany()
   })

@@ -633,11 +633,6 @@ const createMyNewBand = () => {
             <div class="phone_wrapper">
               <div class="phone_btn">
                 <div class="phone_btn-icon">
-                  <!-- <Icon
-                    size="24px"
-                    name="material-symbols-light:call"
-  
-                  /> -->
                   Сотовый
                 </div>
                 <p style="margin: 0;">
@@ -1267,14 +1262,22 @@ const createMyNewBand = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  .phone_wrapper:first-child {
-    margin-bottom: 1rem;
-  }
-  .phone_wrapper:not(:first-child) {
-    border-top: 1px solid black;
+    border-bottom: 1px solid var(--color-global-text);
+    padding-bottom: 1rem;
     padding-top: 1rem;
   }
+  .phone_wrapper:first-child {
+    /* margin-bottom: 1rem; */
+    padding-top: unset;
+  }
+  .phone_wrapper:last-child {
+    border-bottom: unset;
+    padding-bottom: unset;
+  }
+  /* .phone_wrapper:not(:first-child) {
+    border-top: 1px solid black;
+    padding-top: 1rem;
+  } */
   /* .phone_wrapper:not(first-child) {
     margin-top: 1rem;
   } */
