@@ -248,6 +248,11 @@
         <div>
           <h3>Доходы / Расходы</h3>
           <p style="background-color: orangered;">График по доходам / расходам как в бандах</p>
+          <div class="graph_container">
+                <ChartTest
+                  :chart_type="'area'"
+                />
+            </div>
         </div>
 
         <!-- WAREHOUSE -->
@@ -379,6 +384,7 @@ import { BreadCrumbs } from "@/components/breadcrumbs";
 
 // components
 // import { DevModePlug } from '@/components/plug_dev_mode'
+import { ChartTest } from "~/components/chart";
 
 // utils
 import { H3Error } from "h3";

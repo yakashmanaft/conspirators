@@ -2,10 +2,12 @@
   "name": "conspirators",
   "private": true,
   "type": "module",
-  "description":"Сервис для повышения финансовой грамотности средствами автоматизации и web",
-  "keywords": ["уроки финансовой грамотности, повышение эффективности, развитие"],
+  "description": "Сервис для повышения финансовой грамотности средствами автоматизации и web",
+  "keywords": [
+    "уроки финансовой грамотности, повышение эффективности, развитие"
+  ],
   "author": "conspirators",
-  "license":"",
+  "license": "",
   "overrides": {
     "vue": "^3.4.19"
   },
@@ -24,6 +26,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@prisma/client": "^5.10.1",
     "@types/node-telegram-bot-api": "^0.64.7",
+    "apexcharts": "^4.5.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
@@ -41,7 +44,8 @@
     "uuid": "^9.0.1",
     "vanilla-calendar-pro": "^2.9.10",
     "vue": "^3.4.19",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue3-apexcharts": "^1.8.0"
   },
   "devDependencies": {
     "@kevinmarrec/nuxt-pwa": "^0.17.0",

@@ -7,6 +7,8 @@ import { BreadCrumbs } from '~/components/breadcrumbs';
 import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
 
+import { ChartTest } from '~/components/chart';
+
 // utils
 import { translateName } from '@/utils/translators';
 
@@ -538,7 +540,7 @@ useHead({
                 </div>
             </div>
 
-            
+
             <div id="capitalization-graph" class="capitalization-container">
                 <div class="year_balance-wrapper">
                     <ul>
@@ -1054,7 +1056,7 @@ useHead({
 
         </div>
 
-        <!-- STRUCTURE -->
+        <!-- КООПЕРАТИВЫ -->
         <div 
             v-if="currentBandParagraph === 'structure'"
             style="margin-top: 1rem;"

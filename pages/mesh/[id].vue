@@ -6,7 +6,8 @@ import {Container} from '@/shared/container'
 import { BreadCrumbs } from '~/components/breadcrumbs';
 import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
-import { AccessDeniedPlug } from '~/components/plug_access_denied'
+import { AccessDeniedPlug } from '~/components/plug_access_denied';
+// import { ChartTest } from '@/components/chart'
 
 useHead({
         title: "Available mesh",
@@ -304,8 +305,40 @@ useHead({
             <!-- CHIP SECTION -->
              <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
             <!-- {{ currentChip }} -->
-            <h3>Структура / Сделки</h3>
-    
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <h3>Структура / Сделки</h3>
+                <div>
+                    Выбрать период
+                </div>
+            </div>
+            
+            <!--  -->
+            <div class="graph_container">
+
+                <!--  -->
+                <div style="background-color: gray">
+                    <!-- LEGEND -->
+                    <h4>Категория доходов</h4>
+                    <ul>
+                        <li>Дивидендны
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </li>
+                        <li>Проекты
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--  -->
+                <div style="background-color: red;">
+                    Graphic
+                </div>
+            </div>
+
         </div>
 
         
@@ -351,7 +384,11 @@ useHead({
 
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-
+    .graph_container {
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+    }
 }
 @media screen and (min-width: 1200px) {
 
