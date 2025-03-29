@@ -9,7 +9,7 @@ import { Chip } from '~/components/chip';
 import { AccessDeniedPlug } from '~/components/plug_access_denied'
 
 useHead({
-        title: "brokerage mesh",
+        title: "cfa mesh",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -222,11 +222,11 @@ useHead({
             return mesh
         }
     })
-    const { data: brokerage } = useFetch("/api/funds/brokerage", {
+    const { data: cfa } = useFetch("/api/funds/cfa", {
         lazy: false,
-        transform: (brokerage) => {
+        transform: (cfa) => {
             // accessPlug.value = true
-            return brokerage.filter(el => el.id === +route.params.id)[0]
+            return cfa.filter(el => el.id === +route.params.id)[0]
             // let current_loan = loan.filter(el => el.id === +route.params.id)
             
             // if(current_loan[0].ownerType === 'user' || current_loan[0].loanerType === 'user') {
@@ -307,80 +307,48 @@ useHead({
         <AccessDeniedPlug v-if="accessPlug === true"/>
 
         <!-- {{props.auth_user_profile}} -->
-        <div v-if="brokerage && !accessPlug">
+        <div v-if="cfa && !accessPlug">
 
             <div class="title-section_container">
                 <BreadCrumbs class="show-max-767"/>
-                <h1 style="font-weight: bold; font-size: 42px;">
-                    {{ brokerage.name }} <span style="font-size: .8rem; font-weight: normal; cursor: pointer">(Изм.)</span>
+                <h1 style="">
+                    <span style="font-weight: bold; font-size: 42px;">Цифровые активы в {{ cfa.broker_tag }}</span>
+                    <span style="color: var(--color-global-text_second)">{{ cfa.name }}</span>
                 </h1>
-            </div>
-            <div style="width: fit-content; border-radius: 1rem; margin-top: 1rem; margin-left: 1rem;">
-                <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">999,999,999.00 RUB</p>
-                <p style="margin: 0; color: var(--color-global-text_second);">+999 999.99 RUB</p>
             </div>
 
             <div>
-                <ul>
-                    <li>Операции</li>
-                    <li>Пополнить</li>
-                    <li>Аналитика</li>
-                </ul>
+                <p>BALANCE: 999,999,999.00 RUB</p>
+                <p>Вложено: 999 999.99</p>
+                <p>
+                    <span>+100.00 RUB</span>
+                </p>
             </div>
 
-            <div style="margin-top: 1rem;">
+            <div>
+                <p style="margin: 0;">Инвесторы:</p>
                 <ul>
-                    <li>
-                        <h3 style="margin: 0;">Акции</h3>
-                        <ul>
-                            <li>РусГидро</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <h3 style="margin: 0;">Облигации</h3>
-                        <ul>
-                            <li>АФК Система выппуск 7</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <h3 style="margin: 0;">Фонды</h3>
-                    </li>
-                    <li>
-                        <h3 style="margin: 0;">Валюта и металлы</h3>
+                    <li v-for="investor in cfa.invested_mash" @click="link_to_investor(investor.id)">
+                        {{translate_invested_meshes(investor.id)}} 0.00%
                     </li>
                 </ul>
             </div>
 
-            <div class="about_container">
+            <div>
+                <p>{{ cfa.broker_tag }}</p>
+            </div>
 
-                <div class="about_wrapper">
-                    <p style="margin: 0;">Инвесторы:</p>
-                    <ul>
-                        <li v-for="investor in brokerage.invested_mash" 
-                        @click="link_to_investor(investor.id)">
-                            {{translate_invested_meshes(investor.id)}} 0.00%
-                        </li>
-                    </ul>
-                </div>
-                <div class="about_wrapper">
-                    <p>{{ brokerage.broker_tag }}</p>
-                </div>
-
-                <div class="about_wrapper">
-                    <p style="margin: 0;">Тарифы</p>
-                    <ul>
-                        <li>fee: {{ brokerage.fee }}</li>
-                        <li>tax: {{ brokerage.tax }}</li>
-                        <li>Тариф у брокера: Инвестор</li>
-                    </ul>
-                </div>
+            <div>
+                <p style="margin: 0;">Тарифы</p>
+                <ul>
+                    <li>fee: {{ cfa.fee }}</li>
+                    <li>tax: {{ cfa.tax }}</li>
+                    <li>Тариф у брокера: Инвестор</li>
+                </ul>
             </div>
 
 
-
-
-
-            {{ brokerage }}
+            {{ cfa }}
             <!-- <div  class="title-section_container" style="margin-bottom: 0.5rem;">
                 <BreadCrumbs class="show-max-767"/>
     
@@ -430,7 +398,7 @@ useHead({
 
             <!-- Брокерские счета в мешке -->
             <!-- <p>Брокерские счета</p>
-            <div v-for="el in brokerage" style="border: 1px solid gray; margin: 1rem;">
+            <div v-for="el in cfa" style="border: 1px solid gray; margin: 1rem;">
                 <ul>
                     <li>{{ el.name }}</li>
                     <li>creted_at: {{ el.created_at }}</li>
@@ -520,11 +488,6 @@ useHead({
     margin-top: 1rem;
 }
 
-.title-section_container {
-    margin-left: 1rem;
-    margin-right: 1rem;
-}
-
 .title-section_container h1{
     /* position: relative;
     padding: .5rem;
@@ -563,32 +526,12 @@ useHead({
         /* padding-left: 1rem; */
         /* padding-right: 1rem; */
     }
-    /* 
-     */
-     .about_container {
-        /* background-color: red; */
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-        margin-left: 1rem;
-    }
-     .about_wrapper {
-        border: 1px solid var(--color-global-text_second);
-        background-color: var(--color-wallet-fund-invested);
-        border-radius: 1rem;
-        padding: 1rem;
-     }
 }
-@media screen and (min-width: 768px) and (max-width: 991px)  {
+@media screen and (min-width: 768px) {
     .content-setion_container {
         /* padding-left: unset; */
         /* padding-right: unset; */
     }
-}
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-
-}
-@media screen and (min-width: 1200px) {
 
 }
 </style>

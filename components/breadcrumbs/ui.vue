@@ -92,6 +92,9 @@ const translateCrumb = (str: string) => {
       // BROKERAGE
       case "brokerage":
           return 'Кошелек'
+      // CFA
+      case "cfa":
+          return 'Кошелек'
       // CRYPTO
       case "crypto":
           return 'Кошелек'
@@ -115,6 +118,9 @@ const translateEndPoint = (str: string) => {
     // brokerage
     case "brokerage":
       return `Брокерский счет`
+    // cfa
+    case "cfa":
+      return 'Цифровые активы'
     // crypto
     case 'crypto':
       return `Счет в крипте`
@@ -154,6 +160,9 @@ const compileRoute = (str: string) => {
       // BROKERAGE
       case "brokerage":
           return 'wallet'
+      // CFA
+      case "cfa":
+          return "wallet"
       // CRYPTO
       case "crypto":
           return 'wallet'

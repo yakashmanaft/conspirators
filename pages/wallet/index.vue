@@ -1857,7 +1857,7 @@ const changeChipAffiliation = (obj: any) => {
 
 // SET
 //= set_mesh_link_by_tag
-const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
+const set_mesh_link_by_tag = (mesh_type: string, mesh_id: number, mesh_tag: string) => {
   switch (mesh_tag) {
     case 'available':
       router.push(`mesh/${mesh_id}`)
@@ -1868,21 +1868,51 @@ const set_mesh_link_by_tag = (mesh_id: number, mesh_tag: string) => {
     case 'debt_loan':
       router.push(`loan/${mesh_id}`)
       break
-    case 'invested_stock_market':
-      let brokerage_id = 0
+    case 'invested_stock':
 
-      brokerage.value?.forEach(item => {
-        if(item.invested_mash) {
-          if(item.invested_mash.find(el => el.id === mesh_id)) {
-            brokerage_id = item.id
+      if(mesh_type === 'cfa_account') {
+        // alert('Мешок не привязан к CFA-кошельку')
+
+        let cfa_account_id = 0
+
+        cfa.value?.forEach(item => {
+          if(item.invested_mash){
+            if(item.invested_mash.find(el => el.id === mesh_id)) {
+              cfa_account_id = item.id
+            }
           }
-        }
-      })
+        })
 
-      if(brokerage_id === 0) {
-        alert('Мешок не привязан к брокерскому счету')
-      } else {
-        router.push(`brokerage/${brokerage_id}`)
+        if(cfa_account_id === 0) {
+          alert('Привязанный cfa кошелек неверный')
+        } else {
+          router.push(`cfa/${cfa_account_id}`)
+        }
+      } 
+      else if (mesh_type === 'brokerage_account') {
+
+        let brokerage_id = 0
+  
+  
+        brokerage.value?.forEach(item => {
+          if(item.invested_mash) {
+            if(item.invested_mash.find(el => el.id === mesh_id)) {
+              brokerage_id = item.id
+            }
+          }
+        })
+  
+        if(brokerage_id === 0) {
+          alert('Привязанный брокерский счет неверный')
+        } else {
+          router.push(`brokerage/${brokerage_id}`)
+        }
+      } 
+      else if (mesh_type === 'mutual_fund') {
+        alert('Мешок не подвзан к ПИФу')
+      } 
+      else {
+        alert('А сбой какой-то... напишите нам, приложите скрин')
       }
       break
     case 'invested_crypto':
@@ -2119,7 +2149,7 @@ const setChoosenWalletSectionColor = (tag: any) => {
       }
     } 
     // INVESTED STOCK
-    if(tag === 'invested_stock_market') {
+    if(tag === 'invested_stock') {
       if(choosenChip_section.value === tag) {
         // color = `var(--color-wallet-fund-invested-wo)`
         color = `var(--color-wallet-fund-invested)`
@@ -2315,6 +2345,13 @@ const {data: brokerage} = useFetch("/api/funds/brokerage", {
   lazy: false,
   transform: (brokerage) => {
     return brokerage
+  }
+})
+// cfa
+const { data: cfa } = useFetch("/api/funds/cfa", {
+  lazy: false,
+  transform: (cfa) => {
+    return cfa
   }
 })
 // crypto_mesh
@@ -2586,7 +2623,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   class="mesh_wrapper"
                   style="cursor: pointer;"
                   v-for="item in meshes_computed.filter(el => el.type === type)"
-                  @click="set_mesh_link_by_tag(item.id, item.tag)"
+                  @click="set_mesh_link_by_tag(item.type, item.id, item.tag)"
                 > 
                   <div
                     class="mesh_broker-sign"

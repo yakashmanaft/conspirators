@@ -281,6 +281,14 @@ const translateRoutePath = (path: string) => {
     let id = path.substr(startIndex + 1);
     return `Брокерский счет`;
   }
+  // BROKERAGE
+  else if (path === "/саф") {
+    return "Цифровые активы"
+  } else if (path.includes("/cfa/")) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Цифровые активы`;
+  }
   // WAREHOUSE
   else if (path === "/warehouse") {
     return "ТМЦ";
