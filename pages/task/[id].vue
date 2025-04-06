@@ -52,7 +52,7 @@ import { calc_working_hours } from '@/helpers/calc_working_hours'
     const accomplishmentParagraphComputed = computed(() => {
 
         if(task_ledger.value) {
-            let result = ['all', ...new Set([...task_ledger.value.map((obj: any) => {
+            let result = [...new Set([...task_ledger.value.map((obj: any) => {
                 return obj.status
             })])]
             return result.map(el => {
@@ -62,7 +62,7 @@ import { calc_working_hours } from '@/helpers/calc_working_hours'
             })
         }
     })
-    const currentAccomplishmentParagraph = ref('all')
+    const currentAccomplishmentParagraph = ref('waiting')
 
     // CLICK
     const addTaskLedgerItem = () => {
@@ -108,13 +108,38 @@ import { calc_working_hours } from '@/helpers/calc_working_hours'
             if(item.status === currentAccomplishmentParagraph.value) {
                 sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
             } 
-            else if (currentAccomplishmentParagraph.value === 'all') {
-                sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
-            }
+            // else if (currentAccomplishmentParagraph.value === 'all') {
+            //     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+            // }
         })
 
         return sum.toFixed(2)
     } 
+    // countPaidedTaskByHours
+    const countPaidedTaskByHours = () => {
+        let endedSum:number = 0;
+        let paided:number = 0;
+
+        endedSum = task_ledger?.value?.reduce((acc, el) => {
+
+            acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+
+            return acc
+        }, 0)
+
+        paided = task_ledger?.value?.reduce((acc, el) => {
+
+            if(el.status === 'finished') {
+
+                acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+            }
+
+
+        return acc
+        }, 0)
+
+        return `Paided: ${paided.toFixed(2)} из ${endedSum.toFixed(2)} (${(paided - endedSum).toFixed(2)})`
+    }
     //= set status color in accomplishment item
     const set_bgColor_by_status = (status: string) => {
         // status finished
@@ -264,11 +289,14 @@ useHead({
             
             <!-- Выполнение SECTION -->
             <section v-if="task_ledger?.length && currentChip.title === 'Выполнение'">
-                <h2>Выполнение:</h2>
-                
+                <h2 style="margin: 0;">Выполнение:</h2>
+                <!-- PAIDED -->
+                <div>
+                    {{ countPaidedTaskByHours() }}
+                </div>
                 <!-- CHIP -->
                 <!-- ACCOMPLISHMENT  -->
-                <div class="current_affiliation_title">
+                <div class="current_affiliation_title" style="margin-top: 1rem;">
 
                     <h3 v-for="el in accomplishmentParagraphComputed"
                         :class="currentAccomplishmentParagraph === el.name ? 'title_active' : ''"
@@ -362,6 +390,19 @@ useHead({
         <br>
         <br> 
         <br> 
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </Container>
 </template>
 

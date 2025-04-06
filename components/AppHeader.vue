@@ -492,7 +492,7 @@ watch(
             <!-- to login page if !loggin -->
 
             <Button 
-              v-if="!useAuthStore().loggedIn && route.name !== 'login' && route.name === 'landing_crm'" 
+              v-if="!useAuthStore().loggedIn && route.name !== 'login'" 
               class="account-btn"
               @click="closeBurgerMenu"
               type="pseudo-btn" 

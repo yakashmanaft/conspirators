@@ -4,23 +4,28 @@
     <Container>
 
         <!-- TITLE PAGE SECTION -->
-        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+        <div class="show-max-767 title-page-section" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
             <h1 style="margin: 0;">conspirators.CRM</h1> 
         </div>
 
         <!--  -->
-        <div style="margin: 2rem 1rem; position: relative;">
+        <div class="header-banner_wrapper" style="position: relative; display: flex; align-items: center;">
 
-            <div style="position: absolute; top: 0; right: -2rem; width: 50%; height: 100%; background-color: var(--color-operation-type-donation); border-radius: 1rem; z-index: -1;">
+            <div class="header-banner_art" style="position: absolute; top: 0; width: 50%; height: 100%; background-color: var(--color-operation-type-donation); z-index: -1;">
 
             </div>
-            <p style="font-size: 2rem; font-weight: bold; margin: 0; padding-top: 1rem;">Фиксируй</p>
-            <p style="color: var(--color-global-text_second); margin: 0;">Не требует много усилий, достаточно уделять несколько минут в день</p>
-            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Контролируй</p>
+
+            <div>
+                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem;">Десять минут в день</h2>
+                <p style="color: var(--color-global-text_second);">Достаточно для того, чтобы быть в курсе дел и финансов</p>
+            </div>
+            <!-- <p style="font-size: 2rem; font-weight: bold; margin: 0; padding-top: 1rem;">Фиксируй</p>
+            <p style="color: var(--color-global-text_second); margin: 0;">Не требует много усилий, достаточно уделять несколько минут в день</p> -->
+            <!-- <p style="font-size: 2rem; font-weight: bold; margin: 0;">Контролируй</p>
             <p style="color: var(--color-global-text_second); margin: 0;">Все финансы для понимания привычек, целей и задач в одном месте</p>
             <p style="font-size: 2rem; font-weight: bold; margin: 0;">Владей</p>
-            <p style="color: var(--color-global-text_second); margin: 0; padding-bottom: 2rem;">Полной картиной о состоянии текущих и запланированных дел</p>
+            <p style="color: var(--color-global-text_second); margin: 0; padding-bottom: 2rem;">Полной картиной о состоянии текущих и запланированных дел</p> -->
         </div>
     
     </Container>
@@ -261,7 +266,7 @@
         }
         .main-banner_container {
             height: 300px;
-            margin-top: -3rem!important;
+            margin-top: -1rem!important;
         }
         .main-banner_wrapper {
             flex-direction: column;
@@ -375,6 +380,21 @@
             left: 1rem;
             cursor: pointer;
         }
+        /* 
+         */
+         .header-banner_wrapper {
+            margin-left: 2.5rem;
+            height: 320px; 
+        }
+        .header-banner_art {
+            border-radius: 4.5rem 0 0 4.5rem;
+            right: -2rem!important;
+        }
+        .header-banner_wrapper div p {
+            margin: 0;
+            margin-top: 1rem;
+            width: 200px;
+        }
     }
     @media screen and (min-width: 576px) and (max-width: 767px) {
         .show-max-767 {
@@ -382,7 +402,7 @@
         }
         .main-banner_container {
             height: 400px;
-            margin-top: -3rem!important;
+            margin-top: -1rem!important;
         }
         .main-banner_wrapper {
             flex-direction: column;
@@ -406,11 +426,29 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
         }
+        /* 
+         */
+         .header-banner_wrapper {
+            margin-left: 2.5rem;
+            height: 400px; 
+        }
+        .header-banner_art {
+            border-radius: 6rem;
+            right: 1rem!important;
+        }
+        .header-banner_wrapper div p {
+            margin: 0;
+            margin-top: 1rem;
+            width: 300px;
+        }
     }
     @media screen and (min-width: 768px) and (max-width: 991px) {
+        h1 {
+            font-size: 1.5rem;
+        }
         .main-banner_container {
             height: 400px;
-            margin-top: -5.5rem!important;
+            margin-top: 7rem!important;
         }
         .main-banner_wrapper {
             justify-content: flex-end;
@@ -439,11 +477,30 @@
         .main-banner_subtitle div {
             margin-top: 1rem!important
         }
+        /* 
+         */
+         .title-page-section {
+            margin-left: 2.5rem;
+         }
+         .header-banner_wrapper {
+            margin-left: 2.5rem;
+            height: 400px; 
+            margin-top: 5rem;
+        }
+        .header-banner_art {
+            border-radius: 5rem;
+            right: 2rem!important;
+        }
+        .header-banner_wrapper div p {
+            margin: 0;
+            margin-top: 1rem;
+            width: 300px;
+        }
     }
     @media screen and (min-width: 992px) and (max-width: 1199px) {
         .main-banner_container {
             height: 400px;
-            margin-top: -5.6rem!important;
+            margin-top: 1rem!important;
         }
         .main-banner_wrapper {
             gap: 5rem;
@@ -466,11 +523,34 @@
         .main-banner_subtitle div {
             margin-top: 1rem!important
         }
+        /* 
+         */
+         .title-page-section {
+            margin-left: 2rem;
+         }
+         .header-banner_wrapper {
+            margin-left: 2.5rem;
+            height: 500px; 
+            margin-top: 3rem;
+        }
+        .header-banner_art {
+            border-radius: 10rem;
+            right: 1rem!important;
+        }
+        .header-banner_wrapper div h2 {
+            font-size: 5rem!important;
+        }
+        .header-banner_wrapper div p {
+            margin: 0;
+            margin-top: 1rem;
+            width: 450px;
+            font-size: 1.5rem;
+        }
     }
     @media screen and (min-width: 1200px) {
         .main-banner_container {
             height: 400px;
-            margin-top: -5.6rem!important;
+            margin-top: 0rem!important;
         }
         .main-banner_wrapper {
             gap: 5rem;
@@ -491,6 +571,30 @@
         }
         .main-banner_subtitle div {
             margin-top: 1rem!important
+        }
+        /* 
+         */
+         .title-page-section {
+            margin-left: 2.5rem;
+         }
+         .header-banner_wrapper {
+            margin-left: 2.5rem;
+            height: 600px; 
+            margin-top: 3rem;
+        }
+        .header-banner_art {
+            border-radius: 7rem;
+            width: 300px!important;
+            right: 1rem!important;
+        }
+        .header-banner_wrapper div h2 {
+            font-size: 7rem!important
+        }
+        .header-banner_wrapper div p {
+            margin: 0;
+            margin-top: 1rem;
+            font-size: 2rem;
+            /* width: 650px; */
         }
     }
 </style>

@@ -22,12 +22,52 @@
 
 
               <!-- FOOTER -->
-              <div style="display: flex; flex-direction: column; align-items: space-between; justify-content: space-between;">
+              <div style="display: flex; align-items: flex-end; justify-content: space-between;">
 
-                <div class="label_count-wrapper">
+                <div style="display: flex; flex-direction: column;">
+
+                  <!--  -->
+                  <div style="display: flex; gap: .5rem">
+                    <!-- URGENCY -->
+                    <div 
+                      class="ticket_urgency"
+                      :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
+                      style="display: flex; align-items: center; justify-content: center; font-size: .6rem; margin: 0;"
+                    >
+                      {{ props.current_task?.urgency }}
+                    </div>
+                    <!-- Label -->
+                    <div
+                      style="font-size: 0.8rem;"
+                      :style="
+                        setTaskAccomplishmentLabel(
+                          countFinishedAccomplishmentTask(props?.taskArray),
+                          countAccomplishmentTask(props?.taskArray)
+                        ) === 'Долг' ? `color: var(--color-urgency-middle)` : `color: var(--color-urgency-low-wo)`
+                      ">
+                      {{ setTaskAccomplishmentLabel(countFinishedAccomplishmentTask(props?.taskArray), countAccomplishmentTask(props?.taskArray)) }}
+                    </div>
+                    <!-- STATUS -->
+                    <!-- <p class="ticket_status">{{ props.current_task?.status }}</p> -->
+                  </div>
+
+                  <div style="margin-top: .5rem; width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: cetner;">
+                    <Icon
+                      name="material-symbols-light:mark-unread-chat-alt-outline-rounded"
+                      size="100%"
+                      color="var(--color-global-text_second)"
+                    />
+                  </div>
+
+                </div>
+
+                <!-- DEADLINE -->
+                <p class="ticket_deadline">До: {{ props.current_task?.deadline.slice(0,10) }}</p>
+
+                <!-- <div class="label_count-wrapper"> -->
 
                   <!-- Label -->
-                  <div
+                  <!-- <div
                     style="font-size: 0.8rem;"
                     :style="
                       setTaskAccomplishmentLabel(
@@ -36,29 +76,29 @@
                       ) === 'Долг' ? `color: var(--color-urgency-middle)` : `color: var(--color-urgency-low-wo)`
                     ">
                     {{ setTaskAccomplishmentLabel(countFinishedAccomplishmentTask(props?.taskArray), countAccomplishmentTask(props?.taskArray)) }}
-                  </div>
+                  </div> -->
 
                   <!-- COUNT -->
-                  <div style="font-size: 0.8rem;">
+                  <!-- <div style="font-size: 0.8rem;">
                     paid {{ countFinishedAccomplishmentTask(props?.taskArray) }} из {{ countAccomplishmentTask(props?.taskArray) }}
-                  </div>
-                </div>
+                  </div> -->
+                <!-- </div> -->
 
-                <div class="status_deadline-wrapper">
+                <!-- <div class="status_deadline-wrapper"> -->
                   <!-- STATUS -->
-                  <p class="ticket_status">{{ props.current_task?.status }}</p>
+                  <!-- <p class="ticket_status">{{ props.current_task?.status }}</p> -->
                   <!-- DEADLINE -->
-                  <p class="ticket_deadline">Успеть до: {{ props.current_task?.deadline.slice(0,10) }}</p>
-                </div>
+                  <!-- <p class="ticket_deadline">Успеть до: {{ props.current_task?.deadline.slice(0,10) }}</p> -->
+                <!-- </div> -->
 
                 <!-- URGENCY -->
-                <div 
+                <!-- <div 
                   class="ticket_urgency"
                   :style="`background-color: ${set_bgColor_by_urgency(props.current_task?.urgency)}`"
                   style="display: flex; align-items: center; justify-content: center; font-size: .6rem;"
                 >
                   {{ props.current_task?.urgency }}
-                </div>
+                </div> -->
               </div>
 
 

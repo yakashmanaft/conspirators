@@ -90,7 +90,7 @@ const changeColorOnClick = (e) => {
       <!-- <Search style="margin: 0;"/> -->
 
       <section style="background-color: var(--color-wallet-fund-available);">
-        <h3 style="color: var(--color-global-text);">Контролиь финансов и задач</h3>
+        <h3 style="color: var(--color-global-text);">Контроль финансов и задач</h3>
         <p style="color: var(--color-global-text)">Фиксируй доходы и расходы,отслеживай динамику развития своего кооператива.</p>
         <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
 
@@ -98,7 +98,7 @@ const changeColorOnClick = (e) => {
           <div class="section_icon" style="background-color: var(--color-urgency-low);">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
           </div>
-          <p style="color: var(--color-urgency-low);">Войти</p>
+          <p style="font-size: 1rem;color: var(--color-urgency-low);">Помощник онлайн</p>
         </div>
       </section>
   

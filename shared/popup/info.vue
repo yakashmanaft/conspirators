@@ -64,7 +64,7 @@ window.addEventListener('click', (e) => {
         left: 0; 
         display: flex; 
         align-items: flex-start; 
-        justify-content: flex-end; 
+        justify-content: flex-start; 
     }
     .popup_wrapper {
         background-color: var(--color-btn-text); 

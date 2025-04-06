@@ -15,7 +15,7 @@ import { BreadCrumbs } from "~/components/breadcrumbs";
 import { onBeforeMount } from "vue";
 
 useHead({
-  title: "Заявки",
+  title: "Деловая доска",
   link: [
     {
       rel: "stylesheet",
@@ -70,10 +70,10 @@ const demands = ref([]);
 
 // Категории ТМЦ (пока хардкорно)
 const warehouseCategories = ref([
-  {
-    type: "all",
-    name: "Все",
-  },
+  // {
+  //   type: "all",
+  //   name: "Все",
+  // },
   {
     type: "tools",
     name: "Инструмент",
@@ -207,7 +207,7 @@ const currentChipLead = ref({
 // })
 
 //= current task status chip
-const current_task_status_chip = ref('all')
+const current_task_status_chip = ref('waiting')
 
 // EVENT CLICKERS
 //= change lead chip
@@ -323,7 +323,8 @@ const computedTask = computed(() => {
   return task_list?.value?.filter(el => {
     if(current_task_status_chip.value === el.status) {
       return el
-    } else if (current_task_status_chip.value === 'all') {
+    } 
+    else if (current_task_status_chip.value === 'all') {
       return el
     }
   })
@@ -331,7 +332,7 @@ const computedTask = computed(() => {
 //== status chips
 const computed_task_status_chip = computed(() => {
   if(task_list.value) {
-    let result = ['all', ...new Set([...task_list.value.map((obj: any) => {
+    let result = [...new Set([...task_list.value.map((obj: any) => {
       return obj.status
     })])]
     return result.map(el => {
@@ -574,6 +575,42 @@ const countTaskByHours = () => {
 
   return sum?.toFixed(2)
 }
+const countPaidedTaskByHours = () => {
+
+  let endedSum:number = 0;
+  let paided:number = 0;
+
+  // ENDED SUM
+  endedSum = accomplishment_list?.value?.reduce((acc, el) => {
+    
+    computedTask.value?.forEach(item => {
+      if(el.taskId === item.id) {
+        acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+      }
+    })
+
+    return acc
+    
+  }, 0)
+
+  // PAIDED SUM
+  paided = accomplishment_list?.value?.reduce((acc, el) => {
+    
+    computedTask.value?.forEach(item => {
+      if(el.taskId === item.id && el.status === 'finished') {
+        acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+      }
+    })
+
+    return acc
+    
+  }, 0)
+
+
+  
+  return `${paided} из ${endedSum} (${(paided - endedSum).toFixed(2)})`
+}
+
 
 // ADD/CREATE
 //= task
@@ -704,7 +741,7 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
     <!-- PERIOD -->
     <div class="period_wrapper">
       
-      <p class="period_title">Период:</p>
+      <!-- <p class="period_title">Период:</p> -->
 
       <p class="period_date" style="width: fit-content;">
 
@@ -851,6 +888,9 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
             <!-- наработанные часы -->
             <p>Итого: {{countTaskByHours()}} часа работы</p>
   
+            <!--  -->
+            <p>Paided: {{ countPaidedTaskByHours() }}</p>
+
             <!-- Кнопка добавить задачу -->
             <div 
               v-if="current_task_status_chip !== 'finished'"
@@ -1162,16 +1202,16 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   align-items: center;
   gap: .5rem;
 }
-.period_title {
+/* .period_title {
   margin: 0;
-}
+} */
 .period_date {
   margin: 0;
   display: flex;
   align-items: center;
   gap: .5rem;
 }
-.period_title,
+/* .period_title, */
 .period_date_from,
 .period_date_separator,
 .period_date_to {

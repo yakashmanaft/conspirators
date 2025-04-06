@@ -263,6 +263,64 @@ const setColorByProjectStatus = () => {
   }
 }
 
+//= countPaidedTaskByHours
+const countPaidedTaskByHours = () => {
+  let endedSum:number = 0;
+  let paided:number = 0;
+
+  let task_list_filtred = []
+  //task_list
+  task_list?.value?.forEach(task => {
+
+    if(task.projectId === computedProject?.value?.id) {
+      
+      task_list_filtred?.push(...task_ledger?.value?.filter(task_el => task_el.taskId === task.id))
+
+      // ENDED SUM
+      endedSum = task_list_filtred?.reduce((acc, list_el) => {
+        acc += (new Date(list_el.ended_at) - new Date(list_el.created_at)) / (1000 * 60 * 60) % 24
+
+        return acc
+      }, 0)
+
+      // PAIDED SUM
+      paided = task_list_filtred?.reduce((acc, list_el) => {
+
+        if(list_el.status === 'finished') {
+
+          acc += (new Date(list_el.ended_at) - new Date(list_el.created_at)) / (1000 * 60 * 60) % 24
+        }
+
+        return acc
+      }, 0)
+    }
+  })
+
+  // return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (-${(endedSum - paided).toFixed(2)})`
+  return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (${(paided - endedSum).toFixed(2)})`
+}
+//= countPaidedaccomplishmentByHours
+const countPaidedaccomplishmentByHours = () => {
+  let endedSum:number = 0;
+  let paided:number = 0;
+
+  //computedAccomplishments
+  endedSum = task_ledger?.value?.filter(el => el.taskId === current_task.value.id).reduce((acc, el) => {
+
+    acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+
+    return acc
+  }, 0)
+  paided = task_ledger?.value?.filter(el => el.taskId === current_task.value.id && el.status === 'finished').reduce((acc, el) => {
+
+    acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
+
+    return acc
+  }, 0)
+
+  return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (-${(endedSum - paided).toFixed(2)})`
+}
+
 // ******* DB
 // *** GET
 
@@ -620,7 +678,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
           body.style.margin = '0'
           body.style.height = '100%'
-          body.style.overflow = 'hidden'
+          // body.style.overflow = 'hidden'
 
           // set count accomplishment 
           countAccomplishment.value = computedAccomplishments.value?.length
@@ -675,6 +733,10 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
         <!-- LENGTH > 0 -->
         <div v-if="task_ledger?.filter(el => el.taskId === current_task.id).length">
+          <!--  -->
+          <div style="margin-left: 1rem; margin-right: 1rem;">
+            Paided: {{countPaidedaccomplishmentByHours()}}
+          </div>
           <!-- chips -->
           <Chip
             :tabs="chips_accomplishment"
@@ -682,7 +744,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
             :default="currentAccomplishmentChip"
             :btn_all_exist="false" 
             @changed="changeAccomplishmentChip"
-            style="padding-left: 1rem; padding-right: 1rem;"
+            style="margin-top: 1rem; padding-left: 1rem; padding-right: 1rem;"
           />
 
           <!-- COUNT   -->
@@ -820,6 +882,17 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
           <h2>Задачи</h2>
           <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
+        </div>
+        <!--  -->
+        <div>
+          Paided: {{countPaidedTaskByHours()}}
+          <br>
+          <div v-for="(task, j) in task_list?.filter(el => computedProject ? el.projectId === computedProject.id : [])">
+            {{ j + 1 }}. - {{ task.name }}
+            <div v-for="(task_el, i) in task_ledger?.filter(el => el.taskId === task.id)">
+              {{j + 1}}.{{i + 1}}. - {{ task_el.subject }}
+            </div>
+          </div>
         </div>
         <!-- CHIP -->
         <Chip

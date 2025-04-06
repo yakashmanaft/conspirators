@@ -104,7 +104,7 @@ const onClickRegister = () => {
           <router-link class="back-btn_wrapper" to="/">
             
             <div class="back-btn_icon">
-              <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-btn-text)"/>
+              <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
             </div>
             <p class="back-btn_text">На главную</p>
           </router-link>
@@ -170,7 +170,7 @@ const onClickRegister = () => {
   height: 30px; 
   width: 30px; 
   border-radius: 100%;
-  background-color: var(--color-btn-hover-bg); 
+  /* background-color: var(--color-btn-hover-bg);  */
   display: flex; 
   align-items: center; 
   justify-content: center;
@@ -189,7 +189,7 @@ const onClickRegister = () => {
     }
   .back-btn_wrapper {
     left: 0;
-    top: .1rem;
+    top: .3rem;
   }
   .back-btn_text {
     display: none;
@@ -204,7 +204,7 @@ const onClickRegister = () => {
     }
     .back-btn_wrapper {
       left: 0;
-      top: .1rem;
+      top: .5rem;
     }
     .back-btn_text {
         display: none;
