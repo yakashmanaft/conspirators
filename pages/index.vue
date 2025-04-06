@@ -2,7 +2,7 @@
 
 // components
 import { Button } from '@/components/button'
-import { Search } from '@/components/search';
+// import { Search } from '@/components/search';
 
 // shared
 import { Container } from "@/shared/container";
@@ -35,6 +35,38 @@ const headers = ["ID", "Name", "Email"];
 
 const { loggedIn, user, session, clear } = useUserSession();
 
+// const colors_index = ref(0)
+const colors = ref([
+  {
+    name: '--color-urgency-low-wo'
+  },
+  {
+    name: '--color-wallet-fund-available-wo'
+  },
+  {
+    name: '--color-btn-bg'
+  },
+  {
+    name: '--color-wallet-fund-debt-wo'
+  },
+  {
+    name: '--color-wallet-fund-invested-wo'
+  },
+  {
+    name: '--color-operation-type-donation'
+  }
+])
+
+const changeColorOnClick = (e) => {
+  let el = document.getElementById('changeColorSubject')
+  let index = Math.round(Math.random() * (colors.value.length - 1) + 0)
+  
+
+  console.log(index)
+  console.log(colors.value[index])
+  el.style.color = `var(${colors.value[index].name})`
+}
+
 </script>
 <template>
   <Container>
@@ -42,11 +74,12 @@ const { loggedIn, user, session, clear } = useUserSession();
     <div class="header_container">
 
       <div>
-        <h1>conspirators.su</h1>
-        <h2>Освобождая время, сохраняем контроль</h2>
+        <!-- <h1>conspirators.su</h1> -->
+        <h1><span style="font-weight: normal">Вместе ту зе мун, </span><span @click="changeColorOnClick" id="changeColorSubject">Соучастники</span></h1>
+        <!-- <h2>Соучастники</h2> -->
       </div>
       
-      <Search/>
+      <!-- <Search/> -->
     </div>
 
     <div class="section_container">
@@ -54,8 +87,9 @@ const { loggedIn, user, session, clear } = useUserSession();
       <!-- <Search style="margin: 0;"/> -->
 
       <section style="background-color: var(--color-wallet-fund-available);">
-        <h3 style="color: var(--color-global-text);">Контролируй финансы и задачи</h3>
-        <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p>
+        <h3 style="color: var(--color-global-text);">Контролиь финансов и задач</h3>
+        <p style="color: var(--color-global-text)">Фиксируй доходы и расходы,отслеживай динамику развития своего кооператива.</p>
+        <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
 
         <div class="section_btn" @click="$router.push(`/landing_crm`)">
           <div class="section_icon" style="background-color: var(--color-urgency-low);">
@@ -77,7 +111,8 @@ const { loggedIn, user, session, clear } = useUserSession();
   
       <section style="background-color: var(--color-wallet-fund-debt);">
         <h3 style="color: var(--color-wallet-fund-debt-wo);">Задизайним всё что хочешь</h3>
-        <p style="color: var(--color-wallet-fund-debt-wo);">Мастера визуальных эффектов помогут реализовать и поддерживать фирменный стиль твоего кооператива, начиная от простой полиграфии, заканчивая съёмкой корпоративных видео</p>
+        <p style="color: var(--color-wallet-fund-debt-wo);">От простой полиграфии до съёмкой корпоративных видео</p>
+        <!-- <p style="color: var(--color-wallet-fund-debt-wo);">Мастера визуальных эффектов помогут реализовать и поддерживать фирменный стиль твоего кооператива, начиная от простой полиграфии, заканчивая съёмкой корпоративных видео</p> -->
         <div class="section_btn" @click="$router.push(`/landing_design`)">
           <div class="section_icon">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-wallet-fund-debt-wo)"/>
@@ -152,11 +187,11 @@ const { loggedIn, user, session, clear } = useUserSession();
   font-size: .8rem;
 }
 .header_container {
-  background-color: var(--color-global-text);
+  /* background-color: var(--color-global-text); */
   height: 300px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 2rem;
 }
@@ -164,17 +199,25 @@ const { loggedIn, user, session, clear } = useUserSession();
 .header_container div {
   
 }
-
-.header_container div h1 {
-  color: var(--color-btn-text);
-  font-size: 3rem;
-  text-align: center;
+.header_container div h1 span:first-child {
+  font-size: 2rem;
 }
+.header_container div h1 span:nth-child(2){
+  /* color: var(--color-btn-text); */
+  color: var(--color-wallet-fund-invested);
+  font-size: 3rem;
+  /* text-align: center; */
+  font-weight: bold;
+}
+/* .header_container div h1 span:hover:nth-child(2) {
+  color: var(--color-urgency-low-wo)!important;
+  cursor: pointer;
+} */
 .header_container div h2 {
-  color: var(--color-btn-text);
+  /* color: var(--color-btn-text); */
   font-size: .8rem;
   font-weight: normal;
-  text-align: center;
+  /* text-align: center; */
 }
 @media screen and (max-width: 575px) {
   .buttons-container {
@@ -188,6 +231,13 @@ const { loggedIn, user, session, clear } = useUserSession();
   }
   .section_container > section > h3 {
     font-size: 1.5rem;
+  }
+  .header_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .header_container div h1 {
+    font-size: 2.5rem;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
