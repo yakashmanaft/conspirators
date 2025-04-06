@@ -478,6 +478,7 @@ useHead({
 
                 {{ band?.name }}
             </h1> 
+            <p v-if="band?.name === 'guest-band'" style="width: fit-content;background-color: var(--color-wallet-fund-debt-wo); color: var(--color-btn-text); padding: 2px 8px; border-radius: 1rem; margin-top: .5rem; font-size: .8rem;">Демонстрационная страница банды</p>
         </div>
 
         <!-- TOTAL CAP -->

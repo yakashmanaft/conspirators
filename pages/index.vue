@@ -37,23 +37,26 @@ const { loggedIn, user, session, clear } = useUserSession();
 
 // const colors_index = ref(0)
 const colors = ref([
-  {
-    name: '--color-urgency-low-wo'
-  },
+  // {
+  //   name: '--color-urgency-low-wo'
+  // },
   {
     name: '--color-wallet-fund-available-wo'
   },
   {
-    name: '--color-btn-bg'
+    name: '--color-status-paused'
   },
   {
     name: '--color-wallet-fund-debt-wo'
   },
+  // {
+  //   name: '--color-wallet-fund-invested-wo'
+  // },
+  // {
+  //   name: '--color-operation-type-donation'
+  // },
   {
-    name: '--color-wallet-fund-invested-wo'
-  },
-  {
-    name: '--color-operation-type-donation'
+    name: '--color-urgency-middle'
   }
 ])
 
@@ -62,8 +65,8 @@ const changeColorOnClick = (e) => {
   let index = Math.round(Math.random() * (colors.value.length - 1) + 0)
   
 
-  console.log(index)
-  console.log(colors.value[index])
+  // console.log(index)
+  // console.log(colors.value[index])
   el.style.color = `var(${colors.value[index].name})`
 }
 
@@ -75,7 +78,7 @@ const changeColorOnClick = (e) => {
 
       <div>
         <!-- <h1>conspirators.su</h1> -->
-        <h1><span style="font-weight: normal">Вместе ту зе мун, </span><span @click="changeColorOnClick" id="changeColorSubject">Соучастники</span></h1>
+        <h1><span style="font-weight: normal">Вместе ту зе мун, </span><br><span @click="changeColorOnClick" id="changeColorSubject">Соучастники</span></h1>
         <!-- <h2>Соучастники</h2> -->
       </div>
       
@@ -201,6 +204,7 @@ const changeColorOnClick = (e) => {
 }
 .header_container div h1 span:first-child {
   font-size: 2rem;
+  color: var(--color-global-text_second)!important;
 }
 .header_container div h1 span:nth-child(2){
   /* color: var(--color-btn-text); */
@@ -209,10 +213,10 @@ const changeColorOnClick = (e) => {
   /* text-align: center; */
   font-weight: bold;
 }
-/* .header_container div h1 span:hover:nth-child(2) {
-  color: var(--color-urgency-low-wo)!important;
+.header_container div h1 span:hover:nth-child(2) {
+  /* color: var(--color-urgency-low-wo)!important; */
   cursor: pointer;
-} */
+}
 .header_container div h2 {
   /* color: var(--color-btn-text); */
   font-size: .8rem;
@@ -239,6 +243,17 @@ const changeColorOnClick = (e) => {
   .header_container div h1 {
     font-size: 2.5rem;
   }
+  .header_container div h1 span:first-child {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .header_container div h1 span:last-child {
+    font-weight: bold;
+    font-size: 3rem;
+    text-transform: uppercase;
+  }
+
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
   .buttons-container {
@@ -255,7 +270,20 @@ const changeColorOnClick = (e) => {
     grid-template-columns: repeat(2, 1fr);
   }
   .section_container > section > h3 {
-    font-size: 1.5rem;
+    font-size: 1rem;
+  }
+  .header_container div h1 span:first-child {
+    text-transform: uppercase;
+    padding-left: .5rem; 
+    font-size: 1rem;
+  }
+  .header_container div h1 span:last-child {
+    font-size: 4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .header_container div h1 span:last-child:hover {
+    cursor: pointer;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 991px)  {
@@ -270,6 +298,19 @@ const changeColorOnClick = (e) => {
     margin-top: 1rem;
     /* gap: 2rem; */
     grid-template-columns: repeat(2, 1fr);
+  }
+  .header_container div h1 span:first-child {
+    text-transform: uppercase;
+    padding-left: .5rem; 
+    font-size: 1rem;
+  }
+  .header_container div h1 span:last-child {
+    font-size: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .header_container div h1 span:last-child:hover {
+    cursor: pointer;
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
@@ -286,6 +327,19 @@ const changeColorOnClick = (e) => {
     margin-right: 1rem;
     gap: 1.5rem;
     grid-template-columns: repeat(2, 1fr);
+  }
+  .header_container div h1 span:first-child {
+    text-transform: uppercase;
+    padding-left: .5rem; 
+    font-size: 1rem;
+  }
+  .header_container div h1 span:last-child {
+    font-size: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .header_container div h1 span:last-child:hover {
+    cursor: pointer;
   }
 }
 @media screen and (min-width: 1200px) {
@@ -309,6 +363,19 @@ const changeColorOnClick = (e) => {
   }
   .section_container > section > div{
     left: .5rem!important;
+  }
+  .header_container div h1 span:first-child {
+    text-transform: uppercase;
+    padding-left: .5rem; 
+    font-size: 1rem;
+  }
+  .header_container div h1 span:last-child {
+    font-size: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .header_container div h1 span:last-child:hover {
+    cursor: pointer;
   }
 }
 </style>
