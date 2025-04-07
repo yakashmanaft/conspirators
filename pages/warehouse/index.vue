@@ -3,6 +3,8 @@ import { Container } from "@/shared/container";
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
 import html2pdf from "html2pdf.js";
+import { Search } from '@/components/search'
+import { DefaultPopup } from '@/shared/popup'
 
 useHead({
   title: "Склад",
@@ -34,7 +36,7 @@ const item = ref({
   type: null,
   qty: 0,
   measure: null,
-  location: null,
+  locationType: '',
   locationID: null,
   ownerID: null,
   ownerType: null,
@@ -60,15 +62,18 @@ const currentCategoryByType = ref("all");
 const currentCategoryByLocationObj = ref({
   title: "all",
   type: "all",
+  translate: 'Все места',
+  address: '',
   id: null,
 });
 const searchInput = ref("");
 
 // Категории ТМЦ (пока хардкорно)
+// в БД предметов значится как type
 const warehouseCategories = ref([
   {
     type: "all",
-    name: "Все типы",
+    name: "Все типы ТМЦ",
   },
   {
     type: "tools",
@@ -96,6 +101,29 @@ const warehouseCategories = ref([
   },
 ]);
 //
+const default_location_list = ref([
+  {
+    group: 'location',
+    type: 'sklad',
+    title: 'Все склады'
+  },
+  {
+    group: 'location',
+    type: 'repair',
+    title: 'Все repair'
+  },
+  {
+    group: 'location',
+    type: 'office',
+    title: 'Все офисы'
+  },
+  {
+    group: 'project',
+    type: 'all',
+    title: 'Все проекты'
+  }
+])
+//
 const categoriesCopy = (array) => {
   if (array) {
     let newArray = array.filter((item) => item.type !== "all");
@@ -105,6 +133,7 @@ const categoriesCopy = (array) => {
 };
 
 // Единицы измерения (пока хардкорно)
+// В БД предметов знаится как measure
 const measureTypes = ref([
   {
     type: "шт.",
@@ -151,6 +180,42 @@ const editedItem = ref({
 });
 const { user } = useUserSession();
 
+// POPUP
+const popup_location_opened = ref(false)
+const closeLocationPopup = () => {
+  popup_location_opened.value = false
+  // current_task.value = {
+  //   id: null,
+  //   name: '',
+  //   desc: '',
+  //   status: ''
+  // }
+  // currentAccomplishmentChip.value = {
+  //   // name: 'waiting',
+  //   // title: 'Ожидание'
+  //   id: `${currentAccomplishmentChip.value?.id}`,
+  //   name: 'all',
+  //   title: 'Все'
+  // }
+}
+const popup_type_opened = ref(false)
+const closeTypePopup = () => {
+  popup_type_opened.value = false
+  // current_task.value = {
+  //   id: null,
+  //   name: '',
+  //   desc: '',
+  //   status: ''
+  // }
+  // currentAccomplishmentChip.value = {
+  //   // name: 'waiting',
+  //   // title: 'Ожидание'
+  //   id: `${currentAccomplishmentChip.value?.id}`,
+  //   name: 'all',
+  //   title: 'Все'
+  // }
+}
+
 const { data: organizations } = useLazyAsyncData("organizations", () =>
   $fetch("/api/organizations/organizations")
 );
@@ -164,24 +229,24 @@ onMounted(async () => {
     );
   }
 
-  window.addEventListener("scroll", () => {
-    let searchFilterContainer = document.getElementById(
-      "searchFilterContainer"
-    );
-    const scrollPosition = window.scrollY;
-    // console.log(window.screen.width);
-    if (
-      searchFilterContainer &&
-      window.screen.width >= 768 &&
-      window.screen.width <= 991
-    ) {
-      if (scrollPosition > 1) {
-        searchFilterContainer.style.display = "none";
-      } else {
-        searchFilterContainer.style.display = "block";
-      }
-    }
-  });
+  // window.addEventListener("scroll", () => {
+  //   let searchFilterContainer = document.getElementById(
+  //     "searchFilterContainer"
+  //   );
+  //   const scrollPosition = window.scrollY;
+  //   // console.log(window.screen.width);
+  //   if (
+  //     searchFilterContainer &&
+  //     window.screen.width >= 768 &&
+  //     window.screen.width <= 991
+  //   ) {
+  //     if (scrollPosition > 1) {
+  //       searchFilterContainer.style.display = "none";
+  //     } else {
+  //       searchFilterContainer.style.display = "block";
+  //     }
+  //   }
+  // });
 
   refreshProjects();
   refreshLocations();
@@ -229,7 +294,7 @@ onMounted(async () => {
       item.value.type = null;
       item.value.qty = null;
       item.value.measure = null;
-      item.value.location = null;
+      item.value.locationType = '';
       item.value.locationID = null;
       item.value.ownerID = null;
       item.value.ownerType = null;
@@ -304,7 +369,7 @@ const {
                       org.sharers.filter(
                         (sharer) =>
                           sharer.userID === sessionUserIsASharerOfBands[i].id &&
-                          sharer.userType === "company"
+                          sharer.userType === "conspirator"
                       );
 
                       return org;
@@ -335,7 +400,7 @@ const {
         }
 
         // COMPANY
-        else if (item.ownerType === "company" && organizations.value) {
+        else if (item.ownerType === "conspirator" && organizations.value) {
           // if user is a leader of a band which is an owner of item
           let sessionUserIsALeaderOfBands = [...organizations.value].filter(
             (org) => {
@@ -371,7 +436,7 @@ const {
                   org.sharers.filter(
                     (sharer) =>
                       sharer.userID === sessionUserIsASharerOfBands[i].id &&
-                      sharer.userType === "company"
+                      sharer.userType === "conspirator"
                   );
 
                   return org;
@@ -382,7 +447,7 @@ const {
                 for (let i = 0; i <= bandsArray.length - 1; i++) {
                   if (
                     item.ownerID === bandsArray[i].id &&
-                    item.ownerType === "company" &&
+                    item.ownerType === "conspirator" &&
                     item.showToAll
                   ) {
                     return item;
@@ -572,10 +637,11 @@ const creatLocationLink = (object: any) => {
 
 // Функции переводчики
 // locations
-const translateLocation = (id: any, location: string) => {
+const translateLocation = (id: number, locationType: string) => {
+  // project, sklad, offie, repair, arhive, deleted
   if (location && id) {
     // PROJECT
-    if (location === "project") {
+    if (locationType === "project") {
       if (projects.value) {
         let project = projects.value.find((project) => project.id == id);
         return project.title;
@@ -583,7 +649,7 @@ const translateLocation = (id: any, location: string) => {
     }
 
     // SKLAD (locations)
-    else if (location === "sklad") {
+    else if (locationType === "sklad") {
       if (locations.value) {
         let locationItem = locations.value.find(
           (locationItem) => locationItem.id == id
@@ -593,46 +659,47 @@ const translateLocation = (id: any, location: string) => {
     }
 
     // OFFICE (locations)
-    else if (location === "office") {
+    if (locationType === "office") {
       if (locations.value) {
         let locationItem = locations.value.find(
           (locationItem) => locationItem.id == id
         );
-        return `${locationItem.title}`;
+        return `${locationItem.title} (${locationItem.address})`;
       }
     }
 
     // REPAIR (locations)
-    else if (location === "repair") {
-      if (locations.value) {
-        let locationItem = locations.value.find(
-          (locationItem) => locationItem.id == id
-        );
-        return `Ремонт: ${locationItem.title}`;
-      }
-      // return `В ремонте #${id}, ${typeof id}`;
-    }
+    // else if (locationType === "repair") {
+    //   if (locations.value) {
+    //     let locationItem = locations.value.find(
+    //       (locationItem) => locationItem.id == id
+    //     ); 
+    //     return `Ремонт: ${locationItem.title}`;
+    //   }
+    //   // return `В ремонте #${id}, ${typeof id}`;
+    // }
 
     // ARCHIVE
-    else if (location === "archive") {
+    else if (locationType === "archive") {
       return `Архив`;
     }
 
     // DELETED
-    else if (location === "deleted") {
+    else if (locationType === "deleted") {
       return "Списание";
     }
 
     // ELSE location
     else {
-      return alert(
-        "warehouse page index.vue error - strange object.location in translateLocation function"
-      );
+      // return alert(
+      //   "warehouse page index.vue error - strange object.location in translateLocation function"
+      // );
+      return `Неизвестное место`
     }
   } else {
     alert("warehouse page index.vue translateLocation function error");
   }
-  return location;
+  return `Неизвестно`;
 };
 // responsibles
 const translateResponsibles = (id: any) => {
@@ -643,23 +710,23 @@ const translateResponsibles = (id: any) => {
   }
 };
 // owners
-const translateOwner = (ownerID, ownerType) => {
-  if (ownerID && ownerType && users.value && organizations.value) {
-    if (ownerType === "user") {
-      // return `USER #${ownerID}`
-      let userItem = users.value.find((item) => item.id === ownerID);
-      return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
-    } else if (ownerType === "company") {
-      // return `Компания #${ownerID}`
-      let organizationItem = organizations.value.find(
-        (item) => item.id === ownerID
-      );
-      return organizationItem.title;
-    }
-  } else if (ownerID === 0 && !ownerType) {
-    return `Не соучастник`;
-  }
-};
+// const translateOwner = (ownerID: number, ownerType: string) => {
+//   if (ownerID && ownerType && users.value && organizations.value) {
+//     if (ownerType === "user") {
+//       // return `USER #${ownerID}`
+//       let userItem = users.value.find((item) => item.id === ownerID);
+//       return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
+//     } else if (ownerType === "company") {
+//       // return `Компания #${ownerID}`
+//       let organizationItem = organizations.value.find(
+//         (item) => item.id === ownerID
+//       );
+//       return organizationItem.title;
+//     }
+//   } else if (ownerID === 0 && !ownerType) {
+//     return `Не соучастник`;
+//   }
+// };
 // action type
 const translateActionType = (actionType: string) => {
   if (itemActions.value) {
@@ -677,7 +744,7 @@ const onClickOwner = (ownerID: number, ownerType: string) => {
   if (ownerID && ownerType) {
     if (ownerType === "user") {
       router.push(`/partners/${ownerID}`);
-    } else if (ownerType === "company") {
+    } else if (ownerType === "conspirator") {
       router.push(`/organizations/${ownerID}`);
     }
   }
@@ -708,7 +775,7 @@ async function addWarehouseItem(item) {
     item.type &&
     item.qty > 0 &&
     item.measure &&
-    item.location &&
+    item.locationType &&
     item.locationID &&
     item.ownerID &&
     item.ownerType &&
@@ -722,7 +789,7 @@ async function addWarehouseItem(item) {
         type: item.type,
         qty: item.qty,
         measure: item.measure,
-        location: item.location,
+        locationType: item.locationType,
         locationID: item.locationID,
         // position это про точный адрес полки на складе
         serial: item.serial,
@@ -759,7 +826,7 @@ async function addWarehouseTransaction(item, type) {
     item.type &&
     item.qty > 0 &&
     item.measure &&
-    item.location &&
+    item.locationType &&
     item.locationID &&
     item.ownerID &&
     item.ownerType &&
@@ -775,7 +842,7 @@ async function addWarehouseTransaction(item, type) {
           itemTitle: item.title,
           // {user} = useUserSession
           authorID: user.value.id,
-          locationFrom: item.location,
+          locationFrom: item.locationType,
           locationFromID: item.locationID,
           locationTo: item.location,
           locationToID: item.locationID,
@@ -855,7 +922,7 @@ async function addWarehouseTransaction(item, type) {
           itemTitle: currentItem.value.title,
           // {user} = useUserSession
           authorID: user.value.id,
-          locationFrom: currentItem.value.location,
+          locationFrom: currentItem.value.locationType,
           locationFromID: currentItem.value.locationID,
           locationTo: tempLocation.value.type,
           locationToID: tempLocation.value.id,
@@ -893,7 +960,8 @@ const filterItemsByLocationObj = async () => {
           items.value = items.value.filter(
             (item) => item.location === currentCategoryByLocationObj.value.title
           );
-        } else {
+        } 
+        else {
           await refresh();
           items.value = items.value.filter(
             (item) => item.location !== "archive" && item.location !== "deleted"
@@ -901,10 +969,11 @@ const filterItemsByLocationObj = async () => {
         }
       } else {
         items.value = items.value.filter(
-          (item) => item.location === currentCategoryByLocationObj.value.type
+          (item) => item.locationType === currentCategoryByLocationObj.value.type
         );
       }
     } else {
+      console.log(123)
       items.value = items.value.filter(
         (item) => item.location !== "archive" && item.location !== "deleted"
       );
@@ -933,21 +1002,22 @@ const filterItemsByLocationObj = async () => {
       if (currentCategoryByLocationObj.value.id === null) {
         items.value = items.value.filter(
           (item) =>
-            item.location === currentCategoryByLocationObj.value.type &&
-            item.locationID === currentCategoryByLocationObj.value.id
+            item.locationType === currentCategoryByLocationObj.value.type &&
+            item.locationId === +currentCategoryByLocationObj.value.id
         );
       } else {
         if (currentCategoryByLocationObj.value.title === "location") {
+          // console.log(items.value)
           items.value = items.value.filter(
             (item) =>
-              item.location === currentCategoryByLocationObj.value.type &&
-              item.locationID === currentCategoryByLocationObj.value.id
-          );
+              item.locationId === +currentCategoryByLocationObj.value.id && 
+              item.locationType === currentCategoryByLocationObj.value.type
+            );
         } else {
           items.value = items.value.filter(
             (item) =>
-              item.location === "project" &&
-              item.locationID === currentCategoryByLocationObj.value.id
+              item.locationType === "project" &&
+              item.locationId === +currentCategoryByLocationObj.value.id
           );
         }
       }
@@ -956,15 +1026,15 @@ const filterItemsByLocationObj = async () => {
         items.value = items.value.filter(
           (item) =>
             item.type === currentCategoryByType.value &&
-            item.location === "project" &&
-            item.locationID === currentCategoryByLocationObj.value.id
+            item.locationType === "project" &&
+            item.locationID === +currentCategoryByLocationObj.value.id
         );
       } else {
         items.value = items.value.filter(
           (item) =>
             item.type === currentCategoryByType.value &&
-            item.location === currentCategoryByLocationObj.value.type &&
-            item.locationID === currentCategoryByLocationObj.value.id
+            item.locationType === currentCategoryByLocationObj.value.type &&
+            item.locationID === +currentCategoryByLocationObj.value.id
         );
       }
     }
@@ -988,13 +1058,14 @@ const filterItemsByCategoryType = async () => {
       items.value = items.value.filter(
         (item) => item.location !== "archive" && item.location !== "deleted"
       );
-      if (currentCategoryByLocationObj.value.title === "project") {
+      if(currentCategoryByLocationObj.value.title === "project") {
         items.value = items.value.filter(
           (item) =>
-            item.type === currentCategoryByType.value &&
-            item.location === "project"
+          item.type === currentCategoryByType.value &&
+          item.location === "project"
         );
-      } else {
+      } 
+      else {
         items.value = items.value.filter(
           (item) => item.type === currentCategoryByType.value
         );
@@ -1004,52 +1075,57 @@ const filterItemsByCategoryType = async () => {
     if (currentCategoryByLocationObj.value.type === "all") {
       await refresh();
     } else {
+      
       if (currentCategoryByLocationObj.value.id) {
         if (currentCategoryByLocationObj.value.title === "project") {
           items.value = items.value.filter(
             (item) =>
-              item.location === "project" &&
-              item.locationID === currentCategoryByLocationObj.value.id
+              item.locationType === "project" &&
+              item.locationID === +currentCategoryByLocationObj.value.id
           );
         } else {
+          console.log(items.value)
           items.value = items.value.filter(
             (item) =>
-              item.location === currentCategoryByLocationObj.value.type &&
-              item.locationID === currentCategoryByLocationObj.value.id
+            item.locationType === currentCategoryByLocationObj.value.type &&
+            item.locationId === +currentCategoryByLocationObj.value.id
           );
         }
       } else {
         items.value = items.value.filter(
-          (item) => item.location === currentCategoryByLocationObj.value.type
+          (item) => item.locationType === currentCategoryByLocationObj.value.type
         );
       }
     }
   } else {
+
     if (currentCategoryByType.value !== "all") {
       if (currentCategoryByLocationObj.value.id) {
         if (currentCategoryByLocationObj.value.title === "project") {
           items.value = items.value.filter(
             (item) =>
-              item.type === currentCategoryByType.value &&
-              item.location === "project" &&
-              item.locationID === currentCategoryByLocationObj.value.id
+            item.type === currentCategoryByType.value &&
+            item.locationType === "project" &&
+            item.locationID === +currentCategoryByLocationObj.value.id
           );
         } else {
           items.value = items.value.filter(
             (item) =>
-              item.type === currentCategoryByType.value &&
-              item.location === currentCategoryByLocationObj.value.type &&
-              item.locationID === currentCategoryByLocationObj.value.id
+            item.type === currentCategoryByType.value 
+            // item.locationType === currentCategoryByLocationObj.value.type &&
+            // item.locationID === +currentCategoryByLocationObj.value.id
           );
         }
       } else {
         items.value = items.value.filter(
           (item) =>
-            item.type === currentCategoryByType.value &&
-            item.location === currentCategoryByLocationObj.value.type
+          item.type === currentCategoryByType.value &&
+          item.locationType === currentCategoryByLocationObj.value.type
         );
       }
-    } else {
+    } 
+    else {
+
     }
     // await refresh()
   }
@@ -1060,6 +1136,8 @@ const showItemsInArchive = () => {
   currentCategoryByLocationObj.value = {
     title: "location",
     type: "archive",
+    translate: '',
+    address: '',
     id: null,
   };
   currentCategoryByType.value = "all";
@@ -1070,6 +1148,8 @@ const showItemsInDeleted = () => {
   currentCategoryByLocationObj.value = {
     title: "location",
     type: "deleted",
+    translate: '',
+    address: '',
     id: null,
   };
   currentCategoryByType.value = "all";
@@ -1148,7 +1228,7 @@ async function updateItem(editedItem) {
           id: editedItem.id,
           // title: editedItem.title,
           qty: editedItem.qty,
-          location: editedItem.location,
+          locationType: editedItem.locationType,
           locationID: editedItem.locationID,
         },
       });
@@ -1164,7 +1244,7 @@ async function updateItem(editedItem) {
           item.title === currentItem.value.title &&
           item.type === currentItem.value.type &&
           item.measure === currentItem.value.measure &&
-          item.location === tempLocation.value.type &&
+          item.locationType === tempLocation.value.type &&
           item.locationID === tempLocation.value.id &&
           item.ownerType === currentItem.value.ownerType &&
           item.ownerID === currentItem.value.ownerID &&
@@ -1176,7 +1256,7 @@ async function updateItem(editedItem) {
 
       // 1.1. где еще нет подобного предмета
       if (tempQty.value === currentItem.value.qty && !findItems[0]) {
-        editedItem.location = tempLocation.value.type;
+        editedItem.locationType = tempLocation.value.type;
         editedItem.locationID = tempLocation.value.id;
 
         // Обновляем предмет в БД
@@ -1186,7 +1266,7 @@ async function updateItem(editedItem) {
             id: editedItem.id,
             // title: editedItem.title,
             qty: editedItem.qty,
-            location: editedItem.location,
+            locationType: editedItem.locationType,
             locationID: editedItem.locationID,
           },
         });
@@ -1195,7 +1275,7 @@ async function updateItem(editedItem) {
 
       // 1.2. в уже имеющийся предмет в другом месте(добавляем ко второму (findItems[0].id) и удаляем первый(currentItem.value.id))
       else if (tempQty.value === currentItem.value.qty && findItems[0]) {
-        editedItem.location = tempLocation.value.type;
+        editedItem.locationType = tempLocation.value.type;
         editedItem.locationID = tempLocation.value.id;
         editedItem.qty = currentItem.value.qty + +findItems[0].qty;
 
@@ -1223,7 +1303,7 @@ async function updateItem(editedItem) {
             id: findItems[0].id,
             // title: editedItem.title,
             qty: editedItem.qty,
-            location: editedItem.location,
+            locationType: editedItem.locationType,
             locationID: editedItem.locationID,
           },
         });
@@ -1246,7 +1326,7 @@ async function updateItem(editedItem) {
         // } else {
 
         // }
-        editedItem.location = tempLocation.value.type;
+        editedItem.locationType = tempLocation.value.type;
         editedItem.locationID = tempLocation.value.id;
         editedItem.qty = findItems[0].qty + tempQty.value;
 
@@ -1256,7 +1336,7 @@ async function updateItem(editedItem) {
             id: currentItem.value.id,
             // title: editedItem.title,
             qty: currentItem.value.qty - tempQty.value,
-            location: currentItem.value.location,
+            locationType: currentItem.value.locationType,
             locationID: currentItem.value.locationID,
           },
         });
@@ -1267,7 +1347,7 @@ async function updateItem(editedItem) {
             id: findItems[0].id,
             // title: editedItem.title,
             qty: editedItem.qty,
-            location: editedItem.location,
+            locationType: editedItem.locationType,
             locationID: editedItem.locationID,
           },
         });
@@ -1288,7 +1368,7 @@ async function updateItem(editedItem) {
         // } else {
 
         // }
-        editedItem.location = tempLocation.value.type;
+        editedItem.locationType = tempLocation.value.type;
         editedItem.locationID = tempLocation.value.id;
         editedItem.qty = tempQty.value;
 
@@ -1298,7 +1378,7 @@ async function updateItem(editedItem) {
             id: currentItem.value.id,
             // title: editedItem.title,
             qty: currentItem.value.qty - tempQty.value,
-            location: currentItem.value.location,
+            locationType: currentItem.value.locationType,
             locationID: currentItem.value.locationID,
           },
         });
@@ -1311,7 +1391,7 @@ async function updateItem(editedItem) {
             type: currentItem.value.type,
             qty: editedItem.qty,
             measure: currentItem.value.measure,
-            location: editedItem.location,
+            locationType: editedItem.locationType,
             locationID: editedItem.locationID,
             ownerID: currentItem.value.ownerID,
             ownerType: currentItem.value.ownerType,
@@ -1384,7 +1464,7 @@ const onClickAction = (action: string, item: any) => {
       id: item.id,
       title: item.title,
       qty: item.qty,
-      location: item.location,
+      locationType: item.locationType,
       locationID: item.locationID,
       position: item.position,
     };
@@ -1399,7 +1479,7 @@ const checkAndCreate = async (item) => {
       e.title === item.title &&
       e.type === item.type &&
       e.measure === item.measure &&
-      e.location === item.location &&
+      e.locationType === item.locationType &&
       e.locationID === item.locationID &&
       e.ownerType === item.ownerType &&
       e.ownerID === item.ownerID &&
@@ -1443,6 +1523,11 @@ const convertListToPDF = () => {
   }
 };
 
+// on search input
+const onInputFunc = (e) => {
+  searchInput.value = e
+}
+
 // HIDE
 const toggleShowToAll = () => {
   alert("Скрытие в разработке");
@@ -1466,7 +1551,7 @@ watch(item.value, () => {
     item.value.type &&
     item.value.qty > 0 &&
     item.value.measure &&
-    item.value.location &&
+    item.value.locationType &&
     item.value.locationID &&
     item.value.ownerID &&
     item.value.ownerType &&
@@ -1537,8 +1622,8 @@ watch(tempLocation, () => {
         editBtnIsDisabled.value = true;
       } else {
         if (
-          tempLocation.value.title === currentItem.value.location &&
-          tempLocation.value.id === currentItem.value.locationID
+          tempLocation.value.title === currentItem.value.locationType &&
+          tempLocation.value.id === +currentItem.value.locationID
         ) {
           editBtnIsDisabled.value = true;
         } else {
@@ -1551,8 +1636,8 @@ watch(tempLocation, () => {
 
 watch(tempCreateItemLocation, () => {
   // console.log(tempCreateItemLocation.value)
-  item.value.location = tempCreateItemLocation.value.type;
-  item.value.locationID = tempCreateItemLocation.value.id;
+  item.value.locationType = tempCreateItemLocation.value.type;
+  item.value.locationID = +tempCreateItemLocation.value.id;
 });
 
 watch(tempCreateItemOwner, () => {
@@ -1719,14 +1804,10 @@ watch(tempCreateItemOwner, () => {
                   <span> Откуда: </span>
                   <span
                     class="link link-location"
-                    :class="`${locationLinkColorized(currentItem.location)}`"
+                    :class="`${locationLinkColorized(currentItem.locationType)}`"
                   >
-                    {{
-                      translateLocation(
-                        currentItem.locationID,
-                        currentItem.location
-                      )
-                    }}
+                    {{ currentItem.locationID }}
+                    {{ currentItem.locationType }}
                   </span>
                 </div>
 
@@ -2123,7 +2204,7 @@ watch(tempCreateItemOwner, () => {
                 <optgroup label="Организации">
                   <option
                     :value="{
-                      type: 'company',
+                      type: 'conspirator',
                       id: company.id,
                     }"
                     v-for="(company, i) in organizations"
@@ -2203,24 +2284,202 @@ watch(tempCreateItemOwner, () => {
     <!--  -->
     <!-- ********************* ФИЛЬТРЫ ********************** -->
 
+    <Search @searchInputChanged="onInputFunc"/>
+
+    <div class="filter_container">
+      <div class="filter-wrapper">
+        <label @click="popup_location_opened = !popup_location_opened" for="filter-by-location-chip-menu">
+          <!-- <span v-if="currentCategoryByLocationObj.type === 'all'">Все места</span> -->
+          <span>{{ currentCategoryByLocationObj.translate }} <span v-if="currentCategoryByLocationObj.address !== ''">| {{ currentCategoryByLocationObj?.address }}</span></span>
+          <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)" style="transform: rotate(180deg)"/>
+          <br>
+        </label>
+        <!-- <input type="checkbox" id="filter-by-location-chip-menu"> -->
+
+        <!-- МОДАЛКА -->
+        <DefaultPopup 
+          v-if="popup_location_opened"
+          id="filter-by-location-chip-menu"
+          popup_title="Выберите локацию к показу" 
+          @emitClosePopup="closeLocationPopup"
+        >
+          <ul style="list-style: none; padding: 0; margin-top: 1rem;" role="radiogroup">
+            <li>
+              <input id="all-all" type="radio">
+              <label               
+                @click="currentCategoryByLocationObj = {
+                  title: `all`,
+                  type: `all`,
+                  translate: 'Все места',
+                  address: '',
+                  id: null
+                }; popup_location_opened = !popup_location_opened" 
+                for="all-all"
+              >
+                Все места
+              </label>
+            </li>
+            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Общее</p>
+            <!-- <li    
+              v-for="el in [...default_location_list]"
+              style="margin-top: 1rem;"  
+              @click="currentCategoryByLocationObj = {
+                title: `location`,
+                type: `${el.type}`,
+                id: `${el?.id ? el.id : null}`
+              }; popup_location_opened = !popup_location_opened"
+            >
+              
+              <input :id="`${el.type}-${el.title}`" type="radio">
+              <label :for="`${el.type}-${el.title}`">{{ el.title }}</label>
+            </li> -->
+            <li 
+              style="margin-top: 1rem;"
+              v-for="el in [
+                {
+                  name: 'location',
+                  title: 'Все склады',
+                  type: 'sklad',
+                  id: null
+                },
+                {
+                  name: 'location',
+                  title: 'Все repair',
+                  type: 'repair',
+                  id: null
+                },
+                {
+                  name: 'location',
+                  title: 'Все офисы',
+                  type: 'office',
+                  id: null
+                },
+                {
+                  name: 'project',
+                  title: 'Все проекты',
+                  type: 'all',
+                  id: null
+                }
+              ]"
+              >
+              <input :id="`${el.type}-${el.title}`" type="radio">
+              <label :for="`${el.type}-${el.title}`"                    @click="currentCategoryByLocationObj = {
+                  title: `${el.name}`,
+                  translate: `${el.title}`,
+                  address: '',
+                  type: `${el.type}`,
+                  id: null
+                }; popup_location_opened = !popup_location_opened" 
+                >{{ el.title }}</label>
+            </li>
+            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
+            <li    
+              v-for="el in [...locations]"
+              style="margin-top: 1rem;"  
+              @click="currentCategoryByLocationObj = {
+                title: `location`,
+                type: `${el.type}`,
+                translate: `${el.title}`,
+                address: `${el.address}`,
+                id: `${el?.id ? el.id : null}`
+              }; popup_location_opened = !popup_location_opened"
+            >
+              
+              <input :id="`${el.type}-${el.title}`" type="radio">
+              <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }}</label>
+            </li>
+            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
+            <li 
+              v-for="el in [...projects]"
+              @click="currentCategoryByLocationObj = {
+                title: `project`,
+                type: `${el.type}`,
+                translate: `${el.name}`,
+                address: ``,
+                id: `${el?.id ? el.id : null}`
+              }; popup_location_opened = !popup_location_opened"
+              style="margin-top: 1rem;"
+            >
+              <!-- {{ el.name }} -->
+              <input :id="`${el.type}-${el.title}`" type="radio">
+              <label :for="`${el.type}-${el.title}`">{{ el.name }}</label>
+            </li>
+            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Прочее</p>
+            <li
+              v-for="el in [
+                {
+                  title: 'location',
+                  type: 'archive',
+                  translate: 'Архив', 
+                  id: null,
+                },
+                {
+                  title: 'location',
+                  type: 'deleted',
+                  translate: 'Удаленные',
+                  id: null,
+                }
+              ]"
+              @click="currentCategoryByLocationObj = {
+                title: `${el.title}`,
+                type: `${el.type}`,
+                translate: `${el.translate}`,
+                address: '',
+                id: `${el?.id ? el.id : null}`
+              }; popup_location_opened = !popup_location_opened"
+              style="margin-top: 1rem;"
+            >
+              {{ el.type }}
+            </li>
+          </ul>
+        </DefaultPopup>
+      </div>
+      <div class="filter-wrapper">
+        <label @click="popup_type_opened = !popup_type_opened" for="filter-by-type-chip-menu">
+          <span v-if="currentCategoryByType === 'all'">Все типы ТМЦ</span>
+          <span v-else>{{currentCategoryByType}}</span>
+          <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)" style="transform: rotate(180deg)"/>
+        </label>
+
+        <!-- МОДАЛКА -->
+        <DefaultPopup 
+          v-if="popup_type_opened"
+          id="filter-by-typee-chip-menu"
+          popup_title="Выберите тип имущества к показу"
+          @emitClosePopup="closeTypePopup"
+        >
+          <ul style="list-style: none; padding: 0;">
+            <li v-for="(el, index) in warehouseCategories" style="margin-top: 1rem;">
+              <input type="radio" id="index">
+              <label @click="currentCategoryByType = el.type; popup_type_opened = !popup_type_opened" for="index">{{ el.name }}</label>
+            </li>
+          </ul>
+          <!-- warehouseCategories   -->
+        </DefaultPopup>
+      </div>
+    </div>
+    <br>
+    <div style="margin-left: 1rem; margin-right: 1rem;">
+
+      {{ currentCategoryByLocationObj }}
+      <br>
+      {{ currentCategoryByType }}
+    </div>
     <!-- FILTERS RADIO BTN -->
     <div class="switch-type_container">
       <div class="switch-type_wrapper">
         <!--  -->
-        <div style="display: flex; align-items: center">
-          <!-- set location & project -->
+        <!-- <div style="display: flex; align-items: center">
           <select
             style="width: 15rem"
             class="form-select form-select-sm filter-location_select"
             aria-label=".form-select-sm example"
             v-model="currentCategoryByLocationObj"
           >
-            <!-- all locations & projects -->
             <option :value="{ title: 'all', type: 'all', id: null }">
               Все места
             </option>
 
-            <!-- All locations -->
             <optgroup label="All locations">
               <option :value="{ title: 'location', type: 'sklad', id: null }">
                 Все склады
@@ -2236,7 +2495,6 @@ watch(tempCreateItemOwner, () => {
               </option>
             </optgroup>
 
-            <!-- Locations -->
             <optgroup label="Locations">
               <option
                 :value="{
@@ -2246,24 +2504,20 @@ watch(tempCreateItemOwner, () => {
                 }"
                 v-for="(location, i) in locations"
               >
-                <!-- {{ location.type }} |  -->
                 {{ location.title }}
-                <!-- | {{ location.address }} -->
               </option>
             </optgroup>
 
-            <!-- projects -->
             <optgroup label="Проекты">
               <option
                 :value="{ title: 'project', id: project.id }"
                 v-for="(project, i) in projects"
               >
                 {{ project.title }}
-                <!-- | {{ project.address }} -->
               </option>
             </optgroup>
 
-            <!-- Archive & deleted -->
+
             <optgroup label="Прочее">
               <option
                 :value="{
@@ -2285,11 +2539,10 @@ watch(tempCreateItemOwner, () => {
               </option>
             </optgroup>
           </select>
-        </div>
+        </div> -->
 
         <!-- set category type of items-->
-        <div class="set-categoty-type_wrapper">
-          <!-- SWITCH BTNs -->
+        <!-- <div class="set-categoty-type_wrapper">
           <div
             v-for="(category, index) in warehouseCategories"
             :key="index"
@@ -2303,7 +2556,7 @@ watch(tempCreateItemOwner, () => {
             />
             <label :for="index">{{ category.name }}</label>
           </div>
-        </div>
+        </div> -->
 
         <!-- my, myBand -->
         <!-- <div style="margin-top: 1rem; margin-left: 0.5rem">
@@ -2333,31 +2586,6 @@ watch(tempCreateItemOwner, () => {
         </div> -->
       </div>
 
-      <div id="searchFilterContainer" class="search-and-filter_container">
-        <!-- SEARCH -->
-        <div class="search-wrapper">
-          <!-- <div class="search_input"> -->
-
-          <input
-            id="search-input_icon"
-            type="text"
-            class="form-control"
-            placeholder="Поиск"
-            v-model="searchInput"
-          />
-          <label for="search-input_icon">
-            <Icon name="ic:baseline-search" size="24px" />
-          </label>
-          <!-- </div> -->
-        </div>
-
-        <!-- FILTER BY ARCHIVE & DELETED -->
-        <div class="filter-archive_container">
-          <span @click="showItemsInArchive">Архив </span>
-          <span>|</span>
-          <span @click="showItemsInDeleted">Списание</span>
-        </div>
-      </div>
     </div>
 
     <!-- ********************** DATA ******************************* -->
@@ -2369,7 +2597,7 @@ watch(tempCreateItemOwner, () => {
     </div>
 
     <!-- data is loading -->
-    <div v-if="pending">
+    <div v-if="pending" style="margin-left: 1rem; margin-right: 1rem;">
       <p style="margin-top: 1rem">Loading...</p>
     </div>
 
@@ -2400,7 +2628,7 @@ watch(tempCreateItemOwner, () => {
         </thead>
 
         <tbody id="element-to-print">
-          <div v-if="computedItems">
+          <div v-if="computedItems" style="margin-left: .5rem; margin-right: .5">
             <div v-if="!searchInput && !computedItems.length">Ничего нет</div>
             <div v-if="searchInput && !computedItems.length">
               По запросу ничего не найдено
@@ -2465,7 +2693,11 @@ watch(tempCreateItemOwner, () => {
                 :class="`${locationLinkColorized(item.location)}`"
                 @click="creatLocationLink(item)"
               >
-                {{ translateLocation(item.locationID, item.location) }}
+              {{ translateLocation(item.locationId, item.locationType) }}
+                <!-- {{ item.locationId }} -->
+                <span v-if="item.locationType" style="background-color: var(--color-wallet-fund-invested); padding: 2px 8px; border-radius: 1rem;">
+                  {{ item.locationType }}
+                </span>
               </span>
             </td>
 
@@ -2474,7 +2706,10 @@ watch(tempCreateItemOwner, () => {
               <span
                 class="link"
                 @click="onClickOwner(item.ownerID, item.ownerType)"
-                >{{ translateOwner(item.ownerID, item.ownerType) }}
+                >
+                <!-- {{ translateOwner() }} -->
+                  {{ item.ownerID }}
+                  {{ item.ownerType }}
               </span>
             </td>
 
@@ -2483,7 +2718,11 @@ watch(tempCreateItemOwner, () => {
               <span
                 class="link"
                 @click="$router.push(`/partners/${item.responsible}`)"
-                >{{ translateResponsibles(item.responsible) }}</span
+                >
+                <!-- {{ translateResponsibles(item.responsible) }} -->
+                {{item.responsibleID}}
+                {{ item.responsibleType }}
+                </span
               >
             </td>
 
@@ -2519,7 +2758,8 @@ watch(tempCreateItemOwner, () => {
                       :class="`${locationLinkColorized(item.location)}`"
                       @click="creatLocationLink(item)"
                     >
-                      {{ translateLocation(item.locationID, item.location) }}
+                      {{ item.locationID }}
+                      {{ item.locationType }}
                     </span>
                   </div>
                   <div class="expended-content_article article_block">
@@ -2527,7 +2767,10 @@ watch(tempCreateItemOwner, () => {
                     <span
                       class="link"
                       @click="onClickOwner(item.ownerID, item.ownerType)"
-                      >{{ translateOwner(item.ownerID, item.ownerType) }}
+                      >
+                      <!-- {{ translateOwner() }} -->
+                        {{ item.ownerID }}
+                        {{ item.ownerType }}
                     </span>
                   </div>
                   <div class="expended-content_article article_block">
@@ -2535,7 +2778,9 @@ watch(tempCreateItemOwner, () => {
                     <span
                       class="link"
                       @click="$router.push(`/partners/${item.responsible}`)"
-                      >{{ translateResponsibles(item.responsible) }}</span
+                      >
+                      {{ translateResponsibles(item.responsible) }}
+                      </span
                     >
                   </div>
                 </div>
@@ -2553,7 +2798,7 @@ watch(tempCreateItemOwner, () => {
   margin-top: 5rem;
 } */
 .header_container {
-  margin-top: 6rem;
+  /* margin-top: 6rem; */
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -2613,14 +2858,6 @@ td {
 .link_deleted {
   color: var(--bs-danger-bg-subtle);
   border: none;
-}
-.search-and-filter_container {
-  /* position: fixed!important; */
-  align-self: flex-start;
-  display: flex;
-  flex-direction: column;
-
-  justify-content: space-between !important;
 }
 
 /* convert to PDF */
@@ -2782,6 +3019,7 @@ label #expend-item:checked + .expand-item_icon {
 }
 
 .set-categoty-type_wrapper {
+  width: 100vw!important;
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
@@ -2832,28 +3070,41 @@ label #expend-item:checked + .expand-item_icon {
   .filter-location_select {
     margin: 0 0.5rem;
   }
-  .search-and-filter_container {
-    position: absolute;
-    right: 0.5rem;
-  }
-  /* .set-categoty-type_wrapper {
-    width: 100%;
-  } */
-  /* .search-and-filter_container .search_input {
-    max-width: 120px;
-  } */
   .expended-item_opened {
     margin: unset;
   }
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
 }
 
-/* @media screen and (min-width: 576px) and (max-width: 767px) {
-
-} */
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  /* 
+   */
+  .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+}
 
 @media screen and (max-width: 767px) {
   .header_container {
-    margin-top: 4rem;
+    /* margin-top: 4rem; */
   }
   .header_title {
     display: none;
@@ -2893,11 +3144,6 @@ label #expend-item:checked + .expand-item_icon {
   }
   .switch-type_container {
     align-items: flex-start;
-  }
-  .search-and-filter_container {
-    /* position: absolute; */
-    position: fixed;
-    right: 0.5rem;
   }
   .filter-location_select {
     width: 60%;
@@ -3167,20 +3413,6 @@ label #expend-item:checked + .expand-item_icon {
   .table-row_wrapper {
     grid-template-columns: 50px 1fr 100px 1fr;
   }
-  .search-and-filter_container {
-    position: fixed;
-    right: 0;
-    margin-right: 1rem;
-    /* z-index: -1; */
-  }
-  /* .table_container {
-    z-index: 999;
-  } */
-  /* .expended-item_content {
-    margin-top: 1rem;
-    display: flex;
-    width: 100%;
-  }   */
   .expended-item {
     grid-column: span 5;
     /* background-color: red; */
@@ -3258,6 +3490,46 @@ label #expend-item:checked + .expand-item_icon {
     -webkit-box-shadow: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     margin-right: 1rem;
+  }
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+}
+@media screen and (min-width: 1200px) {
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
   }
 }
 </style>

@@ -63,11 +63,11 @@ const featuresListAuth = ref([
     title: "Доска",
     auth: true,
   },
-  // {
-  //   path: "/warehouse",
-  //   title: "ТМЦ",
-  //   auth: true,
-  // },
+  {
+    path: "/warehouse",
+    title: "ТМЦ",
+    auth: true,
+  },
   // {
   //   path: "/bonds",
   //   title: "Бонды",
@@ -127,10 +127,10 @@ const featuresListNoAuth = ref([
   //   title: 'Оставить заявку',
   //   path: 'landing_offer'
   // },
-  {
-    title: 'Контакты',
-    path: '/about'
-  },
+  // {
+  //   title: 'Контакты',
+  //   path: '/about'
+  // },
 ])
 
 //

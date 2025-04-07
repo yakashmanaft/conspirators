@@ -4,5 +4,5 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async () => {
     // ... Do whatever you want here
 
-    return await prisma.organizations.findMany()
+    return await prisma.band.findMany()
 })

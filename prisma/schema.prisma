@@ -389,7 +389,7 @@ model Warehouse {
   qty             Int      @default(0)
   price           Decimal  @default(0)
   measure         String   @db.VarChar(255)
-  // location       String    @db.VarChar(255)
+  locationType    String?  @db.VarChar(255)
   location        Location @relation(fields: [locationId], references: [id])
   locationId      Int
   position        String   @db.VarChar(255)

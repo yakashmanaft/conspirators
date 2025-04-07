@@ -18,12 +18,6 @@ const hotBtnList = ref([
     icon_clicked_name: 'material-symbols-light:library-books-rounded',
     target: "demands",
   },
-  // {
-  //   name: "warehouse",
-  //   icon_name: "material-symbols-light:warehouse-outline-rounded",
-  //   icon_clicked_name: "material-symbols-light:warehouse-rounded",
-  //   target: "warehouse",
-  // },
   {
     name: "projects",
     icon_name: 'material-symbols-light:business-center-outline-rounded',
@@ -48,6 +42,12 @@ const hotBtnList = ref([
   //   icon_clicked_name: 'material-symbols-light:personal-places-rounded',
   //   target: "landing_all"
   // },
+  {
+    name: "warehouse",
+    icon_name: "material-symbols-light:warehouse-outline-rounded",
+    icon_clicked_name: "material-symbols-light:warehouse-rounded",
+    target: "warehouse",
+  },
   {
     name: "wallet",
     icon_name: "material-symbols-light:account-balance-wallet-outline",
