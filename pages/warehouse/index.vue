@@ -1663,7 +1663,7 @@ watch(tempCreateItemOwner, () => {
         data-bs-toggle="modal"
         data-bs-target="#newWarehouseItemModal"
       >
-        <span> Создать </span>
+        <span> Добавить </span>
       </button>
     </div>
 
@@ -2291,8 +2291,7 @@ watch(tempCreateItemOwner, () => {
         <label @click="popup_location_opened = !popup_location_opened" for="filter-by-location-chip-menu">
           <!-- <span v-if="currentCategoryByLocationObj.type === 'all'">Все места</span> -->
           <span>{{ currentCategoryByLocationObj.translate }} <span v-if="currentCategoryByLocationObj.address !== ''">| {{ currentCategoryByLocationObj?.address }}</span></span>
-          <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)" style="transform: rotate(180deg)"/>
-          <br>
+          <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
         </label>
         <!-- <input type="checkbox" id="filter-by-location-chip-menu"> -->
 
@@ -2300,7 +2299,7 @@ watch(tempCreateItemOwner, () => {
         <DefaultPopup 
           v-if="popup_location_opened"
           id="filter-by-location-chip-menu"
-          popup_title="Выберите локацию к показу" 
+          popup_title="Фильтруйте по локации" 
           @emitClosePopup="closeLocationPopup"
         >
           <ul style="list-style: none; padding: 0; margin-top: 1rem;" role="radiogroup">
@@ -2438,14 +2437,14 @@ watch(tempCreateItemOwner, () => {
         <label @click="popup_type_opened = !popup_type_opened" for="filter-by-type-chip-menu">
           <span v-if="currentCategoryByType === 'all'">Все типы ТМЦ</span>
           <span v-else>{{currentCategoryByType}}</span>
-          <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)" style="transform: rotate(180deg)"/>
+          <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
         </label>
 
         <!-- МОДАЛКА -->
         <DefaultPopup 
           v-if="popup_type_opened"
           id="filter-by-typee-chip-menu"
-          popup_title="Выберите тип имущества к показу"
+          popup_title="Фильтруйте по типу"
           @emitClosePopup="closeTypePopup"
         >
           <ul style="list-style: none; padding: 0;">
@@ -2458,15 +2457,8 @@ watch(tempCreateItemOwner, () => {
         </DefaultPopup>
       </div>
     </div>
-    <br>
-    <div style="margin-left: 1rem; margin-right: 1rem;">
-
-      {{ currentCategoryByLocationObj }}
-      <br>
-      {{ currentCategoryByType }}
-    </div>
     <!-- FILTERS RADIO BTN -->
-    <div class="switch-type_container">
+    <!-- <div class="switch-type_container"> -->
       <div class="switch-type_wrapper">
         <!--  -->
         <!-- <div style="display: flex; align-items: center">
@@ -2586,7 +2578,7 @@ watch(tempCreateItemOwner, () => {
         </div> -->
       </div>
 
-    </div>
+    <!-- </div> -->
 
     <!-- ********************** DATA ******************************* -->
 
@@ -2615,7 +2607,7 @@ watch(tempCreateItemOwner, () => {
                 <Icon
                   name="ic:sharp-picture-as-pdf"
                   size="24px"
-                  color="var(--bs-body-color)"
+                  color="var(--color-global-text_second)"
                 />
               </div>
             </th>
@@ -2806,6 +2798,8 @@ watch(tempCreateItemOwner, () => {
 }
 .header_container .header_title {
   margin: unset;
+  font-weight: bold; 
+  font-size: 42px;
 }
 table {
   margin-top: 1rem;
@@ -2911,6 +2905,10 @@ td {
   /* background-color: #b1e3c1; */
   background-color: var(--bs-border-color);
   /* color: white; */
+}
+.item-table_header tr th {
+  color: var(--color-global-text_second);
+  font-size: .8rem;
 }
 .item-table_header tr,
 .table-row_wrapper {
@@ -3078,12 +3076,41 @@ label #expend-item:checked + .expand-item_icon {
    .filter_container {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     margin-left: 1rem;
     margin-right: 1rem;
   }
   .filter-wrapper label:hover{
     cursor: pointer;
+  }
+  /* 
+   */
+  .table_container {
+    margin-top: 1.5rem;
+  }
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+  .filter-wrapper label span,
+  .filter-wrapper label svg {
+    transition: all .2s ease-in;
+  }
+  .filter-wrapper label svg{
+    transform: rotate(180deg)
+  }
+  .filter-wrapper label:hover span,
+  .filter-wrapper label:hover svg{
+    color: var(--color-wallet-fund-invested)!important;
+    transform: rotate(180deg) scale(1.5);
   }
 }
 
@@ -3093,12 +3120,41 @@ label #expend-item:checked + .expand-item_icon {
   .filter_container {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     margin-left: 1rem;
     margin-right: 1rem;
   }
   .filter-wrapper label:hover{
     cursor: pointer;
+  }
+  /* 
+   */
+   .table_container {
+    margin-top: 1.5rem;
+  }
+    /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+  .filter-wrapper label span,
+  .filter-wrapper label svg {
+    transition: all .2s ease-in;
+  }
+  .filter-wrapper label svg{
+    transform: rotate(180deg)
+  }
+  .filter-wrapper label:hover span,
+  .filter-wrapper label:hover svg{
+    color: var(--color-wallet-fund-invested)!important;
+    transform: rotate(180deg) scale(1.5);
   }
 }
 
@@ -3177,11 +3233,12 @@ label #expend-item:checked + .expand-item_icon {
     display: none;
   }
   .table {
+    margin-top: unset;
     margin-bottom: 8rem;
   }
   .table-row_wrapper {
     padding: 0;
-    padding-top: 0.5rem;
+    /* padding-top: 0.5rem; */
     width: 100%;
     display: inline-grid;
     align-items: center;
@@ -3443,7 +3500,33 @@ label #expend-item:checked + .expand-item_icon {
     justify-content: space-around;
   }
 
-  /*  */
+  /* 
+   */
+   .header_container {
+      align-items: flex-end;
+      gap: .5rem;
+   }
+   .btn-create-modal-open-767 {
+    background-color: unset;
+    font-size: .8rem;
+    padding: 0;
+    /* border-radius: unset!important; */
+    /* padding: 2px 8px; */
+  }
+  .btn-create-modal-open-767 span {
+     color: var(--color-global-text);
+     transition: all 0.2s ease-in;
+   }
+   .btn-create-modal-open-767:active {
+    background-color: unset;
+   }
+   .btn-create-modal-open-767 span:hover {
+    font-size: 1.1rem;
+    color: var(--color-wallet-fund-invested);
+   }
+
+  /*  
+  */
   .filter-archive_container {
     display: none;
   }
@@ -3503,6 +3586,18 @@ label #expend-item:checked + .expand-item_icon {
   .filter-wrapper label:hover{
     cursor: pointer;
   }
+  .filter-wrapper label span,
+  .filter-wrapper label svg {
+    transition: all .2s ease-in;
+  }
+  .filter-wrapper label svg{
+    transform: rotate(180deg)
+  }
+  .filter-wrapper label:hover span,
+  .filter-wrapper label:hover svg{
+    color: var(--color-wallet-fund-invested)!important;
+    transform: rotate(180deg) scale(1.5);
+  }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   /* 
@@ -3517,6 +3612,54 @@ label #expend-item:checked + .expand-item_icon {
   .filter-wrapper label:hover{
     cursor: pointer;
   }
+  /* 
+   */
+   .header_container {
+      align-items: flex-end;
+      gap: .5rem;
+   }
+   .btn-create-modal-open-767 {
+    background-color: unset;
+    font-size: .8rem;
+    padding: 0;
+    /* border-radius: unset!important; */
+    /* padding: 2px 8px; */
+  }
+  .btn-create-modal-open-767 span {
+     color: var(--color-global-text);
+     transition: all 0.2s ease-in;
+   }
+   .btn-create-modal-open-767:active {
+    background-color: unset;
+   }
+   .btn-create-modal-open-767 span:hover {
+    font-size: 1.1rem;
+    color: var(--color-wallet-fund-invested);
+   }
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+  .filter-wrapper label span,
+  .filter-wrapper label svg {
+    transition: all .2s ease-in;
+  }
+  .filter-wrapper label svg{
+    transform: rotate(180deg)
+  }
+  .filter-wrapper label:hover span,
+  .filter-wrapper label:hover svg{
+    color: var(--color-wallet-fund-invested)!important;
+    transform: rotate(180deg) scale(1.5);
+  }
 }
 @media screen and (min-width: 1200px) {
   /* 
@@ -3530,6 +3673,54 @@ label #expend-item:checked + .expand-item_icon {
   }
   .filter-wrapper label:hover{
     cursor: pointer;
+  }
+  /* 
+   */
+   .header_container {
+      align-items: flex-end;
+      gap: .5rem;
+   }
+   .btn-create-modal-open-767 {
+    background-color: unset;
+    font-size: .8rem;
+    padding: 0;
+    /* border-radius: unset!important; */
+    /* padding: 2px 8px; */
+  }
+  .btn-create-modal-open-767 span {
+     color: var(--color-global-text);
+     transition: all 0.2s ease-in;
+   }
+   .btn-create-modal-open-767:active {
+    background-color: unset;
+   }
+   .btn-create-modal-open-767 span:hover {
+    font-size: 1.1rem;
+    color: var(--color-wallet-fund-invested);
+   }
+  /* 
+   */
+   .filter_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+  }
+  .filter-wrapper label:hover{
+    cursor: pointer;
+  }
+  .filter-wrapper label span,
+  .filter-wrapper label svg {
+    transition: all .2s ease-in;
+  }
+  .filter-wrapper label svg{
+    transform: rotate(180deg)
+  }
+  .filter-wrapper label:hover span,
+  .filter-wrapper label:hover svg{
+    color: var(--color-wallet-fund-invested)!important;
+    transform: rotate(180deg) scale(1.5);
   }
 }
 </style>
