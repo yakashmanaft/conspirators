@@ -457,9 +457,9 @@ watch(
             </li>
 
             <!-- HELP -->
-            <li @click="closeBurgerMenu">
+            <!-- <li @click="closeBurgerMenu">
               <Button type="pseudo-btn" link="/help" :disabled="false" >Помощь</Button>
-            </li>
+            </li> -->
 
             <!-- <li v-if="userAccesedLink('banks')" @click="closeBurgerMenu">
               <router-link to="/banks">Банк</router-link>
@@ -565,6 +565,18 @@ watch(
                     <!-- <div class="line"></div> -->
 
                     <!--  -->
+                    <!-- HELP BTN -->
+                    <div>
+                      <Button 
+                        type="pseudo-btn" 
+                        link="/help" 
+                        :disabled="false" 
+                        @click="closeBurgerMenu"
+                      >
+                        Помощь
+                      </Button>
+                    </div>
+                    <!-- LOGOUT BTN -->
                     <div class="user_logout">
                       <span @click="logout()" style="color: var(--bs-danger)">Выйти</span>
                     </div>
@@ -844,7 +856,7 @@ a:visited {
     padding-left: 1.5rem;
   }
   .header-features__list {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
   .account-menu_user {
     margin-top: 1rem;
