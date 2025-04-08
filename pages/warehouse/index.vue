@@ -606,24 +606,26 @@ const { loadData } = useUsersStore();
 
 // Генерируем ссылки местонахождения
 const creatLocationLink = (object: any) => {
+  // console.log(object)
   if (object) {
-    if (object.location === "project") {
-      router.push(`/projects/${object.locationID}`);
-    } else if (object.location === "sklad") {
+    if (object.locationType === "project") {
+      router.push(`/projects/${object.locationId}`);
+    } else if (object.locationType === "sklad") {
       alert(
-        `Складской адрес: ${object.locationID}. Поидее, следует показывать точный адрес полку, где лежит. Из БД warehouseItems - position`
+        `Складской адрес: ${object.locationId}. Поидее, следует показывать точный адрес полку, где лежит. Из БД warehouseItems - position`
       );
-    } else if (object.location === "repair") {
+    } else if (object.locationType === "repair") {
       alert(
         "В ремонте: сервисный центр поселили в БД locations. Что здесь при клике показывать?"
       );
-    } else if (object.location === "office") {
-      alert(
-        `В офисе №${object.locationID}. Адрес офиса (надо придумать как выдавать)`
-      );
-    } else if (object.location === "archive") {
-      alert(`Архив. Складской адрес: ${object.locationID}`);
-    } else if (object.location === "deleted") {
+    } else if (object.locationType === "office") {
+      router.push(`/locations/${object.locationId}`)
+      // alert(
+      //   `В офисе №${object.locationId}. Адрес офиса (надо придумать как выдавать)`
+      // );
+    } else if (object.locationType === "archive") {
+      alert(`Архив. Складской адрес: ${object.locationId}`);
+    } else if (object.locationType === "deleted") {
       alert(`У вас нет прав, чтобы окончательно удалить предмет`);
     } else {
       alert(
@@ -997,7 +999,8 @@ const filterItemsByLocationObj = async () => {
         );
       }
     }
-  } else {
+  } 
+  else {
     if (currentCategoryByType.value === "all") {
       if (currentCategoryByLocationObj.value.id === null) {
         items.value = items.value.filter(
@@ -1021,20 +1024,31 @@ const filterItemsByLocationObj = async () => {
           );
         }
       }
-    } else {
+    } 
+    else {
       if (currentCategoryByLocationObj.value.title === "project") {
         items.value = items.value.filter(
           (item) =>
-            item.type === currentCategoryByType.value &&
-            item.locationType === "project" &&
-            item.locationID === +currentCategoryByLocationObj.value.id
+          item.type === currentCategoryByType.value &&
+          item.locationType === "project" &&
+          item.locationID === +currentCategoryByLocationObj.value.id
         );
-      } else {
+      } 
+      else if (currentCategoryByLocationObj.value.title === "location") {
+
         items.value = items.value.filter(
           (item) =>
             item.type === currentCategoryByType.value &&
             item.locationType === currentCategoryByLocationObj.value.type &&
-            item.locationID === +currentCategoryByLocationObj.value.id
+            item.locationId === +currentCategoryByLocationObj.value.id
+        );
+      }
+      else {
+        items.value = items.value.filter(
+          (item) =>
+            item.type === currentCategoryByType.value &&
+            item.locationType === currentCategoryByLocationObj.value.type &&
+            item.locationId === +currentCategoryByLocationObj.value.id
         );
       }
     }
@@ -1042,6 +1056,7 @@ const filterItemsByLocationObj = async () => {
 };
 // фильтрация по products
 const filterItemsByCategoryType = async () => {
+  
   await refresh();
   if (currentCategoryByLocationObj.value.type === "all") {
     if (currentCategoryByType.value === "all") {
@@ -1071,12 +1086,14 @@ const filterItemsByCategoryType = async () => {
         );
       }
     }
-  } else if (currentCategoryByType.value === "all") {
+  } 
+  else if (currentCategoryByType.value === "all") {
     if (currentCategoryByLocationObj.value.type === "all") {
       await refresh();
     } else {
       
       if (currentCategoryByLocationObj.value.id) {
+        
         if (currentCategoryByLocationObj.value.title === "project") {
           items.value = items.value.filter(
             (item) =>
@@ -1084,7 +1101,6 @@ const filterItemsByCategoryType = async () => {
               item.locationID === +currentCategoryByLocationObj.value.id
           );
         } else {
-          console.log(items.value)
           items.value = items.value.filter(
             (item) =>
             item.locationType === currentCategoryByLocationObj.value.type &&
@@ -1092,13 +1108,19 @@ const filterItemsByCategoryType = async () => {
           );
         }
       } else {
-        items.value = items.value.filter(
-          (item) => item.locationType === currentCategoryByLocationObj.value.type
-        );
+        // Все офисы
+        if(currentCategoryByLocationObj.value.translate === 'Все офисы') {
+
+          console.log(items.value)
+          items.value = items.value.filter(item => item.locationType === 'office')
+        }
+        // Все склады
+        // Все repair
+        // Все проекты
       }
     }
-  } else {
-
+  } 
+  else {
     if (currentCategoryByType.value !== "all") {
       if (currentCategoryByLocationObj.value.id) {
         if (currentCategoryByLocationObj.value.title === "project") {
@@ -1109,11 +1131,12 @@ const filterItemsByCategoryType = async () => {
             item.locationID === +currentCategoryByLocationObj.value.id
           );
         } else {
+          
           items.value = items.value.filter(
             (item) =>
-            item.type === currentCategoryByType.value 
-            // item.locationType === currentCategoryByLocationObj.value.type &&
-            // item.locationID === +currentCategoryByLocationObj.value.id
+            item.type === currentCategoryByType.value &&
+            item.locationType === currentCategoryByLocationObj.value.type &&
+            item.locationId === +currentCategoryByLocationObj.value.id
           );
         }
       } else {
@@ -2457,6 +2480,12 @@ watch(tempCreateItemOwner, () => {
         </DefaultPopup>
       </div>
     </div>
+
+    <!-- <div>
+      {{ currentCategoryByLocationObj }}
+      <br>
+      {{ currentCategoryByType }}
+    </div> -->
     <!-- FILTERS RADIO BTN -->
     <!-- <div class="switch-type_container"> -->
       <div class="switch-type_wrapper">
@@ -2672,7 +2701,7 @@ watch(tempCreateItemOwner, () => {
             <td class="item-qty" scope="col">
               <div
                 class="location-mark"
-                :class="locationMarkColorized(item.location)"
+                :class="locationMarkColorized(item.locationType)"
               ></div>
               <span>{{ item.qty }} {{ item.measure }}</span>
             </td>
@@ -2682,14 +2711,14 @@ watch(tempCreateItemOwner, () => {
             <td class="span-5 hide-767" scope="col">
               <span
                 class="link-location"
-                :class="`${locationLinkColorized(item.location)}`"
+                :class="`${locationLinkColorized(item.locationType)}`"
                 @click="creatLocationLink(item)"
               >
               {{ translateLocation(item.locationId, item.locationType) }}
                 <!-- {{ item.locationId }} -->
-                <span v-if="item.locationType" style="background-color: var(--color-wallet-fund-invested); padding: 2px 8px; border-radius: 1rem;">
+                <!-- <span v-if="item.locationType" style="background-color: var(--color-wallet-fund-invested); padding: 2px 8px; border-radius: 1rem;">
                   {{ item.locationType }}
-                </span>
+                </span> -->
               </span>
             </td>
 
@@ -2750,7 +2779,7 @@ watch(tempCreateItemOwner, () => {
                       :class="`${locationLinkColorized(item.location)}`"
                       @click="creatLocationLink(item)"
                     >
-                      {{ item.locationID }}
+                      {{ item.locationId }}
                       {{ item.locationType }}
                     </span>
                   </div>
@@ -2761,8 +2790,8 @@ watch(tempCreateItemOwner, () => {
                       @click="onClickOwner(item.ownerID, item.ownerType)"
                       >
                       <!-- {{ translateOwner() }} -->
+                      {{ item.ownerType }}
                         {{ item.ownerID }}
-                        {{ item.ownerType }}
                     </span>
                   </div>
                   <div class="expended-content_article article_block">
@@ -2771,7 +2800,8 @@ watch(tempCreateItemOwner, () => {
                       class="link"
                       @click="$router.push(`/partners/${item.responsible}`)"
                       >
-                      {{ translateResponsibles(item.responsible) }}
+                      {{ item.responsibleType }} {{ item.responsibleID }}
+                      <!-- {{ translateResponsibles(item.responsible) }} -->
                       </span
                     >
                   </div>

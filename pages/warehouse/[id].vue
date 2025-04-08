@@ -91,13 +91,14 @@ const { users } = storeToRefs(useUsersStore());
 const { loadData } = useUsersStore();
 
 // Получаем и сразу трансформируем массив транзакций из БД
-const { data: allTransactions } = await useFetch("/api/warehouse/ledger", {
-  transform: (allTransactions) => {
-    return allTransactions.sort((a, b) =>
-      b.created_at > a.created_at ? 1 : -1
-    );
-  },
-});
+// const { data: allTransactions } = await useFetch("/api/warehouse/ledger", {
+//   transform: (allTransactions) => {
+//     return allTransactions.sort((a, b) =>
+//       b.created_at > a.created_at ? 1 : -1
+//     );
+//   },
+// });
+const allTransactions = ref([])
 
 // onBeforeMount(async () => {
 //   if(!switchedItem.value.length) {
@@ -245,27 +246,29 @@ const translateLocation = (id: any, location: string) => {
   return location;
 };
 const translateOwner = (ownerID: any, ownerType: string) => {
-  if (ownerID && ownerType && users.value && organizations.value) {
-    if (ownerType === "user") {
-      // return `USER #${ownerID}`
-      let userItem = users.value.find((item) => item.id === ownerID);
-      return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
-    } else if (ownerType === "company") {
-      // return `Компания #${ownerID}`
-      let organizationItem = organizations.value.find(
-        (item) => item.id === ownerID
-      );
-      return organizationItem.title;
-    }
-  } else if (ownerID === 0 && !ownerType) {
-    return `Не соучастник`;
-  }
+  return `${ownerType} ${ownerID}`
+  // if (ownerID && ownerType && users.value && organizations.value) {
+  //   if (ownerType === "user") {
+  //     // return `USER #${ownerID}`
+  //     let userItem = users.value.find((item) => item.id === ownerID);
+  //     return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
+  //   } else if (ownerType === "company") {
+  //     // return `Компания #${ownerID}`
+  //     let organizationItem = organizations.value.find(
+  //       (item) => item.id === ownerID
+  //     );
+  //     return organizationItem.title;
+  //   }
+  // } else if (ownerID === 0 && !ownerType) {
+  //   return `Не соучастник`;
+  // }
 };
-const translateResponsibles = (id: any) => {
-  if (id) {
-    let responsible = users.value.find((user) => user.id === id);
-    return `${responsible?.surname} ${responsible?.name[0]}. ${responsible?.middleName[0]}.`;
-  }
+const translateResponsibles = (id: number, type: string) => {
+  // if (id) {
+  //   let responsible = users.value.find((user) => user.id === id);
+  //   return `${responsible?.surname} ${responsible?.name[0]}. ${responsible?.middleName[0]}.`;
+  // }
+  return `${type} ${id}`
 };
 const translateItemType = (type) => {
   if (type === "tools") {
@@ -542,10 +545,10 @@ watch(infoActionBtn, (next, prev) => {
             Где:
             <span
               class="item-location_mark"
-              :class="locationMarkColorized(item.location)"
-              @click="routerLocationsFunc(item.locationID, item.location)"
+              :class="locationMarkColorized(item.locationType)"
+              @click="routerLocationsFunc(item.locationId, item.locationType)"
               ><label style="cursor: pointer">{{
-                translateLocation(item.locationID, item.location)
+                translateLocation(item.locationId, item.locationType)
               }}</label>
             </span>
           </p>
@@ -555,9 +558,9 @@ watch(infoActionBtn, (next, prev) => {
             <span
               style="font-weight: bold"
               class="link_hover"
-              @click="routerUsersFunc(item.ownerID, item.ownerType)"
               >{{ translateOwner(item.ownerID, item.ownerType) }}</span
-            >
+              >
+              <!-- @click="routerUsersFunc(item.ownerID, item.ownerType)" -->
           </p>
           <!-- Отвественный -->
           <p>
@@ -565,9 +568,9 @@ watch(infoActionBtn, (next, prev) => {
             <span
               style="font-weight: bold"
               class="link_hover"
-              @click="$router.push(`/partners/${item.responsible}`)"
-              >{{ translateResponsibles(item.responsible) }}</span
-            >
+              >{{ translateResponsibles(item.responsibleID, item.responsibleType) }}</span
+              >
+              <!-- @click="$router.push(`/partners/${item.responsible}`)" -->
           </p>
         </div>
       </div>
@@ -972,7 +975,7 @@ watch(infoActionBtn, (next, prev) => {
                       v-if="switchedLocation.location === 'all'"
                     >
                       <p>
-                        Собственник:
+                        Собственник: 
                         <span
                           @click="
                             routerUsersFunc(element.ownerID, element.ownerType)

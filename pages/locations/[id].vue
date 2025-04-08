@@ -1,20 +1,17 @@
 <template>
   <Container>
     <div v-if="location">
-      <h1 style="margin-top: 5rem">{{ location.title }}</h1>
+      <h1 style="margin: 0;">{{ location.title }}</h1>
+      <p @click="addressOnClick" v-if="location.address !== ''" style="cursor: pointer; margin: 0; font-size: 1rem; font-weight: normal;">({{ location.address }})</p>
 
-      <div>
-        <p>
-          Тип:
+      <div style="display: flex; gap: 1rem; margin-top: 1rem">
+        <p style="margin: 0;">
           <span style="padding: 4px 10px; border-radius: 16px;" :class="locationMarkColorized(location.type)">{{
             translateLocationType(location.type)
           }}</span>
         </p>
-        <p>
-          Адрес: <span>{{ location.address }}</span>
-        </p>
-
-        <p>
+  
+        <p style="margin: 0;">
           Собственник:
           <span
             style="font-weight: bold"
@@ -23,6 +20,9 @@
             >{{ translateOwner(location.ownerID, location.ownerType) }}</span
           >
         </p>
+      </div>
+
+      <div>
 
         <br />
         <div>
@@ -157,19 +157,20 @@ const translateLocationType = (type) => {
   }
 };
 const translateOwner = (ownerID: number, ownerType: string) => {
-  if (ownerID && ownerType && users.value && organizations.value) {
-    if (ownerType === "user") {
-      let userItem = users.value.find((item) => item.id === ownerID);
-      return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
-    } else if (ownerType === "company") {
-      let organizationItem = organizations.value.find(
-        (item) => item.id === ownerID
-      );
-      return organizationItem.title;
-    }
-  } else if (ownerID === 0 && !ownerType) {
-    return `Не соучастник`;
-  }
+  // if (ownerID && ownerType && users.value && organizations.value) {
+  //   if (ownerType === "user") {
+  //     let userItem = users.value.find((item) => item.id === ownerID);
+  //     return `${userItem?.surname} ${userItem?.name[0]}. ${userItem?.middleName[0]}.`;
+  //   } else if (ownerType === "company") {
+  //     let organizationItem = organizations.value.find(
+  //       (item) => item.id === ownerID
+  //     );
+  //     return organizationItem.title;
+  //   }
+  // } else if (ownerID === 0 && !ownerType) {
+  //   return `Не соучастник`;
+  // }
+  return `${ownerType} ${ownerID}`
 };
 
 // Router create link
@@ -189,6 +190,12 @@ const locationMarkColorized = (location: string) => {
     return `mark_${location}`;
   }
 };
+
+//= addressOnClick
+const addressOnClick = () => {
+  alert('Навигаатор пока не подключить')
+} 
+
 </script>
 
 <style scoped>
