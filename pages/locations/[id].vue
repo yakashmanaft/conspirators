@@ -20,6 +20,10 @@
             >{{ translateOwner(location.ownerID, location.ownerType) }}</span
           >
         </p>
+        <p style="margin: 0">
+          Ответственный
+          <span>{{ location.responsibleID }} {{ location.responsibleType }}</span>
+        </p>
       </div>
 
       <div>
@@ -193,7 +197,7 @@ const locationMarkColorized = (location: string) => {
 
 //= addressOnClick
 const addressOnClick = () => {
-  alert('Навигаатор пока не подключить')
+  alert('Навигатор пока не подключить')
 } 
 
 </script>

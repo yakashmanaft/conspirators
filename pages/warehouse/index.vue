@@ -225,7 +225,7 @@ onMounted(async () => {
 
   if (items.value) {
     items.value = items.value.filter(
-      (item: any) => item.location !== "archive" && item.location !== "deleted"
+      (item: any) => item.locationType !== "archive" && item.locationType !== "deleted"
     );
   }
 
@@ -596,9 +596,64 @@ const {
 const { data: projects } = useLazyAsyncData("projects", () =>
   $fetch("api/projects/projects")
 );
-const { data: locations } = useLazyAsyncData("locations", () =>
-  $fetch("api/locations/locations")
-);
+// const { data: locations } = useLazyAsyncData("locations", () =>
+//   $fetch("api/locations/locations")
+// );
+const { data: locations } = useFetch("api/locations/locations", {
+  lazy: false,
+  transform: (locations: any) => {
+
+    return locations.filter(el => {
+      // if user is an owner of locaation
+      if(el.ownerType === 'user') {
+        if (user.value.id === el.ownerID) {
+          return item;
+        } 
+      }
+      // if user is a responsible of location
+      if (el.responsibleType === 'user') {
+        if(user.value.id === el.responsibleID) {
+          return item
+        }
+      }
+      // if user is in the band which is ownner of location
+
+      // if user is in the band which is responsible of location
+
+      // Когда предмет в локации к которой юзер не имеет отношения
+    })
+    // .filter((el: any) => {
+    //   // USER
+    //   if(el.ownerType === 'user') {
+    //       // if user is a owner of item
+    //       if (user.value.id === el.ownerID) {
+    //         return item;
+    //       } 
+    //   }
+    //   if(el.responsibleType === 'user') {
+    //     if (user.value.id === el.responsibleID) {
+    //         return item;
+    //       }
+    //   }
+    //   // COMPANY (conspirator)
+    //   else if (el.ownerType === "conspirator" && organizations.value) {
+    //     console.log(locations)
+    //   }
+    //   // ELSE
+    //   else {
+    //     console.log(locations)
+    //   }
+    // })
+    .sort((x, y) => {
+      if(x.title < y.title) {
+        return -1;
+      }
+      if(x.title > y.title) {
+        return 1;
+      }
+    })
+  }
+})
 
 //
 const { users } = storeToRefs(useUsersStore());
@@ -641,12 +696,14 @@ const creatLocationLink = (object: any) => {
 // locations
 const translateLocation = (id: number, locationType: string) => {
   // project, sklad, offie, repair, arhive, deleted
-  if (location && id) {
+  if (locationType && id) {
     // PROJECT
     if (locationType === "project") {
       if (projects.value) {
         let project = projects.value.find((project) => project.id == id);
         return project.title;
+      } else {
+        return 'Неизвестный проект'
       }
     }
 
@@ -656,17 +713,21 @@ const translateLocation = (id: number, locationType: string) => {
         let locationItem = locations.value.find(
           (locationItem) => locationItem.id == id
         );
-        return `${locationItem.title}`;
+        return `${locationItem?.title}`;
+      } else {
+        return 'Неизвестный склад'
       }
     }
 
     // OFFICE (locations)
     if (locationType === "office") {
       if (locations.value) {
-        let locationItem = locations.value.find(
-          (locationItem) => locationItem.id == id
+        let locationItem = locations?.value.find(
+          (locationItem: any) => locationItem.id == id
         );
-        return `${locationItem.title} (${locationItem.address})`;
+        return `${locationItem?.title} (${locationItem?.address})`;
+      } else {
+        return 'Неизвестный офис'
       }
     }
 
@@ -975,9 +1036,9 @@ const filterItemsByLocationObj = async () => {
         );
       }
     } else {
-      console.log(123)
+      // console.log(123)
       items.value = items.value.filter(
-        (item) => item.location !== "archive" && item.location !== "deleted"
+        (item) => item.locationType !== "archive" && item.locationType !== "deleted"
       );
       if (currentCategoryByLocationObj.value.type === "all") {
         if (currentCategoryByLocationObj.value.title === "project") {
@@ -995,7 +1056,7 @@ const filterItemsByLocationObj = async () => {
         items.value = items.value.filter(
           (item) =>
             item.type === currentCategoryByType.value &&
-            item.location === currentCategoryByLocationObj.value.type
+            item.locationType === currentCategoryByLocationObj.value.type
         );
       }
     }
@@ -1035,7 +1096,7 @@ const filterItemsByLocationObj = async () => {
         );
       } 
       else if (currentCategoryByLocationObj.value.title === "location") {
-
+        
         items.value = items.value.filter(
           (item) =>
             item.type === currentCategoryByType.value &&
@@ -2307,9 +2368,9 @@ watch(tempCreateItemOwner, () => {
     <!--  -->
     <!-- ********************* ФИЛЬТРЫ ********************** -->
 
-    <Search @searchInputChanged="onInputFunc"/>
+    <Search v-if="items" @searchInputChanged="onInputFunc"/>
 
-    <div class="filter_container">
+    <div v-if="items" class="filter_container">
       <div class="filter-wrapper">
         <label @click="popup_location_opened = !popup_location_opened" for="filter-by-location-chip-menu">
           <!-- <span v-if="currentCategoryByLocationObj.type === 'all'">Все места</span> -->
@@ -2394,22 +2455,25 @@ watch(tempCreateItemOwner, () => {
                 }; popup_location_opened = !popup_location_opened" 
                 >{{ el.title }}</label>
             </li>
-            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
-            <li    
-              v-for="el in [...locations]"
-              style="margin-top: 1rem;"  
-              @click="currentCategoryByLocationObj = {
-                title: `location`,
-                type: `${el.type}`,
-                translate: `${el.title}`,
-                address: `${el.address}`,
-                id: `${el?.id ? el.id : null}`
-              }; popup_location_opened = !popup_location_opened"
-            >
-              
-              <input :id="`${el.type}-${el.title}`" type="radio">
-              <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }}</label>
-            </li>
+            <div v-if="locations.length">
+
+              <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
+              <li    
+                v-for="el in [...locations]"
+                style="margin-top: 1rem;"  
+                @click="currentCategoryByLocationObj = {
+                  title: `location`,
+                  type: `${el.type}`,
+                  translate: `${el.title}`,
+                  address: `${el.address}`,
+                  id: `${el?.id ? el.id : null}`
+                }; popup_location_opened = !popup_location_opened"
+              >
+                
+                <input :id="`${el.type}-${el.title}`" type="radio">
+                <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }}</label>
+              </li>
+            </div>
             <p style="margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
             <li 
               v-for="el in [...projects]"
@@ -2481,140 +2545,140 @@ watch(tempCreateItemOwner, () => {
       </div>
     </div>
 
-    <!-- <div>
+    <div v-if="items">
       {{ currentCategoryByLocationObj }}
       <br>
       {{ currentCategoryByType }}
-    </div> -->
+    </div>
     <!-- FILTERS RADIO BTN -->
     <!-- <div class="switch-type_container"> -->
-      <div class="switch-type_wrapper">
-        <!--  -->
-        <!-- <div style="display: flex; align-items: center">
-          <select
-            style="width: 15rem"
-            class="form-select form-select-sm filter-location_select"
-            aria-label=".form-select-sm example"
-            v-model="currentCategoryByLocationObj"
-          >
-            <option :value="{ title: 'all', type: 'all', id: null }">
-              Все места
+    <div class="switch-type_wrapper">
+      <!--  -->
+      <!-- <div style="display: flex; align-items: center">
+        <select
+          style="width: 15rem"
+          class="form-select form-select-sm filter-location_select"
+          aria-label=".form-select-sm example"
+          v-model="currentCategoryByLocationObj"
+        >
+          <option :value="{ title: 'all', type: 'all', id: null }">
+            Все места
+          </option>
+
+          <optgroup label="All locations">
+            <option :value="{ title: 'location', type: 'sklad', id: null }">
+              Все склады
             </option>
+            <option :value="{ title: 'location', type: 'repair', id: null }">
+              Все repair
+            </option>
+            <option :value="{ title: 'location', type: 'office', id: null }">
+              Все офисы
+            </option>
+            <option :value="{ title: 'project', type: 'all', id: null }">
+              Все проекты
+            </option>
+          </optgroup>
 
-            <optgroup label="All locations">
-              <option :value="{ title: 'location', type: 'sklad', id: null }">
-                Все склады
-              </option>
-              <option :value="{ title: 'location', type: 'repair', id: null }">
-                Все repair
-              </option>
-              <option :value="{ title: 'location', type: 'office', id: null }">
-                Все офисы
-              </option>
-              <option :value="{ title: 'project', type: 'all', id: null }">
-                Все проекты
-              </option>
-            </optgroup>
+          <optgroup label="Locations">
+            <option
+              :value="{
+                title: 'location',
+                type: location.type,
+                id: location.id,
+              }"
+              v-for="(location, i) in locations"
+            >
+              {{ location.title }}
+            </option>
+          </optgroup>
 
-            <optgroup label="Locations">
-              <option
-                :value="{
-                  title: 'location',
-                  type: location.type,
-                  id: location.id,
-                }"
-                v-for="(location, i) in locations"
-              >
-                {{ location.title }}
-              </option>
-            </optgroup>
-
-            <optgroup label="Проекты">
-              <option
-                :value="{ title: 'project', id: project.id }"
-                v-for="(project, i) in projects"
-              >
-                {{ project.title }}
-              </option>
-            </optgroup>
+          <optgroup label="Проекты">
+            <option
+              :value="{ title: 'project', id: project.id }"
+              v-for="(project, i) in projects"
+            >
+              {{ project.title }}
+            </option>
+          </optgroup>
 
 
-            <optgroup label="Прочее">
-              <option
-                :value="{
-                  title: 'location',
-                  type: 'archive',
-                  id: null,
-                }"
-              >
-                Архив
-              </option>
-              <option
-                :value="{
-                  title: 'location',
-                  type: 'deleted',
-                  id: null,
-                }"
-              >
-                Списание
-              </option>
-            </optgroup>
-          </select>
-        </div> -->
+          <optgroup label="Прочее">
+            <option
+              :value="{
+                title: 'location',
+                type: 'archive',
+                id: null,
+              }"
+            >
+              Архив
+            </option>
+            <option
+              :value="{
+                title: 'location',
+                type: 'deleted',
+                id: null,
+              }"
+            >
+              Списание
+            </option>
+          </optgroup>
+        </select>
+      </div> -->
 
-        <!-- set category type of items-->
-        <!-- <div class="set-categoty-type_wrapper">
-          <div
-            v-for="(category, index) in warehouseCategories"
-            :key="index"
-            class="switch-type_el"
-          >
-            <input
-              type="radio"
-              :id="index"
-              :value="category.type"
-              v-model="currentCategoryByType"
-            />
-            <label :for="index">{{ category.name }}</label>
-          </div>
-        </div> -->
+      <!-- set category type of items-->
+      <!-- <div class="set-categoty-type_wrapper">
+        <div
+          v-for="(category, index) in warehouseCategories"
+          :key="index"
+          class="switch-type_el"
+        >
+          <input
+            type="radio"
+            :id="index"
+            :value="category.type"
+            v-model="currentCategoryByType"
+          />
+          <label :for="index">{{ category.name }}</label>
+        </div>
+      </div> -->
 
-        <!-- my, myBand -->
-        <!-- <div style="margin-top: 1rem; margin-left: 0.5rem">
-          <ul style="list-style: none; padding: 0; display: flex; gap: 2rem">
-            <li>
-              <input id="radio-item_my" type="checkbox" />
-              <label style="margin-left: 0.5rem" for="radio-item_my"
-                >Личные</label
-              >
-            </li>
-            <li>
-              <input id="radio-item_myBand1" type="checkbox" />
-              <label style="margin-left: 0.5rem" for="radio-item_myBand1"
-                >Моя банда 1</label
-              >
-            </li>
-            <li>
-              <input id="radio-item_sharersBand1" type="checkbox" />
-              <label style="margin-left: 0.5rem" for="radio-item_sharersBand1"
-                >Я в банде 1</label
-              >
-            </li>
-            <li v-for="(el, idx) in whoIsOwnerFilterTypes">
-              <p>{{ el.title }}</p>
-            </li>
-          </ul>
-        </div> -->
-      </div>
+      <!-- my, myBand -->
+      <!-- <div style="margin-top: 1rem; margin-left: 0.5rem">
+        <ul style="list-style: none; padding: 0; display: flex; gap: 2rem">
+          <li>
+            <input id="radio-item_my" type="checkbox" />
+            <label style="margin-left: 0.5rem" for="radio-item_my"
+              >Личные</label
+            >
+          </li>
+          <li>
+            <input id="radio-item_myBand1" type="checkbox" />
+            <label style="margin-left: 0.5rem" for="radio-item_myBand1"
+              >Моя банда 1</label
+            >
+          </li>
+          <li>
+            <input id="radio-item_sharersBand1" type="checkbox" />
+            <label style="margin-left: 0.5rem" for="radio-item_sharersBand1"
+              >Я в банде 1</label
+            >
+          </li>
+          <li v-for="(el, idx) in whoIsOwnerFilterTypes">
+            <p>{{ el.title }}</p>
+          </li>
+        </ul>
+      </div> -->
+    </div>
 
-    <!-- </div> -->
 
     <!-- ********************** DATA ******************************* -->
 
     <!-- fetch data is error -->
-    <div v-if="error">
-      <p>Error Code {{ error.statusCode }}</p>
-      <p>Error Message {{ error.message }}</p>
+    <div v-if="error" class="error_wrapper">
+      <p>У вас нет предметов...</p>
+      <!-- <p>Error Code {{ error.statusCode }}</p>
+      <p>Error Message {{ error.message }}</p> -->
     </div>
 
     <!-- data is loading -->
@@ -2623,194 +2687,197 @@ watch(tempCreateItemOwner, () => {
     </div>
 
     <!-- data is loaded -->
-    <div v-else class="table_container">
-      <table class="table">
-        <thead class="item-table_header">
-          <tr>
-            <th scope="col">
-              <div
-                class="convert_btn"
-                style="display: flex; justify-content: center"
-                @click="convertListToPDF()"
-              >
-                <Icon
-                  name="ic:sharp-picture-as-pdf"
-                  size="24px"
-                  color="var(--color-global-text_second)"
-                />
+    <div v-else>
+      
+      <div v-if="items" class="table_container">
+        <table class="table">
+          <thead class="item-table_header">
+            <tr>
+              <th scope="col">
+                <div
+                  class="convert_btn"
+                  style="display: flex; justify-content: center"
+                  @click="convertListToPDF()"
+                >
+                  <Icon
+                    name="ic:sharp-picture-as-pdf"
+                    size="24px"
+                    color="var(--color-global-text_second)"
+                  />
+                </div>
+              </th>
+              <th scope="col">Наименование</th>
+              <th scope="col">Кол-во</th>
+              <th scope="col">Местонахождение</th>
+              <th scope="col" class="hide-991">Собственник</th>
+              <th scope="col" class="hide-991">Ответственный</th>
+            </tr>
+          </thead>
+  
+          <tbody id="element-to-print">
+            <div v-if="computedItems" style="margin-left: .5rem; margin-right: .5">
+              <div v-if="!searchInput && !computedItems.length">Ничего нет</div>
+              <div v-if="searchInput && !computedItems.length">
+                По запросу ничего не найдено
               </div>
-            </th>
-            <th scope="col">Наименование</th>
-            <th scope="col">Кол-во</th>
-            <th scope="col">Местонахождение</th>
-            <th scope="col" class="hide-991">Собственник</th>
-            <th scope="col" class="hide-991">Ответственный</th>
-          </tr>
-        </thead>
-
-        <tbody id="element-to-print">
-          <div v-if="computedItems" style="margin-left: .5rem; margin-right: .5">
-            <div v-if="!searchInput && !computedItems.length">Ничего нет</div>
-            <div v-if="searchInput && !computedItems.length">
-              По запросу ничего не найдено
             </div>
-          </div>
-
-          <!-- СПИСОК ITEMS -->
-          <tr class="table-row_wrapper" v-for="(item, index) in computedItems">
-            <!-- 1 -->
-            <!-- Кнопка развернуть expended-item -->
-            <td>
-              <label>
-                <input
-                  type="checkbox"
-                  id="expend-item"
-                  :class="`expended-item-${item.id}_block`"
-                />
-                <Icon
-                  @click="toggleExpendedItemBlock(item.id)"
-                  class="expand-item_icon"
-                  name="material-symbols-light:expand-more"
-                  size="28px"
-                />
-              </label>
-            </td>
-
-            <!-- 2 -->
-            <!-- Заголовок -->
-            <td class="span-3" scope="col">
-              <span>{{ index + 1 }}. </span>
-              <span class="link" @click="$router.push(`/warehouse/${item.id}`)">
-                {{ item.title }}
-              </span>
-              <span
-                v-if="!item.showToAll"
-                style="margin-left: 0.5rem"
-                @click="toggleShowToAll()"
-              >
-                <Icon
-                  name="ic:twotone-disabled-visible"
-                  size="16px"
-                  color="var(--bs-danger)"
-                />
-              </span>
-            </td>
-
-            <!-- 3 -->
-            <!-- Кол-во, мера -->
-            <td class="item-qty" scope="col">
-              <div
-                class="location-mark"
-                :class="locationMarkColorized(item.locationType)"
-              ></div>
-              <span>{{ item.qty }} {{ item.measure }}</span>
-            </td>
-
-            <!-- 4 -->
-            <!-- loaction -->
-            <td class="span-5 hide-767" scope="col">
-              <span
-                class="link-location"
-                :class="`${locationLinkColorized(item.locationType)}`"
-                @click="creatLocationLink(item)"
-              >
-              {{ translateLocation(item.locationId, item.locationType) }}
-                <!-- {{ item.locationId }} -->
-                <!-- <span v-if="item.locationType" style="background-color: var(--color-wallet-fund-invested); padding: 2px 8px; border-radius: 1rem;">
-                  {{ item.locationType }}
-                </span> -->
-              </span>
-            </td>
-
-            <!-- 5 -->
-            <td class="span-2 hide-767 hide-991" scope="col">
-              <span
-                class="link"
-                @click="onClickOwner(item.ownerID, item.ownerType)"
+  
+            <!-- СПИСОК ITEMS -->
+            <tr class="table-row_wrapper" v-for="(item, index) in computedItems">
+              <!-- 1 -->
+              <!-- Кнопка развернуть expended-item -->
+              <td>
+                <label>
+                  <input
+                    type="checkbox"
+                    id="expend-item"
+                    :class="`expended-item-${item.id}_block`"
+                  />
+                  <Icon
+                    @click="toggleExpendedItemBlock(item.id)"
+                    class="expand-item_icon"
+                    name="material-symbols-light:expand-more"
+                    size="28px"
+                  />
+                </label>
+              </td>
+  
+              <!-- 2 -->
+              <!-- Заголовок -->
+              <td class="span-3" scope="col">
+                <span>{{ index + 1 }}. </span>
+                <span class="link" @click="$router.push(`/warehouse/${item.id}`)">
+                  {{ item.title }}
+                </span>
+                <span
+                  v-if="!item.showToAll"
+                  style="margin-left: 0.5rem"
+                  @click="toggleShowToAll()"
                 >
-                <!-- {{ translateOwner() }} -->
-                  {{ item.ownerID }}
-                  {{ item.ownerType }}
-              </span>
-            </td>
-
-            <!-- 6 -->
-            <td class="span-2 hide-767 hide-991" scope="col">
-              <span
-                class="link"
-                @click="$router.push(`/partners/${item.responsible}`)"
+                  <Icon
+                    name="ic:twotone-disabled-visible"
+                    size="16px"
+                    color="var(--bs-danger)"
+                  />
+                </span>
+              </td>
+  
+              <!-- 3 -->
+              <!-- Кол-во, мера -->
+              <td class="item-qty" scope="col">
+                <div
+                  class="location-mark"
+                  :class="locationMarkColorized(item.locationType)"
+                ></div>
+                <span>{{ item.qty }} {{ item.measure }}</span>
+              </td>
+  
+              <!-- 4 -->
+              <!-- loaction -->
+              <td class="span-5 hide-767" scope="col">
+                <span
+                  class="link-location"
+                  :class="`${locationLinkColorized(item.locationType)}`"
+                  @click="creatLocationLink(item)"
                 >
-                <!-- {{ translateResponsibles(item.responsible) }} -->
-                {{item.responsibleID}}
-                {{ item.responsibleType }}
-                </span
-              >
-            </td>
-
-            <!-- 7 -->
-            <!-- Item actions -->
-            <td
-              class="span-5 expended-item"
-              :id="`expended-item-${item.id}_block`"
-            >
-              <div class="expended-item_container">
-                <div class="expended-item_btns">
-                  <button
-                    v-for="(action, index) in itemActions"
-                    type="button"
-                    class="btn dropdown-item"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editWarehouseItemModal"
-                    @click="onClickAction(action.type, item)"
-                    :disabled="
-                      item.qty == 0 && action.type === 'sub' ? true : false
-                    "
+                {{ translateLocation(item.locationId, item.locationType) }}
+                  <!-- {{ item.locationId }} -->
+                  <!-- <span v-if="item.locationType" style="background-color: var(--color-wallet-fund-invested); padding: 2px 8px; border-radius: 1rem;">
+                    {{ item.locationType }}
+                  </span> -->
+                </span>
+              </td>
+  
+              <!-- 5 -->
+              <td class="span-2 hide-767 hide-991" scope="col">
+                <span
+                  class="link"
+                  @click="onClickOwner(item.ownerID, item.ownerType)"
                   >
-                    <span>{{ action.title }}</span>
-                  </button>
-                </div>
-
-                <!--  -->
-                <div class="show-767 show-768-991 expended-item_content">
-                  <div class="expended-content_article hide-768-991">
-                    <p>Где</p>
-                    <span
-                      class="link link-location"
-                      :class="`${locationLinkColorized(item.location)}`"
-                      @click="creatLocationLink(item)"
+                  <!-- {{ translateOwner() }} -->
+                    {{ item.ownerID }}
+                    {{ item.ownerType }}
+                </span>
+              </td>
+  
+              <!-- 6 -->
+              <td class="span-2 hide-767 hide-991" scope="col">
+                <span
+                  class="link"
+                  @click="$router.push(`/partners/${item.responsible}`)"
+                  >
+                  <!-- {{ translateResponsibles(item.responsible) }} -->
+                  {{item.responsibleID}}
+                  {{ item.responsibleType }}
+                  </span
+                >
+              </td>
+  
+              <!-- 7 -->
+              <!-- Item actions -->
+              <td
+                class="span-5 expended-item"
+                :id="`expended-item-${item.id}_block`"
+              >
+                <div class="expended-item_container">
+                  <div class="expended-item_btns">
+                    <button
+                      v-for="(action, index) in itemActions"
+                      type="button"
+                      class="btn dropdown-item"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editWarehouseItemModal"
+                      @click="onClickAction(action.type, item)"
+                      :disabled="
+                        item.qty == 0 && action.type === 'sub' ? true : false
+                      "
                     >
-                      {{ item.locationId }}
-                      {{ item.locationType }}
-                    </span>
+                      <span>{{ action.title }}</span>
+                    </button>
                   </div>
-                  <div class="expended-content_article article_block">
-                    <p>Собственник</p>
-                    <span
-                      class="link"
-                      @click="onClickOwner(item.ownerID, item.ownerType)"
+  
+                  <!--  -->
+                  <div class="show-767 show-768-991 expended-item_content">
+                    <div class="expended-content_article hide-768-991">
+                      <p>Где</p>
+                      <span
+                        class="link link-location"
+                        :class="`${locationLinkColorized(item.location)}`"
+                        @click="creatLocationLink(item)"
                       >
-                      <!-- {{ translateOwner() }} -->
-                      {{ item.ownerType }}
-                        {{ item.ownerID }}
-                    </span>
-                  </div>
-                  <div class="expended-content_article article_block">
-                    <p>Ответственный</p>
-                    <span
-                      class="link"
-                      @click="$router.push(`/partners/${item.responsible}`)"
+                        {{ item.locationId }}
+                        {{ item.locationType }}
+                      </span>
+                    </div>
+                    <div class="expended-content_article article_block">
+                      <p>Собственник</p>
+                      <span
+                        class="link"
+                        @click="onClickOwner(item.ownerID, item.ownerType)"
+                        >
+                        <!-- {{ translateOwner() }} -->
+                        {{ item.ownerType }}
+                          {{ item.ownerID }}
+                      </span>
+                    </div>
+                    <div class="expended-content_article article_block">
+                      <p>Ответственный</p>
+                      <span
+                        class="link"
+                        @click="$router.push(`/partners/${item.responsible}`)"
+                        >
+                        {{ item.responsibleType }} {{ item.responsibleID }}
+                        <!-- {{ translateResponsibles(item.responsible) }} -->
+                        </span
                       >
-                      {{ item.responsibleType }} {{ item.responsibleID }}
-                      <!-- {{ translateResponsibles(item.responsible) }} -->
-                      </span
-                    >
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </Container>
 </template>
@@ -3103,6 +3170,12 @@ label #expend-item:checked + .expand-item_icon {
   }
   /* 
    */
+  .error_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  /* 
+   */
    .filter_container {
     display: flex;
     gap: 1rem;
@@ -3156,6 +3229,12 @@ label #expend-item:checked + .expand-item_icon {
   }
   .filter-wrapper label:hover{
     cursor: pointer;
+  }
+  /* 
+   */
+   .error_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   /* 
    */
@@ -3227,6 +3306,9 @@ label #expend-item:checked + .expand-item_icon {
   }
   .btn-create-modal-open-767:after {
     transform: rotate(90deg);
+  }
+  .btn-create-modal-open-767 span{
+    display: none
   }
   .switch-type_container {
     align-items: flex-start;
