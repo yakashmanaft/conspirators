@@ -2727,7 +2727,7 @@ watch(tempCreateItemOwner, () => {
       </div>
     </div>
 
-    <div v-if="items">
+    <div style="background-color: gray;" v-if="items">
       {{ currentCategoryByLocationObj }}
       <br>
       {{ currentCategoryByType }}
