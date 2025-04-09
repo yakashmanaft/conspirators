@@ -607,20 +607,40 @@ const { data: locations } = useFetch("api/locations/locations", {
       // if user is an owner of locaation
       if(el.ownerType === 'user') {
         if (user.value.id === el.ownerID) {
-          return item;
+          return el;
         } 
       }
       // if user is a responsible of location
       if (el.responsibleType === 'user') {
         if(user.value.id === el.responsibleID) {
-          return item
+          return el
         }
       }
       // if user is in the band which is ownner of location
+      if(el.ownerType === 'conspirator') {
 
+      }
       // if user is in the band which is responsible of location
+      if(el.responsibleType === 'conspirator') {
 
+      }
       // Когда предмет в локации к которой юзер не имеет отношения
+      // смотри на locationType и locationId у предметов
+      if(items.value.length) {
+        let itemInOtherLocation = [...items.value].filter(
+          (item) => item.locationType === el.type && item.locationId === el.id
+        )
+        if(itemInOtherLocation.length) {
+
+          itemInOtherLocation.forEach(item => {
+            if(item.locationType === el.type && item.locationId === el.id) {
+              console.log(el)
+              return el
+            }
+          })
+          return el
+        }
+      }
     })
     // .filter((el: any) => {
     //   // USER
