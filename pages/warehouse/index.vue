@@ -338,7 +338,7 @@ const {
           // if user is a owner of item
           if (user.value.id === item.ownerID) {
             return item;
-          } else if (user.value.id === item.responsible) {
+          } else if (user.value.id === item.responsibleID) {
             return item;
           }
           // ищем пользовательские предметы из банды или альянса
@@ -348,7 +348,7 @@ const {
               let sessionUserIsASharerOfBands = [...organizations.value].filter(
                 (org) => {
                   let userInBands = org.sharers.filter(
-                    (sharer) => sharer.userID === user.value.id
+                    (sharer) => sharer.userId === user.value.id
                   );
 
                   if (userInBands.length) {
@@ -368,7 +368,7 @@ const {
                     if (org.sharers.length) {
                       org.sharers.filter(
                         (sharer) =>
-                          sharer.userID === sessionUserIsASharerOfBands[i].id &&
+                          sharer.userId === sessionUserIsASharerOfBands[i].id &&
                           sharer.userType === "conspirator"
                       );
 
@@ -399,35 +399,23 @@ const {
           }
         }
 
-        // COMPANY
-        else if (item.ownerType === "conspirator" && organizations.value) {
-          // if user is a leader of a band which is an owner of item
-          let sessionUserIsALeaderOfBands = [...organizations.value].filter(
-            (org) => {
-              return org.ownerID === user.value.id;
-            }
-          );
-          if (sessionUserIsALeaderOfBands.length) {
-            for (let i = 0; i <= sessionUserIsALeaderOfBands.length - 1; i++) {
-              if (item.ownerID === sessionUserIsALeaderOfBands[i].id) {
-                return item;
-              }
-            }
-          }
 
+        
+        // COMPANY 
+        if ((item.ownerType === "conspirator" || item.responsibleType === "conspirator") && organizations.value) {
           // if user is a sharer in band which is an owner of item
-          let sessionUserIsASharerOfBands = [...organizations.value].filter(
+          let sessionUserIsASharerOfBands = [...organizations.value].find(
             (org) => {
-              let userInBands = org.sharers.filter(
-                (sharer) => sharer.userID === user.value.id
+              let userInBands = Object.values(org.sharers)
+              userInBands.filter(
+                (sharer) => sharer.userId === user.value.id && sharer.userType === 'user'
               );
-
               if (userInBands.length) {
                 return org;
               }
             }
           );
-          if (sessionUserIsASharerOfBands.length) {
+          if (sessionUserIsASharerOfBands) {
             // console.log(sessionUserIsASharerOfBands);
             for (let i = 0; i <= sessionUserIsASharerOfBands.length - 1; i++) {
               // показываем предметы альянса, в которых состоит банда соучастником которой является сессионый пользователь
@@ -435,7 +423,7 @@ const {
                 if (org.sharers.length) {
                   org.sharers.filter(
                     (sharer) =>
-                      sharer.userID === sessionUserIsASharerOfBands[i].id &&
+                      sharer.userId === sessionUserIsASharerOfBands[i].id &&
                       sharer.userType === "conspirator"
                   );
 
@@ -465,7 +453,7 @@ const {
           }
 
           //
-          if (user.value.id === item.responsible) {
+          if (user.value.id === item.responsibleID && item.responsibleType === 'user') {
             return item;
           }
         }
@@ -604,7 +592,7 @@ const { data: locations } = useFetch("api/locations/locations", {
   transform: (locations: any) => {
 
     return locations.filter(el => {
-      // if user is an owner of locaation
+      // if user is an owner of location
       if(el.ownerType === 'user') {
         if (user.value.id === el.ownerID) {
           return el;
@@ -617,11 +605,13 @@ const { data: locations } = useFetch("api/locations/locations", {
         }
       }
       // if user is in the band which is ownner of location
-      if(el.ownerType === 'conspirator') {
-
+      // and if user is in the band which is responsible of location
+      if (el.ownerType === 'conspirator') {
+        // Пользователь - соучастник хозяйской банды
+        console.log(el)
       }
-      // if user is in the band which is responsible of location
-      if(el.responsibleType === 'conspirator') {
+      //if user is in the band which is responsible of location
+      if (el.responsibleType === 'conspirator') {
 
       }
       // Когда предмет в локации к которой юзер не имеет отношения
@@ -634,7 +624,7 @@ const { data: locations } = useFetch("api/locations/locations", {
 
           itemInOtherLocation.forEach(item => {
             if(item.locationType === el.type && item.locationId === el.id) {
-              console.log(el)
+              // console.log(el)
               return el
             }
           })
