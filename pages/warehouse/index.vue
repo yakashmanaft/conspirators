@@ -96,8 +96,16 @@ const warehouseCategories = ref([
     name: "Оргтехника",
   },
   {
+    type: "chancellery",
+    name: "Канцелярия",
+  },
+  {
     type: "equipment",
     name: "Экипировка / Оборудование",
+  },
+  {
+    type: "clothes",
+    name: "Одежда",
   },
 ]);
 //
@@ -127,6 +135,8 @@ const default_location_list = ref([
 const categoriesCopy = (array) => {
   if (array) {
     let newArray = array.filter((item) => item.type !== "all");
+
+
 
     return newArray;
   }
@@ -314,356 +324,441 @@ const refreshLocations = () => refreshNuxtData("locations");
 // const refreshUsers = () => refreshNuxtData("users");
 const refreshOrganizations = () => refreshNuxtData("organizations");
 
+// Фильтрация под юзера
+const filteredToShow = (item, userID) => {
+    //USER
+    //= user
+    if(item.ownerType === "user") {
+      if(userID === item.ownerID) {
+        return item
+      }
+    }
+    //= responsible
+    else if(item.responsibleType === "user") {
+      if (userID === item.responsibleID) {
+        return item;
+      }
+    }
+    //BAND
+    else if(item.ownerType === "conspirator") {
+      return items
+    }
+    // ELSE
+    else {
+      // return []
+    }
+}
 /**
  * @desc Get warehouse items from BD
  */
-const {
-  pending,
-  error,
-  refresh,
-  data: items,
-  status,
-} = await useFetch("api/warehouse/item", {
-  lazy: false,
-  transform: (items: any) => {
-    // return items.map(item) => ({
-    //   id: item.id,
-    //   title: item.title,
-    // })
-    // return items.sort((x, y) => x.title.localeCompare(y.title));
-    return items
-      .filter((item) => {
-        // USER
-        if (item.ownerType === "user") {
-          // if user is a owner of item
-          if (user.value.id === item.ownerID) {
-            return item;
-          } else if (user.value.id === item.responsibleID) {
-            return item;
-          }
-          // ищем пользовательские предметы из банды или альянса
-          else {
-            if (organizations.value) {
-              // if user is a sharer in band which is an owner of item
-              let sessionUserIsASharerOfBands = [...organizations.value].filter(
-                (org) => {
-                  let userInBands = org.sharers.filter(
-                    (sharer) => sharer.userId === user.value.id
-                  );
+// const {
+//   pending,
+//   error,
+//   refresh,
+//   data: items,
+//   status,
+// } = await useFetch("api/warehouse/item", {
+//   lazy: false,
+//   transform: (items: any) => {
+//     // return items.map(item) => ({
+//     //   id: item.id,
+//     //   title: item.title,
+//     // })
+//     // return items.sort((x, y) => x.title.localeCompare(y.title));
+//     return items
+//       .filter((item) => {
+//         // USER
+//         if (item.ownerType === "user") {
+//           // if user is a owner of item
+//           if (user.value.id === item.ownerID) {
+//             return item;
+//           } else if (user.value.id === item.responsibleID) {
+//             return item;
+//           }
+//           // ищем пользовательские предметы из банды или альянса
+//           else {
+//             if (organizations.value) {
+//               // if user is a sharer in band which is an owner of item
+//               let sessionUserIsASharerOfBands = [...organizations.value].filter(
+//                 (org) => {
+//                   let userInBands = org.sharers.filter(
+//                     (sharer) => sharer.userId === user.value.id
+//                   );
 
-                  if (userInBands.length) {
-                    return org;
-                  }
-                }
-              );
-              if (sessionUserIsASharerOfBands.length) {
-                // console.log(sessionUserIsASharerOfBands);
-                for (
-                  let i = 0;
-                  i <= sessionUserIsASharerOfBands.length - 1;
-                  i++
-                ) {
-                  // показываем предметы альянса, в которых состоит банда, соучастником которой является сессионый пользователь
-                  let bandsArray = [...organizations.value].filter((org) => {
-                    if (org.sharers.length) {
-                      org.sharers.filter(
-                        (sharer) =>
-                          sharer.userId === sessionUserIsASharerOfBands[i].id &&
-                          sharer.userType === "conspirator"
-                      );
+//                   if (userInBands.length) {
+//                     return org;
+//                   }
+//                 }
+//               );
+//               if (sessionUserIsASharerOfBands.length) {
+//                 // console.log(sessionUserIsASharerOfBands);
+//                 for (
+//                   let i = 0;
+//                   i <= sessionUserIsASharerOfBands.length - 1;
+//                   i++
+//                 ) {
+//                   // показываем предметы альянса, в которых состоит банда, соучастником которой является сессионый пользователь
+//                   let bandsArray = [...organizations.value].filter((org) => {
+//                     if (org.sharers.length) {
+//                       org.sharers.filter(
+//                         (sharer) =>
+//                           sharer.userId === sessionUserIsASharerOfBands[i].id &&
+//                           sharer.userType === "conspirator"
+//                       );
 
-                      return org;
-                    }
-                  });
+//                       return org;
+//                     }
+//                   });
 
-                  if (bandsArray.length) {
-                    for (let i = 0; i <= bandsArray.length - 1; i++) {
-                      // if (
-                      //   item.ownerID === bandsArray[i].id &&
-                      //   item.ownerType === "company"
-                      // ) {
-                      //   return item;
-                      // }
-                      if (
-                        item.ownerID !== bandsArray[i].id &&
-                        item.ownerType === "user" &&
-                        item.showToAll
-                      ) {
-                        return item;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+//                   if (bandsArray.length) {
+//                     for (let i = 0; i <= bandsArray.length - 1; i++) {
+//                       // if (
+//                       //   item.ownerID === bandsArray[i].id &&
+//                       //   item.ownerType === "company"
+//                       // ) {
+//                       //   return item;
+//                       // }
+//                       if (
+//                         item.ownerID !== bandsArray[i].id &&
+//                         item.ownerType === "user" &&
+//                         item.showToAll
+//                       ) {
+//                         return item;
+//                       }
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         }
 
 
         
-        // COMPANY 
-        if ((item.ownerType === "conspirator" || item.responsibleType === "conspirator") && organizations.value) {
-          // if user is a sharer in band which is an owner of item
-          let sessionUserIsASharerOfBands = [...organizations.value].find(
-            (org) => {
-              let userInBands = Object.values(org.sharers)
-              userInBands.filter(
-                (sharer) => sharer.userId === user.value.id && sharer.userType === 'user'
-              );
-              if (userInBands.length) {
-                return org;
-              }
-            }
-          );
-          if (sessionUserIsASharerOfBands) {
-            // console.log(sessionUserIsASharerOfBands);
-            for (let i = 0; i <= sessionUserIsASharerOfBands.length - 1; i++) {
-              // показываем предметы альянса, в которых состоит банда соучастником которой является сессионый пользователь
-              let bandsArray = [...organizations.value].filter((org) => {
-                if (org.sharers.length) {
-                  org.sharers.filter(
-                    (sharer) =>
-                      sharer.userId === sessionUserIsASharerOfBands[i].id &&
-                      sharer.userType === "conspirator"
-                  );
+//         // COMPANY 
+//         if ((item.ownerType === "conspirator" || item.responsibleType === "conspirator") && organizations.value) {
+//           // if user is a sharer in band which is an owner of item
+//           let sessionUserIsASharerOfBands = [...organizations.value].find(
+//             (org) => {
+//               let userInBands = Object.values(org.sharers)
+//               userInBands.filter(
+//                 (sharer) => sharer.userId === user.value.id && sharer.userType === 'user'
+//               );
+//               if (userInBands.length) {
+//                 return org;
+//               }
+//             }
+//           );
+//           if (sessionUserIsASharerOfBands) {
+//             // console.log(sessionUserIsASharerOfBands);
+//             for (let i = 0; i <= sessionUserIsASharerOfBands.length - 1; i++) {
+//               // показываем предметы альянса, в которых состоит банда соучастником которой является сессионый пользователь
+//               let bandsArray = [...organizations.value].filter((org) => {
+//                 if (org.sharers.length) {
+//                   org.sharers.filter(
+//                     (sharer) =>
+//                       sharer.userId === sessionUserIsASharerOfBands[i].id &&
+//                       sharer.userType === "conspirator"
+//                   );
 
-                  return org;
-                }
-              });
+//                   return org;
+//                 }
+//               });
 
-              if (bandsArray.length) {
-                for (let i = 0; i <= bandsArray.length - 1; i++) {
-                  if (
-                    item.ownerID === bandsArray[i].id &&
-                    item.ownerType === "conspirator" &&
-                    item.showToAll
-                  ) {
-                    return item;
-                  }
-                  // if (
-                  //   item.ownerID !== bandsArray[i].id &&
-                  //   item.ownerType === "user"
-                  // ) {
-                  //   console.log(123);
-                  //   return item;
-                  // }
-                }
-              }
-            }
-          }
+//               if (bandsArray.length) {
+//                 for (let i = 0; i <= bandsArray.length - 1; i++) {
+//                   if (
+//                     item.ownerID === bandsArray[i].id &&
+//                     item.ownerType === "conspirator" &&
+//                     item.showToAll
+//                   ) {
+//                     return item;
+//                   }
+//                   // if (
+//                   //   item.ownerID !== bandsArray[i].id &&
+//                   //   item.ownerType === "user"
+//                   // ) {
+//                   //   console.log(123);
+//                   //   return item;
+//                   // }
+//                 }
+//               }
+//             }
+//           }
 
-          //
-          if (user.value.id === item.responsibleID && item.responsibleType === 'user') {
-            return item;
-          }
+//           //
+//           if (user.value.id === item.responsibleID && item.responsibleType === 'user') {
+//             return item;
+//           }
+//         }
+
+//         //
+//         else {
+//           return;
+//         }
+
+//         // user is responsible of item
+//         // if (user.value.id === item.responsible) {
+//         //   return item;
+//         // }
+//         // user is owner of item
+//         // user in the same band where owner of an item
+//         // if (user.value.id !== item.ownerID && item.ownerType === "user") {
+//         //   // same band
+//         //   let sameBandSharerUser;
+//         //   // same aliance
+//         //   let sameAlianceBandSharerUser;
+//         //   [...organizations.value].find((org) => {
+//         //     org.sharers.forEach((sharer) => {
+//         //       // same band
+//         //       if (
+//         //         sharer.userType === "user" &&
+//         //         sharer.userID === user.value.id
+//         //       ) {
+//         //         org.sharers.forEach((sharerUser) => {
+//         //           if (sharerUser.userID === item.ownerID) {
+//         //             sameBandSharerUser = item.ownerID;
+//         //           }
+//         //         });
+//         //       }
+
+//         //       // same aliance
+//         //       else if (sharer.userType === "company") {
+//         //         // console.log(sharer)
+//         //       }
+//         //     });
+//         //   });
+//         //   if (sameBandSharerUser && item.ownerID === sameBandSharerUser) {
+//         //     return item;
+//         //   }
+//         //   // band in the aliance
+//         // }
+//         // user in the same aliance which has a band where owner of an item is
+
+//         // user && band
+//         // else if (item.ownerType === "company") {
+//         // // user is a the leader of the band
+//         // let sessionUserIsALeaderBand = [...organizations.value].filter(
+//         //   (org) => org.ownerID === user.value.id
+//         // );
+//         // console.log(sessionUserIsALeaderBand);
+
+//         // user is a sharer at the band
+//         // let sessionUserSharerBand;
+//         // [...organizations.value].filter((org) => {
+//         //   org.sharers.forEach((sharer) => {
+//         //     if (
+//         //       sharer.userType === "user" &&
+//         //       sharer.userID === user.value.id
+//         //     ) {
+//         //       sessionUserSharerBand = org;
+//         //     }
+//         //   });
+//         // });
+
+//         // user in the band which is a part of aliance
+//         // let sessionUserSharerBandAliance;
+//         // if (sessionUserSharerBand) {
+//         //   [...organizations.value].find((org) => {
+//         //     org.sharers.forEach((sharer) => {
+//         //       if (
+//         //         sharer.userType === "company" &&
+//         //         sharer.userID === sessionUserSharerBand.id
+//         //       ) {
+//         //         sessionUserSharerBandAliance = org;
+//         //         // console.log(sessionUserSharerBandAliance)
+//         //       }
+//         //     });
+//         //   });
+//         // }
+
+//         // return item where user is a leader in the band
+//         // if (sessionUserIsALeaderBand) {
+//         //   sessionUserIsALeaderBand.forEach((band) => {
+//         //     console.log(band);
+//         //     // if (band.id === item.ownerID && item.ownerType === 'company') {
+//         //     //   return item;
+//         //     // }
+//         //     return item
+//         //   });
+//         // }
+//         // return item where user is a sharer in the band
+//         // else if (
+//         //   sessionUserSharerBand &&
+//         //   item.ownerID === sessionUserSharerBand.id
+//         // ) {
+//         //   return item;
+//         // }
+//         // // user in the band which a part of aliance
+//         // else if (
+//         //   sessionUserSharerBandAliance &&
+//         //   item.ownerID === sessionUserSharerBandAliance.id
+//         // ) {
+//         //   return item;
+//         // }
+//         // }
+//         // else
+//         // else {
+//         //   return;
+//         // }
+//       })
+//       .sort((x, y) => {
+//         if (x.title < y.title) {
+//           return -1;
+//         }
+
+//         if (x.title > y.title) {
+//           return 1;
+//         }
+
+//         return x.locationID - y.locationID;
+//       });
+//   },
+// });
+
+const { pending, error, refresh, data: items, status } = await useFetch("api/warehouse/item", {
+  lazy: false,
+  transform: (items: any) => {
+    return items
+      .filter(item => filteredToShow(item, user.value.id))
+  }
+})
+const { data: items_copy } = await useFetch("api/warehouse/item", {
+  lazy: false,
+  transform: (items: any) => {
+    return items
+      .filter(item => filteredToShow(item, user.value.id))
+      .map((obj: any) => {
+        return {
+          id: obj.id,
+          type: obj.type,
+          locationType: obj.locationType
         }
-
-        //
-        else {
-          return;
-        }
-
-        // user is responsible of item
-        // if (user.value.id === item.responsible) {
-        //   return item;
-        // }
-        // user is owner of item
-        // user in the same band where owner of an item
-        // if (user.value.id !== item.ownerID && item.ownerType === "user") {
-        //   // same band
-        //   let sameBandSharerUser;
-        //   // same aliance
-        //   let sameAlianceBandSharerUser;
-        //   [...organizations.value].find((org) => {
-        //     org.sharers.forEach((sharer) => {
-        //       // same band
-        //       if (
-        //         sharer.userType === "user" &&
-        //         sharer.userID === user.value.id
-        //       ) {
-        //         org.sharers.forEach((sharerUser) => {
-        //           if (sharerUser.userID === item.ownerID) {
-        //             sameBandSharerUser = item.ownerID;
-        //           }
-        //         });
-        //       }
-
-        //       // same aliance
-        //       else if (sharer.userType === "company") {
-        //         // console.log(sharer)
-        //       }
-        //     });
-        //   });
-        //   if (sameBandSharerUser && item.ownerID === sameBandSharerUser) {
-        //     return item;
-        //   }
-        //   // band in the aliance
-        // }
-        // user in the same aliance which has a band where owner of an item is
-
-        // user && band
-        // else if (item.ownerType === "company") {
-        // // user is a the leader of the band
-        // let sessionUserIsALeaderBand = [...organizations.value].filter(
-        //   (org) => org.ownerID === user.value.id
-        // );
-        // console.log(sessionUserIsALeaderBand);
-
-        // user is a sharer at the band
-        // let sessionUserSharerBand;
-        // [...organizations.value].filter((org) => {
-        //   org.sharers.forEach((sharer) => {
-        //     if (
-        //       sharer.userType === "user" &&
-        //       sharer.userID === user.value.id
-        //     ) {
-        //       sessionUserSharerBand = org;
-        //     }
-        //   });
-        // });
-
-        // user in the band which is a part of aliance
-        // let sessionUserSharerBandAliance;
-        // if (sessionUserSharerBand) {
-        //   [...organizations.value].find((org) => {
-        //     org.sharers.forEach((sharer) => {
-        //       if (
-        //         sharer.userType === "company" &&
-        //         sharer.userID === sessionUserSharerBand.id
-        //       ) {
-        //         sessionUserSharerBandAliance = org;
-        //         // console.log(sessionUserSharerBandAliance)
-        //       }
-        //     });
-        //   });
-        // }
-
-        // return item where user is a leader in the band
-        // if (sessionUserIsALeaderBand) {
-        //   sessionUserIsALeaderBand.forEach((band) => {
-        //     console.log(band);
-        //     // if (band.id === item.ownerID && item.ownerType === 'company') {
-        //     //   return item;
-        //     // }
-        //     return item
-        //   });
-        // }
-        // return item where user is a sharer in the band
-        // else if (
-        //   sessionUserSharerBand &&
-        //   item.ownerID === sessionUserSharerBand.id
-        // ) {
-        //   return item;
-        // }
-        // // user in the band which a part of aliance
-        // else if (
-        //   sessionUserSharerBandAliance &&
-        //   item.ownerID === sessionUserSharerBandAliance.id
-        // ) {
-        //   return item;
-        // }
-        // }
-        // else
-        // else {
-        //   return;
-        // }
       })
-      .sort((x, y) => {
-        if (x.title < y.title) {
-          return -1;
-        }
+  }
+})
+const locations_computed = computed(() => {
+  return locations.value.filter(item => 
+  // {
+  //   // USER
+  //   //= owner
+  //   if(item.ownerType === "user"){
+  //     if(user.value.id === item.ownerID) {
+  //           return item
+  //         }
+  //       }
+  //   //= responsible
+  //   else if (item.responsibleType === "user") {
+  //     if (user.value.id === item.responsibleID) {
+  //       return item;
+  //     }
 
-        if (x.title > y.title) {
-          return 1;
-        }
-
-        return x.locationID - y.locationID;
-      });
-  },
-});
+  //   }
+  //   // BAND
+  //   //= owner
+  //   else if(item.ownerType === "conspirator") {
+  //       return items
+  //     }
+  //   // ELSE
+  //   else {
+  //         // return []
+  //   }
+  // }
+  filteredToShow(item, user.value.id)
+)
+})
+const { data: locations } = await useFetch("api/locations/locations", {
+  lazy: false,
+  transform: (locations) => {
+    return locations
+  }
+})
+const projects_computed = computed(() => {
+  return projects.value
+})
 const { data: projects } = useLazyAsyncData("projects", () =>
   $fetch("api/projects/projects")
 );
 // const { data: locations } = useLazyAsyncData("locations", () =>
 //   $fetch("api/locations/locations")
 // );
-const { data: locations } = useFetch("api/locations/locations", {
-  lazy: false,
-  transform: (locations: any) => {
+// const { data: locations } = useFetch("api/locations/locations", {
+//   lazy: false,
+//   transform: (locations: any) => {
 
-    return locations.filter(el => {
-      // if user is an owner of location
-      if(el.ownerType === 'user') {
-        if (user.value.id === el.ownerID) {
-          return el;
-        } 
-      }
-      // if user is a responsible of location
-      if (el.responsibleType === 'user') {
-        if(user.value.id === el.responsibleID) {
-          return el
-        }
-      }
-      // if user is in the band which is ownner of location
-      // and if user is in the band which is responsible of location
-      if (el.ownerType === 'conspirator') {
-        // Пользователь - соучастник хозяйской банды
-        console.log(el)
-      }
-      //if user is in the band which is responsible of location
-      if (el.responsibleType === 'conspirator') {
+//     return locations.filter(el => {
+//       // if user is an owner of location
+//       if(el.ownerType === 'user') {
+//         if (user.value.id === el.ownerID) {
+//           return el;
+//         } 
+//       }
+//       // if user is a responsible of location
+//       if (el.responsibleType === 'user') {
+//         if(user.value.id === el.responsibleID) {
+//           return el
+//         }
+//       }
+//       // if user is in the band which is ownner of location
+//       // and if user is in the band which is responsible of location
+//       if (el.ownerType === 'conspirator') {
+//         // Пользователь - соучастник хозяйской банды
+//         console.log(el)
+//       }
+//       //if user is in the band which is responsible of location
+//       if (el.responsibleType === 'conspirator') {
 
-      }
-      // Когда предмет в локации к которой юзер не имеет отношения
-      // смотри на locationType и locationId у предметов
-      if(items.value.length) {
-        let itemInOtherLocation = [...items.value].filter(
-          (item) => item.locationType === el.type && item.locationId === el.id
-        )
-        if(itemInOtherLocation.length) {
+//       }
+//       // Когда предмет в локации к которой юзер не имеет отношения
+//       // смотри на locationType и locationId у предметов
+//       if(items.value.length) {
+//         let itemInOtherLocation = [...items.value].filter(
+//           (item) => item.locationType === el.type && item.locationId === el.id
+//         )
+//         if(itemInOtherLocation.length) {
 
-          itemInOtherLocation.forEach(item => {
-            if(item.locationType === el.type && item.locationId === el.id) {
-              // console.log(el)
-              return el
-            }
-          })
-          return el
-        }
-      }
-    })
-    // .filter((el: any) => {
-    //   // USER
-    //   if(el.ownerType === 'user') {
-    //       // if user is a owner of item
-    //       if (user.value.id === el.ownerID) {
-    //         return item;
-    //       } 
-    //   }
-    //   if(el.responsibleType === 'user') {
-    //     if (user.value.id === el.responsibleID) {
-    //         return item;
-    //       }
-    //   }
-    //   // COMPANY (conspirator)
-    //   else if (el.ownerType === "conspirator" && organizations.value) {
-    //     console.log(locations)
-    //   }
-    //   // ELSE
-    //   else {
-    //     console.log(locations)
-    //   }
-    // })
-    .sort((x, y) => {
-      if(x.title < y.title) {
-        return -1;
-      }
-      if(x.title > y.title) {
-        return 1;
-      }
-    })
-  }
-})
+//           itemInOtherLocation.forEach(item => {
+//             if(item.locationType === el.type && item.locationId === el.id) {
+//               // console.log(el)
+//               return el
+//             }
+//           })
+//           return el
+//         }
+//       }
+//     })
+//     // .filter((el: any) => {
+//     //   // USER
+//     //   if(el.ownerType === 'user') {
+//     //       // if user is a owner of item
+//     //       if (user.value.id === el.ownerID) {
+//     //         return item;
+//     //       } 
+//     //   }
+//     //   if(el.responsibleType === 'user') {
+//     //     if (user.value.id === el.responsibleID) {
+//     //         return item;
+//     //       }
+//     //   }
+//     //   // COMPANY (conspirator)
+//     //   else if (el.ownerType === "conspirator" && organizations.value) {
+//     //     console.log(locations)
+//     //   }
+//     //   // ELSE
+//     //   else {
+//     //     console.log(locations)
+//     //   }
+//     // })
+//     .sort((x, y) => {
+//       if(x.title < y.title) {
+//         return -1;
+//       }
+//       if(x.title > y.title) {
+//         return 1;
+//       }
+//     })
+//   }
+// })
 
 //
 const { users } = storeToRefs(useUsersStore());
@@ -1125,15 +1220,17 @@ const filterItemsByLocationObj = async () => {
     }
   }
 };
-// фильтрация по products
+// фильтрация по product category (type)
 const filterItemsByCategoryType = async () => {
   
   await refresh();
   if (currentCategoryByLocationObj.value.type === "all") {
     if (currentCategoryByType.value === "all") {
       if (currentCategoryByLocationObj.value.title === "project") {
-        items.value = items.value.filter((item) => item.location === "project");
-      } else {
+        items.value = items.value.filter((item) => item.locationType === "project");
+      } 
+
+      else {
         await refresh();
         items.value = items.value.filter(
           (item) => item.location !== "archive" && item.location !== "deleted"
@@ -1169,25 +1266,44 @@ const filterItemsByCategoryType = async () => {
           items.value = items.value.filter(
             (item) =>
               item.locationType === "project" &&
-              item.locationID === +currentCategoryByLocationObj.value.id
+              item.locationId === +currentCategoryByLocationObj.value.id
           );
-        } else {
+        } 
+        else {
           items.value = items.value.filter(
             (item) =>
             item.locationType === currentCategoryByLocationObj.value.type &&
             item.locationId === +currentCategoryByLocationObj.value.id
           );
         }
-      } else {
+      } 
+      else {
         // Все офисы
-        if(currentCategoryByLocationObj.value.translate === 'Все офисы') {
+        if(currentCategoryByLocationObj.value.type === 'office') {
 
-          console.log(items.value)
           items.value = items.value.filter(item => item.locationType === 'office')
         }
         // Все склады
+        if(currentCategoryByLocationObj.value.type === 'sklad') {
+
+          items.value = items.value.filter(item => item.locationType === 'sklad')
+        }
         // Все repair
+        if(currentCategoryByLocationObj.value.type === 'repair') {
+
+        items.value = items.value.filter(item => item.locationType === 'repair')
+        }
         // Все проекты
+        if(currentCategoryByLocationObj.value.type === 'project') {
+
+        items.value = items.value.filter(item => item.locationType === 'project')
+        }
+
+        // chancellery
+        if(currentCategoryByLocationObj.value.type === 'chancellery') {
+
+        items.value = items.value.filter(item => item.locationType === 'chancellery')
+        }
       }
     }
   } 
@@ -1199,7 +1315,7 @@ const filterItemsByCategoryType = async () => {
             (item) =>
             item.type === currentCategoryByType.value &&
             item.locationType === "project" &&
-            item.locationID === +currentCategoryByLocationObj.value.id
+            item.locationId === +currentCategoryByLocationObj.value.id
           );
         } else {
           
@@ -1219,7 +1335,7 @@ const filterItemsByCategoryType = async () => {
       }
     } 
     else {
-
+      
     }
     // await refresh()
   }
@@ -2107,6 +2223,7 @@ watch(tempCreateItemOwner, () => {
                 v-model="item.type"
               >
                 <option value="null" selected>Выберите</option>
+                <!-- v-for="(type, index) in categoriesCopy(warehouseCategories)" -->
                 <option
                   v-for="(type, index) in categoriesCopy(warehouseCategories)"
                   :value="type.type"
@@ -2396,7 +2513,7 @@ watch(tempCreateItemOwner, () => {
           popup_title="Фильтруйте по локации" 
           @emitClosePopup="closeLocationPopup"
         >
-          <ul style="list-style: none; padding: 0; margin-top: 1rem;" role="radiogroup">
+          <ul style="list-style: none; padding: 0; " role="radiogroup">
             <li>
               <input id="all-all" type="radio">
               <label               
@@ -2426,7 +2543,31 @@ watch(tempCreateItemOwner, () => {
               <input :id="`${el.type}-${el.title}`" type="radio">
               <label :for="`${el.type}-${el.title}`">{{ el.title }}</label>
             </li> -->
-            <li 
+            <p v-for="(location_type, index) in [...new Set(locations_computed.map((obj: any) => {
+              return obj.type
+            }))]">
+              <input :id="`${location_type}-${index}`" type="radio">
+              <label :for="`${location_type}-${index}`"                    @click="currentCategoryByLocationObj = {
+                  title: `${location_type}`,
+                  translate: `${location_type}`,
+                  address: '',
+                  type: `${location_type}`,
+                  id: null
+                }; popup_location_opened = !popup_location_opened" 
+                >{{ location_type }}</label>
+            </p>
+            <!-- <p v-if="projects_computed.length">
+              <input :id="`project-0`" type="radio">
+              <label :for="`project-0`"                    @click="currentCategoryByLocationObj = {
+                  title: `project`,
+                  translate: `Все проекты`,
+                  address: '',
+                  type: `project`,
+                  id: null
+                }; popup_location_opened = !popup_location_opened" 
+                >Все проекты</label>
+            </p> -->
+            <!-- <li 
               style="margin-top: 1rem;"
               v-for="el in [
                 {
@@ -2464,42 +2605,64 @@ watch(tempCreateItemOwner, () => {
                   id: null
                 }; popup_location_opened = !popup_location_opened" 
                 >{{ el.title }}</label>
-            </li>
-            <div v-if="locations.length">
+            </li> -->
+            <div v-if="locations_computed.length">
 
-              <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
-              <li    
-                v-for="el in [...locations]"
-                style="margin-top: 1rem;"  
-                @click="currentCategoryByLocationObj = {
-                  title: `location`,
-                  type: `${el.type}`,
-                  translate: `${el.title}`,
-                  address: `${el.address}`,
-                  id: `${el?.id ? el.id : null}`
-                }; popup_location_opened = !popup_location_opened"
-              >
-                
-                <input :id="`${el.type}-${el.title}`" type="radio">
-                <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }}</label>
-              </li>
-            </div>
-            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
-            <li 
-              v-for="el in [...projects]"
+              <div v-if="[...locations_computed].filter(el => el.type !== 'project')">
+
+                <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
+                <li    
+                  v-for="el in [...locations_computed].filter(el => el.type !== 'project')"
+                  style="margin-top: 1rem;"  
+                  @click="currentCategoryByLocationObj = {
+                    title: `location`,
+                    type: `${el.type}`,
+                    translate: `${el.title}`,
+                    address: `${el.address}`,
+                    id: `${el?.id ? el.id : null}`
+                  }; popup_location_opened = !popup_location_opened"
+                >
+                  
+                  <input :id="`${el.type}-${el.title}`" type="radio">
+                  <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
+                  <!-- {{ el }} -->
+                </li>
+              </div>
+              </div>
+              <div v-if="[...locations_computed].filter(el => el.type === 'project').length">
+
+                <p style="margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
+                <li    
+                    v-for="el in [...locations_computed].filter(el => el.type === 'project')"
+                    style="margin-top: 1rem;"  
+                    @click="currentCategoryByLocationObj = {
+                      title: `project`,
+                      type: `${el.type}`,
+                      translate: `${el.title}`,
+                      address: `${el.address}`,
+                      id: `${el?.id ? el.id : null}`
+                    }; popup_location_opened = !popup_location_opened"
+                  >
+                    
+                    <input :id="`${el.type}-${el.title}`" type="radio">
+                    <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
+                    <!-- {{ el }} -->
+                  </li>
+              </div>
+            <!-- <li 
+              v-for="el in projects_computed"
               @click="currentCategoryByLocationObj = {
                 title: `project`,
-                type: `${el.type}`,
+                type: `project`,
                 translate: `${el.name}`,
                 address: ``,
                 id: `${el?.id ? el.id : null}`
               }; popup_location_opened = !popup_location_opened"
               style="margin-top: 1rem;"
             >
-              <!-- {{ el.name }} -->
               <input :id="`${el.type}-${el.title}`" type="radio">
               <label :for="`${el.type}-${el.title}`">{{ el.name }}</label>
-            </li>
+            </li> -->
             <p style="margin-top: 1rem; color: var(--color-global-text_second);">Прочее</p>
             <li
               v-for="el in [
@@ -2525,7 +2688,8 @@ watch(tempCreateItemOwner, () => {
               }; popup_location_opened = !popup_location_opened"
               style="margin-top: 1rem;"
             >
-              {{ el.type }}
+              <input type="radio" :id="el.type">
+              <label :for="el.type">{{ el.type }}</label>
             </li>
           </ul>
         </DefaultPopup>
@@ -2545,9 +2709,17 @@ watch(tempCreateItemOwner, () => {
           @emitClosePopup="closeTypePopup"
         >
           <ul style="list-style: none; padding: 0;">
-            <li v-for="(el, index) in warehouseCategories" style="margin-top: 1rem;">
-              <input type="radio" id="index">
-              <label @click="currentCategoryByType = el.type; popup_type_opened = !popup_type_opened" for="index">{{ el.name }}</label>
+            <li>
+              <input :checked="currentCategoryByType === 'all'" type="radio" id="category-0">
+              <label @click="currentCategoryByType = 'all'; popup_type_opened = !popup_type_opened" for="category-0">Все типы</label>
+            </li>
+            <li v-for="(el, index) in [...new Set(items_copy.map((obj: any) => {
+              // currentCategoryByLocationObj
+
+              return obj.type
+            }))]" style="margin-top: 1rem;">
+              <input :checked="el === currentCategoryByType" type="radio" :id="`category-${index + 1}`">
+              <label @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">{{ el.type }} {{ el }}</label>
             </li>
           </ul>
           <!-- warehouseCategories   -->
