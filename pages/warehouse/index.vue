@@ -1121,7 +1121,8 @@ async function addWarehouseTransaction(item, type) {
 const filterItemsByLocationObj = async () => {
   await refresh();
 
-  if (currentCategoryByLocationObj.value.id === null) {
+  // Костыль null...
+  if (currentCategoryByLocationObj.value.id === null || currentCategoryByLocationObj.value.id === "null") {
     if (currentCategoryByType.value === "all") {
       if (currentCategoryByLocationObj.value.type === "all") {
         if (currentCategoryByLocationObj.value.title === "project") {
@@ -1132,19 +1133,20 @@ const filterItemsByLocationObj = async () => {
         else {
           await refresh();
           items.value = items.value.filter(
-            (item) => item.location !== "archive" && item.location !== "deleted"
+            (item) => item.locationType !== "archive" && item.locationType !== "deleted"
           );
         }
-      } else {
+      } 
+      else {
         items.value = items.value.filter(
           (item) => item.locationType === currentCategoryByLocationObj.value.type
         );
       }
-    } else {
-      // console.log(123)
-      items.value = items.value.filter(
-        (item) => item.locationType !== "archive" && item.locationType !== "deleted"
-      );
+    } 
+    else {
+      // items.value = items.value.filter(
+      //   (item) => item.locationType !== "archive" && item.locationType !== "deleted"
+      // );
       if (currentCategoryByLocationObj.value.type === "all") {
         if (currentCategoryByLocationObj.value.title === "project") {
           items.value = items.value.filter(
@@ -1260,7 +1262,7 @@ const filterItemsByCategoryType = async () => {
       await refresh();
     } else {
       
-      if (currentCategoryByLocationObj.value.id) {
+      if (currentCategoryByLocationObj.value.id || currentCategoryByLocationObj.value.id !== "null") {
         
         if (currentCategoryByLocationObj.value.title === "project") {
           items.value = items.value.filter(
@@ -1277,6 +1279,10 @@ const filterItemsByCategoryType = async () => {
           );
         }
       } 
+      if(currentCategoryByLocationObj.value.id === "null" || !currentCategoryByLocationObj.value.id) {
+        await refresh();
+        items.value =  items.value.filter(item => item.locationType === currentCategoryByLocationObj.value.type)
+      }
       else {
         // Все офисы
         if(currentCategoryByLocationObj.value.type === 'office') {
@@ -1284,25 +1290,24 @@ const filterItemsByCategoryType = async () => {
           items.value = items.value.filter(item => item.locationType === 'office')
         }
         // Все склады
-        if(currentCategoryByLocationObj.value.type === 'sklad') {
+        else if(currentCategoryByLocationObj.value.type === 'sklad') {
 
           items.value = items.value.filter(item => item.locationType === 'sklad')
         }
         // Все repair
-        if(currentCategoryByLocationObj.value.type === 'repair') {
+        else if(currentCategoryByLocationObj.value.type === 'repair') {
 
-        items.value = items.value.filter(item => item.locationType === 'repair')
+          items.value = items.value.filter(item => item.locationType === 'repair')
         }
         // Все проекты
-        if(currentCategoryByLocationObj.value.type === 'project') {
+        else if(currentCategoryByLocationObj.value.type === 'project') {
 
-        items.value = items.value.filter(item => item.locationType === 'project')
+          items.value = items.value.filter(item => item.locationType === 'project')
         }
-
         // chancellery
-        if(currentCategoryByLocationObj.value.type === 'chancellery') {
+        else if(currentCategoryByLocationObj.value.type === 'chancellery') {
 
-        items.value = items.value.filter(item => item.locationType === 'chancellery')
+          items.value = items.value.filter(item => item.locationType === 'chancellery')
         }
       }
     }
@@ -1317,7 +1322,16 @@ const filterItemsByCategoryType = async () => {
             item.locationType === "project" &&
             item.locationId === +currentCategoryByLocationObj.value.id
           );
-        } else {
+        } 
+        // ARCHIVE
+        else if(currentCategoryByLocationObj.value.type === 'archive') {
+          items.value = items.value.filter(item => item.locationType === 'archive')
+        }
+        // DELETED
+        else if(currentCategoryByLocationObj.value.type === 'deleted') {
+          items.value = items.value.filter(item => item.locationType === 'deleted')
+        }
+        else {
           
           items.value = items.value.filter(
             (item) =>
@@ -2694,6 +2708,7 @@ watch(tempCreateItemOwner, () => {
           </ul>
         </DefaultPopup>
       </div>
+
       <div class="filter-wrapper">
         <label @click="popup_type_opened = !popup_type_opened" for="filter-by-type-chip-menu">
           <span v-if="currentCategoryByType === 'all'">Все типы ТМЦ</span>
@@ -2930,6 +2945,13 @@ watch(tempCreateItemOwner, () => {
                 <span>{{ index + 1 }}. </span>
                 <span class="link" @click="$router.push(`/warehouse/${item.id}`)">
                   {{ item.title }}
+                </span>
+                <span 
+                  v-if="item.locationType === 'deleted' || item.locationType === 'archive'"
+                  style="margin: 0; margin-left: .5rem; font-size: .8rem;"
+                >
+                  <span style="color: var(--color-urgency-high)" v-if="item.locationType === 'deleted'">{{ item.locationType }}</span>
+                  <span style="color: var(--color-global-text_second);" v-if="item.locationType === 'archive'">{{ item.locationType }}</span>
                 </span>
                 <span
                   v-if="!item.showToAll"
