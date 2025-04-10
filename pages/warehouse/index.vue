@@ -1349,11 +1349,19 @@ const filterItemsByCategoryType = async () => {
         } 
         // ARCHIVE
         else if(currentCategoryByLocationObj.value.type === 'archive') {
-          items.value = items.value.filter(item => item.locationType === 'archive')
+          items.value = items.value.filter(
+            item => 
+            item.type === currentCategoryByType.value && 
+            item.locationType === currentCategoryByLocationObj.value.type
+          );
         }
         // DELETED
         else if(currentCategoryByLocationObj.value.type === 'deleted') {
-          items.value = items.value.filter(item => item.locationType === 'deleted')
+          items.value = items.value.filter(
+            item => 
+            item.type === currentCategoryByType.value && 
+            item.locationType === currentCategoryByLocationObj.value.type
+          );
         }
         else {
           
@@ -2552,8 +2560,10 @@ watch(tempCreateItemOwner, () => {
           @emitClosePopup="closeLocationPopup"
         >
           <ul style="list-style: none; padding: 0; " role="radiogroup">
+
+            <!-- ALL locations -->
             <li>
-              <input id="all-all" type="radio">
+              <input id="location-all" type="radio" :checked="currentCategoryByLocationObj.type === 'all'">
               <label               
                 @click="currentCategoryByLocationObj = {
                   title: `all`,
@@ -2562,90 +2572,31 @@ watch(tempCreateItemOwner, () => {
                   address: '',
                   id: null
                 }; popup_location_opened = !popup_location_opened" 
-                for="all-all"
+                for="location-all"
               >
                 Все места
               </label>
             </li>
-            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Общее</p>
-            <!-- <li    
-              v-for="el in [...default_location_list]"
-              style="margin-top: 1rem;"  
-              @click="currentCategoryByLocationObj = {
-                title: `location`,
-                type: `${el.type}`,
-                id: `${el?.id ? el.id : null}`
-              }; popup_location_opened = !popup_location_opened"
-            >
-              
-              <input :id="`${el.type}-${el.title}`" type="radio">
-              <label :for="`${el.type}-${el.title}`">{{ el.title }}</label>
-            </li> -->
-            <p v-for="(location_type, index) in [...new Set(locations_computed.map((obj: any) => {
-              return obj.type
-            }))]">
-              <input :id="`${location_type}-${index}`" type="radio">
-              <label :for="`${location_type}-${index}`"                    @click="currentCategoryByLocationObj = {
-                  title: `${location_type}`,
-                  translate: `${translateCommon(location_type)}`,
-                  address: '',
-                  type: `${location_type}`,
-                  id: null
-                }; popup_location_opened = !popup_location_opened" 
-                >{{ translateCommon(location_type) }}</label>
-            </p>
-            <!-- <p v-if="projects_computed.length">
-              <input :id="`project-0`" type="radio">
-              <label :for="`project-0`"                    @click="currentCategoryByLocationObj = {
-                  title: `project`,
-                  translate: `Все проекты`,
-                  address: '',
-                  type: `project`,
-                  id: null
-                }; popup_location_opened = !popup_location_opened" 
-                >Все проекты</label>
-            </p> -->
-            <!-- <li 
-              style="margin-top: 1rem;"
-              v-for="el in [
-                {
-                  name: 'location',
-                  title: 'Все склады',
-                  type: 'sklad',
-                  id: null
-                },
-                {
-                  name: 'location',
-                  title: 'Все repair',
-                  type: 'repair',
-                  id: null
-                },
-                {
-                  name: 'location',
-                  title: 'Все офисы',
-                  type: 'office',
-                  id: null
-                },
-                {
-                  name: 'project',
-                  title: 'Все проекты',
-                  type: 'all',
-                  id: null
-                }
-              ]"
-              >
-              <input :id="`${el.type}-${el.title}`" type="radio">
-              <label :for="`${el.type}-${el.title}`"                    @click="currentCategoryByLocationObj = {
-                  title: `${el.name}`,
-                  translate: `${el.title}`,
-                  address: '',
-                  type: `${el.type}`,
-                  id: null
-                }; popup_location_opened = !popup_location_opened" 
-                >{{ el.title }}</label>
-            </li> -->
+            <!-- COMMON locations -->
             <div v-if="locations_computed.length">
-
+              <p style="margin-top: 1rem; color: var(--color-global-text_second);">Общее</p>
+              <li style="margin-top: 1rem;" v-for="(location_type, index) in [...new Set(locations_computed.map((obj: any) => {
+                return obj.type
+              }))]">
+                <input :id="`common-${location_type}-${index}`" type="radio" :checked="!currentCategoryByLocationObj.id && currentCategoryByLocationObj.type === location_type">
+                <label :for="`common-${location_type}-${index}`"                    @click="currentCategoryByLocationObj = {
+                    title: `${location_type}`,
+                    translate: `${translateCommon(location_type)}`,
+                    address: '',
+                    type: `${location_type}`,
+                    id: null
+                  }; popup_location_opened = !popup_location_opened" 
+                  >{{ translateCommon(location_type) }}</label>
+              </li>
+            </div>
+            <!-- USER locations -->
+            <div v-if="locations_computed.length">
+              <!-- !projects -->
               <div v-if="[...locations_computed].filter(el => el.type !== 'project')">
 
                 <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
@@ -2661,12 +2612,12 @@ watch(tempCreateItemOwner, () => {
                   }; popup_location_opened = !popup_location_opened"
                 >
                   
-                  <input :id="`${el.type}-${el.title}`" type="radio">
-                  <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
+                  <input :id="`location-${el.type}-${el.title}`" type="radio" :checked="currentCategoryByLocationObj.type === el.type && +currentCategoryByLocationObj.id === +el.id">
+                  <label :for="`location-${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
                   <!-- {{ el }} -->
                 </li>
               </div>
-              </div>
+              <!-- projects -->
               <div v-if="[...locations_computed].filter(el => el.type === 'project').length">
 
                 <p style="margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
@@ -2682,25 +2633,13 @@ watch(tempCreateItemOwner, () => {
                     }; popup_location_opened = !popup_location_opened"
                   >
                     
-                    <input :id="`${el.type}-${el.title}`" type="radio">
-                    <label :for="`${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
+                    <input :id="`location-${el.type}-${el.title}`" type="radio" :checked="currentCategoryByLocationObj.type === el.type && +currentCategoryByLocationObj.id === +el.id">
+                    <label :for="`location-${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
                     <!-- {{ el }} -->
                   </li>
               </div>
-            <!-- <li 
-              v-for="el in projects_computed"
-              @click="currentCategoryByLocationObj = {
-                title: `project`,
-                type: `project`,
-                translate: `${el.name}`,
-                address: ``,
-                id: `${el?.id ? el.id : null}`
-              }; popup_location_opened = !popup_location_opened"
-              style="margin-top: 1rem;"
-            >
-              <input :id="`${el.type}-${el.title}`" type="radio">
-              <label :for="`${el.type}-${el.title}`">{{ el.name }}</label>
-            </li> -->
+            </div>
+            <!-- OTHER locations -->
             <p style="margin-top: 1rem; color: var(--color-global-text_second);">Прочее</p>
             <li
               v-for="el in [
@@ -2726,8 +2665,8 @@ watch(tempCreateItemOwner, () => {
               }; popup_location_opened = !popup_location_opened"
               style="margin-top: 1rem;"
             >
-              <input type="radio" :id="el.type">
-              <label :for="el.type">{{ el.translate }}</label>
+              <input type="radio" :id="`location-${el.type}`" :checked="currentCategoryByLocationObj.type === el.type">
+              <label :for="`location-${el.type}`">{{ el.translate }}</label>
             </li>
           </ul>
         </DefaultPopup>
