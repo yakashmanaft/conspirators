@@ -906,6 +906,30 @@ const translateActionType = (actionType: string) => {
     }
   }
 };
+//= translate ОБЩЕЕ
+const translateCommon = (type: string) => {
+  // OFFICE
+  if(type === 'office') {
+    return 'Все офисы'
+  } 
+  // REPAIR
+  else if(type === 'repair') {
+    return 'Все ремонтные'
+  }
+  // SKLAD
+  else if (type === 'sklad') {
+    return 'Все склады'
+  }
+  // PROJECT
+  else if (type === 'project') {
+    return 'Все проекты'
+  }
+  // АРХИВ
+  // УДАЛЕННЫЕ
+  else {
+    return type
+  }
+}
 
 // не знал как назвать
 const onClickOwner = (ownerID: number, ownerType: string) => {
@@ -1355,29 +1379,29 @@ const filterItemsByCategoryType = async () => {
   }
 };
 // Фильтрация по архиву
-const showItemsInArchive = () => {
-  items.value = items.value.filter((item) => item.location === "archive");
-  currentCategoryByLocationObj.value = {
-    title: "location",
-    type: "archive",
-    translate: '',
-    address: '',
-    id: null,
-  };
-  currentCategoryByType.value = "all";
-};
+// const showItemsInArchive = () => {
+//   items.value = items.value.filter((item) => item.location === "archive");
+//   currentCategoryByLocationObj.value = {
+//     title: "location",
+//     type: "archive",
+//     translate: '',
+//     address: '',
+//     id: null,
+//   };
+//   currentCategoryByType.value = "all";
+// };
 // Фильтрация по удаленным
-const showItemsInDeleted = () => {
-  items.value = items.value.filter((item) => item.location === "deleted");
-  currentCategoryByLocationObj.value = {
-    title: "location",
-    type: "deleted",
-    translate: '',
-    address: '',
-    id: null,
-  };
-  currentCategoryByType.value = "all";
-};
+// const showItemsInDeleted = () => {
+//   items.value = items.value.filter((item) => item.location === "deleted");
+//   currentCategoryByLocationObj.value = {
+//     title: "location",
+//     type: "deleted",
+//     translate: '',
+//     address: '',
+//     id: null,
+//   };
+//   currentCategoryByType.value = "all";
+// };
 // фильтрация по search input
 const computedItems = computed(() =>
   searchInput.value === ""
@@ -2563,12 +2587,12 @@ watch(tempCreateItemOwner, () => {
               <input :id="`${location_type}-${index}`" type="radio">
               <label :for="`${location_type}-${index}`"                    @click="currentCategoryByLocationObj = {
                   title: `${location_type}`,
-                  translate: `${location_type}`,
+                  translate: `${translateCommon(location_type)}`,
                   address: '',
                   type: `${location_type}`,
                   id: null
                 }; popup_location_opened = !popup_location_opened" 
-                >{{ location_type }}</label>
+                >{{ translateCommon(location_type) }}</label>
             </p>
             <!-- <p v-if="projects_computed.length">
               <input :id="`project-0`" type="radio">
@@ -2703,7 +2727,7 @@ watch(tempCreateItemOwner, () => {
               style="margin-top: 1rem;"
             >
               <input type="radio" :id="el.type">
-              <label :for="el.type">{{ el.type }}</label>
+              <label :for="el.type">{{ el.translate }}</label>
             </li>
           </ul>
         </DefaultPopup>
