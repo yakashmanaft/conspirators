@@ -806,7 +806,7 @@ const translateLocation = (id: number, locationType: string) => {
     if (locationType === "project") {
       if (projects.value) {
         let project = projects.value.find((project) => project.id == id);
-        return project.title;
+        return project.name;
       } else {
         return 'Неизвестный проект'
       }
@@ -837,15 +837,15 @@ const translateLocation = (id: number, locationType: string) => {
     }
 
     // REPAIR (locations)
-    // else if (locationType === "repair") {
-    //   if (locations.value) {
-    //     let locationItem = locations.value.find(
-    //       (locationItem) => locationItem.id == id
-    //     ); 
-    //     return `Ремонт: ${locationItem.title}`;
-    //   }
-    //   // return `В ремонте #${id}, ${typeof id}`;
-    // }
+    else if (locationType === "repair") {
+      if (locations.value) {
+        let locationItem = locations.value.find(
+          (locationItem) => locationItem.id == id
+        ); 
+        return `Ремонт: ${locationItem.title}`;
+      }
+      // return `В ремонте #${id}, ${typeof id}`;
+    }
 
     // ARCHIVE
     else if (locationType === "archive") {
@@ -906,7 +906,7 @@ const translateActionType = (actionType: string) => {
     }
   }
 };
-//= translate ОБЩЕЕ
+//= translate ОБЩЕЕ в модалке выбора локаций
 const translateCommon = (type: string) => {
   // OFFICE
   if(type === 'office') {
@@ -926,6 +926,34 @@ const translateCommon = (type: string) => {
   }
   // АРХИВ
   // УДАЛЕННЫЕ
+  else {
+    return type
+  }
+}
+// translate items types
+const translateItemTypes = (type: string) => {
+
+  // car parts
+  if(type === 'car parts') {
+    return 'Автозапчасти'
+  }
+  // chancellery
+  else if(type === 'chancellery') {
+    return 'Канцелярия'
+  }
+  // clothes
+  else if (type === 'clothes') {
+    return 'Одежда'
+  }
+  // office equipment
+  else if (type === 'office equipment') {
+    return 'Оргтехника'
+  }
+  // technic
+  else if (type === 'technic') {
+    return 'Техника'
+  }
+  // OTHER types
   else {
     return type
   }
@@ -2559,7 +2587,7 @@ watch(tempCreateItemOwner, () => {
           popup_title="Фильтруйте по локации" 
           @emitClosePopup="closeLocationPopup"
         >
-          <ul style="list-style: none; padding: 0; " role="radiogroup">
+          <ul style="list-style: none; padding: 0; margin-top: 1rem;" role="radiogroup">
 
             <!-- ALL locations -->
             <li>
@@ -2579,7 +2607,7 @@ watch(tempCreateItemOwner, () => {
             </li>
             <!-- COMMON locations -->
             <div v-if="locations_computed.length">
-              <p style="margin-top: 1rem; color: var(--color-global-text_second);">Общее</p>
+              <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--color-global-text_second);">Общее</p>
               <li style="margin-top: 1rem;" v-for="(location_type, index) in [...new Set(locations_computed.map((obj: any) => {
                 return obj.type
               }))]">
@@ -2599,7 +2627,7 @@ watch(tempCreateItemOwner, () => {
               <!-- !projects -->
               <div v-if="[...locations_computed].filter(el => el.type !== 'project')">
 
-                <p style="margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
+                <p style="font-size: .8rem;margin-top: 1rem; color: var(--color-global-text_second);">Локации</p>
                 <li    
                   v-for="el in [...locations_computed].filter(el => el.type !== 'project')"
                   style="margin-top: 1rem;"  
@@ -2613,14 +2641,18 @@ watch(tempCreateItemOwner, () => {
                 >
                   
                   <input :id="`location-${el.type}-${el.title}`" type="radio" :checked="currentCategoryByLocationObj.type === el.type && +currentCategoryByLocationObj.id === +el.id">
-                  <label :for="`location-${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
+                  <label :for="`location-${el.type}-${el.title}`">
+                    <span>{{ el.title }} </span>
+                    <span v-if="el.address"> | {{ el.address }} </span>
+                    <span> | {{ el.ownerType }} {{ el.ownerID }}</span>
+                  </label>
                   <!-- {{ el }} -->
                 </li>
               </div>
               <!-- projects -->
               <div v-if="[...locations_computed].filter(el => el.type === 'project').length">
 
-                <p style="margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
+                <p style="font-size: .8rem; margin-top: 1rem; color: var(--color-global-text_second);">Проекты</p>
                 <li    
                     v-for="el in [...locations_computed].filter(el => el.type === 'project')"
                     style="margin-top: 1rem;"  
@@ -2634,13 +2666,17 @@ watch(tempCreateItemOwner, () => {
                   >
                     
                     <input :id="`location-${el.type}-${el.title}`" type="radio" :checked="currentCategoryByLocationObj.type === el.type && +currentCategoryByLocationObj.id === +el.id">
-                    <label :for="`location-${el.type}-${el.title}`">{{ el.title }} | {{ el.address }} | {{ el.type }} {{ el.typeID }}</label>
+                    <label :for="`location-${el.type}-${el.title}`">
+                      <span>{{ el.title }}</span>
+                      <span v-if="el.address"> | {{ el.address }}</span>
+                      <span> | {{ el.type }} {{ el.typeID }}</span>
+                    </label>
                     <!-- {{ el }} -->
                   </li>
               </div>
             </div>
             <!-- OTHER locations -->
-            <p style="margin-top: 1rem; color: var(--color-global-text_second);">Прочее</p>
+            <p style="font-size: .8rem; margin-top: 1rem; color: var(--color-global-text_second);">Прочее</p>
             <li
               v-for="el in [
                 {
@@ -2666,7 +2702,7 @@ watch(tempCreateItemOwner, () => {
               style="margin-top: 1rem;"
             >
               <input type="radio" :id="`location-${el.type}`" :checked="currentCategoryByLocationObj.type === el.type">
-              <label :for="`location-${el.type}`">{{ el.translate }}</label>
+              <label :style="el.type === 'deleted' ? 'color: var(--color-urgency-high)' : 'color: var(--color-global-text)'" :for="`location-${el.type}`">{{ el.translate }}</label>
             </li>
           </ul>
         </DefaultPopup>
@@ -2675,7 +2711,7 @@ watch(tempCreateItemOwner, () => {
       <div class="filter-wrapper">
         <label @click="popup_type_opened = !popup_type_opened" for="filter-by-type-chip-menu">
           <span v-if="currentCategoryByType === 'all'">Все типы ТМЦ</span>
-          <span v-else>{{currentCategoryByType}}</span>
+          <span v-else>{{translateItemTypes(currentCategoryByType)}}</span>
           <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
         </label>
 
@@ -2686,7 +2722,7 @@ watch(tempCreateItemOwner, () => {
           popup_title="Фильтруйте по типу"
           @emitClosePopup="closeTypePopup"
         >
-          <ul style="list-style: none; padding: 0;">
+          <ul style="list-style: none; padding: 0; margin-top: 1rem;">
             <li>
               <input :checked="currentCategoryByType === 'all'" type="radio" id="category-0">
               <label @click="currentCategoryByType = 'all'; popup_type_opened = !popup_type_opened" for="category-0">Все типы</label>
@@ -2697,7 +2733,7 @@ watch(tempCreateItemOwner, () => {
               return obj.type
             }))]" style="margin-top: 1rem;">
               <input :checked="el === currentCategoryByType" type="radio" :id="`category-${index + 1}`">
-              <label @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">{{ el.type }} {{ el }}</label>
+              <label @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">{{ translateItemTypes(el) }}</label>
             </li>
           </ul>
           <!-- warehouseCategories   -->
@@ -2705,11 +2741,11 @@ watch(tempCreateItemOwner, () => {
       </div>
     </div>
 
-    <div style="background-color: gray;" v-if="items">
+    <!-- <div style="background-color: gray;" v-if="items">
       {{ currentCategoryByLocationObj }}
       <br>
       {{ currentCategoryByType }}
-    </div>
+    </div> -->
     <!-- FILTERS RADIO BTN -->
     <!-- <div class="switch-type_container"> -->
     <div class="switch-type_wrapper">
@@ -3975,7 +4011,8 @@ label #expend-item:checked + .expand-item_icon {
    }
    .btn-create-modal-open-767 span:hover {
     font-size: 1.1rem;
-    color: var(--color-wallet-fund-invested);
+    /* color: var(--color-wallet-fund-invested); */
+    color: var(--bs-primary);
    }
   /* 
    */
