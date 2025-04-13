@@ -93,8 +93,10 @@ const  emit_inputString = (name) => {
         margin-right: 1rem;
     }
     .search_wrapper > input {
-        background-color: var(--color-btn-disabled-bg);
+        /* background-color: var(--color-btn-disabled-bg); */
+        background-color: rgba(0, 0, 0, 0.05);
         border-radius: 1rem;
+        border-bottom: unset;
     }
 }
 </style>

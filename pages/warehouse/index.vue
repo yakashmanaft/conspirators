@@ -3034,6 +3034,7 @@ watch(tempCreateItemOwner, () => {
                       :disabled="
                         item.qty == 0 && action.type === 'sub' ? true : false
                       "
+                      :id="action.type"
                     >
                       <span>{{ action.title }}</span>
                     </button>
@@ -3212,10 +3213,10 @@ td {
 }
 .item-table_header tr,
 .table-row_wrapper {
-  display: inline-grid;
+  /* display: inline-grid;
   padding: 0;
   width: 100%;
-  grid-template-columns: 50px 1fr 100px 1fr 200px 200px;
+  grid-template-columns: 50px 1fr 100px 1fr 200px 200px; */
 }
 .table-row_wrapper td {
   height: 100%;
@@ -3229,7 +3230,8 @@ td {
   cursor: pointer;
 }
 .table-row_wrapper:hover td {
-  background-color: rgba(0, 0, 0, 0.05);
+  /* background-color: rgba(0, 0, 0, 0.05); */
+  /* box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2); */
 }
 .expand-item_icon {
   cursor: pointer;
@@ -3368,8 +3370,58 @@ label #expend-item:checked + .expand-item_icon {
   .filter-location_select {
     margin: 0 0.5rem;
   }
+  /* 
+   */
   .expended-item_opened {
     margin: unset;
+  }
+  .expended-item_container {
+    display: flex;
+  }
+  .expended-item_btns{
+    /* background-color: red; */
+    order: 2;
+  }
+  .expended-content_article {
+    flex: 2;
+  }
+  .expended-item_btns {
+    display: flex;
+    align-items: center;
+    width: unset!important;
+    margin-right: .5rem;
+  }
+  .expended-item_btns button {
+    position: relative;
+    display: flex;
+    justify-content: flex-end!important;
+    width: 64px!important;
+    height: 64px!important;
+    border-radius: 100%!important;
+    background-color: var(--color-global-text);
+    border: none!important;
+  }
+  .expended-item_btns button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .expended-item_btns #add:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3C!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --%3E%3Cpath fill='white' d='M12 20q-.213 0-.357-.144T11.5 19.5v-7h-7q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h7v-7q0-.213.144-.356T12.001 4t.356.144t.143.356v7h7q.213 0 .356.144t.144.357t-.144.356t-.356.143h-7v7q0 .213-.144.356t-.357.144'/%3E%3C/svg%3E");
+  }
+  .expended-item_btns #sub::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3C!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --%3E%3Cpath fill='white' d='M7.5 12.5q-.213 0-.356-.144T7 11.999t.144-.356t.356-.143h9q.213 0 .356.144t.144.357t-.144.356t-.356.143z'/%3E%3C/svg%3E");
+  }
+  .expended-item_btns #move::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3C!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --%3E%3Cpath fill='white' d='M10.387 15.173H3.5q-.213 0-.357-.143T3 14.673t.143-.357t.357-.143h6.887l-2.74-2.74q-.141-.14-.15-.342q-.01-.2.15-.366q.165-.165.356-.165t.357.165l3.382 3.383q.131.13.184.267t.053.298t-.053.298t-.184.267l-3.388 3.389q-.146.146-.344.153q-.199.007-.364-.159q-.16-.165-.162-.354t.162-.353zm3.226-5.365l2.74 2.74q.141.14.15.341t-.15.367q-.164.165-.356.165t-.356-.165l-3.383-3.383q-.131-.13-.184-.267t-.053-.298t.053-.298t.184-.268l3.388-3.388q.146-.146.345-.153t.363.159q.16.165.162.353q.003.189-.162.354l-2.74 2.74H20.5q.214 0 .357.144t.143.357t-.143.357t-.357.143z'/%3E%3C/svg%3E");
+  }
+  .expended-item_btns button span {
+    display: none;
   }
   /* 
    */
@@ -3399,9 +3451,9 @@ label #expend-item:checked + .expand-item_icon {
    .filter_container {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
-    /* margin-left: 1rem; */
-    /* margin-right: 1rem; */
+    margin-top: 2.5rem;
+    margin-left: 1.5rem; 
+    margin-right: 1.5rem;
   }
   .filter-wrapper label:hover{
     cursor: pointer;
@@ -3417,6 +3469,33 @@ label #expend-item:checked + .expand-item_icon {
   .filter-wrapper label:hover svg{
     color: var(--color-wallet-fund-invested)!important;
     transform: rotate(180deg) scale(1.5);
+  }
+  /* 
+  */
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0 1rem;
+  }
+  .table-row_wrapper {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: unset!important; 
+    border-radius: 1rem;
+    grid-template-columns: 100% auto;
+  }
+  .table-row_wrapper td {
+    border-radius: 1rem;
+    background-color: unset;
+  }
+  .table-row_wrapper td:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .table-row_wrapper td.item-qty {
+    padding-right: 1rem;
   }
 }
 
@@ -3449,9 +3528,9 @@ label #expend-item:checked + .expand-item_icon {
    .filter_container {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
-    /* margin-left: 1rem; */
-    /* margin-right: 1rem; */
+    margin-top: 2rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
   }
   .filter-wrapper label:hover{
     cursor: pointer;
@@ -3467,6 +3546,86 @@ label #expend-item:checked + .expand-item_icon {
   .filter-wrapper label:hover svg{
     color: var(--color-wallet-fund-invested)!important;
     transform: rotate(180deg) scale(1.5);
+  }
+  /* 
+   */
+   .expended-item_opened {
+    margin: unset;
+  }
+  .expended-item_container {
+    display: flex;
+  }
+  .expended-item_btns{
+    /* background-color: red; */
+    order: 2;
+  }
+  .expended-content_article {
+    flex: 2;
+  }
+  .expended-item_btns {
+    display: flex;
+    align-items: center;
+    width: unset!important;
+    margin-right: .5rem;
+  }
+  .expended-item_btns button {
+    position: relative;
+    display: flex;
+    justify-content: flex-end!important;
+    width: 64px!important;
+    height: 64px!important;
+    border-radius: 100%!important;
+    background-color: var(--color-global-text);
+    border: none!important;
+  }
+  .expended-item_btns button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .expended-item_btns #add:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3C!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --%3E%3Cpath fill='white' d='M12 20q-.213 0-.357-.144T11.5 19.5v-7h-7q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h7v-7q0-.213.144-.356T12.001 4t.356.144t.143.356v7h7q.213 0 .356.144t.144.357t-.144.356t-.356.143h-7v7q0 .213-.144.356t-.357.144'/%3E%3C/svg%3E");
+  }
+  .expended-item_btns #sub::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3C!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --%3E%3Cpath fill='white' d='M7.5 12.5q-.213 0-.356-.144T7 11.999t.144-.356t.356-.143h9q.213 0 .356.144t.144.357t-.144.356t-.356.143z'/%3E%3C/svg%3E");
+  }
+  .expended-item_btns #move::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3C!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --%3E%3Cpath fill='white' d='M10.387 15.173H3.5q-.213 0-.357-.143T3 14.673t.143-.357t.357-.143h6.887l-2.74-2.74q-.141-.14-.15-.342q-.01-.2.15-.366q.165-.165.356-.165t.357.165l3.382 3.383q.131.13.184.267t.053.298t-.053.298t-.184.267l-3.388 3.389q-.146.146-.344.153q-.199.007-.364-.159q-.16-.165-.162-.354t.162-.353zm3.226-5.365l2.74 2.74q.141.14.15.341t-.15.367q-.164.165-.356.165t-.356-.165l-3.383-3.383q-.131-.13-.184-.267t-.053-.298t.053-.298t.184-.268l3.388-3.388q.146-.146.345-.153t.363.159q.16.165.162.353q.003.189-.162.354l-2.74 2.74H20.5q.214 0 .357.144t.143.357t-.143.357t-.357.143z'/%3E%3C/svg%3E");
+  }
+  .expended-item_btns button span {
+    display: none;
+  }
+  /* 
+  */
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0 1rem;
+  }
+  .table-row_wrapper {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: unset!important; 
+    border-radius: 1rem;
+    grid-template-columns: 100% auto;
+  }
+  .table-row_wrapper td {
+    border-radius: 1rem;
+    background-color: unset;
+  }
+  .table-row_wrapper td:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .table-row_wrapper td.item-qty {
+    padding-right: 1rem;
   }
 }
 
