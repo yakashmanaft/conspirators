@@ -8,7 +8,7 @@ const { partner } = storeToRefs(usePartnerStore())
 
 export const translateName = (sharerType, sharerID) => {
     if(sharerType && sharerID) {
-        console.log(sharerType, sharerID)
+        // console.log(sharerType, sharerID)
         // USER
         if(sharerType === 'user') {
             if(partner.value) {
@@ -19,7 +19,7 @@ export const translateName = (sharerType, sharerID) => {
         } 
         // COMPANY
         if(sharerType === 'conspirator'){
-            console.log(band.value)
+            // console.log(band.value)
             if(band.value) {
                 let company = band.value.find(company => company.id === sharerID)
                 return `${company?.name}`

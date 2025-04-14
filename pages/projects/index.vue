@@ -180,6 +180,12 @@ const searchInputChanged = (str: string) => {
   searchInput.value = str
 }
 
+// ***************** ON ClICK ***************
+// const projectSymbolOnClick = (symbol) => {
+//   searchInputChanged(symbol)
+// }
+
+
 // *********** ДОБАВЛЯЕМ New Project newProjectModal ***********
 // флаг disabled для кнопки submit
 // const createNewProjectBtnIsDisabled = ref(true);
@@ -482,14 +488,15 @@ const addNewProject = () => {
         <div v-if="project_list?.length">
           <Search
             @searchInputChanged="searchInputChanged"
+            :string="`${searchInput}`"
           >
-            <input
+            <!-- <input
               type="text"
               class="form-control"
               placeholder="Поиск"
               v-model="searchInput"
               style="padding-left: 2.2rem"
-            />
+            /> -->
           </Search>
         </div>
         

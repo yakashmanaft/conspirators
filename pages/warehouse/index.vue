@@ -2592,7 +2592,8 @@ watch(tempCreateItemOwner, () => {
             <!-- ALL locations -->
             <li>
               <input id="location-all" type="radio" :checked="currentCategoryByLocationObj.type === 'all'">
-              <label               
+              <label       
+                style="margin-left: .5rem;"        
                 @click="currentCategoryByLocationObj = {
                   title: `all`,
                   type: `all`,
@@ -2612,7 +2613,7 @@ watch(tempCreateItemOwner, () => {
                 return obj.type
               }))]">
                 <input :id="`common-${location_type}-${index}`" type="radio" :checked="!currentCategoryByLocationObj.id && currentCategoryByLocationObj.type === location_type">
-                <label :for="`common-${location_type}-${index}`"                    @click="currentCategoryByLocationObj = {
+                <label style="margin-left: .5rem;" :for="`common-${location_type}-${index}`"                    @click="currentCategoryByLocationObj = {
                     title: `${location_type}`,
                     translate: `${translateCommon(location_type)}`,
                     address: '',
@@ -2641,7 +2642,7 @@ watch(tempCreateItemOwner, () => {
                 >
                   
                   <input :id="`location-${el.type}-${el.title}`" type="radio" :checked="currentCategoryByLocationObj.type === el.type && +currentCategoryByLocationObj.id === +el.id">
-                  <label :for="`location-${el.type}-${el.title}`">
+                  <label style="margin-left: .5rem;" :for="`location-${el.type}-${el.title}`">
                     <span>{{ el.title }} </span>
                     <span v-if="el.address"> | {{ el.address }} </span>
                     <span> | {{ el.ownerType }} {{ el.ownerID }}</span>
@@ -2666,7 +2667,7 @@ watch(tempCreateItemOwner, () => {
                   >
                     
                     <input :id="`location-${el.type}-${el.title}`" type="radio" :checked="currentCategoryByLocationObj.type === el.type && +currentCategoryByLocationObj.id === +el.id">
-                    <label :for="`location-${el.type}-${el.title}`">
+                    <label style="margin-left: .5rem;" :for="`location-${el.type}-${el.title}`">
                       <span>{{ el.title }}</span>
                       <span v-if="el.address"> | {{ el.address }}</span>
                       <span> | {{ el.type }} {{ el.typeID }}</span>
@@ -2702,7 +2703,7 @@ watch(tempCreateItemOwner, () => {
               style="margin-top: 1rem;"
             >
               <input type="radio" :id="`location-${el.type}`" :checked="currentCategoryByLocationObj.type === el.type">
-              <label :style="el.type === 'deleted' ? 'color: var(--color-urgency-high)' : 'color: var(--color-global-text)'" :for="`location-${el.type}`">{{ el.translate }}</label>
+              <label style="margin-left: .5rem;" :style="el.type === 'deleted' ? 'color: var(--color-urgency-high)' : 'color: var(--color-global-text)'" :for="`location-${el.type}`">{{ el.translate }}</label>
             </li>
           </ul>
         </DefaultPopup>
@@ -2725,7 +2726,7 @@ watch(tempCreateItemOwner, () => {
           <ul style="list-style: none; padding: 0; margin-top: 1rem;">
             <li>
               <input :checked="currentCategoryByType === 'all'" type="radio" id="category-0">
-              <label @click="currentCategoryByType = 'all'; popup_type_opened = !popup_type_opened" for="category-0">Все типы</label>
+              <label style="margin-left: .5rem;" @click="currentCategoryByType = 'all'; popup_type_opened = !popup_type_opened" for="category-0">Все типы</label>
             </li>
             <li v-for="(el, index) in [...new Set(items_copy.map((obj: any) => {
               // currentCategoryByLocationObj
@@ -2733,7 +2734,7 @@ watch(tempCreateItemOwner, () => {
               return obj.type
             }))]" style="margin-top: 1rem;">
               <input :checked="el === currentCategoryByType" type="radio" :id="`category-${index + 1}`">
-              <label @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">{{ translateItemTypes(el) }}</label>
+              <label style="margin-left: .5rem;" @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">{{ translateItemTypes(el) }}</label>
             </li>
           </ul>
           <!-- warehouseCategories   -->

@@ -27,10 +27,14 @@ const props = defineProps({
     //     type: String,
     //     default: ''
     // }
+    string: {
+      type: String,
+      default: ''
+    }
 })
 
 // CONST
-const modelValue = ref('')
+const modelValue = ref(props.string)
 
 // watch(modelValue, () => {
 //     console.log(modelValue.value)

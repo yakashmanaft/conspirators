@@ -381,6 +381,20 @@ useHead({
 
 
             {{ brokerage }}
+
+            <div style="position: fixed; bottom: 4rem; left: 0; width: 100%; padding: 0 1rem 1rem 1rem;">
+
+                <div style="display: flex; align-items: center;background-color: var(--color-wallet-fund-invested-wo); border-radius: 2rem; height: 32px; box-shadow: var(--hover-shadow); cursor: pointer; padding: 1.5rem 1rem; justify-content: center; gap: 1rem;">
+                    <p style="color: var(--color-btn-text); margin: 0;">
+                        Обновить котировки
+                    </p>
+                    <Icon
+                        name="material-symbols-light:directory-sync-rounded"
+                        size="24px"
+                        color="var(--color-btn-text)"
+                    />
+                </div>
+            </div>
             <!-- <div  class="title-section_container" style="margin-bottom: 0.5rem;">
                 <BreadCrumbs class="show-max-767"/>
     
