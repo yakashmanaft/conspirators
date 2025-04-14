@@ -1366,6 +1366,37 @@ useHead({
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
+  .list_item {
+    /* border: unset; */
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  /* 
+   */
+   .avatar {
+    width: 150px;
+    min-height: 100%;
+    border-radius: 50%;
+    background-color: var(--color-global-text_second);
+  }
+  .avatar-none {
+    display: none;
+  }
+  .my-profile_wrapper {
+    border-bottom: unset!important;
+  }
+  .my-profile_wrapper > div {
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .my-profile_wrapper > div > .item_name > p > span {
+    text-transform: uppercase;
+  }
+  .other-profile_wrapper {
+    /* margin-top: 20rem; */
+    /* background-color: red; */
+  }
 }
 @media screen and (max-width: 767px) {
   .show-max-767 {
@@ -1396,6 +1427,14 @@ useHead({
     display: block !important;
     color: var(--bs-body-bg) !important;
   }
+  /* 
+   */
+  .list_item {
+    /* border: unset; */
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  /* 
+   */
   /* .partners-search_wrapper {
     margin-left: 1rem;
     margin-right: 1rem;
@@ -1417,6 +1456,12 @@ useHead({
 @media screen and (min-width: 576px) and (max-width: 767px) {
   /* 
    */
+   .list_item {
+    /* border: unset; */
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  /* 
+   */
   .partners-list_wrapper {
     position: relative;
     /* margin-top: 2rem; */
@@ -1425,14 +1470,9 @@ useHead({
 
   }
   .my-profile_wrapper {
-    /* background-color: blue; */
-    /* position: absolute; */
-    /* top: 0; */
-    /* left: 0; */
-    /* padding: 1rem; */
     height: 150px;
-    padding: 1rem 0;
-    padding-left: 1rem;
+    padding: 1rem;
+    /* padding-left: 1rem; */
     border-bottom: unset; 
   }
   .avatar {
@@ -1487,18 +1527,115 @@ useHead({
     margin-top: 1rem;
   }
   .list_item {
-    border: unset;
+    /* border: unset; */
+    border-bottom: 1px solid var(--bs-border-color);
   }
   /*  
   */
   .my-profile_wrapper {
-    background-color: red;
+    /* background-color: red; */
+    border-bottom: unset!important;
+  }
+  .my-profile_wrapper > div {
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .avatar {
+    width: 150px;
+    min-height: 100%;
+    border-radius: 50%;
+    background-color: var(--color-global-text_second);
+  }
+  .avatar-none {
+    display: none;
+  }
+  .my-profile_wrapper > div > .item_name > p {
+    font-size: 1.5rem;
+  }
+  .my-profile_wrapper > div > .item_name > p > span {
+    text-transform: uppercase;
+  }
+  .other-profile_wrapper {
+    /* margin-top: 20rem; */
+    /* background-color: red; */
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-
+  /* 
+   */
+   .list_item {
+    /* border: unset; */
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  /*  
+  */
+  .my-profile_wrapper {
+    /* background-color: red; */
+    border-bottom: unset!important;
+  }
+  .my-profile_wrapper > div {
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .avatar {
+    width: 150px;
+    min-height: 100%;
+    border-radius: 50%;
+    background-color: var(--color-global-text_second);
+  }
+  .avatar-none {
+    display: none;
+  }
+  .my-profile_wrapper > div > .item_name > p {
+    font-size: 1.5rem;
+  }
+  .my-profile_wrapper > div > .item_name > p > span {
+    text-transform: uppercase;
+  }
+  .other-profile_wrapper {
+    /* margin-top: 20rem; */
+    /* background-color: red; */
+  }
 }
 @media screen and (min-width: 1200px) {
-
+  .list_item {
+    /* border: unset; */
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  /*  
+  */
+  .my-profile_wrapper {
+    /* background-color: red; */
+    border-bottom: unset!important;
+  }
+  .my-profile_wrapper > div {
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .avatar {
+    width: 150px;
+    min-height: 100%;
+    border-radius: 50%;
+    background-color: var(--color-global-text_second);
+  }
+  .avatar-none {
+    display: none;
+  }
+  .my-profile_wrapper > div > .item_name > p {
+    font-size: 1.5rem;
+  }
+  .my-profile_wrapper > div > .item_name > p > span {
+    text-transform: uppercase;
+  }
+  .other-profile_wrapper {
+    /* margin-top: 20rem; */
+    /* background-color: red; */
+  }
 }
 </style>
