@@ -196,14 +196,14 @@ useHead({
 
         // КЛИК ПО ПОДЛОЖКЕ ПОЛУПРОЗРАЧНОЙ
         //= ПЕРЕМЕННЫЕ
-        const filter_cap_chip_menu = document.getElementById('filter_cap_chip-menu')
+        const filter_cap_chip_menu = document.getElementById('popup_input-btn')
         const sharers_list_btn = document.getElementById('sharers_list-btn')
 
         //= ДЕЙСТВИЕ
         document.addEventListener('click', (e) => {
 
 
-            if(e.target?.classList?.contains('capitalization_chip-container')) {
+            if(e.target?.classList?.contains('popup-container')) {
                 filter_cap_chip_menu.checked = !filter_cap_chip_menu.checked
             }
 
@@ -486,13 +486,13 @@ useHead({
             <div class="cap-header_wrapper">
 
                 <!-- ЗАГОЛОВОК + КАПА -->
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <h2 style="margin: 0; color: var(--color-global-text_second); ">Капитализация</h2>
-                    <p style="margin: 0;font-size: 2rem; font-weight: bold;">~2 468.RUB</p>
+                <div>
+                    <h2 style="margin: 0; color: var(--color-global-text_second); ">Стоимость портфеля</h2>
+                    <p style="margin: 0;font-size: 2rem; font-weight: bold;">~2 468.75 RUB</p>
                 </div>
                 <!-- ФИЛЬТР СЕКЦИЙ МЕШКОВ -->
-                <div class="filter_cap-container">
-                    <label for="filter_cap_chip-menu">
+                <div class="popup_label-btn">
+                    <label for="popup_input-btn">
                         <div style="display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;">
 
                             <Icon             
@@ -503,10 +503,10 @@ useHead({
                             <div style="position: absolute; bottom: .2rem; right: .2rem; height: .6rem; width: .6rem; background-color: var(--color-urgency-middle); border-radius: 100%;"></div>
                         </div>
                     </label>
-                    <input id="filter_cap_chip-menu" type="checkbox">
-                    <div class="capitalization_chip-container">
+                    <input id="popup_input-btn" type="checkbox">
+                    <div class="popup-container">
 
-                        <div class="capitalization_chip">
+                        <div class="popup_wrapper">
                             <h4>Выберите <br>типы мешков <br>к показу</h4>
                             <div>
                                 <input type="checkbox" id="available_cap">
@@ -542,8 +542,8 @@ useHead({
             </div>
 
 
-            <div id="capitalization-graph" class="capitalization-container">
-                <div class="year_balance-wrapper">
+            <div id="capitalization-graph" class="capitalization-container graph-container">
+                <div class="year_balance-wrapper graph_year-wrapper ">
                     <ul>
                         <li>
                             <div>
@@ -621,7 +621,7 @@ useHead({
                     <p>2023</p>
                 </div>
         
-                <div class="year_balance-wrapper">
+                <div class="year_balance-wrapper graph_year-wrapper ">
                     <ul>
                         <li>
                             <div>
@@ -699,7 +699,7 @@ useHead({
                     <p>2024</p>
                 </div>
         
-                <div class="year_balance-wrapper">
+                <div class="year_balance-wrapper graph_year-wrapper ">
                     <ul>
                         <li>
                             <div>
@@ -719,6 +719,15 @@ useHead({
                             </div>
                             <p>Мар.</p>
                         </li>
+                        <li>
+                            <div></div>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
         
                     </ul>
                     <p>2025</p>
@@ -734,27 +743,20 @@ useHead({
                     <label for="sharers_list-btn">Список</label>
                     <input id="sharers_list-btn" type="checkbox">
 
-                    <!-- МОДАЛКА СО СПИСКОМ СОУЧАСТНИКОВ В БАНДЕ -->
-                    <div class="sharers_list-container">
+                    <div class="popup_1-container sharers_list-container">
 
-                        <div class="sharers_list-wrapper">
+                        <div class="popup_1-wrapper sharers_list-wrapper">
                             <h3>Список соучастников <br> {{ band?.name }}</h3>
                             <ul>
                                 <li 
                                     v-for="(sharer, index) in band?.sharers"
                                     class="sharers-list_item"
                                 >
-                                    <div class="sharers-list_item-index">
-                                        {{ index + 1 }}.
+                                    <div class="sharers-list_item-el">
+                                        <p>{{ index + 1 }}. <span @click="setSharerRoute(sharer.userId, sharer.userType)">{{ translateSharerName(sharer.userId, sharer.userType) }}</span></p>
                                     </div>
-                                    <div class="sharers-list_item-name" @click="setSharerRoute(sharer.userId, sharer.userType)">
-                                        {{ translateSharerName(sharer.userId, sharer.userType) }} 
-                                    </div>
-                                    <div class="sharers-list_item-position">
-                                        {{ sharer.position }}
-                                    </div>
-                                    <div class="sharers-list_item-allocation">
-                                        {{ sharer.allocation }}
+                                    <div class="sharers-list_item-el">
+                                        <p>{{ sharer.position }} <span>{{ sharer.allocation }}</span></p>
                                     </div>
                                 </li>
                             </ul>
@@ -782,28 +784,9 @@ useHead({
                             name="material-symbols-light:group-rounded"
                         />
                     </div>
-                    <!-- <div class="sharers-item_position"> -->
-                        <!-- viewer, founder, investor и другие-->
-                        <!-- {{ sharer.position }} -->
-                    <!-- </div> -->
                     <div class="sharers-item_name">
                         {{ translateSharerName(sharer.userId, sharer.userType) }}
                     </div>
-                    <!-- <div class="sharers-item_allocation">
-                        <p style="margin: 0;" v-if="sharer.allocation > 0">
-                            <span v-if="sharer.userId === props.auth_user_profile.userId">
-                                Доля {{ sharer.allocation * 100 }}%
-                            </span>
-                            <span v-else>В доле</span>
-                        </p>
-                        <p style="margin: 0;" v-else>
-
-                            <span v-if="sharer.position !== 'viewer'">
-                                Сотрудник
-                            </span>
-                            <span v-else>Прочее</span>
-                        </p>
-                    </div> -->
                 </li>
             </ul>
 
@@ -818,7 +801,7 @@ useHead({
         </div>
 
         <!-- CHIP titles -->
-        <div class="current_band_paragraph" style="display: flex; gap: 1rem; align-items: center;">
+        <div class="current_band_paragraph" style="margin-top: 2rem;">
             <h2 v-for="el in band_paragraph" :class="currentBandParagraph === el.name ? 'title_active' : ''" style="cursor:pointer;">
                 <span @click="currentBandParagraph = el.name;">{{ el.title }}</span>
             </h2>
@@ -826,7 +809,7 @@ useHead({
 
         <!-- current Band Paragraph -->
         <!-- INCOME-EXPENSE -->
-        <div style="margin-top: 1.5rem;" v-if="currentBandParagraph === 'income_expenses'">
+        <div style="margin-top: 2rem;" v-if="currentBandParagraph === 'income_expenses'">
 
             <!-- cap -->
             <p style="margin-left: 1rem; margin-right: 1rem; font-size: .8rem;">
@@ -835,9 +818,9 @@ useHead({
             </p>
 
             <!-- history graph -->
-            <div id="history-graph" class="history_balance-container">
+            <div id="history-graph" class="history_balance-container graph-container">
         
-                <div class="year_balance-wrapper">
+                <div class="year_balance-wrapper graph_year-wrapper">
                     <p>2023</p>
                     <ul>
                         <li>
@@ -927,7 +910,7 @@ useHead({
                     </ul>
                 </div>
         
-                <div class="year_balance-wrapper">
+                <div class="year_balance-wrapper graph_year-wrapper">
                     <p>2024</p>
                     <ul>
                         <li>
@@ -1017,7 +1000,7 @@ useHead({
                     </ul>
                 </div>
         
-                <div class="year_balance-wrapper">
+                <div class="year_balance-wrapper graph_year-wrapper">
                     <p>2025</p>
                     <ul>
                         <li>
@@ -1041,6 +1024,15 @@ useHead({
                             </div>
                             <p>Мар.</p>
                         </li>
+                        <li>
+                            <div></div>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -1048,8 +1040,8 @@ useHead({
             <!-- transaction -->
             <div style="margin-top: 1rem; margin-left: 1rem; margin-right: 1rem;">
                 <h3>История транзакций</h3>
-                <ul>
-                    <li>01.01.2025</li>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="background-color: red;">01.01.2025</li>
                     <li>12.12.2024</li>
                 </ul>
             </div>
@@ -1189,6 +1181,10 @@ useHead({
     <br>
     <br>
     <br>
+    <br>
+    <br>
+    <br>
+    <br>
         
     </Container>
 </template>
@@ -1208,46 +1204,15 @@ useHead({
     background-color: var(--color-global-text);
     height: 250px; */
 }
-@media screen and (max-width: 575px) {
-  .show-max-767 {
-    display: none;
-  }
-  .title-section_container {
-    margin: 0 1rem;
-  }
-}
-@media screen and (min-width: 576px) and (max-width: 767px) {
-    .show-max-767 {
-      display: none;
-    }
-    .title-section_container {
-        margin: 0 1rem;
-    }
-    .content-setion_container {
-        /* padding-left: 1rem; */
-        /* padding-right: 1rem; */
-    }
 
-    /* GRAPH */
-    .cap_container {
-
-    }
-    .cap-header_wrapper {
-        display: flex;
-        flex-direction: column;
-        /* align-items: flex-end; */
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-    .cap-header_wrapper > p {
-        margin: 0;
-    }
-
-    /*  */
-    #filter_cap_chip-menu {
+/* POPUP MENU */
+    /* 
+    */
+    #popup_input-btn {
         display: none;
     }
-    #filter_cap_chip-menu:checked + .capitalization_chip-container{
+    #sharers_list-btn:checked + .popup_1-container,
+    #popup_input-btn:checked + .popup-container{
         display: flex;
         position: fixed;
         opacity: 1;
@@ -1256,27 +1221,18 @@ useHead({
         z-index: 999;
         transition: all .2s ease-in-out;
     }
-    #filter_cap_chip-menu:checked + .capitalization_chip-container > .capitalization_chip {
+    #sharers_list-btn:checked + .popup_1-container > .popup_1-wrapper,
+    #popup_input-btn:checked + .popup-container > .popup_wrapper {
         left: 0;
     }
-
-    .filter_cap-container {
+    .popup_label-btn {
         position: relative;
-        align-self: flex-end;
     }
-    .filter_cap-container label {
+    .popup_label-btn label {
         cursor: pointer;
     }
-    .capitalization_chip-container {
-        /* display: none; */
-        /* left: -100%; */
-        /* align-items: flex-start; */
-        /* overflow-x: scroll; */
-        /* max-width: 100vw!important; */
-        /* -ms-overflow-style: none;  */
-        /* scrollbar-width: none; */
-        /* padding: 1rem; */
-        /* left: -100%; */
+    .popup-container,
+    .popup_1-container {
         position: fixed;
         z-index: -1;
         background: var(--color-bg-popup);
@@ -1285,10 +1241,12 @@ useHead({
         height: 100%;
         opacity: 0;
     }
-    .capitalization_chip-container::-webkit-scrollbar  {
+    .popup-container::-webkit-scrollbar,
+    .popup_1-container::-webkit-scrollbar  {
         display: none;
     }
-    .capitalization_chip-container > .capitalization_chip {
+    .popup-container > .popup_wrapper,
+    .popup_1-container > .popup_1-wrapper {
         transition: all .5s ease-in-out;
         position: absolute;
         height: 100%;
@@ -1298,296 +1256,131 @@ useHead({
         padding: 1rem;
         display: flex;
         flex-direction: column;
-        width: 50%;
     }
-    .capitalization_chip-container > .capitalization_chip > div {
-        display: flex;
-        align-items: center;
-    }
-    .history_balance-container,
-    .capitalization-container {
-        /* background-color: var(--color-btn-hover-bg); */
+
+    /* 
+    GRAPH 
+    */
+    .graph-container {
         color: var(--color-global-text);
         display: flex;
         gap: .5rem;
         overflow-x: scroll;
         margin-left: 0;
         margin-right: 0;
-        margin-top: 1.5rem;
-        max-width: 100vw!important;
         -ms-overflow-style: none; 
         scrollbar-width: none;
-        padding-left: 1rem;
-        padding-right: 1rem;
     }
-    .history_balance-container::-webkit-scrollbar,
-    .capitalization-container::-webkit-scrollbar  {
+    .graph-container::-webkit-scrollbar {
         display: none;
     }
-    .capitalization-container {
-        margin-top: 1rem;
-    }
-
-    /*  */
-    .sharers_container {
-
-    }
-    .sharers_container > .sharers-header_wrapper {
-        margin-left: 1rem;
-        margin-right: 1rem;
-        margin-top: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .sharers_container > .sharers-header_wrapper > div > label {
-        color: var(--color-btn-bg);
-        font-size: .8rem;
-        padding: 2px 8px;
-        border-radius: 1rem;
-        background-color: var(--color-btn-hover-bg);
-        cursor: pointer;
-    }
-    .sharers_container > .sharers-header_wrapper > div > input {
-        display: none;
-    }
-
-    /* MODAL SHARERS_LIST */
-    #sharers_list-btn:checked +.sharers_list-container {
-        display: flex;
-        position: fixed;
-        opacity: 1;
-        left: 0;
-        top: 0;
-        z-index: 999;
-        transition: all .2s ease-in-out;
-    }
-    .sharers_container > .sharers-header_wrapper > div > .sharers_list-container {
-        position: fixed;
-        z-index: -1;
-        background: var(--color-bg-popup);
-        backdrop-filter: blur(2px);
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-    }
-    #sharers_list-btn:checked +.sharers_list-container > .sharers_list-wrapper {
-        left: 0;
-    }
-    .sharers_container > .sharers-header_wrapper > div > .sharers_list-container > .sharers_list-wrapper {
-        transition: all .5s ease-in-out;
-        position: absolute;
-        height: 100%;
-        left: -100%;
-        background-color: var(--color-btn-text);
-        box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        width: 70%;
-    }
-
-    .sharers_list-container > .sharers_list-wrapper > h3 {
-        border-bottom: 1px solid var(--color-btn-bg);
-        margin: 0;
-        padding-bottom: 1rem;
-    }
-
-    .sharers_list-container > .sharers_list-wrapper > ul {
-        padding: 0;
-        margin: 0;
-        margin-top: 1rem;
-    }
-
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item {
-        display: grid;
-        gap: .5rem;
-        grid-template-columns: 1rem 5fr 2fr 30px;
-        align-items: center;
-        list-style: none;
-        color: var(--color-global-text_second);
-        margin-left: -1rem;
-        margin-right: -1rem;
-        padding: .2rem 0 .2rem 1rem;
-        transition: all .2s ease-in-out;
-    }
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item:hover {
-        background-color: var(--color-btn-hover-bg);
-    }
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-index {
-
-    }
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-name {
-        width: fit-content;
-        transition: all .2s ease-in-out;
-    }
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-name:hover {
-        color: var(--color-btn-bg);
-        cursor: pointer;
-    }
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-position {
-        justify-self: flex-end;
-        font-size: .8rem;
-    }
-    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-allocation {
-        font-size: .8rem;
-    }
-
-    /*  */
-    .sharers_container > .sharers-item_wrapper {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 2rem;
-        -ms-overflow-style: none;  /* IE and Edge */
-        overflow: scroll; 
-        scrollbar-width: none; 
-        max-width: 100vw!important;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-bottom: 1rem;
-    }
-    .sharers_container > .sharers-item_wrapper::-webkit-scrollbar {
-        display: none;
-        -webkit-appearance: none;
-        width: 0;
-        height: 0;
-    }
-    .sharers_item {
-        /* border: 1px solid var(--color-operation-type-donation); */
-        /* padding: .5rem 1rem; */
-        border-radius: .5rem;
-        display: flex; 
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .sharers_item:hover {
-        cursor: pointer;    
-        /* box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2); */
-    }
-    .sharers_item > .avatar {
-        width: 64px;
-        height: 64px;
-        background-color: var(--color-operation-type-donation);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 100%;
-    }
-    .sharers-item_name {
-        /* text-wrap: nowrap; */
-        color: var(--color-global-text_second);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* justify-content: space-between; */
-        /* gap: 1rem; */
-        font-size: .8rem;
-        width: 20px;
-        text-align: center;
-        margin-top: .5rem;
-    }
-    /* .sharers-item_position {
-        text-align: right;
-        color: var(--color-global-text_second);
-        font-size: .8rem;
-        margin-top: .5rem;
-    } */
-    /* .sharers-item_allocation {
-        font-size: .8rem;
-        text-align: right;
-    } */
-    /* .sharers-item_allocation p span{
-        color: var(--color-global-text_second);
-    } */
-
-    /*  */
-    .year_balance-wrapper {
+    .graph_year-wrapper {
         border-left: .5px solid var(--color-btn-disabled-bg);
         padding-left: .5rem;
     }
-    .year_balance-wrapper > p {
+    .graph_year-wrapper > p {
         color: var(--color-global-text_second);
         font-size: .8rem;
         margin: 0;
     }
-    .year_balance-wrapper ul{
+    .graph_year-wrapper ul{
         display: flex;
         list-style: none;
         padding: 0;
         margin: 0;
         gap: 1rem;
     }
-    .year_balance-wrapper ul li {
-        height: 10rem;
+    .graph_year-wrapper ul li {
+        height: 15rem;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         align-items: center;
     }
-    .year_balance-wrapper ul li div {
+    .graph_year-wrapper ul li div {
         width: 1.5rem;
         gap: .1rem;
         height: 100%;
         display: flex;
         align-items:  flex-end;
     }
-    .year_balance-wrapper > ul > li > div > .income {
-        background-color: var(--color-wallet-fund-available);
-        border-top-left-radius: .3rem;
-        border-top-right-radius: .3rem;
-        transition: all .2s ease-in;
-
-    }
-    .year_balance-wrapper > ul > li > div > .expense {
-        background-color: var(--color-wallet-fund-debt);
-        border-top-left-radius: .3rem;
-        border-top-right-radius: .3rem;
-        transition: all .2s ease-in;
-    }
-    .year_balance-wrapper ul li div > .income:hover {
-        cursor: pointer;    
-        background-color: var(--color-urgency-low);
-    }
-    .year_balance-wrapper ul li div > .expense:hover {
-        cursor: pointer;    
-        background-color: var(--color-urgency-high);
-    }
-    .year_balance-wrapper > ul > li > div > .cap_value {
+    /* 
+    CAP 
+    */
+    .graph_year-wrapper > ul > li > div > .cap_value {
         border-top-left-radius: .3rem;
         border-top-right-radius: .3rem;
         transition: all .2s ease-in;
         background-color: var(--color-operation-type-donation);
     }
-    .year_balance-wrapper > ul > li > div > .cap_value:hover {
+    .graph_year-wrapper > ul > li > div > .cap_value:hover {
         background-color: var(--color-status-paused);
         cursor: pointer;
     }
-    .year_balance-wrapper > ul > li > div > .cap_choosen_month {
+    .graph_year-wrapper > ul > li > div > .cap_choosen_month {
         background-color: var(--color-urgency-low-wo);
     }
-    .year_balance-wrapper ul li p{
+    .graph_year-wrapper ul li p{
         font-size: .8rem;
         margin: 0;
         color: var(--color-global-text_second);
     }
+    /* 
+    INCOME
+    */
+    .graph_year-wrapper > ul > li > div > .income {
+        background-color: var(--color-wallet-fund-available);
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+        transition: all .2s ease-in;
+    }
+    .graph_year-wrapper ul li div > .income:hover {
+        cursor: pointer;    
+        background-color: var(--color-urgency-low);
+    }
+    /* 
+    EXPENSE 
+    */
+    .graph_year-wrapper > ul > li > div > .expense {
+        background-color: var(--color-wallet-fund-debt);
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+        transition: all .2s ease-in;
+    }
+    .graph_year-wrapper ul li div > .expense:hover {
+        cursor: pointer;    
+        background-color: var(--color-urgency-high);
+    }
 
-    /* BAND PARAGRAPH CHIP */
+    /* CHIPS */
+    /* 
+     */
     .current_band_paragraph {
+        display: flex;
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        max-width: 100vw!important;
+        gap: 1rem;
         padding-bottom: .5rem;
         border-bottom: 1px solid var(--color-btn-disabled-bg);
         margin-left: 1rem;
         margin-right: 1rem;
-        margin-top: 1rem;
+    }
+    .current_band_paragraph::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
     }
     .current_band_paragraph h2 {
         font-size: 1rem;
         font-weight: normal;
         position: relative;
     } 
+    .current_band_paragraph h2 span {
+        text-wrap: nowrap;
+    }
     .title_active:after {
         content: '';
         position: absolute;
@@ -1600,14 +1393,363 @@ useHead({
     .title_active span {
         color: var(--color-wallet-fund-available-wo);
     }
+
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        /* display: none; */
+        margin-top: 2rem;
+        border-radius: 1rem;
+        background-color: var(--color-global-text);
+        overflow: hidden;
+        padding-bottom: 2rem;
+    }
+    .sharers_container > .sharers-header_wrapper {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .sharers_container > .sharers-header_wrapper > div > label {
+        color: var(--color-btn-text);
+        font-size: .8rem;
+        padding: 2px 8px;
+        border-radius: 1rem;
+        background-color: var(--color-operation-type-donation);
+        cursor: pointer;
+    }
+    .sharers_container > .sharers-header_wrapper > div > input {
+        display: none;
+    }
+    .sharers_container > .sharers-item_wrapper {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        max-width: 100vw!important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .sharers_container > .sharers-item_wrapper::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .sharers_item {
+        border-radius: .5rem;
+        display: flex; 
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .sharers_item:hover {
+        cursor: pointer;    
+    }
+    .sharers_item > .avatar {
+        width: 64px;
+        height: 64px;
+        background-color: var(--color-operation-type-donation);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+    }
+    .sharers-item_name {
+        color: var(--color-global-text_second);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: .8rem;
+        width: 20px;
+        text-align: center;
+        margin-top: .5rem;
+    }
+
+    /* MODAL SHARER LIST */
+    .sharers_list-container > .sharers_list-wrapper > h3 {
+        border-bottom: 1px solid var(--color-status-paused);
+        margin: 0;
+        padding-bottom: 1rem;
+        font-weight: bold;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul {
+        padding: 0;
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item {
+        display: flex;
+        flex-direction: column;
+        /* gap: 1rem; */
+        /* grid-template-columns: 1rem 5fr 2fr 30px; */
+        /* align-items: center; */
+        list-style: none;
+        color: var(--color-global-text_second);
+        /* margin-top: 1rem; */
+        /* margin-left: -1rem; */
+        /* margin-right: -1rem; */
+        /* padding: .2rem 0 .2rem 1rem; */
+        transition: all .2s ease-in-out;
+        padding: .5rem;
+        /* border: 1px solid red; */
+        border-radius: 1rem;
+    }   
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item:first-child {
+        margin-top: unset;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item:hover {
+        border-radius: 1rem;
+        background-color: var(--color-btn-hover-bg);
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item > .sharers-list_item-index {
+        grid-area: index;
+    }
+    .sharers_list-container > .sharers_list-wrapper > ul >.sharers-list_item:hover {
+        color: var(--color-btn-bg);
+        cursor: pointer;
+    }
+    .sharers-list_item-el p {
+        margin: 0;
+    }
+    .sharers-list_item-el:nth-child(2) {
+        margin-left: 1rem;
+    }
+    .sharers-list_item-el:nth-child(2) p, 
+    .sharers-list_item-el:nth-child(2) p span{
+        font-size: .8rem;
+        color: var(--color-global-text_second);
+    }
+    
+
+@media screen and (max-width: 575px) {
+    .show-max-767 {
+        display: none;
+    }
+    .title-section_container {
+        margin: 0 1rem;
+    }
+
+    /* 
+     */
+     .cap-header_wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+    .cap-header_wrapper div h2{
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .cap-header_wrapper > p {
+        margin: 0;
+    }
+    /* 
+     */
+    .popup_1-container > .popup_1-wrapper,
+    .popup-container > .popup_wrapper {
+        width: 80%;
+    }
+    /* 
+     */
+    .graph-container {
+        width: 100vw!important;
+        padding-right: 1rem;
+    }
+    /* 
+    CURRNT BAND DPARAGRAPH
+     */
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        margin: 0 1rem;
+        margin-top: 2rem;
+    }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    .show-max-767 {
+      display: none;
+    }
+    .title-section_container {
+        margin: 0 1rem;
+    }
+    .content-setion_container {
+        /* padding-left: 1rem; */
+        /* padding-right: 1rem; */
+    }
+    /* 
+     */
+     .cap-header_wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+    .cap-header_wrapper div h2{
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .cap-header_wrapper > p {
+        margin: 0;
+    }
+
+    /* GRAPH */
+    .cap_container {
+
+    }
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        margin: 0 1rem;
+        margin-top: 2rem;
+    }
+
+    /* 
+     */
+    .popup-container > .popup_wrapper,
+    .popup_1-container > .popup_1-wrapper {
+        width: 60%;
+    }
+
+    /* 
+     */
+     .graph-container {
+        padding-left: .5rem;
+        padding-right: 1rem;
+        width: 100vw!important;
+    }
+    .graph_year-wrapper:first-child {
+        border-left: none!important;
+    }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
-
+    /* 
+     */
+     .popup-container > .popup_wrapper,
+     .popup_1-container > .popup_1-wrapper {
+        width: 50%;
+    }
+    /* 
+     */
+     .cap-header_wrapper {
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 0;
+    }
+    .cap-header_wrapper div h2{
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .cap-header_wrapper > p {
+        margin: 0;
+    }
+    /* 
+     */
+    .graph-container {
+        width: 100vw!important;
+    }
+    .graph_year-wrapper:first-child {
+        margin-left: none!important;
+        border-left: none!important;
+    }
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        margin: 0;
+        margin-right: 1.5rem;
+        margin-top: 2rem;
+    }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-
+    /* 
+     */
+     .popup-container > .popup_wrapper,
+     .popup_1-container > .popup_1-wrapper {
+        width: 50%;
+    }
+    /* 
+     */
+     .cap-header_wrapper {
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 0;
+    }
+    .cap-header_wrapper div h2{
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .cap-header_wrapper > p {
+        margin: 0;
+    }
+    /* 
+     */
+     .graph-container {
+        width: 100vw!important;
+     }
+     .graph_year-wrapper:first-child {
+        margin-left: none!important;
+        border-left: none!important;
+    }
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        margin: 0;
+        margin-right: 1.5rem;
+        margin-top: 2rem;
+    }
 }
 @media screen and (min-width: 1200px) {
-
+    /* 
+     */
+     .popup-container > .popup_wrapper,
+     .popup_1-container > .popup_1-wrapper {
+        width: 50%;
+    }
+    /* 
+     */
+     .cap-header_wrapper {
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 0;
+    }
+    .cap-header_wrapper div h2{
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .cap-header_wrapper > p {
+        margin: 0;
+    }
+    /* 
+     */
+     .graph_year-wrapper:first-child {
+        margin-left: none!important;
+        border-left: none!important;
+    }
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        margin: 0;
+        margin-top: 2rem;
+    }
 }
 </style>
