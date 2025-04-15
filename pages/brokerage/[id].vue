@@ -562,13 +562,15 @@ useHead({
   .show-max-767 {
     display: none;
   }
-}
-@media screen and (min-width: 576px) and (max-width: 767px) {
-  .show-max-767 {
-    display: none;
+  .about_container {
+    display: flex;
+    flex-direction: column;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
+    .show-max-767 {
+      display: none;
+    }
     .title-section_container {
         /* padding-left: 0.5rem; */
         /* padding-right: 0.5rem; */

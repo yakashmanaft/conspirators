@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import html2pdf from "html2pdf.js";
 import { Search } from '@/components/search'
 import { DefaultPopup } from '@/shared/popup'
+//
+import { BreadCrumbs } from '@/components/breadcrumbs'
 
 useHead({
   title: "Склад",
@@ -1939,7 +1941,12 @@ watch(tempCreateItemOwner, () => {
 <template>
   <Container>
     <div class="header_container" style="display: flex">
-      <h1 class="header_title">ТМЦ</h1>
+      <div class="show-max-767" >
+        <BreadCrumbs/>
+        <!-- TITLE -->
+        <h1 style="margin: 0;font-weight: bold; font-size: 42px;">ТМЦ</h1>
+      </div>
+      <!-- <h1 class="header_title">ТМЦ</h1> -->
       <!-- Button trigger modal create item -->
       <button
         type="button"
@@ -3362,6 +3369,10 @@ label #expend-item:checked + .expand-item_icon {
 }
 
 @media screen and (max-width: 575px) {
+  .header_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
   .set-categoty-type_wrapper {
     flex-direction: column;
   }
@@ -3519,6 +3530,10 @@ label #expend-item:checked + .expand-item_icon {
 }
 
 @media screen and (min-width: 576px) and (max-width: 767px) {
+  .header_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
   /* 
    */
   .filter_container {

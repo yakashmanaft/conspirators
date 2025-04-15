@@ -132,6 +132,62 @@ const changeColorOnClick = (e) => {
           </div>
         </div>
       </section>
+
+    </div>
+
+    <!--  -->
+    <h2 class="sub_title-container">В помощь соучастникам</h2>
+
+    <div class="section_container">
+
+      <!-- JOURNAL -->
+      <section @click="$router.push('/journal')" class="default_list_item-container" style="background-color: var(--color-btn-text);">
+        <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Журнал</h3>
+        <p style="color: var(--color-btn-bg)">Бортовой журнал конспиратора. Делимся опытом.</p>
+        <div class="section_btn" @click="$router.push(`/landing_offer`)">
+          <div class="section_icon">
+            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-bg)"/>
+          </div>
+        </div>
+      </section>
+
+      <section @click="$router.push('/landing_magazine')" style="background-color: var(--color-wallet-fund-available);">
+        <h3>Все мы чем-то промышляем</h3>
+        <p>Презентации соучастников</p>
+      </section>
+
+      <section class="default_list_item-container" style="background-color: var(--color-btn-text);">
+        <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Помощь</h3>
+        <ul>
+          <li @click="$router.push('/help')">FAQ</li>
+          <li @click="$router.push('/help')">База знаний</li>
+          <li @click="$router.push('/help')">Написать в чат</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- НАШИ ЦИФРЫ -->
+    <h2 class="sub_title-container">Наши цифры</h2>
+
+    <div class="section_container">
+
+      <section class="default_list_item-container">123</section>
+    </div>
+
+    <!-- Отчеты и документы -->
+    <h2 class="sub_title-container">Отчеты и документы</h2>
+
+    <div class="section_container">
+
+      <section class="default_list_item-container">123</section>
+    </div>
+
+    <!-- Инвесторам и акционерам -->
+    <h2 class="sub_title-container">Инвесторам и акционерам</h2>
+
+    <div class="section_container">
+
+      <section class="default_list_item-container">Whitepaper</section>
     </div>
 
   </Container>
@@ -254,6 +310,18 @@ const changeColorOnClick = (e) => {
     text-transform: uppercase;
   }
 
+  /* 
+   */
+  .sub_title-container {
+    margin-top: 1rem;
+    /* background-color: var(--color-global-text_second); */
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .default_list_item-container {
+    background-color: var(--color-btn-disabled-bg);
+  }
+
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
   .buttons-container {
@@ -285,6 +353,17 @@ const changeColorOnClick = (e) => {
   .header_container div h1 span:last-child:hover {
     cursor: pointer;
   }
+  /* 
+   */
+   .sub_title-container {
+    margin-top: 1rem;
+    /* background-color: var(--color-global-text_second); */
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .default_list_item-container {
+    background-color: var(--color-btn-disabled-bg);
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 991px)  {
   .header_container {
@@ -311,6 +390,17 @@ const changeColorOnClick = (e) => {
   }
   .header_container div h1 span:last-child:hover {
     cursor: pointer;
+  }
+  /* 
+   */
+   .sub_title-container {
+    margin-top: 1rem;
+    /* background-color: var(--color-global-text_second); */
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .default_list_item-container {
+    background-color: var(--color-btn-disabled-bg);
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
@@ -340,6 +430,18 @@ const changeColorOnClick = (e) => {
   }
   .header_container div h1 span:last-child:hover {
     cursor: pointer;
+  }
+  /* 
+   */
+   .sub_title-container {
+    margin-top: 1rem;
+    /* background-color: var(--color-global-text_second); */
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .default_list_item-container {
+    background-color: var(--color-btn-disabled-bg);
+    border: 1px solid var(--color-btn-hover-bg);
   }
 }
 @media screen and (min-width: 1200px) {
@@ -376,6 +478,27 @@ const changeColorOnClick = (e) => {
   }
   .header_container div h1 span:last-child:hover {
     cursor: pointer;
+  }
+  /* 
+   */
+   .sub_title-container {
+    margin-top: 1rem;
+    /* background-color: var(--color-global-text_second); */
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .default_list_item-container {
+    background-color: var(--color-btn-disabled-bg);
+  }  /* 
+   */
+  .sub_title-container {
+    /* margin-top: 1rem; */
+    /* background-color: var(--color-global-text_second); */
+    margin: 2rem 2rem
+  }
+  .default_list_item-container {
+    background-color: var(--color-btn-disabled-bg);
+    border: 1px solid var(--color-btn-hover-bg);
   }
 }
 </style>
