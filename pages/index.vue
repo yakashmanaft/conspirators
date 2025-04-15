@@ -153,7 +153,7 @@ const changeColorOnClick = (e) => {
 
       <section @click="$router.push('/landing_magazine')" style="background-color: var(--color-wallet-fund-available);">
         <h3>Все мы чем-то промышляем</h3>
-        <p>Презентации соучастников</p>
+        <p>Маркетлейс соучастников</p>
       </section>
 
       <section class="default_list_item-container" style="background-color: var(--color-btn-text);">

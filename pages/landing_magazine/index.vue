@@ -6,7 +6,7 @@
 
         <div style="margin-bottom: 0.5rem;">
             <BreadCrumbs class="show-max-767"/>
-            <h1 style="font-weight: bold; font-size: 42px;">Магазин</h1> 
+            <h1 style="font-weight: bold; font-size: 42px;">Маркетплейс соучастников</h1> 
         </div>
 
         <!-- lENGTH TRUE -->
