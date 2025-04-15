@@ -141,21 +141,21 @@ useHead({
         },
         {
             id: 2,
+            name: 'mesh',
+            title: 'Мешки'
+        },
+        {
+            id: 3,
             name: 'structure',
             title: 'Кооперативы'
         },
         {
-            id: 3,
+            id: 4,
             name: 'projects',
             title: 'Проекты'
         },
-        // {
-        //     id: 4,
-        //     name: 'transactions',
-        //     title: 'Транзакции'
-        // },
         {
-            id: 4,
+            id: 5,
             name: 'warehouse',
             title: 'Склад'
         }
@@ -1157,6 +1157,18 @@ useHead({
             <ul>
                 <li>Имущество 1</li>
                 <li>Имущество 2</li>
+            </ul>
+        </div>
+
+        <!-- WAREHOUSE -->
+        <div 
+            v-if="currentBandParagraph === 'mesh'"
+            style="margin-top: 1rem;"
+        >
+            <h2>Мешки</h2>
+            <ul>
+                <li>Мешок 1</li>
+                <li>Мешок 2</li>
             </ul>
         </div>
 
