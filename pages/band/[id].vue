@@ -1372,7 +1372,7 @@ useHead({
         -ms-overflow-style: none;  /* IE and Edge */
         overflow: scroll; 
         scrollbar-width: none; 
-        max-width: 100vw!important;
+        max-width: 90vw!important;
         gap: 1rem;
         padding-bottom: .5rem;
         border-bottom: 1px solid var(--color-btn-disabled-bg);
@@ -1554,9 +1554,10 @@ useHead({
      */
      .cap-header_wrapper {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
         padding: 1rem;
+        gap: 1rem;
     }
     .cap-header_wrapper div h2{
         font-size: 1rem;
@@ -1586,6 +1587,7 @@ useHead({
     .sharers_container {
         margin: 0 1rem;
         margin-top: 2rem;
+        max-width: 85%;
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {

@@ -306,7 +306,7 @@ const changeColorOnClick = (e) => {
   }
   .header_container div h1 span:last-child {
     font-weight: bold;
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-transform: uppercase;
   }
 

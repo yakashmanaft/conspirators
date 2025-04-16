@@ -700,7 +700,7 @@ useHead({
   top: 5rem;
   left: 0;
   width: 100%;
-  background-color: var(--bs-primary);
+  /* background-color: var(--bs-primary); */
   /* padding: 1rem 0; */
   transition: all 0.2s ease-in;
 }
@@ -722,7 +722,8 @@ useHead({
 .btn_wrapper p span {
   color: unset;
   /* background-color: var(--color-btn-text); */
-  background-color: red;
+  background-color: var(--color-global-text);
+  color: var(--color-btn-text);
 }
 
 .btn_wrapper span {
@@ -813,7 +814,7 @@ useHead({
   .calendar_container {
     /* margin-top: 1rem; */
     padding: 0 !important;
-    padding-top: 4rem!important;
+    padding-top: 5rem!important;
   }
   .calendar-btn_today {
     top: 0.2rem;
@@ -851,6 +852,7 @@ useHead({
   .calendar_container {
     margin-top: 4rem;
     height: 100vh;
+
   }
   .calendar-btn_today {
     top: 0.15rem;
@@ -858,6 +860,10 @@ useHead({
   /* .show-date-details_btn {
     bottom: 4rem;
   } */
+   .btn_wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+   }
 }
 
 @media screen and (min-width: 769px) {
