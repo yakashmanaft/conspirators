@@ -315,8 +315,8 @@ const changeColorOnClick = (e) => {
   .sub_title-container {
     margin-top: 1rem;
     /* background-color: var(--color-global-text_second); */
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -356,10 +356,11 @@ const changeColorOnClick = (e) => {
   /* 
    */
    .sub_title-container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     /* background-color: var(--color-global-text_second); */
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -394,10 +395,11 @@ const changeColorOnClick = (e) => {
   /* 
    */
    .sub_title-container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     /* background-color: var(--color-global-text_second); */
     margin-left: 1rem;
     margin-right: 1rem;
+    margin-bottom: 2rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -434,10 +436,11 @@ const changeColorOnClick = (e) => {
   /* 
    */
    .sub_title-container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     /* background-color: var(--color-global-text_second); */
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
