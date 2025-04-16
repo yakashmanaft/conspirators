@@ -408,27 +408,30 @@ watch(
         </div>
         <!-- </div> -->
         <!-- LOGO -->
-        <router-link
+        <div class="logo_wrapper" style="margin-right: 1.5rem;">
+          <p style="margin: 0;" @click="router.push('/'); burgerIsOpened = false">cnsprtrs<span>®</span></p>
+        </div>
+        <!-- <router-link
           v-if="useAuthStore().loggedIn !== true"
           to="/"
           class="header-logo"
           @click="closeBurgerMenu"
         >
           <span>conspirators.su</span>
-        </router-link>
+        </router-link> -->
       </div>
 
       <!--  -->
       <h1 v-if="useAuthStore().loggedIn === true" class="current-route_container">
         {{ translateRoutePath(route.path) }}
       </h1>
-
+      
       <!-- LIST of links -->
       <div
-        class="links_container"
-        :class="burgerIsOpened ? 'opacity-1-767' : 'opacity-0-767'"
+      class="links_container"
+      :class="burgerIsOpened ? 'opacity-1-767' : 'opacity-0-767'"
       >
-        <div class="links_wrapper" style="position: relative;">
+      <div class="links_wrapper" style="position: relative;">
           <!-- Auth -->
           <ul
             class="header-features__list"
@@ -469,6 +472,7 @@ watch(
             <li @click="closeBurgerMenu">
               <router-link to="/about"></router-link>
             </li>
+
           </ul>
 
           <!-- !Auth -->
@@ -700,6 +704,9 @@ a:visited {
     padding: 0;
     margin: 0;
   }
+  .logo_wrapper {
+    display: none;
+  }
 }
 @media screen and (max-width: 767px) and (max-height: 540px) {
   /* .header-wrapper {
@@ -727,9 +734,16 @@ a:visited {
   }
 }
 
+
 @media screen and (min-width: 768px) {
   .copyright_wrapper {
     display: none
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .logo_wrapper {
+    display: none;
   }
 }
 
@@ -1023,6 +1037,9 @@ label a {
     font-size: .9rem;
     text-align: center;
   }
+  /* .logo_wrapper {
+    display: none;
+  } */
 }
 
 @media screen and (min-width: 768px) {
@@ -1093,5 +1110,17 @@ label a {
     display: block;
     /* opacity: 1; */
   }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  /* .logo_wrapper {
+    display: none;
+  } */
+}
+
+@media screen and (min-width: 1200px) {
+  /* .logo_wrapper {
+    display: none;
+  } */
 }
 </style>

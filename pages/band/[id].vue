@@ -1762,6 +1762,7 @@ useHead({
     .sharers_container {
         margin: 0;
         margin-top: 2rem;
+        margin-right: 1rem;
     }
 }
 </style>

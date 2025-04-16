@@ -1,7 +1,7 @@
 <template>
   <Container>
 
-    <DevModePlug/>
+    <!-- <DevModePlug/> -->
 
     <!-- Modal show date details -->
     <div
@@ -163,7 +163,7 @@
           </div>
 
           <!-- MODAL FOTER -->
-          <div class="modal-footer">
+          <!-- <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
@@ -178,7 +178,7 @@
             >
               Добавить
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -216,6 +216,9 @@
           </p>
           <span>Смотреть</span>
         </div>
+        <div class="btn_wrapper" v-else>
+          <p style="margin: 0;"><span>Выберите дату</span></p>
+        </div>
         <!-- <div
         v-else
         class="btn_wrapper"
@@ -236,7 +239,7 @@ import { Container } from "@/shared/container";
 import { Tabs } from "@/components/tabs";
 import { Chip } from "~/components/chip";
 import { GanttChart } from "~/components/ganttchart";
-import { DevModePlug } from "~/components/plug_dev_mode";
+// import { DevModePlug } from "~/components/plug_dev_mode";
 
 // Plugins
 import VanillaCalendar from "vanilla-calendar-pro";
@@ -247,8 +250,7 @@ import { type IOptions } from "vanilla-calendar-pro/types";
 // import "vue3-gantt/dist/style.css";
 
 // UTILS
-// import { translateSharersInProject } from '@/utils/translators'
-import { toFormWorkingHoursDataObject } from '@/utils/toFormObject'
+// import { translateSharersInProject } from '@/utils/translators'  
 
 // variables
 
@@ -647,7 +649,7 @@ useHead({
 <style scoped>
 /* CALENDAR */
 .calendar_container {
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
   position: fixed;
   left: 0;
   width: 100vw;
@@ -695,7 +697,7 @@ useHead({
 /* MODAL SHOW DATE DETAILS */
 .show-date-details_btn {
   position: fixed;
-  bottom: 3rem;
+  top: 5rem;
   left: 0;
   width: 100%;
   background-color: var(--bs-primary);
@@ -712,20 +714,22 @@ useHead({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--bs-body-bg);
-  padding: 1rem 0.5rem;
+  /* background-color: var(--color-global-text); */
+  background-color: var(--color-btn-text);
 }
 /* .btn_wrapper p {
 } */
 .btn_wrapper p span {
   color: unset;
-  background-color: unset;
+  /* background-color: var(--color-btn-text); */
+  background-color: red;
 }
 
 .btn_wrapper span {
-  color: var(--bs-primary);
+  /* color: var(--bs-primary); */
+  color: var(--color-global-text);
   padding: 2px 8px;
-  background-color: var(--bs-primary-bg-subtle);
+  background-color: var(--color-btn-text);
   border-radius: 1rem;
 }
 
@@ -807,19 +811,28 @@ useHead({
   /* .container {
   } */
   .calendar_container {
-    margin-top: 4rem;
+    /* margin-top: 1rem; */
     padding: 0 !important;
+    padding-top: 4rem!important;
   }
   .calendar-btn_today {
     top: 0.2rem;
     left: 1.2rem;
+  }
+  /* 
+   */
+  .vanilla-calendar-arrow {
+    background-color: red!important;
   }
   /* .show-date-details_btn {
     bottom: 3rem;
   } */
   /* modal show date info */
   .btn_wrapper {
-    padding: 1rem 0.5rem;
+    padding: 0 1rem;
+  }
+  .btn_wrapper p {
+    background-color: red;
   }
   #showDateDetailsModal .modal-body {
     padding: 1rem 0;
@@ -832,6 +845,7 @@ useHead({
   #showDateDetailsModal .modal-body .content {
     padding: 0 1rem;
   }
+
 }
 @media screen and (min-width: 576px) and (max-width: 768px) {
   .calendar_container {
@@ -850,9 +864,9 @@ useHead({
   .calendar_container {
     margin-top: 6rem;
   }
-  .show-date-details_btn {
+  /* .show-date-details_btn {
     bottom: 0;
-  }
+  } */
   /* .show-date-details_btn {
     bottom: 4.7rem;
   } */

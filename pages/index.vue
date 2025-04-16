@@ -141,7 +141,7 @@ const changeColorOnClick = (e) => {
     <div class="section_container">
 
       <!-- JOURNAL -->
-      <section @click="$router.push('/journal')" class="default_list_item-container" style="background-color: var(--color-btn-text);">
+      <section @click="$router.push('/journal')" class="default_list_item-container" style="border: 1px solid var(--color-btn-bg); background-color: var(--color-btn-text)">
         <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Журнал</h3>
         <p style="color: var(--color-btn-bg)">Бортовой журнал конспиратора. Делимся опытом.</p>
         <div class="section_btn" @click="$router.push(`/landing_offer`)">
@@ -156,12 +156,12 @@ const changeColorOnClick = (e) => {
         <p>Маркетлейс соучастников</p>
       </section>
 
-      <section class="default_list_item-container" style="background-color: var(--color-btn-text);">
-        <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Помощь</h3>
+      <section class="default_list_item-container"  style="border: 1px solid var(--color-btn-bg); background-color: var(--color-btn-text); padding-bottom: 2rem;">
+        <h3 style="color: var(--color-btn-bg);">Помощь</h3>
         <ul>
-          <li @click="$router.push('/help')">FAQ</li>
-          <li @click="$router.push('/help')">База знаний</li>
-          <li @click="$router.push('/help')">Написать в чат</li>
+          <li style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
+          <li style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
+          <li style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
         </ul>
       </section>
     </div>
