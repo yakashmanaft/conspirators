@@ -15,7 +15,7 @@
             
             <div class="item_wrapper" v-for="item in computed_landing_list">
                 {{ item }}
-                
+                <p style="margin: 0;" @click.stop="$router.push(`/${item.name}`)">Перейти</p>
             </div>
         </div>
 
@@ -396,6 +396,8 @@
     })
 
     // VARIABLES
+    const router = useRouter()
+
     const choosenEl = ref()
 
     const colors = ref({
@@ -712,12 +714,12 @@
     })
 
     // leads
-    const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
-    lazy: false,
-    transform: (lead_list) => {
-        return lead_list
-    }
-    })
+    // const { data: lead_list } = useFetch("/api/leadGuarded/lead", {
+    // lazy: false,
+    // transform: (lead_list) => {
+    //     return lead_list
+    // }
+    // })
 
     // POPUP FUNCs
     const closePopup = () => {

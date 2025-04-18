@@ -151,9 +151,9 @@ const changeColorOnClick = (e) => {
         </div>
       </section>
 
-      <section @click="$router.push('/landing_magazine')" style="background-color: var(--color-wallet-fund-available);">
+      <section @click="$router.push('/landing_stock')" style="background-color: var(--color-wallet-fund-available);">
         <h3>Все мы чем-то промышляем</h3>
-        <p>Маркетлейс соучастников</p>
+        <p>Маркетплейс соучастников</p>
       </section>
 
       <section class="default_list_item-container"  style="border: 1px solid var(--color-btn-bg); background-color: var(--color-btn-text); padding-bottom: 2rem;">

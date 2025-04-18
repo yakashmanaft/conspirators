@@ -71,11 +71,11 @@ const menuList = ref([
     path: '/landing_design'
   },
   {
-    title: 'Разработка',
+    title: 'Разработка сайтов / приложений',
     path: '/landing_dev'
   },
   {
-    title: 'conspirators.CRM',
+    title: 'Финансовая грамотность с conspirators.CRM',
     path: '/landing_crm'
   },
   // {
@@ -85,6 +85,10 @@ const menuList = ref([
   {
     title: 'conspirators.Journal',
     path: '/journal'
+  },
+  {
+    title: 'Маркетплейс соучастников',
+    path: '/landing_stock'
   },
   {
     title: 'Политика конфиденциальности',

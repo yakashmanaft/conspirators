@@ -20,10 +20,16 @@ onMounted(() => {
     route.name !== "about" &&
     route.name !== "policy" &&
     route.name !== "contract" &&
+    //
+    route.name !== "journal" &&
     // 
+    route.name !== "landing_stock" &&
     route.name !== "landing_crm" &&
     route.name !== "landing_offer" &&
-    route.name !== "landing_unidrum"
+    route.name !== "landing_design" &&
+    route.name !== "landing_design-marketplaces-card" &&
+    route.name !== "landing_unidrum" &&
+    route.name !== "landing_chimneys"
   ) {
     router.replace("/login");
   }

@@ -100,21 +100,25 @@ const featuresListAuth = ref([
 // NO AUTH
 const featuresListNoAuth = ref([
   {
-    title: 'Услуги маркетинга',
-    path: '/landing_offer'
+    title: 'Маркетплейс соучастников',
+    path: '/landing_stock'
   },
-  {
-    title: 'Дизайним',
-    path: '/landing_design'
-  },
-  {
-    title: 'Разработка',
-    path: '/landing_dev'
-  },
-  {
-    title: 'CRM',
-    path: '/landing_crm'
-  },
+  // {
+  //   title: 'Услуги маркетинга',
+  //   path: '/landing_offer'
+  // },
+  // {
+  //   title: 'Дизайним',
+  //   path: '/landing_design'
+  // },
+  // {
+  //   title: 'Разработка',
+  //   path: '/landing_dev'
+  // },
+  // {
+  //   title: 'CRM',
+  //   path: '/landing_crm'
+  // },
   {
     title: 'Журнал',
     path: '/journal'
@@ -409,7 +413,7 @@ watch(
         <!-- </div> -->
         <!-- LOGO -->
         <div class="logo_wrapper" style="margin-right: 1.5rem;">
-          <p style="margin: 0;" @click="router.push('/'); burgerIsOpened = false">cnsprtrs<span>®</span></p>
+          <p style="margin: 0; width: fit-content; cursor: pointer;" @click="router.push('/'); burgerIsOpened = false">cnsprtrs<span>®</span></p>
         </div>
         <!-- <router-link
           v-if="useAuthStore().loggedIn !== true"
