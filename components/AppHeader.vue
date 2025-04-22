@@ -633,6 +633,7 @@ a:visited {
   padding: 0.5rem 0;
   /* padding: 1rem 0; */
   /* gap: 1rem; */
+  min-height: 3rem;
 }
 /* .burger {
   display: none;

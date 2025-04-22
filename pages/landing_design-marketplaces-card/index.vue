@@ -1,15 +1,110 @@
 <template>
-    <Container>
-        <h1>design marketplaces card</h1>
+    <!-- MAIN LIKE A BANNER -->
+    <div class="main-banner_container" style="background-color: var(--color-btn-disabled-bg); border-top: 1px solid red;">
 
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit vel corporis, distinctio laborum placeat sunt. Distinctio illum rerum minus sit at eius? Officia asperiores laboriosam velit quas iste amet earum minus inventore. Magnam deleniti et repellendus molestiae, numquam iste, tenetur perferendis enim voluptatibus laboriosam facere rem doloribus delectus vitae incidunt. Ab doloribus dignissimos ut optio laudantium. Animi, cum expedita incidunt dolor sint at maiores eos adipisci obcaecati odit fugit quas esse, eaque consequuntur quidem voluptatem et minima inventore neque molestiae? Quasi quas sequi, odit quibusdam ea labore soluta ullam quidem, iste quaerat optio autem, quis nesciunt blanditiis consequatur cumque excepturi ad laborum distinctio dolore voluptate corporis inventore. Repellendus corporis ex excepturi quam eum, suscipit ducimus? Ullam et dicta hic commodi debitis eos tempora amet voluptate at, exercitationem dolorum? Rerum minus inventore aperiam consequuntur perferendis quo, placeat porro dolores ad et, modi temporibus repudiandae nesciunt quibusdam incidunt. Atque, natus facilis ullam vero facere repellat aspernatur architecto rem similique inventore eaque. A, laborum architecto porro reprehenderit voluptatibus ducimus aliquam quo at non illo? Libero, distinctio dignissimos totam amet recusandae nemo maiores debitis adipisci quas sit inventore delectus iste aperiam sapiente? Est vitae sunt sapiente a, sint iusto eum omnis facere reprehenderit illum repudiandae error id quibusdam. Reprehenderit vero provident non! Consectetur, suscipit. Cupiditate facere eos consequatur aut minus. Expedita ullam numquam officia cupiditate nam iure reprehenderit voluptates, ipsum, est, quis animi. Minus corporis ipsa impedit aspernatur fugit illo laudantium voluptatibus repellendus ex placeat natus aperiam beatae quae vitae, assumenda quibusdam labore nam dicta autem nemo numquam hic quisquam voluptatum corrupti? Ex necessitatibus accusantium cupiditate, maxime, eveniet aliquam ad praesentium repellendus cum beatae exercitationem minus enim? Vel, dolorum quod hic aliquid ducimus exercitationem autem culpa fugiat dolor ipsum, doloremque aperiam eaque ab fugit molestiae eveniet, officia debitis. Commodi, eligendi. Id et aliquid nulla rem fuga doloribus velit facilis, quibusdam esse quia sint maiores molestiae consequuntur perspiciatis qui, hic fugit ratione iusto voluptates cumque, ut nisi. Soluta, veritatis magnam possimus sit tempora, nobis sunt rem numquam hic, aut dolore sed. Ducimus quisquam sequi reiciendis laboriosam? Necessitatibus, nisi aliquam. Saepe itaque, dolorem cumque debitis nemo incidunt rem facere exercitationem quos, voluptas inventore ea praesentium possimus officiis cum consequatur architecto dolorum animi culpa laborum voluptate ipsum! Reprehenderit explicabo corrupti quo quidem placeat, quisquam itaque eos delectus in, dolorem quibusdam eius accusantium maxime quasi pariatur numquam. Architecto inventore reiciendis molestiae odit, atque molestias assumenda ducimus animi recusandae, accusantium minus rerum distinctio perferendis saepe alias amet ex, ab consequatur aut fugiat. Explicabo culpa non iure quod eaque iusto adipisci tempore natus exercitationem distinctio alias voluptatem quibusdam corrupti, eveniet pariatur, minus assumenda praesentium eligendi eum soluta maxime sit magni rerum quo. Ipsam debitis repellendus vero esse quam facilis alias dolorum ad repellat, molestiae doloremque magni. Deserunt repellendus suscipit asperiores iste qui voluptatem dolore placeat assumenda fuga. Atque cupiditate sit dignissimos nihil voluptates ex, adipisci impedit fugiat tempora soluta doloremque, saepe a aspernatur quaerat voluptatum. Laudantium eum molestiae odio nobis autem numquam impedit. Libero, sit enim cumque perferendis suscipit odio! Unde nostrum voluptatem doloribus nulla est facere dignissimos, explicabo magnam quibusdam, aliquid, possimus illum quo consequuntur beatae repellendus neque officiis vitae aperiam nemo quasi tempore? Laudantium mollitia maxime, ab sed eius quam. Culpa fuga cumque iure libero sint, assumenda tempore perspiciatis minus. Molestias, id sed ipsum unde praesentium culpa error. Ex ipsam voluptates vitae maiores possimus magni. Quis excepturi totam autem reiciendis iste ducimus magni, assumenda velit eveniet animi sapiente ipsam. Beatae, culpa sint. Suscipit quasi unde rem assumenda. Rerum culpa qui veniam maiores exercitationem nisi voluptatibus, atque nesciunt. Dolore non ex animi veritatis distinctio consequatur vel, fugit quasi nemo dicta temporibus quis vitae unde aliquid! Veritatis nisi molestiae blanditiis cum, quos numquam et nemo, accusamus hic officiis suscipit. Laudantium dolor veniam enim quos officiis. Itaque obcaecati reprehenderit ipsam ab ducimus minima, vero atque sapiente minus eligendi quae. Vitae quam sit possimus aliquid deserunt amet hic voluptates quas suscipit dolorum dolore corporis odio aspernatur recusandae labore soluta numquam cum ullam totam, accusantium reprehenderit. Molestias quo qui quae suscipit! Nemo aperiam neque, quisquam laudantium tempore corrupti aliquam reprehenderit iusto, ipsa repudiandae odio, animi laborum quas explicabo illum! Cupiditate non odio et minima reprehenderit suscipit possimus fugiat totam iste atque a architecto, dignissimos repellendus recusandae at. Tempora totam quaerat odio ullam iste rerum impedit ducimus debitis itaque adipisci nemo asperiores consequuntur praesentium quae minus vero illum reprehenderit, eius exercitationem quam maxime at maiores sint. Inventore delectus magni cum nostrum voluptatibus, quisquam quis ab unde reprehenderit rem ut pariatur, sapiente illum eaque dolore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta laudantium eveniet, aliquam voluptate atque hic sunt deleniti sapiente voluptas nostrum delectus libero provident modi repellat vero velit ipsa perspiciatis amet placeat vel, quas molestiae. Reprehenderit voluptate eum vero autem ea! Aliquid nobis tempore quibusdam quo debitis asperiores voluptatum quos ab dolorum rerum, delectus quidem quis atque, quod odio, ducimus voluptate iusto qui voluptatem totam vel perspiciatis veniam similique! Temporibus possimus non quisquam accusantium eligendi excepturi architecto molestiae, explicabo vero sed veniam iusto fuga nemo labore autem! Aliquid enim placeat nam corporis repudiandae dolores reiciendis cupiditate, mollitia dolor! Voluptatibus, repellendus! Illo mollitia, sunt facere illum excepturi voluptate doloremque recusandae dolorum saepe voluptates aliquam dolorem quam unde ex rem minus nostrum et aspernatur veritatis, ducimus eveniet exercitationem. Deleniti error mollitia quidem impedit nulla. Ut perspiciatis, impedit sunt fugit nemo rerum voluptatum quo! Explicabo architecto aperiam dolorem quo sit sapiente dolorum non praesentium officia repellendus? Repellendus esse odio, nulla minima dolorum hic, illum dolorem, perferendis aliquam veritatis necessitatibus temporibus iusto nostrum! Ullam nihil, fugiat amet assumenda dolores tempore pariatur? Iusto velit, incidunt fugiat odio consequuntur adipisci aperiam! Quod, dignissimos laborum? Magni mollitia, nulla assumenda, quasi, totam blanditiis similique aperiam nisi nostrum distinctio vel fugiat quam molestiae veritatis quaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
+        <Container class="container-insside">
+
+            <div class="main-banner_wrapper">
+                <p>made on cnsprtrs  by <span>@kashmanaft</span></p>
+                <h2>
+                    <span>WILDBERRIES</span>
+                    <span>OZON</span>
+                    <span>Яндекс.Маркет</span>
+                </h2>
+                <h1>Карточки товаров для маркетплейсов</h1>
+                <p>Или для вашего собственного web-ресурса</p>
         
+                <ul>
+                    <li>PS</li>
+                    <li>AI</li>
+                    <li>FIGMA</li>
+                    <li>CorelDdraw</li>
+                </ul>
+        
+                <button>С чего начать</button>
+            </div>
+        </Container>
+    </div>
+
+    <!-- QIZZZ -->
+    <Container class="container-insside">
+
+
+        <!-- QUIZZZ -->
+         <!-- chip -->
+            <div class="chip_paragraph" style="margin-top: 1rem;">
+                <h3 
+                    :class="currentParagraphChip === el.name ? 'paragraph-title_active' : ''" style="cursor: pointer;"
+                    v-for="el in paragraphChipList">
+                    <span @click="currentParagraphChip = el.name">{{ el.title }}</span>
+                </h3>
+            </div>
+
+            <div style="margin-top: 1rem;">
+
+                <!-- specification-first content -->
+                <div v-if="currentParagraphChip === 'specification-first'" class="specification-first-content_container">
+                    <div class="table-contents_wrapper">
+                        <ol>
+                            <li>
+                                <h4>Условия</h4>
+                                <ol>
+                                    <li>Стороны и контакты</li>
+                                    <li>Предмет договора</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <h4>ТЗ</h4>
+                                <ol>
+                                    <li>Продукт</li>
+                                    <li>Площадки</li>
+                                </ol>
+                            </li>
+                            <li>Подтверждение</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!--  -->
+                <div v-if="currentParagraphChip === 'choose-pattern'" class="choose-pattern-content_container">
+                    
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta uaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
+
+                    
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta uaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
+
+                    
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta uaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
+
+                </div>
+            </div>
+        
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
     </Container>
 </template>
 
 <script lang="ts" setup>
     useHead({
-        title: "Рисуем карточки товаров для маркетплейсов",
+        title: "Рисуем карточки товаров для маркетплейсов: OZON, WILDBERRIES, Яндекс. Маркет",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -33,8 +128,162 @@
 
     // components
     // import { Button } from '@/components/button';
+
+    // CONST
+    //
+    //= paragraphChipList
+    const paragraphChipList = ref([
+        {
+            name: 'specification-first', 
+            title: 'Начнем с ТЗ'
+        },
+        {
+            name: 'choose-pattern', 
+            title: 'Выбрать шаблон'
+        }
+    ])
+    //= currentParagraphChip
+    const currentParagraphChip = ref('specification-first')
 </script>
 
 <style scoped>
 
+/* ОБЩЕЕ */
+/* CHIP FOR PARAGRAPH */
+.chip_paragraph {
+    display: flex;
+    -ms-overflow-style: none;  /* IE and Edge */
+    overflow: scroll; 
+    scrollbar-width: none; 
+    max-width: 90vw!important;
+    gap: 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--color-btn-disabled-bg);
+}
+.chip_paragraph::-webkit-scrollbar {
+    display: none;
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+}
+.chip_paragraph h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    position: relative;
+} 
+.chip_paragraph h3 span {
+    text-wrap: nowrap;
+}
+.paragraph-title_active:after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-wallet-fund-available-wo)
+}
+.paragraph-title_active span {
+    color: var(--color-wallet-fund-available-wo);
+}
+
+/* specification-first sf */
+.table-contents_wrapper {
+}
+.table-contents_wrapper ol{
+    counter-reset: item; 
+}
+.table-contents_wrapper li {
+    display: block
+}
+.table-contents_wrapper li:before {
+    content: counters(item, ".") ". "; counter-increment: item
+}
+
+@media screen and (max-width: 575px) {
+    .container-insside {
+        margin-top: 0!important;
+        margin-bottom: 0!important;
+        padding-top: 0!important;
+    }
+    /* MAIN BANNER */
+    .main-banner_container {
+        padding-top: 5rem;
+        padding-bottom: 1rem;
+    }
+    .main-banner_wrapper {
+        background-color: cyan;
+    }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    .container-insside {
+        margin-top: 0!important;
+        margin-bottom: 0!important;
+        padding-top: 0!important;
+    }
+    /* MAIN BANNER */
+    .main-banner_container {
+        padding-top: 5rem;
+        padding-bottom: 1rem;
+    }
+    .main-banner_wrapper {
+        background-color: cyan;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .container-insside {
+        margin-top: 0!important;
+        margin-bottom: 0!important;
+    }
+
+    /* MAIN BANNER */
+    .main-banner_container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .main-banner_wrapper {
+        margin-top: 4.5rem;
+        background-color: cyan;
+    }
+
+    /* specification-first-content_container */
+    .specification-first-content_container {
+
+    }
+    /* choose-pattern-content_container */
+    .choose-pattern-content_container {
+
+    }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .container-insside {
+        margin-top: 0!important;
+        margin-bottom: 0!important;
+    }
+
+    /* MAIN BANNER */
+    .main-banner_container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .main-banner_wrapper {
+        margin-top: 4.5rem;
+        background-color: cyan;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .container-insside {
+        margin-top: 0!important;
+        margin-bottom: 0!important;
+    }
+    /* MAIN BANNER */
+    .main-banner_container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .main-banner_wrapper {
+        margin-top: 4.5rem;
+        background-color: cyan;
+    }
+}
 </style>

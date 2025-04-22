@@ -91,7 +91,7 @@ const changeColorOnClick = (e) => {
 
       <section style="background-color: var(--color-wallet-fund-available);">
         <h3 style="color: var(--color-global-text);">Контроль финансов и задач</h3>
-        <p style="color: var(--color-global-text)">Фиксируй доходы и расходы,отслеживай динамику развития своего кооператива.</p>
+        <p style="color: var(--color-global-text);">Фиксируй доходы и расходы,отслеживай динамику развития своего кооператива.</p>
         <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
 
         <div class="section_btn" @click="$router.push(`/landing_crm`)">
