@@ -348,7 +348,7 @@
         grid-template-columns: 3rem 1fr 1fr 1fr
     }
 }
-@media screen and (min-width: 992px) and (max-width: 1199px) {
+    @media screen and (min-width: 992px) and (max-width: 1199px) {
       /* 
        */
        .item_container {
