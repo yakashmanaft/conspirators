@@ -40,32 +40,50 @@
                 </h3>
             </div>
 
-            <div style="margin-top: 1rem;">
+            <div style="margin-top: 1rem;" >
 
                 <!-- specification-first content -->
                 <div v-if="currentParagraphChip === 'specification-first'" class="specification-first-content_container">
-                    <div class="table-contents_wrapper">
-                        <ol>
-                            <li>
-                                <h4>Условия</h4>
+                    <div v-if="current_specification_step === ''">
+                        <p>Придумываем как преподнести для вас анкету</p> 
+                    </div>
+                    <div v-else class="table-contents_wrapper">
+
+                        <!-- OL table contents -->
+                        <ol class="ol-step_wrapper">
+                            <li v-for="(group, idx) in [...new Set([...specification_step.map((obj: any) => {return obj.group})])]">
+                                <h4>{{idx + 1}}. {{ group }}</h4>
                                 <ol>
-                                    <li>Стороны и контакты</li>
-                                    <li>Предмет договора</li>
+                                    <li v-for="(step, index) in specification_step.filter(el => el.group === group)" @click="current_specification_step = step.name">
+                                        <label 
+                                            :class="step.name === current_specification_step ? 'checked_input' : ''"
+                                            :for="`${group}_${index}`"
+                                        >
+                                            {{ idx + 1 }}. {{ index + 1 }}. {{ step.name }}
+                                        </label>
+                                        <input 
+                                            type="radio" 
+                                            :id="`${group}_${index}`" v-model="current_specification_step"
+                                            :checked="step.name === current_specification_step"
+                                        >
+                                    </li>
                                 </ol>
                             </li>
-                            <li>
-                                <h4>ТЗ</h4>
-                                <ol>
-                                    <li>Продукт</li>
-                                    <li>Площадки</li>
-                                </ol>
-                            </li>
-                            <li>Подтверждение</li>
                         </ol>
+
+                        <!-- show details of table content -->
+                        <div class="ol_content">
+                            <form action="">
+                                {{ current_specification_step }}
+                                <br>
+                                <label for="">Заказчик</label>
+                                <input type="text" placeholder="Как к вам обращаться">
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                <!--  -->
+                <!-- choose-pattern content -->
                 <div v-if="currentParagraphChip === 'choose-pattern'" class="choose-pattern-content_container">
                     
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta uaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
@@ -78,6 +96,8 @@
 
                 </div>
             </div>
+
+            {{ form_obj }}
         
             <br>
             <br>
@@ -139,11 +159,63 @@
         },
         {
             name: 'choose-pattern', 
-            title: 'Выбрать шаблон'
+            title: 'Купить шаблон'
         }
     ])
     //= currentParagraphChip
     const currentParagraphChip = ref('specification-first')
+    //= content by paragraph
+    const specification_step = ref([
+        {
+            group: 'Условия',
+            name: 'Предмет договора'
+        },
+        {
+            group: 'Условия',
+            name: 'Оплата'
+        },
+        {
+            group: 'Условия',
+            name: 'Стороны и контакты'
+        },
+        {
+            group: 'ТЗ',
+            name: 'Продукт'
+        },
+        {
+            group: 'ТЗ',
+            name: 'Площадки'
+        },
+        {
+            group: 'ТЗ',
+            name: 'Артикул и прочие пометки'
+        },
+        {
+            group: 'ТЗ',
+            name: 'Описание и характеристики'
+        },
+        {
+            group: 'ТЗ',
+            name: 'Что вас привлекает'
+        },
+        {
+            group: 'ТЗ',
+            name: 'Фото и другие исходники'
+        },
+        {
+            group: 'Итого',
+            name: 'Завершаем постановку задачи'
+        }
+    ])
+    //= specification_step
+    const current_specification_step = ref(specification_step?.value ? specification_step.value[0].name : '')
+    //= form_obj
+    const form_obj = ref({
+        customer_id: null,
+        customer_name: 'noname',
+        executor_id: 6,
+        executor: 'noname'
+    })
 </script>
 
 <style scoped>
@@ -155,7 +227,7 @@
     -ms-overflow-style: none;  /* IE and Edge */
     overflow: scroll; 
     scrollbar-width: none; 
-    max-width: 90vw!important;
+    max-width: 99vw!important;
     gap: 1rem;
     padding-bottom: .5rem;
     border-bottom: 1px solid var(--color-btn-disabled-bg);
@@ -188,19 +260,32 @@
 }
 
 /* specification-first sf */
-.table-contents_wrapper {
-}
-.table-contents_wrapper ol{
-    counter-reset: item; 
-}
-.table-contents_wrapper li {
-    display: block
-}
-.table-contents_wrapper li:before {
-    content: counters(item, ".") ". "; counter-increment: item
+/* .table-contents_wrapper {
 }
 
+    */
+/* .table-contents_wrapper li {
+    position: relative;
+    display: block;
+    padding-left: 1rem;
+    margin-top: .5rem;
+} */
+/* .table-contents_wrapper li:before {
+    content: counters(item, ".") ". "; counter-increment: item;
+    position: absolute;
+    top: 0;
+    left: -1rem;
+} */
+.table-contents_wrapper ol{
+    list-style: none;
+    padding: 0;
+} 
+
 @media screen and (max-width: 575px) {
+    .chip_paragraph {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
     .container-insside {
         margin-top: 0!important;
         margin-bottom: 0!important;
@@ -216,6 +301,10 @@
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
+    .chip_paragraph {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
     .container-insside {
         margin-top: 0!important;
         margin-bottom: 0!important;
@@ -269,6 +358,48 @@
     .main-banner_wrapper {
         margin-top: 4.5rem;
         background-color: cyan;
+    }
+    /* 
+        TABLE CONTENTS
+    */
+    .table-contents_wrapper{
+        display: flex;
+    }
+    .ol_content {
+        background-color: var(--color-btn-disabled-bg);
+        width: 100%;
+    }
+    .ol-step_wrapper {
+
+    }
+    .ol-step_wrapper li {
+
+    }
+    .ol-step_wrapper li h4 {
+
+    }
+    .ol-step_wrapper li ol {
+
+    }
+    .ol-step_wrapper li ol li {
+
+    }
+    .ol-step_wrapper > li > ol > li > label {
+        transition: all .2s ease-in-out;
+    }
+    .ol-step_wrapper > li > ol > li > label:hover {
+        background-color: var(--color-urgency-low-wo);
+        cursor: pointer;
+    }
+    /* .ol-step_wrapper > li > ol > li > input:checked + .ol-step_wrapper > li > ol > li > label{
+        background-color: red!important;
+    } */
+    .checked_input {
+        font-weight: bold;
+        background-color: var(--color-urgency-low-wo);
+    }
+    .ol-step_wrapper li ol li input {
+        display: none;
     }
 }
 @media screen and (min-width: 1200px) {
