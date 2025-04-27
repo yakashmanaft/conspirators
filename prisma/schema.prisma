@@ -405,6 +405,33 @@ model Warehouse {
 }
 
 // transactionsTypes (created ok | add ok | sub ok | move ok | changeOwner | changeResponsible)
+
+// если происходит по сути любая транзакция по типу свай - это две транзакции, когда ообоим соучатникам необходимо взаимно отправвить что-то
+
+// model Transaction {
+//   id              Int      @id @default(autoincrement()) // hash
+//   created_at      DateTime @default(now()) @db.DateTime(0)
+//   block_id        Int      @default(0)
+//   from__id        Int      @default(0)
+//   receive_id      Int      @default(0)
+//   import          String   @db.VarChar(255)
+//   import_value    Float    @default(0.00)
+//   transaction_fee Float    @default(0.00)
+//   status          String   @db.VarChar(60)
+
+//   fee                   Float   @default(0.00)
+//   from_mesh_currency    String  @db.VarChar(60)
+//   from_mesh_amount      Float   @default(0.00)
+//   from_mesh_price       Float   @default(0.00)
+//   receive_mesh_currency String  @db.VarChar(60)
+//   receive_mesh_amount   Float   @default(0.00)
+//   receive_mesh_price    Float   @default(0.00)
+//   comments              String  @db.VarChar(255)
+//   authorID              Int?    @default(0)
+//   authorType            String? @db.VarChar(60)
+//   loanID                Int?
+// }
+
 // model WarehouseItemsLedger {
 //   id                   Int      @id @default(autoincrement())
 //   created_at           DateTime @default(now()) @db.DateTime(0)
