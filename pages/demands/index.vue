@@ -657,17 +657,18 @@ const { data: task_list } = useFetch("/api/taskGuarded/task", {
   lazy: false,
   transform: (task_list) => {
     
+    console.log(task_list)
     if(project_list.value) {
       let merged = task_list.reduce((arr: {}[], task) => {
         
         project_list.value?.forEach(item => {
-          
           if(item.id === task.projectId) {
             arr.push({
               id: task.id,
               created_at: task.created_at,
               project_id: task.projectId,
-              task_name: item.name,
+              task_name: task.name,
+              more_name: task.name,
               status: task.status,
               urgency: task.urgency,
               deadline: task.deadline,
@@ -903,7 +904,11 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
   
           <!--  -->
           <div class="computedTask_container">
-    
+            <!-- <ul>
+              <li v-for="el in computedTask">
+                {{ el }}
+              </li>
+            </ul> -->
             <SectionColored
               v-for="item in computedTask" 
               :current_task="item"

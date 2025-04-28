@@ -117,8 +117,8 @@ onMounted(() => {
 
 @media screen and (max-width: 575px) {
   .tab_wrapper {
-    padding-left: v-bind('props.no_padding === false ? `0.5rem` : `unset`');
-    padding-right: v-bind('props.no_padding === false ? `0.5rem` : `unset`');
+    padding-left: v-bind('props.no_padding === false ? `1em` : `unset`');
+    padding-right: v-bind('props.no_padding === false ? `1rem` : `unset`');
   }
 }
 

@@ -15,14 +15,15 @@
               <div>
 
                 <!-- TITLE -->
-                <h4 style="font-size: 0.6rem; display: block; font-weight: normal; margin: 0; color: var(--color-global-text_second)">*{{ props?.name }}</h4>
+                <!-- <h4 style="font-size: 0.8rem; display: block; font-weight: normal; margin: 0; color: var(--color-global-text_second)">*{{ props?.name }}</h4> -->
                 <!-- DESK-->
-                <h3 style="font-size: 1.2rem; margin-top: .3rem">{{ cutTaskDesc(props.current_task?.desc, 40) }}</h3>
+                <!-- <h3 style="font-size: 1rem; margin-top: .5rem">{{ cut_string(props.current_task?.desc, 40) }} </h3> -->
+                <h3 style="font-size: 1rem;">{{ props?.name }}</h3>
               </div>
 
 
               <!-- FOOTER -->
-              <div style="display: flex; align-items: flex-end; justify-content: space-between;">
+              <div style="margin-top: .5rem; display: flex; align-items: flex-end; justify-content: space-between;">
 
                 <div style="display: flex; flex-direction: column;">
 
@@ -173,8 +174,8 @@
   // const bgColor = ref('var(--color-btn-text)')
 
   // PROPS
-  //= cutTaskDesc
-  const cutTaskDesc = (str: string, maxLength: number) => {
+  //= cut_string
+  const cut_string = (str: string, maxLength: number) => {
     if(str.length > maxLength) {
       str = str.substring(0, maxLength - 3)
       return `${str}...`

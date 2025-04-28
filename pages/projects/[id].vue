@@ -11,7 +11,7 @@ import { Button } from "~/components/button";
 import { Chip } from "~/components/chip";
 import { AccessDeniedPlug } from "~/components/plug_access_denied";
 
-import { calc_working_hours } from '~/helpers/calc_working_hours'
+// import { calc_working_hours } from '~/helpers/calc_working_hours'
 
 useHead({
   title: "Проект # ",
@@ -198,6 +198,10 @@ const accomplishmentsEndedDateArray = ref([])
 const changeChip = (obj: any) => {
     currentChip.value = obj
 }
+//= change projectInfoParagraph
+const changeProjectInfoParagraph = (obj: any) => {
+  currentProjectInfoParagraph.value = obj
+}
 //= change accomplishment chip
 const changeAccomplishmentChip = (obj: any) => {
   currentAccomplishmentChip.value = obj
@@ -296,29 +300,12 @@ const countPaidedTaskByHours = () => {
     }
   })
 
-  // return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (-${(endedSum - paided).toFixed(2)})`
-  return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (${(paided - endedSum).toFixed(2)})`
-}
-//= countPaidedaccomplishmentByHours
-const countPaidedaccomplishmentByHours = () => {
-  let endedSum:number = 0;
-  let paided:number = 0;
+  if(paided === endedSum) {
+    return 'All'
+  } else {
 
-  //computedAccomplishments
-  endedSum = task_ledger?.value?.filter(el => el.taskId === current_task.value.id).reduce((acc, el) => {
-
-    acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
-
-    return acc
-  }, 0)
-  paided = task_ledger?.value?.filter(el => el.taskId === current_task.value.id && el.status === 'finished').reduce((acc, el) => {
-
-    acc += (new Date(el.ended_at) - new Date(el.created_at)) / (1000 * 60 * 60) % 24
-
-    return acc
-  }, 0)
-
-  return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (-${(endedSum - paided).toFixed(2)})`
+    return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (${(paided - endedSum).toFixed(2)})`
+  }
 }
 
 // ******* DB
@@ -447,6 +434,22 @@ onMounted(async () => {
   //   }
   // }
   countAccomplishment.value = computedAccomplishments.value?.length
+
+  // КЛИК ПО ПОДЛОЖКЕ ПОЛУПРОЗРАЧНОЙ
+  //= ПЕРЕМЕННЫЕ
+  
+  //= ДЕЙСТВИЕ
+  document.addEventListener('click', (e) => {
+    
+    
+    const more_project_info_menu = document.getElementById('popup-open_input-1')
+    if(e.target?.classList?.contains('popup-menu_container')) {
+      
+      more_project_info_menu.checked = false
+
+    }
+
+  })
 });
 
 //= set accomplishments Ended Date Array
@@ -461,54 +464,54 @@ const accomplishmentsEndedDateArrayFunc = () => {
 }
 
 //= urgency
-const set_bgColor_by_Urgency = (lead: any) => {
+// const set_bgColor_by_Urgency = (lead: any) => {
 
-  let color;
+//   let color;
 
-  // ****** URGENCY ******
-  if(lead.urgency) {
+//   // ****** URGENCY ******
+//   if(lead.urgency) {
 
-    // LOW
-    if(lead.urgency === 'low') {
-      color = `var(--color-urgency-low)`
-    } 
-    // MIDDLE
-    else if (lead.urgency === 'middle') {
-      color = `var(--color-urgency-middle)`
-    }
-    // HIGH
-    else if (lead.urgency === 'high') {
-      color = `var(--color-urgency-high)`
-    }
-    else {
-      // color = null
-    }
-  }
-  // ****** STATUS 
-  if(lead.status) {
+//     // LOW
+//     if(lead.urgency === 'low') {
+//       color = `var(--color-urgency-low)`
+//     } 
+//     // MIDDLE
+//     else if (lead.urgency === 'middle') {
+//       color = `var(--color-urgency-middle)`
+//     }
+//     // HIGH
+//     else if (lead.urgency === 'high') {
+//       color = `var(--color-urgency-high)`
+//     }
+//     else {
+//       // color = null
+//     }
+//   }
+//   // ****** STATUS 
+//   if(lead.status) {
 
-  //   // BLANK
-  //   if(lead.status === 'blank') {
-  //     color = 'var(--color-status-canceled)'
-  //   }
-  //   // PAUSED
-  //   if(lead.status === 'paused') {
-  //     // color = 'var(--color-bg-popup)'
-  //     color = 'var(--color-status-canceled)'
-  //   }
-    // CANCELED
-    if(lead.status === 'canceled') {
-      color = 'var(--color-status-canceled)'
-    }
-    // PAUSED
-    // FINISHED
-    else if(lead.status === 'finished') {
-      color = 'var(--color-status-finished)'
-    }
-  }
+//   //   // BLANK
+//   //   if(lead.status === 'blank') {
+//   //     color = 'var(--color-status-canceled)'
+//   //   }
+//   //   // PAUSED
+//   //   if(lead.status === 'paused') {
+//   //     // color = 'var(--color-bg-popup)'
+//   //     color = 'var(--color-status-canceled)'
+//   //   }
+//     // CANCELED
+//     if(lead.status === 'canceled') {
+//       color = 'var(--color-status-canceled)'
+//     }
+//     // PAUSED
+//     // FINISHED
+//     else if(lead.status === 'finished') {
+//       color = 'var(--color-status-finished)'
+//     }
+//   }
 
-  return color
-}
+//   return color
+// }
 
 // CLIKCER
 //= choose current task
@@ -518,28 +521,47 @@ const current_task = ref({
   desc: '',
   status: ''
 })
-const chooseCurrentLanding = (task: any) => {
-  current_task.value.id = task.id
-  current_task.value.name = task.name
-  current_task.value.desc = task.desc
-  current_task.value.status = task.status
-  popup_opened.value = true
-}
+//= projectInfoParagraph
+const projectInfoParagraph = ref([
+  {
+    id: 1,
+    name: 'task',
+    title: 'Задачи'
+  },
+  {
+    id: 2,
+    name: 'transaction',
+    title: 'Транзакции'
+  }
+])
+//= current fund paragraph
+const currentProjectInfoParagraph = ref({
+    id: 1,
+    name: 'task',
+    title: 'Задачи'
+  })
+// const chooseCurrentLanding = (task: any) => {
+//   current_task.value.id = task.id
+//   current_task.value.name = task.name
+//   current_task.value.desc = task.desc
+//   current_task.value.status = task.status
+//   popup_opened.value = true
+// }
 //= change status
-const changeCurrentTaskStatus= (currentTask: any) => {
-  console.log(currentTask)
-  alert('В разработке...')
-}
-const changeCurrentTaskElStatus = (task_el: any) => {
-  console.log(task_el)
-  alert('Измение статуса выполнения: в разработке...')
-}
+// const changeCurrentTaskStatus= (currentTask: any) => {
+//   console.log(currentTask)
+//   alert('В разработке...')
+// }
+// const changeCurrentTaskElStatus = (task_el: any) => {
+//   console.log(task_el)
+//   alert('Измение статуса выполнения: в разработке...')
+// }
 //= add ledger task
-const addCurrentTaskEl = (currentTask: any) => {
-  // Здесь добавляем в task ledger элемент для current task id
-  alert('В разработке')
-  console.log(currentTask)
-}
+// const addCurrentTaskEl = (currentTask: any) => {
+//   // Здесь добавляем в task ledger элемент для current task id
+//   alert('В разработке')
+//   console.log(currentTask)
+// }
 //= add New Task
 const addNewTask = () => {
   alert('В разработке...')
@@ -575,16 +597,16 @@ const countAccomplishmentTask = (taskLedger: any) => {
 }
 //
 //= current accomplishment 
-const countCurrentAccomplishment = () => {
+// const countCurrentAccomplishment = () => {
 
-  let sum:number = 0
+//   let sum:number = 0
 
-  computedAccomplishments.value?.forEach((item:any) => {
-    sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
-  })
+//   computedAccomplishments.value?.forEach((item:any) => {
+//     sum += Math.abs((new Date(item.ended_at) - new Date(item.created_at)) / (1000 * 60 * 60) % 24)
+//   })
 
-  return `Итого: ${sum.toFixed(2)} часа работы`
-}
+//   return `Итого: ${sum.toFixed(2)} часа работы`
+// }
 //
 // //= slice string
 // const slice = () => {
@@ -603,28 +625,28 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
   }
 }
 //= set color by status 
-const set_bgColor_by_status = (status: string) => {
-  // status finished
-  if (status === 'finished') {
-    return `color: var(--color-urgency-low-wo); background-color: unset`
-  } 
-  // status waiting
-  else if (status === 'waiting') {
-    return `color: var(--color-urgency-middle); background-color: unset`
-  }
-  // status agreement
-  else if (status === "agreement") {
-    return `color: var(--color-urgency-middle); background-color: unset;`
-  }
-  // status paused
-  else if (status === 'paused') {
-    return `background-color: var(--color-status-paused); `
-  }
-  //else
-  else {
-    return 
-  }
-}
+// const set_bgColor_by_status = (status: string) => {
+//   // status finished
+//   if (status === 'finished') {
+//     return `color: var(--color-urgency-low-wo); background-color: unset`
+//   } 
+//   // status waiting
+//   else if (status === 'waiting') {
+//     return `color: var(--color-urgency-middle); background-color: unset`
+//   }
+//   // status agreement
+//   else if (status === "agreement") {
+//     return `color: var(--color-urgency-middle); background-color: unset;`
+//   }
+//   // status paused
+//   else if (status === 'paused') {
+//     return `background-color: var(--color-status-paused); `
+//   }
+//   //else
+//   else {
+//     return 
+//   }
+// }
 
 //== readingg hours
 // const setReadingTime = (subject: string, data: string) => {
@@ -643,55 +665,55 @@ const set_bgColor_by_status = (status: string) => {
 
 
 //= closePopup
-const closePopup = () => {
-  popup_opened.value = false
-  current_task.value = {
-    id: null,
-    name: '',
-    desc: '',
-    status: ''
-  }
-  currentAccomplishmentChip.value = {
-    // name: 'waiting',
-    // title: 'Ожидание'
-    id: `${currentAccomplishmentChip.value?.id}`,
-    name: 'all',
-    title: 'Все'
-  }
-}
+// const closePopup = () => {
+//   popup_opened.value = false
+//   current_task.value = {
+//     id: null,
+//     name: '',
+//     desc: '',
+//     status: ''
+//   }
+//   currentAccomplishmentChip.value = {
+//     // name: 'waiting',
+//     // title: 'Ожидание'
+//     id: `${currentAccomplishmentChip.value?.id}`,
+//     name: 'all',
+//     title: 'Все'
+//   }
+// }
 //= cut task desc
-const cutTaskDesc = (str: string, maxLength: number) => {
-  if(str.length > maxLength) {
-    str = str.substring(0, maxLength - 3)
-    return `${str}...`
-  } else {
+// const cutTaskDesc = (str: string, maxLength: number) => {
+//   if(str.length > maxLength) {
+//     str = str.substring(0, maxLength - 3)
+//     return `${str}...`
+//   } else {
 
-    return str
-  }
-}
+//     return str
+//   }
+// }
 
 // WATHCERS
   //= popup_opened
-  watch(popup_opened, () => {
-      let body = document.getElementsByTagName('body')[0]
-      if(popup_opened.value) {
+  // watch(popup_opened, () => {
+  //     let body = document.getElementsByTagName('body')[0]
+  //     if(popup_opened.value) {
 
-          body.style.margin = '0'
-          body.style.height = '100%'
-          // body.style.overflow = 'hidden'
+  //         body.style.margin = '0'
+  //         body.style.height = '100%'
+  //         // body.style.overflow = 'hidden'
 
-          // set count accomplishment 
-          countAccomplishment.value = computedAccomplishments.value?.length
+  //         // set count accomplishment 
+  //         countAccomplishment.value = computedAccomplishments.value?.length
 
-          // set accomplishments Ended Date Array
-          accomplishmentsEndedDateArray.value = accomplishmentsEndedDateArrayFunc()
+  //         // set accomplishments Ended Date Array
+  //         accomplishmentsEndedDateArray.value = accomplishmentsEndedDateArrayFunc()
 
-      } else {
-          body.style.margin = 'unset'
-          body.style.height = 'unset'
-          body.style.overflow = 'unset'
-      }
-  })
+  //     } else {
+  //         body.style.margin = 'unset'
+  //         body.style.height = 'unset'
+  //         body.style.overflow = 'unset'
+  //     }
+  // })
   //= countAccomplishment.value = computedAccomplishments.value?.length
   watch(currentAccomplishmentChip, () => {
     // set count accomplishment 
@@ -712,126 +734,6 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
 <template>
 
-  <!-- POPUP -->
-   <InfoPopup
-      v-if="popup_opened"
-      id="popup-info_ledger_tasks" 
-      popup_title="Выполнение" 
-      @emitClosePopup="closePopup"
-      >
-      <!-- {{current_task}} -->
-
-      <!-- SLOT -->
-      <!-- POPUP HEADER -->
-      <!-- <header style="margin-top: 1rem;">
-          
-
-      </header> -->
-
-      <!-- POPUP CONTENT -->
-      <section style="margin-top: 1rem; margin-bottom: 5rem;">
-
-        <!-- LENGTH > 0 -->
-        <div v-if="task_ledger?.filter(el => el.taskId === current_task.id).length">
-          <!--  -->
-          <div style="margin-left: 1rem; margin-right: 1rem;">
-            Paided: {{countPaidedaccomplishmentByHours()}}
-          </div>
-          <!-- chips -->
-          <Chip
-            :tabs="chips_accomplishment"
-            :no_padding="true"
-            :default="currentAccomplishmentChip"
-            :btn_all_exist="false" 
-            @changed="changeAccomplishmentChip"
-            style="margin-top: 1rem; padding-left: 1rem; padding-right: 1rem;"
-          />
-
-          <!-- COUNT   -->
-          <div v-if="computedAccomplishments?.length" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem; display: flex; gap: 1rem;">
-            <div style="padding: 4px 8px; border-radius: 1rem; background-color: var(--color-btn-hover-bg); width: fit-content; font-size: 0.8rem;">Выполнений: {{ countAccomplishment }}</div>
-            <div style="padding: 4px 8px; border-radius: 1rem; background-color: var(--color-btn-hover-bg); width: fit-content; font-size: 0.8rem;" v-if="computedAccomplishments?.length">{{ countCurrentAccomplishment() }}</div>
-          </div>
-
-          <!-- accomplishment list -->
-          <div v-if="computedAccomplishments?.length">
-
-            <!-- UL1 -->
-            <ul v-for="endedDate in accomplishmentsEndedDateArray" class="task_ledger_container" style="list-style: none; padding: 0;">
-              <!-- LI1 -->
-              <li>
-                <p style="margin-bottom: 1rem; font-size: .8rem; text-align: center; color: var(--color-global-text)">{{ endedDate }}</p>
-                
-                <!-- UL2 -->
-                <ul style="padding: 0; list-style: none">
-
-                  <!-- LI2 -->
-                  
-                  <li v-for="task_el in computedAccomplishments.filter(item => item.ended_at.slice(0,10) === endedDate)" class="task_ledger_el">
-                    <div 
-                      :fJustifyContent="'flex-start'" 
-                      :fDirection="'column'"
-                    >
-                      <!-- HEADER -->
-                      <p 
-                        style="font-size: 0.8rem; margin: 0;"
-                      >
-                        <!-- PERIOD -->
-                        <span 
-                          style="color: var(--color-btn-disabled-text);"
-                        >
-                          {{ task_el?.created_at.slice(11, 16)}}
-                          - 
-                          {{ task_el.ended_at.slice(11,16) }}
-                        </span> 
-                        <!-- COUNT HOURS -->
-                        <span
-                          style="color: var(--color-btn-disabled-text);"
-                        >
-                          {{ calc_working_hours(task_el.created_at, task_el.ended_at) }}
-                        </span>
-                      </p>
-
-                      <!-- CONTENT -->
-                      <div class="ledger_el_info">
-                      {{ task_el.subject }}
-                      </div>
-
-                      <!-- FOOTER -->
-                      <div class="leder_el_footer">
-
-                        <!-- STATUS -->
-                        <div class="ledger_el_status" :style="set_bgColor_by_status(task_el.status)" @click="changeCurrentTaskElStatus(task_el)">
-                          {{ task_el.status }}
-                        </div>
-                      </div>
-                    </div>
-
-
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-          <ul v-else style="list-style: none; padding: unset; margin-top: 1rem; margin-left: 1rem; ">
-            <li>Ничего нет</li>
-          </ul>
-        </div>
-         <!-- LENGTH === 0 -->
-        <div v-else>
-          <p style="margin-left: 1rem; margin-right: 1rem;">Еще ничего не сделали...</p>
-        </div>
-      </section>
-
-      <!-- POPUP FOOTER -->
-      <footer v-if="current_task?.status !== 'finished'" style="background-color: var(--color-btn-text); position: absolute; bottom: 0; left: 0;width: 100%; padding: 1rem; border-top: 1px solid var(--color-btn-hover-bg)">
-
-        <Button type="original-btn" bg="bg-full" width="100%" @click="addCurrentTaskEl(current_task)">Добавить выполнение</Button>
-
-      </footer>
-    </InfoPopup>
-
   <!-- CONTAINER -->
   <Container>
     <!-- Псевдо защита... -->
@@ -849,104 +751,164 @@ const cutTaskDesc = (str: string, maxLength: number) => {
       </div>
 
       <!-- GENERAL INFO -->
-      <div class="general-secction_container">
-        <p>Статус: <span style="font-size: .8rem; padding: 4px 8px; border-radius: 1rem;" :style="setColorByProjectStatus()">{{project_status}}</span></p>
-        <!-- <p style="margin: 0;">Уделено часов</p> -->
+      <div class="general-section_container">
+
+        <!-- status -->
+        <p style="margin: 0;padding: 4px 8px; border-radius: 1rem;" :style="setColorByProjectStatus()">{{project_status}}</p>
+
+        <!-- paided -->
+        <div class="paided-el">
+          <p>
+            Paided
+          </p>
+          <p>
+            {{countPaidedTaskByHours()}}
+          </p>
+        </div>
+
       </div>
 
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
         <h3>Статистика</h3>
-        <p>Выручка:
-          <ul>
-            <li>Ставка: почасовая (####,## RUB / час)</li>
-            <li>Закрытые часы #.## / #.##</li>
-            <li>Итого: ## ###,## RUB</li>
+        <!-- 1 -->
+        <div style="background-color: var(--color-urgency-middle-10);">
+          <h4>Выручка</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>Ставка: почасовая (999,999,999.00 RUB / час)</li>
+            <li>Закрытые часы 99.99 / 99.99</li>
+            <li>Итого: 999,999,999.00 RUB</li>
           </ul>
-        </p>
-        <p>Затраты:
-          <ul>
-            <li>Налог(Ставка: ##,##%): ###,## RUB</li>
-            <li>Производство: # ###,## RUB</li>
-            <li>Итого: # ###,## RUB</li>
-          </ul>
-        </p>
-        <p>Маржа с проекта: ## ###,## RUB</p>
-        <p>{{ computedProject }}</p>
-      </div>
-
-      <!-- TASKs SECTION -->
-      <div class="task-section_container">
-
-        <div class="header-section_container">
-
-          <h2>Задачи</h2>
-          <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
         </div>
-        <!--  -->
-        <div>
-          Paided: {{countPaidedTaskByHours()}}
-          <br>
-          <div v-for="(task, j) in task_list?.filter(el => computedProject ? el.projectId === computedProject.id : [])">
-            {{ j + 1 }}. - {{ task.name }}
-            <div v-for="(task_el, i) in task_ledger?.filter(el => el.taskId === task.id)">
-              {{j + 1}}.{{i + 1}}. - {{ task_el.subject }}
+        <!-- 2 -->
+        <div style="background-color: var(--color-urgency-high-10)">
+          <h4>Затраты</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>Налог: (Ставка: 999,99%) RUB</li>
+            <li>Деятельность: 999,999,999.00 RUB</li>
+            <li>Прочее</li>
+            <li>Итого: 999,999,999.00 RUB</li>
+          </ul>
+        </div>
+        <!-- 3 -->
+        <div style="background-color: var(--color-urgency-low-10)">
+          <h4>Прибыль</h4>
+          <p>999,999,999.00 RUB</p>
+        </div>
+        <!-- 4 -->
+        <div class="border">
+          <h4>Еще</h4>
+          <div class="popup-open_btn">
+
+            <!-- BTN -->
+            <label for="popup-open_input-1">Открыть меню</label>
+            <input id="popup-open_input-1" type="checkbox">
+
+            <!-- MENU -->
+            <div class="popup-menu_container" style="border-radius: unset">
+
+              <div class="popup-menu_wrapper" style="border-top-left-radius: unset; border-bottom-left-radius: unset;">
+                <h4>popup menu wrapper</h4>
+                <div>
+                  21312
+                </div>
+                <div>
+                  123
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <!-- CHIP -->
-        <Chip
-          v-if="task_list?.length"
-          :tabs="chips"
-          :default="currentChip" 
-          :btn_all_exist="false" 
-          @changed="changeChip"
-          style="margin-top: 1rem; width: 100%;"
+      </div>
+      <!-- <p>{{ computedProject }}</p> -->
+
+      <!-- TASKs SECTION -->
+      <!-- CHIP -->
+      <Chip
+        :tabs="projectInfoParagraph"
+        :default="currentProjectInfoParagraph" 
+        :btn_all_exist="false" 
+        @changed="changeProjectInfoParagraph"
+        style="margin-top: 2rem; width: 100%;"
         />
 
-        <div class="count_task" v-if="computedTasks?.length ">{{ computedTasks?.length }} в листе</div>
 
-        <div v-if="task_list?.length" style="list-style: none; padding: 0;">
+      <!-- TASK -->
+      <div v-if="currentProjectInfoParagraph.name === 'task'" class="paragraph_container">
 
-          <!-- TASK -->
-          <div v-if="computedTasks?.length" class="computedTask_container">
+        <div style="display: flex; align-items: center;justify-content: flex-end;">
+          <div class="count_task" style="flex: 1;">{{ computedTasks?.length ? computedTasks?.length : '0'}} в листе</div>
+          <Button type="pseudo-btn" link="" @click="addNewTask()">Добавить</Button>
+        </div>
+        <div class="paragraph-content" style="margin-top: 2rem;">
 
-            <SectionColored               
-              v-for="(task, index) in computedTasks"
-              :current_task="task"
-              :name="task.name"
-              :padding="true" 
-              :fDirection="`column`"
-              :fGap="'1rem'"
-              style="cursor: pointer; position: relative; flex-direction: row"
-              :taskArray="task_ledger?.filter(el => el.taskId === task.id)"
-              :totalTaskHours="countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))"
-              @click.stop="chooseCurrentLanding(task)"
-            >
-              <div 
-                :style="
-                  setTaskAccomplishmentLabel( 
-                    countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                    countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
-                  ) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
-              ">
-                {{
-                  setTaskAccomplishmentLabel(
-                    countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
-                    countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
-                  ) 
-                }}
+          <div v-if="task_list?.length" style="margin-top: 1rem; list-style: none; padding: 0;">
+            <div class="paragraph-title">
+          <h2 
+            v-for="el in chips"
+            style="cursor:pointer;"
+            :class="currentChip.name === el.name ? 'paragraph-title_active' : ''"
+          >
+            <span style="text-wrap: nowrap;" @click="changeChip(el)">{{ el.title }}</span>
+          </h2>
+        </div>
+            <!-- TASK -->
+            <div v-if="computedTasks?.length" class="computedTask_container">
+              <!-- {{ computedTasks }} -->
+              <div v-for="(task, index) in computedTasks">
+                <SectionColored               
+                  
+                  :current_task="task"
+                  :name="task.name"
+                  :padding="true" 
+                  :fDirection="`column`"
+                  :fGap="'1rem'"
+                  style="cursor: pointer; position: relative; flex-direction: row"
+                  :taskArray="task_ledger?.filter(el => el.taskId === task.id)"
+                  :totalTaskHours="countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))"
+                  @click="$router.push(`/task/${task.id}`)"
+                >
+                  <div 
+                    :style="
+                      setTaskAccomplishmentLabel( 
+                        countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                        countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                      ) === 'Долг' ? `color: var(--color-global-text)` : `color: var(--color-urgency-low-wo)`
+                  ">
+                    {{
+                      setTaskAccomplishmentLabel(
+                        countFinishedAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id)),
+                        countAccomplishmentTask(task_ledger?.filter(el => el.taskId === task.id))
+                      ) 
+                    }}
+                  </div>
+                </SectionColored>
+                
+                <ul style="margin-top: 1rem;">
+                  <li v-for="(task_el, i) in task_ledger?.filter(el => el.taskId === task.id)">
+                    {{index + 1}}.{{i + 1}}. {{ task_el.subject }}
+                  </li>
+                </ul>
               </div>
-            </SectionColored>
 
+            </div>
+            <div v-else class="computedTask_container">
+            Нет задач по фильтру
+            </div>
           </div>
-          <div v-else class="computedTask_container">
-           Нет задач по фильтру
-          </div>
+
+          <div v-else>У вас нет задач по данному проекту</div>
         </div>
 
-        <div v-else>У вас нет задач по данному проекту</div>
       </div>
+
+      <!-- TRANSACTION -->
+      <div 
+        class="paragraph_container"
+        v-if="currentProjectInfoParagraph.name === 'transaction'">
+        123
+      </div>
+
     </div>
 
     <!--  -->
@@ -1077,17 +1039,21 @@ const cutTaskDesc = (str: string, maxLength: number) => {
     <br>
     <br>  
     <br>
+    <br>
+    <br>  
+    <br>
+    <br>
+    <br>
+    <br>  
+    <br>
+    <br>  
+    <br>
   </Container>
 </template>
 
 <style scoped>
-.header-section_container {
-  display: flex; 
-  align-items: center; 
-  gap: 1rem;
-}
 /* TOGGLE TITLE */
-.toggle-title {
+/* .toggle-title {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1095,11 +1061,11 @@ const cutTaskDesc = (str: string, maxLength: number) => {
   scrollbar-width: none;
   border-bottom: 1px solid var(--bs-tertiary-color);
   padding-bottom: 1rem;
-}
-.toggle-title::-webkit-scrollbar {
+} */
+/* .toggle-title::-webkit-scrollbar {
   display: none;
-}
-.switch-title_el input[type="radio"] {
+} */
+/* .switch-title_el input[type="radio"] {
   opacity: 0;
   position: fixed;
   width: 0;
@@ -1114,7 +1080,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 
 .switch-title_el input[type="radio"]:checked + label h2 {
   color: unset;
-}
+} */
 
 .schedule_container,
 .demands_container,
@@ -1174,7 +1140,7 @@ const cutTaskDesc = (str: string, maxLength: number) => {
 }
 
 .count_task {
-  margin-top: 1rem!important;
+  /* margin-top: 1rem!important; */
 }
 
 /*  */
@@ -1257,19 +1223,109 @@ ul > .task_ledger_el:last-child {
   /* margin-top: 0.5rem; */
 }
 
+/* 
+ */
+.paragraph-title {
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--color-btn-disabled-bg);
+  display: flex; 
+  gap: 1rem; 
+  align-items: center;
+  overflow-x: scroll;
+  /* width: 90vw; */
+  scrollbar-width: none; 
+}
+.paragraph-title::-webkit-scrollbar {
+  display: none;
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
+.paragraph-title h2 {
+  font-size: 1rem;
+  font-weight: normal;
+  position: relative;
+} 
+.paragraph-title_active:after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-wallet-fund-available-wo)
+}
+.paragraph-title_active span {
+  color: var(--color-wallet-fund-available-wo);
+}
+
+/* 
+ */
+.popup-open_btn {
+  position: relative;
+}
+.popup-open_btn label {
+  cursor: pointer;
+}
+.popup-menu_container {
+  position: fixed;
+  z-index: -1;
+  background: var(--color-bg-popup);
+  backdrop-filter: blur(2px);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}  
+.popup-menu_container::-webkit-scrollbar  {
+  display: none;
+}
+.popup-menu_container > .popup-menu_wrapper {
+  transition: all .5s ease-in-out;
+  position: absolute;
+  height: 100%;
+  left: -100%;
+  background-color: var(--color-btn-text);
+  box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  /* padding: 1rem; */
+  display: flex;
+  flex-direction: column;
+}
+/* 1 */
+#popup-open_input-1 {
+  display: none;
+}
+#popup-open_input-1:checked + .popup-menu_container {
+  display: flex;
+  position: fixed;
+  opacity: 1;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  transition: all .2s ease-in-out;
+}
+#popup-open_input-1:checked + .popup-menu_container > .popup-menu_wrapper {
+    left: 0;
+    top: 0;
+}
+.popup-open_btn {
+    position: relative;
+}
+.popup-open_btn label {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 575px) {
   .show-max-767 {
     display: none;
   }
-  .toggle-title {
+  /* .toggle-title {
     margin-top: 1rem;
-    /* margin: 1rem 1rem 0 1rem; */
     padding: unset !important;
     border: unset;
   }
   .switch-title_el:first-child {
     margin-left: 1rem;
-  }
+  } */
   .schedule_container,
   .demands_container,
   .sharers_container,
@@ -1279,21 +1335,84 @@ ul > .task_ledger_el:last-child {
   }
   .computedTask_container{
     grid-template-columns: 1fr;
-    padding: 0 0.5rem;
+    /* padding: 0 0.5rem; */
     gap: 1rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    /* margin-left: 0.5rem; */
+    /* margin-right: 0.5rem; */
   }
-  .general-secction_container,
+  .general-section_container,
   .title-section_container,
   .about-section_container{
     margin: 0 1rem;
+    margin-top: 1rem;
   }
+
+  /* 
+   */
+  .general-section_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+  .paided-el {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+  .paided-el > p {
+    margin: 0;
+  }
+  .paided-el > p:first-child {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+   */
+  .about-section_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+    margin-top: 2rem;
+  }
+  .about-section_container h3{
+    display: none;
+  }
+  .about-section_container div {
+    background-color: var(--color-status-canceled);
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
   /* .leder_el_header {
     margin-top: 0.5rem;
   } */
+
+  /* 
+   */
+  .paragraph_container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 2rem;
+    background-color: var(--color-global-baackground_light);
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  .paragraph-title {
+    width: 85vw;
+  }
+  /* 
+   */
+   /* 
+   
+   */
+  .popup-menu_container > .popup-menu_wrapper {
+    width: 80%;
+  }
+
   .count_task {
-    margin: 0 1rem;
+    /* margin: 0 1rem; */
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -1303,21 +1422,20 @@ ul > .task_ledger_el:last-child {
   .switch-title_el:first-child {
     margin-left: unset;
   }
-  .toggle-title {
+  /* .toggle-title {
     padding-left: unset !important;
-    /* padding-left: 0.5rem; */
     padding-right: 0.5rem;
-  }
+  } */
   .computedTask_container{
     grid-template-columns: 1fr;
     padding: 0 1rem;
     margin-top: 1rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    /* margin-left: 0.5rem;
+    margin-right: 0.5rem; */
     grid-template-columns: repeat(2, 1fr);
   }
   .title-section_container,
-  .general-secction_container,
+  .general-section_container,
   .about-section_container {
     margin: 0 1rem;
   }
@@ -1330,10 +1448,9 @@ ul > .task_ledger_el:last-child {
 }
 
 @media screen and (max-width: 767px) {
-  .toggle-title {
-    /* padding-left: 0.5rem; */
+  /* .toggle-title {
     padding-right: 0.5rem;
-  }
+  } */
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .computedTask_container{
