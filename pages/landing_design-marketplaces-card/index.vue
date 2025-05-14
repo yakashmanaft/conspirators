@@ -1,33 +1,65 @@
 <template>
     <!-- MAIN LIKE A BANNER -->
-    <div class="main-banner_container" style="background-color: var(--color-btn-disabled-bg); border-top: 1px solid red;">
+    <div class="main-banner_container" style="background-color: var(--color-global-baackground_light); border-top: 1px solid red;">
 
-        <Container class="container-insside">
+        <Container class="container-inside">
 
             <div class="main-banner_wrapper">
-                <p>made on cnsprtrs  by <span>@kashmanaft</span></p>
-                <h2>
-                    <span>WILDBERRIES</span>
-                    <span>OZON</span>
-                    <span>Яндекс.Маркет</span>
+
+                <!-- MARK -->
+                <p style="font-size: .8rem;color: var(--color-global-text_second);text-align: right; margin: 0; grid-area: mark">made on cnsprtrs by <span style="font-weight: bold;">@kashmanaft</span></p>
+
+                <!-- LEFT -->
+                <h2 style="grid-area: left">
+                    <span style="border: 1px solid var(--color-as-ozon); background-color: var(--color-as-ozon_03);">
+                        <img src="assets/img/logo/ozon.svg" alt="ozon">
+                    </span>
+                    <span style="border: 1px solid var(--color-as-wb); background-color: var(--color-as-wb_03);">
+                        <img src="assets/img/logo/wb.svg" alt="wildberries">  
+                    </span>
+                    <span style="border: 1px solid var(--color-as-ym-yellow); background-color: var(--color-as-ym-yellow_03);">
+                        <img src="assets/img/logo/ya_market.svg" alt="yandex market">
+                    </span>
                 </h2>
-                <h1>Карточки товаров для маркетплейсов</h1>
-                <p>Или для вашего собственного web-ресурса</p>
-        
-                <ul>
-                    <li>PS</li>
-                    <li>AI</li>
-                    <li>FIGMA</li>
-                    <li>CorelDdraw</li>
-                </ul>
-        
-                <button>С чего начать</button>
+
+                <!-- RIGHT -->
+                <div class="main-banner_area-right">
+
+                    <h1 style="margin: 0; font-weight: bold;">Карточки товаров <br><span>для маркетплейсов</span></h1>
+                    <p>Или для вашего собственного web-ресурса</p>
+                    <ul class="main-banner_icon-wrapper">
+                        <!--  -->
+                        <li class="icon_el">
+                            <img 
+                                src="assets/icons/app_icon/photoshop.webp" 
+                                alt="Работаем в photoshop (Фотошоп)">
+                        </li>
+                        <li class="icon_el">
+                            <img 
+                                src="assets/icons/app_icon/illustrator.webp" 
+                                alt="Работаем в illustrator (Иллюстратор)">
+                        </li>
+                        <li class="icon_el">
+                            <img 
+                                src="assets/icons/app_icon/figma.webp" 
+                                alt="Работаем в figma (Фигма)">
+                        </li>
+                        <li class="icon_el">
+                            <img 
+                                src="assets/icons/app_icon/coreldraw.webp" 
+                                alt="Работаем в coreldraw (Корелдро)">
+                        </li>
+    
+                    </ul>
+            
+                    <a href="#start" style="padding: 16px 32px; background-color: var(--color-global-text); color: var(--color-btn-text); border-radius: 2rem;">С чего начать</a>
+                </div>
             </div>
         </Container>
     </div>
 
     <!-- QIZZZ -->
-    <Container class="container-insside">
+    <Container class="container-inside" id="start">
 
 
         <!-- QUIZZZ -->
@@ -286,7 +318,7 @@
         margin-left: 1rem;
         margin-right: 1rem;
     }
-    .container-insside {
+    .container-inside {
         margin-top: 0!important;
         margin-bottom: 0!important;
         padding-top: 0!important;
@@ -305,7 +337,7 @@
         margin-left: 1rem;
         margin-right: 1rem;
     }
-    .container-insside {
+    .container-inside {
         margin-top: 0!important;
         margin-bottom: 0!important;
         padding-top: 0!important;
@@ -320,7 +352,7 @@
     }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
-    .container-insside {
+    .container-inside {
         margin-top: 0!important;
         margin-bottom: 0!important;
     }
@@ -345,7 +377,7 @@
     }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-    .container-insside {
+    .container-inside {
         margin-top: 0!important;
         margin-bottom: 0!important;
     }
@@ -403,18 +435,122 @@
     }
 }
 @media screen and (min-width: 1200px) {
-    .container-insside {
+    .container-inside {
         margin-top: 0!important;
         margin-bottom: 0!important;
+        padding-top: 3rem;
     }
     /* MAIN BANNER */
     .main-banner_container {
         padding-top: 1rem;
-        padding-bottom: 1rem;
+        padding-bottom: 3rem;
     }
     .main-banner_wrapper {
+        padding: 0 2rem;
         margin-top: 4.5rem;
-        background-color: cyan;
+        /* background-color: red; */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-content: space-between;
+        grid-template-areas: 
+        "mark mark"
+        "left right"
+        ;
     }
+    /*  */
+    h2 {
+        display: flex;
+        flex-direction: column;
+    }
+    h2 span {
+        width: fit-content;
+        height: 220px;  
+        display: flex;
+        align-items: flex-end;
+        box-shadow: var(--hover-shadow);
+        position: relative;
+        border-radius: 1rem;
+        transition: all .5s ease-in-out;
+    }
+    h2 span:hover {
+        cursor: pointer;  
+        opacity: .8;      
+    }
+    /* h2 span:hover:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+        background-color: gray;
+        width: 100%;
+        height: 100%;
+        border-radius: 1rem;
+        opacity: 0.5;
+    } */
+    h2 span:nth-child(1) {
+        border-bottom-left-radius: 2.7rem;
+        border-bottom-right-radius: 7px;
+        z-index: 2;
+    }
+    h2 span:nth-child(2) {
+        margin-left: 3.2rem;
+        margin-top: -2rem;
+        margin-bottom: -2rem;
+        z-index: 1;
+    }
+    h2 span:nth-child(3) {
+        margin-left: 1rem;
+        width: 400px;
+    }
+
+    /*  */
+    /* APP ICON wrapper */
+    .main-banner_icon-wrapper {
+        /* background-color: blue; */
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .icon_el {
+        width: 32px;
+        height: 32px;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon_el img {
+        width: 100%;
+        height: 100%;
+    }
+    .main-banner_area-right {
+        grid-area: right; 
+        text-align: right;
+        /* margin-right: 7rem; */
+    }
+    .main-banner_area-right h1 {
+        font-size: 4rem;
+    }
+    .main-banner_area-right h1 span {
+        color :var(--color-as-ym-white);
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        padding: 0 .5rem;
+    }
+    .main-banner_area-right p {
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .main-banner_area-right ul {
+        margin-top: 1rem;
+        padding-bottom: 5rem;
+    }
+    /* .main-banner_area-right a {
+        margin-top: 5rem!important;
+    } */
 }
 </style>

@@ -66,10 +66,13 @@
 
     /* brands color */
     --color-as-ozon: rgb(0, 105, 255);
+    --color-as-ozon_03: rgba(0, 105, 255, 0.3);
     --color-as-wb: rgb(227, 19, 191);
+    --color-as-wb_03: rgb(227, 19, 191, 0.3);
     --color-as-ym-red: rgb(255, 82, 38);
     --color-as-ym-white: rgb(255, 255, 255);
     --color-as-ym-yellow: rgb(255, 221, 0);
+    --color-as-ym-yellow_03: rgb(255, 221, 0, 0.3);
     --color-as-ym-black: rgb(0, 0, 0);
 
     /* SHADOWS */
