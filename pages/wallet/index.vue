@@ -1167,99 +1167,188 @@ const isOwnerExist = () => {
 const transaction_ledger_computed = computed(() => {
   let array:any = new Array()
 
-  transaction_ledger.value?.forEach(transaction => {
+  // transaction_ledger.value?.forEach(transaction => {
     
-    meshes_computed.value?.forEach(mesh => {
-      let from_obj = translateMeshByID(transaction?.from_mesh_id)
-      let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
-      if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id) {
+  //   meshes_computed.value?.forEach(mesh => {
+  //     let from_obj = translateMeshByID(transaction?.from_mesh_id)
+  //     let receive_obj = translateMeshByID(transaction?.receive_mesh_id)
+  //     if(mesh.id === transaction.from_mesh_id || mesh.id === transaction.receive_mesh_id) {
 
 
-        if(from_obj && receive_obj) {
+  //       if(from_obj && receive_obj) {
 
-          array.push({
-            id: transaction.id,
-            // DETAILS
-            created_at: transaction.created_at,
-            purpose: transaction.purpose,
-            fee: transaction.fee,
-            comments: transaction.comments,
-            storageID: receive_obj?.storageID,
-            bid: receive_obj?.bid,
-            // FROM
-            from_mesh_type: from_obj?.type,
-            from_mesh_tag: from_obj?.tag,
-            from_mesh_name: from_obj?.name,
-            from_mesh_broker_tag: from_obj?.broker_tag,
-            from_mesh_currency: transaction.from_mesh_currency,
-            from_mesh_amount: transaction.from_mesh_amount,
-            from_mesh_price: transaction.from_mesh_price,
-            from_mesh_owner_id: from_obj?.ownerID, 
-            from_mesh_owner_type: from_obj?.ownerType,
-            // RECIEVE
-            receive_mesh_type: receive_obj?.type,
-            receive_mesh_tag: receive_obj?.tag,
-            receive_mesh_name: receive_obj?.name,
-            receive_mesh_broker_tag: receive_obj?.broker_tag,
-            receive_mesh_currency: transaction.receive_mesh_currency,
-            receive_mesh_amount: transaction.receive_mesh_amount,
-            receive_mesh_price: transaction.receive_mesh_price,
-            receive_mesh_owner_id: receive_obj?.ownerID, 
-            receive_mesh_owner_type: receive_obj?.ownerType,
-            // LOANER
-            loaner_id: receive_obj?.loanerID,
-            loaner_type: receive_obj?.loanerType,
-            loaner_mesh_id: receive_obj?.loanerMeshID,
-            // AUTHOR
-            authorID: transaction.authorID,
-            authorType: transaction.authorType
-          })
-        } else {
-          array.push({
-            id: transaction.id,
-            // DETAILS
-            created_at: transaction.created_at,
-            purpose: transaction.purpose,
-            fee: transaction.fee,
-            comments: transaction.comments,
-            storageID: receive_obj?.storageID,
-            // FROM
-            from_mesh_type: from_obj?.type,
-            from_mesh_tag: from_obj?.tag,
-            from_mesh_name: from_obj?.name,
-            from_mesh_broker_tag: from_obj?.broker_tag,
-            from_mesh_currency: transaction.from_mesh_currency,
-            from_mesh_amount: transaction.from_mesh_amount,
-            from_mesh_price: transaction.from_mesh_price,
-            from_mesh_owner_id: from_obj?.ownerID, 
-            from_mesh_owner_type: from_obj?.ownerType,
-            // RECIEVE
-            receive_mesh_type: receive_obj?.type,
-            receive_mesh_tag: receive_obj?.tag,
-            receive_mesh_name: receive_obj?.name,
-            receive_mesh_broker_tag: receive_obj?.broker_tag,
-            receive_mesh_currency: transaction.receive_mesh_currency,
-            receive_mesh_amount: transaction.receive_mesh_amount,
-            receive_mesh_price: transaction.receive_mesh_price,
-            receive_mesh_owner_id: receive_obj?.ownerID, 
-            receive_mesh_owner_type: receive_obj?.ownerType, 
-            // AUTHOR
-            authorID: transaction.authorID,
-            authorType: transaction.authorType
-          })
-        }
+  //         array.push({
+  //           id: transaction.id,
+  //           // DETAILS
+  //           created_at: transaction.created_at,
+  //           purpose: transaction.purpose,
+  //           fee: transaction.fee,
+  //           comments: transaction.comments,
+  //           storageID: receive_obj?.storageID,
+  //           bid: receive_obj?.bid,
+  //           // FROM
+  //           from_mesh_type: from_obj?.type,
+  //           from_mesh_tag: from_obj?.tag,
+  //           from_mesh_name: from_obj?.name,
+  //           from_mesh_broker_tag: from_obj?.broker_tag,
+  //           from_mesh_currency: transaction.from_mesh_currency,
+  //           from_mesh_amount: transaction.from_mesh_amount,
+  //           from_mesh_price: transaction.from_mesh_price,
+  //           from_mesh_owner_id: from_obj?.ownerID, 
+  //           from_mesh_owner_type: from_obj?.ownerType,
+  //           // RECIEVE
+  //           receive_mesh_type: receive_obj?.type,
+  //           receive_mesh_tag: receive_obj?.tag,
+  //           receive_mesh_name: receive_obj?.name,
+  //           receive_mesh_broker_tag: receive_obj?.broker_tag,
+  //           receive_mesh_currency: transaction.receive_mesh_currency,
+  //           receive_mesh_amount: transaction.receive_mesh_amount,
+  //           receive_mesh_price: transaction.receive_mesh_price,
+  //           receive_mesh_owner_id: receive_obj?.ownerID, 
+  //           receive_mesh_owner_type: receive_obj?.ownerType,
+  //           // LOANER
+  //           loaner_id: receive_obj?.loanerID,
+  //           loaner_type: receive_obj?.loanerType,
+  //           loaner_mesh_id: receive_obj?.loanerMeshID,
+  //           // AUTHOR
+  //           authorID: transaction.authorID,
+  //           authorType: transaction.authorType
+  //         })
+  //       } else {
+  //         array.push({
+  //           id: transaction.id,
+  //           // DETAILS
+  //           created_at: transaction.created_at,
+  //           purpose: transaction.purpose,
+  //           fee: transaction.fee,
+  //           comments: transaction.comments,
+  //           storageID: receive_obj?.storageID,
+  //           // FROM
+  //           from_mesh_type: from_obj?.type,
+  //           from_mesh_tag: from_obj?.tag,
+  //           from_mesh_name: from_obj?.name,
+  //           from_mesh_broker_tag: from_obj?.broker_tag,
+  //           from_mesh_currency: transaction.from_mesh_currency,
+  //           from_mesh_amount: transaction.from_mesh_amount,
+  //           from_mesh_price: transaction.from_mesh_price,
+  //           from_mesh_owner_id: from_obj?.ownerID, 
+  //           from_mesh_owner_type: from_obj?.ownerType,
+  //           // RECIEVE
+  //           receive_mesh_type: receive_obj?.type,
+  //           receive_mesh_tag: receive_obj?.tag,
+  //           receive_mesh_name: receive_obj?.name,
+  //           receive_mesh_broker_tag: receive_obj?.broker_tag,
+  //           receive_mesh_currency: transaction.receive_mesh_currency,
+  //           receive_mesh_amount: transaction.receive_mesh_amount,
+  //           receive_mesh_price: transaction.receive_mesh_price,
+  //           receive_mesh_owner_id: receive_obj?.ownerID, 
+  //           receive_mesh_owner_type: receive_obj?.ownerType, 
+  //           // AUTHOR
+  //           authorID: transaction.authorID,
+  //           authorType: transaction.authorType
+  //         })
+  //       }
 
-      }
-    })
-  })
-  if(array.length) {
+  //     }
+  //   })
+  // })
+  // if(array.length) {
 
-    array.reverse()
+  //   array.reverse()
 
-    const unique = array.filter((obj, idx, arr) => 
-    idx === arr.findIndex((t) => t.id === obj.id));
-    return unique
-  }
+  //   const unique = array.filter((obj, idx, arr) => 
+  //   idx === arr.findIndex((t) => t.id === obj.id));
+  //   return unique
+  // }
+
+  array.push(
+    // qty             Int      @default(0)
+    // amount           Decimal  @default(0)
+    // measure         String   @db.VarChar(255)
+    {
+      id: 1,
+      created_at: '2025-03-07T18:53:53.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'salary',
+      from_item_qty: 1,
+      from_item_amount: 150000.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 1,
+      target_item_tag: 'available',
+      target_item_type: 'debet_card',
+      target_item_qty: 1,
+      target_item_amount: 150000.00,
+      target_item_currency: 'RUB',
+      //
+      comments: ''
+    },
+    {
+      id: 2,
+      created_at: '2025-03-08T18:52:53.000Z',
+      //
+      from_item_id: 1,
+      from_item_tag: 'available',
+      from_item_type: 'debet_card',
+      from_item_qty: 1,
+      from_item_amount: 3000.00,
+      from_item_currency: 'RUB',
+      //
+      //
+      target_item_id: 3,
+      target_item_tag: 'invested_stock',
+      target_item_type: 'brokerage_account',
+      target_item_qty: 1,
+      target_item_amount: 3000.00,
+      target_item_currency: 'RUB',
+      //
+      comments: ''
+    },
+    {
+      id: 3,
+      created_at: '2025-03-08T18:53:53.000Z',
+      //
+      from_item_id: 1,
+      from_item_tag: 'available',
+      from_item_type: 'debet_card',
+      from_item_qty: 1,
+      from_item_amount: 2500.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 25,
+      target_item_tag: 'invested_stock',
+      target_item_type: 'cfa_account',
+      target_item_qty: 1,
+      target_item_amount: 2500.00,
+      target_item_currency: 'RUB',
+      //
+      comments: ''
+    },
+    {
+      id: 3,
+      created_at: '2025-03-08T18:53:53.000Z',
+      //
+      from_item_id: 1,
+      from_item_tag: 'available',
+      from_item_type: 'debet_card',
+      from_item_qty: 1,
+      from_item_amount: 500.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 0,
+      target_item_tag: 'expense',
+      target_item_type: 'tax',
+      target_item_qty: 1,
+      target_item_amount: 500.00,
+      target_item_currency: 'RUB',
+      //
+      comments: 'Уплата налога по имуществу номемр 123'
+    },
+  )
+
+  return array
 })
 
 //= meshes tags
@@ -2454,7 +2543,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
         class="btn_to_fund" 
         @click="set_owner_route" 
       >
-        Перейти в {{ currentAffiliation.name === 'personal' ? 'аккаунт' : currentAffiliation.title }}
+        Перейти в фонд
       </p>
     </div>
 
@@ -2541,63 +2630,161 @@ const { data: bank } = useFetch("/api/banks/bank", {
         <!--if length -->
         <div class="transaction_container" v-if="transaction_ledger_computed?.length">
 
-          <!-- TRANSACTION -->
-          <section 
-            v-for="transaction in transaction_ledger_computed"
-            class="transaction_wrapper"  
-          >
-            <!-- tFirst -->
-            <div class="transaction-first">
-              <!-- DATE -->
-              
-              <p class="transaction_date">{{ transaction.created_at }}</p>
-              
-              <!-- PURPOSE -->
-              <p 
-              class="transacion_purpose"
-              :style="setBgColorByOperationType(transaction.purpose)"
-              >
-                  {{ transaction.purpose }} 
-                </p>
-            </div>
-
-            <!-- DETAILS -->
-            <div class="transaction_details">
-              <div>
-                <p v-if="transaction.from_mesh_name" style="margin: 0;">
-                  <span>{{ transaction.from_mesh_owner_id }}{{ transaction.from_mesh_owner_type }}</span>
-                  <span>Комиссия: {{ transaction.fee }}{{ currency_to_show.ticket }}</span>
-                  <span>{{ transaction.from_mesh_name }}</span>
-                  <span>{{ transaction.from_mesh_type }}</span>
-                  <span>{{ transaction.from_mesh_broker_tag }}</span>
-                  <span>({{ transaction.from_mesh_price }}{{transaction.from_mesh_currency}} x {{ transaction.from_mesh_amount }} = {{ transaction.from_mesh_price * transaction.from_mesh_amount }}{{transaction.from_mesh_currency}})</span>
-                </p>
-                <p style="margin: 0;" v-else>Неизвестный</p> 
-              </div>
-              <div>>>></div>
-              <div>
-                <p v-if="transaction.receive_mesh_name" style="margin: 0;">
-                  <span>{{ transaction.receive_mesh_owner_id }}{{ transaction.receive_mesh_owner_type }}</span>
-                  <span style="background-color: var(--color-btn-hover-bg)">Storage:{{ transaction.storageID }}</span>
-                  <span>{{ transaction.receive_mesh_name }}</span>
-                  <span>{{ transaction.receive_mesh_type }}</span>
-                  <span>{{ transaction.receive_mesh_broker_tag }}</span>
-                  <span>({{ transaction.receive_mesh_price }}{{transaction.receive_mesh_currency}} x {{ transaction.receive_mesh_amount }} = {{ transaction.receive_mesh_price * transaction.receive_mesh_amount }}{{transaction.receive_mesh_currency}})</span>
-                </p>
-                <p style="margin: 0;" v-else>Неизвестный</p> 
-              </div>
-              <!-- LOANER -->
-              <div v-if="transaction.loaner_id">
-                <p>Loaner info: {{ transaction.loaner_id }} {{ transaction.loaner_type }}. Mesh: {{ transaction.loaner_mesh_id }}</p>
-              </div>
-            </div>
-
-            <!-- AUTHOR -->
+          <div class="transaction_group_by-date" v-for="date in new Set(transaction_ledger_computed.map(item => item.created_at.slice(0,10)).reverse())">
+            <!-- by date -->
+             <h4 style="margin: 0;">
+               {{ date }}
+             </h4>
             <div>
-              <div>{{ transaction.authorType }}{{ transaction.authorID }}</div>
-            </div>
+              <!-- TRANSACTION -->
+              <section 
+                v-for="transaction in transaction_ledger_computed.filter(item => item.created_at.slice(0 ,10) === date)"
+                class="transaction_wrapper"  
+              >
+              <!-- {{ choosenChip_section }}  <br>   -->
+              {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
+                <!-- <div class="transaction-first">
+    
+                  
+                  <p class="transaction_date">{{ transaction.created_at }}</p>
+                  
+    
+                  <p 
+                  class="transacion_purpose"
+                  :style="setBgColorByOperationType(transaction.purpose)"
+                  >
+                      {{ transaction.purpose }} 
+                    </p>
+                </div> -->
+    
+                <!-- {{ transaction }} -->
+                <!-- <div>
+                  id: {{ transaction.id }}
+                </div> -->
+                <!--  -->
+                <!-- <div>
+                  {{ transaction.created_at }}
+                </div> -->
+                <!--  -->
+                <div v-if="transaction.from_item_id === 0" style="background-color: cyan; display: flex; justify-content: space-between; align-items: center; background-color: cyan;">
+                   <div>
+                      <div>
+                        {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
+                      </div>
+                      <div style="text-transform: uppercase;">{{ transaction.from_item_type }}</div>
+                    </div>
+                    <div>
+                      +{{ transaction.target_item_qty * transaction.target_item_amount}}{{ transaction.target_item_currency }}
+                    </div>
+                </div>
+                <!--  -->
+                <div v-if="transaction.target_item_id === 0" style="background-color: cyan; display: flex; justify-content: space-between; align-items: center; background-color: cyan;">
+                  <div>
+                      <div>
+                        {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
+                      </div>
+                      <div style="text-transform: uppercase;">{{ transaction.target_item_type }}</div>
+                    </div>
+                    <div>
+                      -{{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
+                    </div>
+                </div>
+                <!--  -->
+                <div v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
+                  <div style="display: flex; justify-content: space-between; align-items: center; background-color: cyan;">
+                    <div>
+                      <div>
+                        {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
+                      </div>
+                      <div>TRANSFER</div>
+                    </div>
+                    <div>
+                      {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
+                    </div>
+                  </div>
+                  /// вывнести вв попап
+                  ///
+                  TRANSFER
+                  <div class="transfer_avatar_container">
+                    {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
+                  </div>
+                  <div class="transfer_avatar_container" v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
+                  
+                    <div class="transfer_avatar">
+                      {{ transaction.from_item_id }}
+                    </div>
+                    <div>
+                      >
+                    </div>
+                    <div class="transfer_avatar">
+                      {{ transaction.target_item_id }}
+                    </div>
+                  </div>
+                  ////
+                </div>
+                <!--  --> 
+                <div style="margin-top: 1rem; background-color: orange; width: 15rem; height: 10rem;">
+                  <p style="margin: 0;">FROM</p>
+                  {{ transaction.from_item_id }} <br> 
+                  {{ transaction.from_item_tag }} <br>
+                  {{ transaction.from_item_type }} <br>
+                  <p>{{ transaction.from_item_qty }} * {{ transaction.from_item_amount }}{{ transaction.from_item_currency }} = {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}</p>
+                </div>
+                <div>
+                  >
+                </div>
 
-          </section>
+                <div style="margin-top: 1rem; background-color: cyan; width: 15rem; height: 10rem;">
+                  <p style="margin: 0;">TARGET</p>
+                  {{ transaction.target_item_id }} <br>
+                  {{ transaction.target_item_tag }} <br>
+                  {{ transaction.target_item_type }} <br>
+                  <p>{{ transaction.target_item_qty }} * {{ transaction.target_item_amount }}{{ transaction.target_item_currency }} = {{ transaction.target_item_qty * transaction.target_item_amount}}{{ transaction.target_item_currency }}</p>
+                </div>
+
+                <div>
+                  {{ transaction.comments }}
+                </div>
+    
+                <!-- <div class="transaction_details">
+                  <div>
+                    <p v-if="transaction.from_mesh_name" style="margin: 0;">
+                      <span>{{ transaction.from_mesh_owner_id }}{{ transaction.from_mesh_owner_type }}</span>
+                      <span>Комиссия: {{ transaction.fee }}{{ currency_to_show.ticket }}</span>
+                      <span>{{ transaction.from_mesh_name }}</span>
+                      <span>{{ transaction.from_mesh_type }}</span>
+                      <span>{{ transaction.from_mesh_broker_tag }}</span>
+                      <span>({{ transaction.from_mesh_price }}{{transaction.from_mesh_currency}} x {{ transaction.from_mesh_amount }} = {{ transaction.from_mesh_price * transaction.from_mesh_amount }}{{transaction.from_mesh_currency}})</span>
+                    </p>
+                    <p style="margin: 0;" v-else>Неизвестный</p> 
+                  </div>
+                  <div>>>></div>
+                  <div>
+                    <p v-if="transaction.receive_mesh_name" style="margin: 0;">
+                      <span>{{ transaction.receive_mesh_owner_id }}{{ transaction.receive_mesh_owner_type }}</span>
+                      <span style="background-color: var(--color-btn-hover-bg)">Storage:{{ transaction.storageID }}</span>
+                      <span>{{ transaction.receive_mesh_name }}</span>
+                      <span>{{ transaction.receive_mesh_type }}</span>
+                      <span>{{ transaction.receive_mesh_broker_tag }}</span>
+                      <span>({{ transaction.receive_mesh_price }}{{transaction.receive_mesh_currency}} x {{ transaction.receive_mesh_amount }} = {{ transaction.receive_mesh_price * transaction.receive_mesh_amount }}{{transaction.receive_mesh_currency}})</span>
+                    </p>
+                    <p style="margin: 0;" v-else>Неизвестный</p> 
+                  </div>
+    
+                  <div v-if="transaction.loaner_id">
+                    <p>Loaner info: {{ transaction.loaner_id }} {{ transaction.loaner_type }}. Mesh: {{ transaction.loaner_mesh_id }}</p>
+                  </div>
+                </div> -->
+    
+    
+                <!-- <div>
+                  <div>{{ transaction.authorType }}{{ transaction.authorID }}</div>
+                </div> -->
+    
+              </section>
+            </div>
+          </div>
+
         </div>
         <!-- else -->
         <div class="transaction_container" v-else>Нет операций</div>
@@ -3043,10 +3230,13 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-top: 1rem;
   }
   .transaction_wrapper {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 20% 20% 1fr 20%;
+    /* display: grid; */
+    /* align-items: center; */
+    /* grid-template-columns: 20% 20% 1fr 20%; */
+    grid-template-columns: 1fr;
     grid-template-areas: 't_first details details detatils';
+    margin-top: 1rem;
+    background-color: var(--color-btn-hover-bg);
   }
   .transaction-first {
     grid-area: t_first;
@@ -3119,9 +3309,10 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container {
     margin-top: 1.5rem;
-    margin-left: .5rem;
-    margin-right: .5rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
     justify-content: space-between;
+    flex-direction: column;
   }
   .total-cap_container > p:first-child {
     display: flex;
@@ -3141,7 +3332,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .wallet-section_container {
     margin-top: 1.5rem;
-    padding: 0 0.5rem;
+    padding: 0 1rem 0 1rem;
     padding-bottom: 1.5rem;
     gap: .5rem;
   }
@@ -3152,10 +3343,16 @@ const { data: bank } = useFetch("/api/banks/bank", {
     font-size: 16px;
   }
 
+  /* current_affiliation_title */
+  .current_affiliation_title {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
   /* CURRENT FUND CONTAINER */
   .current-fund_container {
-    margin-left: .5rem;
-    margin-right: .5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 
   /* MESH */
@@ -3200,6 +3397,10 @@ const { data: bank } = useFetch("/api/banks/bank", {
     /* margin-left: .5rem;
     margin-right: .5rem; */
   }
+  .transaction_group_by-date {
+    display: flex;
+    flex-direction: column;
+  }
 
   /* MESH */
   .mesh_info {
@@ -3218,12 +3419,29 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .mesh_profit-separator {
     display: none;
   }
-  .mesh_invested {
+  .mesh_invested { 
     font-size: 0.8rem;
   }
   .mesh_footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .transfer_avatar_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+  }
+  .transfer_avatar {
+    background-color: orange;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .transfer_avatar_container {
   }
 }
 @media screen and (min-width: 576px) {

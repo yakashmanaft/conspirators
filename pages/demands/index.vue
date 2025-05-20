@@ -882,7 +882,6 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
 
           <!-- COUNT by task status-->
           <div  class="count-task_container">
-  
             <!-- Кол-во задач -->
             <p>Кол-во задач: {{ computedTask?.length }}</p>
   
