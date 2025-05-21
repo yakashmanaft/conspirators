@@ -1462,6 +1462,631 @@ const ledger = ref([
       author_id: 2,
       author_type: 'user'
     },
+   {
+      id: 13,
+      created_at: '2017-06-05T12:04:00.000Z',
+      //
+      from_item_id: 11,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 1145.13,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 28,
+      target_item_tag: 'invested_project',
+      target_item_type: 'start_up',
+      target_item_qty: 1,
+      target_item_amount: 1145.13,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: '0506Проект2017',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 14,
+      created_at: '2017-06-05T12:05:00.000Z',
+      //
+      from_item_id: 28,
+      from_item_tag: 'invested_project',
+      from_item_type: 'start_up',
+      from_item_qty: 1,
+      from_item_amount: 1145.13,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 0,
+      target_item_tag: 'expenses',
+      target_item_type: 'goods',
+      target_item_qty: 1,
+      target_item_amount: 1145.13,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Закуп0506Проект2017',
+      comments: 'Закупили брелки разные',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 15,
+      created_at: '2017-06-07T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 50.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 50.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 16,
+      created_at: '2017-06-07T12:01:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 50.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 50.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 17,
+      created_at: '2017-06-10T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 100.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 100.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 18,
+      created_at: '2017-06-10T12:01:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 100.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 100.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 19,
+      created_at: '2017-06-10T12:02:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 29.13,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 29.13,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 20,
+      created_at: '2017-06-10T12:03:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 29.13,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 29.13,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 21,
+      created_at: '2017-06-15T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 100.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 100.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 22,
+      created_at: '2017-06-15T12:01:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 100.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 100.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 23,
+      created_at: '2017-06-18T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 260.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 260.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 24,
+      created_at: '2017-06-18T12:01:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 260.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 260.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 25,
+      created_at: '2017-06-24T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 190.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 190.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 26,
+      created_at: '2017-06-24T12:01:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 190.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 190.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 27,
+      created_at: '2017-06-24T12:02:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 500.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 500.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 28,
+      created_at: '2017-06-24T12:03:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 500.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 500.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 29,
+      created_at: '2017-06-30T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash_sale',
+      from_item_qty: 1,
+      from_item_amount: 250.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 250.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Продажа0506Проект2017',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 30  ,
+      created_at: '2017-06-30T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash_sale',
+      from_item_qty: 1,
+      from_item_amount: 200.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 200.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Продажа0506Проект2017',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+   {
+      id: 31,
+      created_at: '2017-07-04T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 200.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 200.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 32,
+      created_at: '2017-07-04T12:01:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 200.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 200.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 33,
+      created_at: '2017-09-04T12:01:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 200.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 200.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 34,
+      created_at: '2017-09-04T12:01:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 200.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 200.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 35,
+      created_at: '2017-09-04T12:02:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 50.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 50.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 36,
+      created_at: '2017-09-04T12:03:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 50.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 50.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+   {
+      id: 37  ,
+      created_at: '2017-09-09T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash_sale',
+      from_item_qty: 1,
+      from_item_amount: 200.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 200.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Продажа0506Проект2017',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
 ])
 
 const isOwnerExist = () => {
@@ -1619,7 +2244,9 @@ const transaction_ledger_computed = computed(() => {
           // )
           tr = transaction
         }
-
+      }
+      else if (choosenChip_section.value === 'invested_project' && transaction.purpose == `Продажа${mesh.name}`) {
+        tr = transaction
       }
 
     })
@@ -2051,13 +2678,16 @@ const calcTransactionAmount = (qty: number, amount, from_item_id, target_item_id
   }
 }
 //=  calc mesh amount
-const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string) => {
+const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_name: string) => {
   let acc = 0
   transaction_ledger_computed.value.forEach(transaction => {
     if(transaction.from_item_id === mesh_id && transaction.from_item_type === mesh_type && transaction.from_item_type === mesh_type) {
       acc -= +transaction.from_item_qty * +transaction.from_item_amount
     }
     else if (transaction.target_item_id === mesh_id && transaction.target_item_type === mesh_type && transaction.target_item_type === mesh_type) {
+      acc += +transaction.target_item_qty * +transaction.target_item_amount
+    }
+    else if (transaction.from_item_tag === 'income' && transaction.purpose === `Продажа${mesh_name}`) {
       acc += +transaction.target_item_qty * +transaction.target_item_amount
     }
 
@@ -3032,6 +3662,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
                     {{ calcTransactionAmount(transaction.target_item_qty, transaction.target_item_amount, transaction.from_item_id, transaction.target_item_id) }}
                     {{ transaction.target_item_currency }}
                   </div>
+
+                  <div v-else-if="transaction.target_item_id === 0">
+                    {{ calcTransactionAmount(transaction.target_item_qty, transaction.target_item_amount, transaction.from_item_id, transaction.target_item_id) }}
+                    {{ transaction.target_item_currency }}
+                  </div>
                 </div>
     
               </section>
@@ -3073,7 +3708,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   </div>
                   <div class="mesh_content">
                     <p class="mesh_content-el">{{ item.name }}</p>
-                    <p class="mesh_content-el">{{calcMeshAmount(item.id, item.type, item.tag)}} {{ currency_to_show.ticket }}</p>
+                    <p class="mesh_content-el">{{calcMeshAmount(item.id, item.type, item.tag, item.name)}} {{ currency_to_show.ticket }}</p>
                   </div>
                   <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
                 </li>
