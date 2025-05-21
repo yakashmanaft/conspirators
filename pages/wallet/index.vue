@@ -973,179 +973,179 @@ const conspirators_fund = ref([
   },
 ])
 
-const ledger = ref([
-{
-    id: 1,
-    created_at: '2024-12-07 17:48:02',
-    //
-    fund_type: 'invested_stock',
-    fund_tag: 'brokerage_account',
-    fund_id: 2,
-    recieved_amount: 1.00,
-    recieved_amount_price: 500.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'invest',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'saving_account',
-    from_fund_id: 5,
-    send_amount: 1.00,
-    send_amount_price: 500.00,
-    send_amount_currency: 'RUB',
-  },
-  {
-    id: 2,
-    created_at: '2024-12-07 17:48:02', 
-    // 
-    fund_type: 'invested_stock',
-    fund_tag: 'brokerage_account',
-    fund_id: 4,
-    recieved_amount: 1.00,
-    recieved_amount_price: 300.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'invest',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'debet_card',
-    from_fund_id: 47,
-    ssend_amount: 1.00,
-    send_amount_price: 300.00,
-    send_amount_currency: 'RUB',
-  },
-  {
-    id: 3,
-    created_at: '2024-12-07 17:48:02',
-    //
-    fund_type: 'deposit',
-    fund_tag: 'saving_account',
-    fund_id: 1,
-    recieved_amount: 1.00,
-    recieved_amount_price: 1000.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'deposit',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'saving_account',
-    from_fund_id: 5,
-    send_amount: 1.00,
-    send_amount_price: 1000.00,
-    send_amount_currency: 'RUB',
-  },
-  {
-    id: 4,
-    created_at: '2024-12-07 17:48:02',
-    //
-    fund_type: 'deposit',
-    fund_tag: 'saving_account',
-    fund_id: 1,
-    recieved_amount: 1.00,
-    recieved_amount_price: 4000.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'deposit',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'saving_account',
-    from_fund_id: 5,
-    send_amount: 1,
-    send_amount_price: 4000.00,
-    send_amount_currency: 'RUB',
-  },
-  {
-    id: 5,
-    created_at: '2024-12-07 17:48:02',
-    //
-    fund_type: 'available',
-    fund_tag: 'saving_account',
-    fund_id: 5,
-    recieved_amount: 1.00,
-    recieved_amount_price: 15000.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'withdraw',
-    operator_id: 1,
-    //
-    from_fund_type: 'invested_stock',
-    from_fund_tag: 'brokerage_account',
-    from_fund_id: 2,
-    send_amount: 1.00,
-    send_amount_price: 15000.00,
-    send_amount_currency: 'RUB',
-  },
-  {
-    id: 6,
-    created_at: '2024-12-07 17:48:02',
-    //
-    fund_type: 'invested_crypto',
-    fund_tag: 'crypto-wallet',
-    fund_id: 35,
-    recieved_amount: 1.00,
-    recieved_amount_price: 91.72,
-    recieved_amount_currency: 'USD',
-    //
-    operation_type: 'invest',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'saving_account',
-    from_fund_id: 5,
-    send_amount: 1.00,
-    send_amount_price: 10000.00,
-    send_amount_currency: 'RUB',
-    // sign
-    sign_user_id: 'conspirator',
-    sign_user_type: 2
-  },
-  {
-    id: 7,
-    created_at: '2024-12-08 17:48:02',
-    //
-    fund_type: 'deposit',
-    fund_tag: 'saving_account',
-    fund_id: 15,
-    recieved_amount: 1.00,
-    recieved_amount_price: 100.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'donation weekly',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'debet_card',
-    from_fund_id: 52,
-    send_amount: 1.00,
-    send_amount_price: 100.00,
-    send_amount_currency: 'RUB',
-  },
-  {
-    id: 8,
-    created_at: '2024-12-08 17:48:02',
-    //
-    fund_type: 'deposit',
-    fund_tag: 'saving_account',
-    fund_id: 15,
-    recieved_amount: 1.00,
-    recieved_amount_price: 100.00,
-    recieved_amount_currency: 'RUB',
-    //
-    operation_type: 'donation',
-    operator_id: 1,
-    //
-    from_fund_type: 'available',
-    from_fund_tag: 'debet_card',
-    from_fund_id: 52,
-    send_amount: 1.00,
-    send_amount_price: 100.00,
-    send_amount_currency: 'RUB',
-  }
-])
+// const ledger = ref([
+// {
+//     id: 1,
+//     created_at: '2024-12-07 17:48:02',
+//     //
+//     fund_type: 'invested_stock',
+//     fund_tag: 'brokerage_account',
+//     fund_id: 2,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 500.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'invest',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'saving_account',
+//     from_fund_id: 5,
+//     send_amount: 1.00,
+//     send_amount_price: 500.00,
+//     send_amount_currency: 'RUB',
+//   },
+//   {
+//     id: 2,
+//     created_at: '2024-12-07 17:48:02', 
+//     // 
+//     fund_type: 'invested_stock',
+//     fund_tag: 'brokerage_account',
+//     fund_id: 4,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 300.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'invest',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'debet_card',
+//     from_fund_id: 47,
+//     ssend_amount: 1.00,
+//     send_amount_price: 300.00,
+//     send_amount_currency: 'RUB',
+//   },
+//   {
+//     id: 3,
+//     created_at: '2024-12-07 17:48:02',
+//     //
+//     fund_type: 'deposit',
+//     fund_tag: 'saving_account',
+//     fund_id: 1,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 1000.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'deposit',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'saving_account',
+//     from_fund_id: 5,
+//     send_amount: 1.00,
+//     send_amount_price: 1000.00,
+//     send_amount_currency: 'RUB',
+//   },
+//   {
+//     id: 4,
+//     created_at: '2024-12-07 17:48:02',
+//     //
+//     fund_type: 'deposit',
+//     fund_tag: 'saving_account',
+//     fund_id: 1,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 4000.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'deposit',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'saving_account',
+//     from_fund_id: 5,
+//     send_amount: 1,
+//     send_amount_price: 4000.00,
+//     send_amount_currency: 'RUB',
+//   },
+//   {
+//     id: 5,
+//     created_at: '2024-12-07 17:48:02',
+//     //
+//     fund_type: 'available',
+//     fund_tag: 'saving_account',
+//     fund_id: 5,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 15000.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'withdraw',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'invested_stock',
+//     from_fund_tag: 'brokerage_account',
+//     from_fund_id: 2,
+//     send_amount: 1.00,
+//     send_amount_price: 15000.00,
+//     send_amount_currency: 'RUB',
+//   },
+//   {
+//     id: 6,
+//     created_at: '2024-12-07 17:48:02',
+//     //
+//     fund_type: 'invested_crypto',
+//     fund_tag: 'crypto-wallet',
+//     fund_id: 35,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 91.72,
+//     recieved_amount_currency: 'USD',
+//     //
+//     operation_type: 'invest',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'saving_account',
+//     from_fund_id: 5,
+//     send_amount: 1.00,
+//     send_amount_price: 10000.00,
+//     send_amount_currency: 'RUB',
+//     // sign
+//     sign_user_id: 'conspirator',
+//     sign_user_type: 2
+//   },
+//   {
+//     id: 7,
+//     created_at: '2024-12-08 17:48:02',
+//     //
+//     fund_type: 'deposit',
+//     fund_tag: 'saving_account',
+//     fund_id: 15,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 100.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'donation weekly',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'debet_card',
+//     from_fund_id: 52,
+//     send_amount: 1.00,
+//     send_amount_price: 100.00,
+//     send_amount_currency: 'RUB',
+//   },
+//   {
+//     id: 8,
+//     created_at: '2024-12-08 17:48:02',
+//     //
+//     fund_type: 'deposit',
+//     fund_tag: 'saving_account',
+//     fund_id: 15,
+//     recieved_amount: 1.00,
+//     recieved_amount_price: 100.00,
+//     recieved_amount_currency: 'RUB',
+//     //
+//     operation_type: 'donation',
+//     operator_id: 1,
+//     //
+//     from_fund_type: 'available',
+//     from_fund_tag: 'debet_card',
+//     from_fund_id: 52,
+//     send_amount: 1.00,
+//     send_amount_price: 100.00,
+//     send_amount_currency: 'RUB',
+//   }
+// ])
 
 // COMPUTED
 // conspirators_fund
@@ -1158,6 +1158,311 @@ const ledger = ref([
 
 //   return array
 // })
+const ledger = ref([
+    // qty             Int      @default(0)
+    // amount           Decimal  @default(0)
+    // measure         String   @db.VarChar(255)
+    {
+      id: 1,
+      created_at: '2017-05-28T18:33:53.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 100.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 100.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 2,
+      created_at: '2017-05-28T18:53:53.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 100.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 100.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 3,
+      created_at: '2017-05-28T19:33:53.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 15.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 15.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 4,
+      created_at: '2017-05-28T18:53:53.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 15.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 15.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 5,
+      created_at: '2017-06-02T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 300.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 300.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+    {
+      id: 6,
+      created_at: '2017-06-02T12:01:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 300.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 300.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+    {
+      id: 7,
+      created_at: '2017-06-02T12:02:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 50.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 27,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 50.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+    {
+      id: 8,
+      created_at: '2017-06-02T12:03:00.000Z',
+      //
+      from_item_id: 27,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 50.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 50.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 1,
+      author_type: 'user'
+    },
+    {
+      id: 9,
+      created_at: '2017-06-05T12:00:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 1000.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 1000.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'Личные сбережения',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 10,
+      created_at: '2017-06-05T12:01:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 1000.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 1000.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 11,
+      created_at: '2017-06-05T12:02:00.000Z',
+      //
+      from_item_id: 0,
+      from_item_tag: 'income',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 151.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 26,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 151.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+    {
+      id: 12,
+      created_at: '2017-06-05T12:03:00.000Z',
+      //
+      from_item_id: 26,
+      from_item_tag: 'available',
+      from_item_type: 'cash',
+      from_item_qty: 1,
+      from_item_amount: 151.00,
+      from_item_currency: 'RUB',
+      //
+      target_item_id: 11,
+      target_item_tag: 'available',
+      target_item_type: 'cash',
+      target_item_qty: 1,
+      target_item_amount: 151.00,
+      target_item_currency: 'RUB',
+      //
+      fee: 0.00,
+      purpose: 'donation',
+      comments: '',
+      //
+      author_id: 2,
+      author_type: 'user'
+    },
+])
 
 const isOwnerExist = () => {
 
@@ -1165,7 +1470,6 @@ const isOwnerExist = () => {
 
 //= transaction ledger
 const transaction_ledger_computed = computed(() => {
-  let array:any = new Array()
 
   // transaction_ledger.value?.forEach(transaction => {
     
@@ -1261,92 +1565,82 @@ const transaction_ledger_computed = computed(() => {
   //   return unique
   // }
 
-  array.push(
-    // qty             Int      @default(0)
-    // amount           Decimal  @default(0)
-    // measure         String   @db.VarChar(255)
-    {
-      id: 1,
-      created_at: '2025-03-07T18:53:53.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'salary',
-      from_item_qty: 1,
-      from_item_amount: 150000.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 1,
-      target_item_tag: 'available',
-      target_item_type: 'debet_card',
-      target_item_qty: 1,
-      target_item_amount: 150000.00,
-      target_item_currency: 'RUB',
-      //
-      comments: ''
-    },
-    {
-      id: 2,
-      created_at: '2025-03-08T18:52:53.000Z',
-      //
-      from_item_id: 1,
-      from_item_tag: 'available',
-      from_item_type: 'debet_card',
-      from_item_qty: 1,
-      from_item_amount: 3000.00,
-      from_item_currency: 'RUB',
-      //
-      //
-      target_item_id: 3,
-      target_item_tag: 'invested_stock',
-      target_item_type: 'brokerage_account',
-      target_item_qty: 1,
-      target_item_amount: 3000.00,
-      target_item_currency: 'RUB',
-      //
-      comments: ''
-    },
-    {
-      id: 3,
-      created_at: '2025-03-08T18:53:53.000Z',
-      //
-      from_item_id: 1,
-      from_item_tag: 'available',
-      from_item_type: 'debet_card',
-      from_item_qty: 1,
-      from_item_amount: 2500.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 25,
-      target_item_tag: 'invested_stock',
-      target_item_type: 'cfa_account',
-      target_item_qty: 1,
-      target_item_amount: 2500.00,
-      target_item_currency: 'RUB',
-      //
-      comments: ''
-    },
-    {
-      id: 3,
-      created_at: '2025-03-08T18:53:53.000Z',
-      //
-      from_item_id: 1,
-      from_item_tag: 'available',
-      from_item_type: 'debet_card',
-      from_item_qty: 1,
-      from_item_amount: 500.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 0,
-      target_item_tag: 'expense',
-      target_item_type: 'tax',
-      target_item_qty: 1,
-      target_item_amount: 500.00,
-      target_item_currency: 'RUB',
-      //
-      comments: 'Уплата налога по имуществу номемр 123'
-    },
-  )
+  let array:any = []
+
+  array = [...ledger.value].filter((transaction: any) => {
+
+    let tr;
+
+    meshes_computed.value.forEach(mesh => {
+
+      // mesh.id === transaction.from_item_id 
+      // mesh.id === transaction.target_item_id
+
+      // mesh.id === transaction.from_item_id && transaction.target_item_id === 0
+      // mesh.id === transaction.target_item_id && transaction.from_item_id === 0
+      // mesh.id === transaction.from_item_id || mesh.id === transaction.target_item_id
+
+      if(
+        (
+          (mesh.id === transaction.from_item_id && transaction.target_item_id === 0) ||
+          (mesh.id === transaction.target_item_id && transaction.from_item_id === 0) ||
+          (mesh.id === transaction.from_item_id || mesh.id === transaction.target_item_id)
+        ) && 
+        (mesh.type === transaction.from_item_type || mesh.type === transaction.target_item_type) && (mesh.tag === transaction.from_item_tag || mesh.tag === transaction.target_item_tag)
+      ) {
+
+        if(mesh.tag === transaction.from_item_tag && choosenChip_section.value === transaction.from_item_tag) {
+          // console.log(
+          //   {
+          //     transactionID: transaction.id,
+          //     from_id: transaction.from_item_id,
+          //     target_id: transaction.target_item_id
+          //   }
+          // )
+          tr = transaction
+        }
+        if(mesh.tag === transaction.target_item_tag && choosenChip_section.value === transaction.target_item_tag) {
+          // console.log(
+          //   {
+          //     transactionID: transaction.id,
+          //     from_id: transaction.from_item_id,
+          //     target_id: transaction.target_item_id
+          //   }
+          // )
+          tr = transaction
+        }
+        else if (choosenChip_section.value === 'debt_loan' && (transaction.from_item_tag === 'invested_loan' || transaction.target_item_tag === 'invested_loan')) {
+          // console.log(
+          //   {
+          //     transactionID: transaction.id,
+          //     from_id: transaction.from_item_id,
+          //     target_id: transaction.target_item_id
+          //   }
+          // )
+          tr = transaction
+        }
+
+      }
+
+    })
+
+    return tr
+    // 
+    // if(transaction.from_item_tag === choosenChip_section.value || transaction.target_item_tag === choosenChip_section.value) { 
+    //   // console.log(transaction)
+    //   // console.log(meshes_computed.value)
+    //   return transaction
+    // }
+    // else if (choosenChip_section.value === 'debt_loan' && (transaction.from_item_tag === 'invested_loan' || transaction.target_item_tag === 'invested_loan')) {
+    //   // console.log(transaction)
+    //   // console.log(meshes_computed.value)
+    //   return transaction
+    // }
+    // else{
+      
+    // }
+
+  })
 
   return array
 })
@@ -1742,7 +2036,36 @@ const calcMeshProfit = (meshID: number) => {
 }
 // calc mesh profit in percentage
 // const calcMeshProfitPercent = (meshID: number) => {
+//= cal cTransaction Amount
+const calcTransactionAmount = (qty: number, amount, from_item_id, target_item_id) => {
+  if(from_item_id === 0 && target_item_id > 0) {
+    return `+${qty * amount}`
+  } else if(from_item_id > 0 && target_item_id === 0){
+    return `-${qty * amount}`
+  } else {
+    if(meshes_computed.value.find(item => item.tag === choosenChip_section.value && item.id === from_item_id)) {
+      return `-${qty * amount}`
+    } else {
+      return `+${qty * amount}`
+    }
+  }
+}
+//=  calc mesh amount
+const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string) => {
+  let acc = 0
+  transaction_ledger_computed.value.forEach(transaction => {
+    if(transaction.from_item_id === mesh_id && transaction.from_item_type === mesh_type && transaction.from_item_type === mesh_type) {
+      acc -= +transaction.from_item_qty * +transaction.from_item_amount
+    }
+    else if (transaction.target_item_id === mesh_id && transaction.target_item_type === mesh_type && transaction.target_item_type === mesh_type) {
+      acc += +transaction.target_item_qty * +transaction.target_item_amount
+    }
 
+  })
+
+  // return `${mesh_tag}-${mesh_type}_${mesh_id}`
+  return acc
+}
 //   let result = 0;
 //   let mesh;
 //   if(mesh_list.value?.length) {
@@ -1781,12 +2104,21 @@ const calcMeshProfit = (meshID: number) => {
 // TRANSLATE
 //
 //= meshes id in transactions
-const translateMeshByID = (id: number) => {
-  let mesh;
-  if(mesh_list.value?.length) {
-    mesh = mesh_list.value.find(mesh => mesh.id === id)
-  }
-  return mesh
+// const translateMeshByID = (id: number) => {
+//   let mesh;
+//   if(mesh_list.value?.length) {
+//     mesh = mesh_list.value.find(mesh => mesh.id === id)
+//   }
+//   return mesh
+// }
+
+const translateTransactionMeshes = (tag: string, from_item_type:string, from_item_id:number) => {
+  // let mesh;
+  // if(mesh_list.value?.length) {
+  //   mesh = mesh_list.value.find(mesh => mesh.id === id)
+  // }
+  // return mesh
+  return `${tag}-${from_item_type}_${from_item_id}`
 }
 //= storageID
 // const translateStorageID = (storageID: number) => {
@@ -1842,6 +2174,8 @@ onMounted(() => {
       evt.preventDefault();
       scrollAffiliationContainer.scrollLeft += evt.deltaY;
   });
+
+  choosenChip_section.value = mesh_tag_computed.value ? mesh_tag_computed.value[0] : 'available'
 })
 
 // EMITS FUNCTIONs
@@ -2403,6 +2737,8 @@ const sumSectionAmount = (groupType: string) => {
 watch(choosenChip_section, () => {
   console.log(`Переключили вкладку на ${choosenChip_section.value}`)
   currentFundParagraph.value = 'meshes'
+  // console.log(transaction_ledger_computed.value)
+  // console.log(meshes_computed.value)
 })
 watch(currentAffiliation, () => {
   console.log(currentAffiliation.value)
@@ -2638,148 +2974,65 @@ const { data: bank } = useFetch("/api/banks/bank", {
             <div>
               <!-- TRANSACTION -->
               <section 
-                v-for="transaction in transaction_ledger_computed.filter(item => item.created_at.slice(0 ,10) === date)"
+                v-for="transaction in transaction_ledger_computed.filter(item => item.created_at.slice(0 ,10) === date).reverse()"
                 class="transaction_wrapper"  
               >
-              <!-- {{ choosenChip_section }}  <br>   -->
-              {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
-                <!-- <div class="transaction-first">
-    
-                  
-                  <p class="transaction_date">{{ transaction.created_at }}</p>
-                  
-    
-                  <p 
-                  class="transacion_purpose"
-                  :style="setBgColorByOperationType(transaction.purpose)"
-                  >
-                      {{ transaction.purpose }} 
-                    </p>
-                </div> -->
-    
-                <!-- {{ transaction }} -->
-                <!-- <div>
-                  id: {{ transaction.id }}
-                </div> -->
+ 
+
                 <!--  -->
-                <!-- <div>
-                  {{ transaction.created_at }}
-                </div> -->
-                <!--  -->
-                <div v-if="transaction.from_item_id === 0" style="background-color: cyan; display: flex; justify-content: space-between; align-items: center; background-color: cyan;">
-                   <div>
-                      <div>
-                        {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
-                      </div>
-                      <div style="text-transform: uppercase;">{{ transaction.from_item_type }}</div>
-                    </div>
-                    <div>
-                      +{{ transaction.target_item_qty * transaction.target_item_amount}}{{ transaction.target_item_currency }}
-                    </div>
+                <!-- /// вывнести вв попап
+
+                ///
+                TRANSFER
+                <div class="transfer_avatar_container">
+                  {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
                 </div>
-                <!--  -->
-                <div v-if="transaction.target_item_id === 0" style="background-color: cyan; display: flex; justify-content: space-between; align-items: center; background-color: cyan;">
+                <div class="transfer_avatar_container" v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
+                
+                  <div class="transfer_avatar">
+                    {{ transaction.from_item_id }}
+                  </div>
                   <div>
-                      <div>
-                        {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
-                      </div>
-                      <div style="text-transform: uppercase;">{{ transaction.target_item_type }}</div>
-                    </div>
-                    <div>
-                      -{{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
-                    </div>
-                </div>
-                <!--  -->
-                <div v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
-                  <div style="display: flex; justify-content: space-between; align-items: center; background-color: cyan;">
-                    <div>
-                      <div>
-                        {{ transaction.from_item_tag }} > {{ transaction.target_item_tag }}
-                      </div>
-                      <div>TRANSFER</div>
-                    </div>
-                    <div>
-                      {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
-                    </div>
+                    >
                   </div>
-                  /// вывнести вв попап
-                  ///
-                  TRANSFER
-                  <div class="transfer_avatar_container">
-                    {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}
+                  <div class="transfer_avatar">
+                    {{ transaction.target_item_id }}
                   </div>
-                  <div class="transfer_avatar_container" v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
-                  
-                    <div class="transfer_avatar">
-                      {{ transaction.from_item_id }}
-                    </div>
-                    <div>
-                      >
-                    </div>
-                    <div class="transfer_avatar">
-                      {{ transaction.target_item_id }}
-                    </div>
-                  </div>
-                  ////
                 </div>
-                <!--  --> 
-                <div style="margin-top: 1rem; background-color: orange; width: 15rem; height: 10rem;">
-                  <p style="margin: 0;">FROM</p>
-                  {{ transaction.from_item_id }} <br> 
-                  {{ transaction.from_item_tag }} <br>
-                  {{ transaction.from_item_type }} <br>
-                  <p>{{ transaction.from_item_qty }} * {{ transaction.from_item_amount }}{{ transaction.from_item_currency }} = {{ transaction.from_item_qty * transaction.from_item_amount}}{{ transaction.from_item_currency }}</p>
-                </div>
-                <div>
-                  >
-                </div>
-
-                <div style="margin-top: 1rem; background-color: cyan; width: 15rem; height: 10rem;">
-                  <p style="margin: 0;">TARGET</p>
-                  {{ transaction.target_item_id }} <br>
-                  {{ transaction.target_item_tag }} <br>
-                  {{ transaction.target_item_type }} <br>
-                  <p>{{ transaction.target_item_qty }} * {{ transaction.target_item_amount }}{{ transaction.target_item_currency }} = {{ transaction.target_item_qty * transaction.target_item_amount}}{{ transaction.target_item_currency }}</p>
-                </div>
-
-                <div>
+                              <div>
                   {{ transaction.comments }}
                 </div>
-    
-                <!-- <div class="transaction_details">
-                  <div>
-                    <p v-if="transaction.from_mesh_name" style="margin: 0;">
-                      <span>{{ transaction.from_mesh_owner_id }}{{ transaction.from_mesh_owner_type }}</span>
-                      <span>Комиссия: {{ transaction.fee }}{{ currency_to_show.ticket }}</span>
-                      <span>{{ transaction.from_mesh_name }}</span>
-                      <span>{{ transaction.from_mesh_type }}</span>
-                      <span>{{ transaction.from_mesh_broker_tag }}</span>
-                      <span>({{ transaction.from_mesh_price }}{{transaction.from_mesh_currency}} x {{ transaction.from_mesh_amount }} = {{ transaction.from_mesh_price * transaction.from_mesh_amount }}{{transaction.from_mesh_currency}})</span>
-                    </p>
-                    <p style="margin: 0;" v-else>Неизвестный</p> 
+                //// -->
+
+                <div>
+                  {{ translateTransactionMeshes(transaction.from_item_tag, transaction.from_item_type, transaction.from_item_id) }}
+                    > 
+                  {{ translateTransactionMeshes(transaction.target_item_tag, transaction.target_item_type, transaction.target_item_id) }}
+                </div>
+                <div style="color: var(--color-global-text_second);">
+                  {{ transaction.purpose }}
+                </div>
+                <div style="font-weight: bold;">
+
+                  <div v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
+                    <div v-if="transaction.from_item_currency === transaction.target_item_currency">
+                      {{ calcTransactionAmount(transaction.from_item_qty, transaction.from_item_amount, transaction.from_item_id, transaction.target_item_id) }}
+                      {{ transaction.from_item_currency }}
+                    </div>
+                    <div v-else>
+                      {{ calcTransactionAmount(transaction.from_item_qty, transaction.from_item_amount, transaction.from_item_id, transaction.target_item_id) }}
+                      {{ transaction.from_item_currency }}
+                      >
+                      {{ calcTransactionAmount(transaction.target_item_qty, transaction.target_item_amount, transaction.from_item_id, transaction.target_item_id) }}
+                      {{ transaction.target_item_currency }}
+                    </div>
                   </div>
-                  <div>>>></div>
-                  <div>
-                    <p v-if="transaction.receive_mesh_name" style="margin: 0;">
-                      <span>{{ transaction.receive_mesh_owner_id }}{{ transaction.receive_mesh_owner_type }}</span>
-                      <span style="background-color: var(--color-btn-hover-bg)">Storage:{{ transaction.storageID }}</span>
-                      <span>{{ transaction.receive_mesh_name }}</span>
-                      <span>{{ transaction.receive_mesh_type }}</span>
-                      <span>{{ transaction.receive_mesh_broker_tag }}</span>
-                      <span>({{ transaction.receive_mesh_price }}{{transaction.receive_mesh_currency}} x {{ transaction.receive_mesh_amount }} = {{ transaction.receive_mesh_price * transaction.receive_mesh_amount }}{{transaction.receive_mesh_currency}})</span>
-                    </p>
-                    <p style="margin: 0;" v-else>Неизвестный</p> 
+
+                  <div v-else-if="transaction.from_item_id === 0">
+                    {{ calcTransactionAmount(transaction.target_item_qty, transaction.target_item_amount, transaction.from_item_id, transaction.target_item_id) }}
+                    {{ transaction.target_item_currency }}
                   </div>
-    
-                  <div v-if="transaction.loaner_id">
-                    <p>Loaner info: {{ transaction.loaner_id }} {{ transaction.loaner_type }}. Mesh: {{ transaction.loaner_mesh_id }}</p>
-                  </div>
-                </div> -->
-    
-    
-                <!-- <div>
-                  <div>{{ transaction.authorType }}{{ transaction.authorID }}</div>
-                </div> -->
+                </div>
     
               </section>
             </div>
@@ -2820,7 +3073,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   </div>
                   <div class="mesh_content">
                     <p class="mesh_content-el">{{ item.name }}</p>
-                    <p class="mesh_content-el">999,999,999.00{{ currency_to_show.ticket }}</p>
+                    <p class="mesh_content-el">{{calcMeshAmount(item.id, item.type, item.tag)}} {{ currency_to_show.ticket }}</p>
                   </div>
                   <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
                 </li>
@@ -2834,6 +3087,17 @@ const { data: bank } = useFetch("/api/banks/bank", {
         <div v-else>
           <p style="margin-top: 1rem;">У вас нет мешков</p>
         </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 
       <!-- ОБРАБОТАТЬ! -->
       <!-- CREDITS -->
@@ -3236,7 +3500,9 @@ const { data: bank } = useFetch("/api/banks/bank", {
     grid-template-columns: 1fr;
     grid-template-areas: 't_first details details detatils';
     margin-top: 1rem;
-    background-color: var(--color-btn-hover-bg);
+    background-color: var(--color-global-baackground_light);
+    border-radius: 1rem;
+    padding: 1rem 1rem;
   }
   .transaction-first {
     grid-area: t_first;
