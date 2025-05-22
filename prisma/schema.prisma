@@ -241,22 +241,29 @@ model Crypto {
 }
 
 model Transaction {
-  id                    Int      @id @default(autoincrement())
-  created_at            DateTime @default(now()) @db.DateTime(0)
-  purpose               String   @db.VarChar(60)
-  fee                   Float    @default(0.00)
-  from_mesh_id          Int      @default(0)
-  from_mesh_currency    String   @db.VarChar(60)
-  from_mesh_amount      Float    @default(0.00)
-  from_mesh_price       Float    @default(0.00)
-  receive_mesh_id       Int      @default(0)
-  receive_mesh_currency String   @db.VarChar(60)
-  receive_mesh_amount   Float    @default(0.00)
-  receive_mesh_price    Float    @default(0.00)
-  comments              String   @db.VarChar(255)
-  authorID              Int?     @default(0)
-  authorType            String?  @db.VarChar(60)
-  loanID                Int?
+  id                   Int      @id @default(autoincrement())
+  created_at           DateTime @default(now()) @db.DateTime(0)
+  //
+  from_item_id         Int      @default(0)
+  from_item_tag        String   @db.VarChar(255)
+  from_item_type       String   @db.VarChar(255)
+  from_item_qty        Float    @default(0.00)
+  from_item_amount     Float    @default(0.00)
+  from_item_currency   String   @db.VarChar(60)
+  //
+  target_item_id       Int      @default(0)
+  target_item_tag      String   @db.VarChar(255)
+  target_item_type     String   @db.VarChar(255)
+  target_item_qty      Float    @default(0.00)
+  target_item_amount   Float    @default(0.00)
+  target_item_currency String   @db.VarChar(60)
+  //
+  purpose              String   @db.VarChar(255)
+  fee                  Float    @default(0.00)
+  comments             String   @db.VarChar(255)
+  //
+  authorID             Int      @default(0)
+  authorType           String   @db.VarChar(60)
 }
 
 // FUND GROUP (Это не надо в БД)

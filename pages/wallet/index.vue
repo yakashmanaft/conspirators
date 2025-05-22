@@ -238,740 +238,740 @@ const currentFundParagraph = ref('meshes')
 const currency_to_show =  ref({
   ticket:  'RUB'
 })
-const wallet_fund_group = ref([
-  {
-    id: 1,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Накопительные счета'
-  },
-  {
-    id: 2,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'cash',
-    name: 'Наличка'
-  },
-  {
-    id: 3,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'mutual_funds',
-    name: 'ПИФы'
-  },
-  {
-    id: 4,
-    section_id: 2 ,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Брокерские счета'
-  },
-  {
-    id: 5,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-wallet',
-    name: 'Кошельки'
-  },
-  {
-    id: 6,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-stock',
-    name: 'Балансы бирж'
-  },
-  {
-    id: 7,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-stacking',
-    name: 'Стэйкинг'
-  },
-  {
-    id: 8,
-    section_id: 4,
-    tagName: 'invested_deposit',
-    tagType: 'deposit-capitalize',
-    name: 'С капитализацией'
-  },
-  {
-    id: 9,
-    section_id: 4,
-    tagName: 'invested_deposit',
-    tagType: 'deposit-wocapitalize',
-    name: 'Без капитализации'
-  },
-  {
-    id: 10,
-    section_id: 5,
-    tagName: 'invested_currency',
-    tagType: 'currency-usd',
-    name: 'Доллар'
-  },
-  {
-    id: 11,
-    section_id: 5,
-    tagName: 'invested_currency',
-    tagType: 'currency-cny',
-    name: 'Юань'
-  },
-  {
-    id: 12,
-    section_id: 5,
-    tagName: 'invested_currency',
-    tagType: 'currency-hkd',
-    name: 'Гонконский доллар'
-  },
-  {
-    id: 13,
-    section_id: 6,
-    tagName: 'credits',
-    tagType: 'credits-interest',
-    name: 'Кредит Процентный'
-  },
-  {
-    id: 14,
-    section_id: 6,
-    tagName: 'credits',
-    tagType: 'credits-free',
-    name: 'Кредит Беспроцентный'
-  },
-  {
-    id: 15,
-    section_id: 9,
-    tagName: 'withdraw',
-    tagType: 'withdraw-salary',
-    name: 'Зарплаты'
-  },
-  {
-    id: 16,
-    section_id: 9,
-    tagName: 'withdraw',
-    tagType: 'withdraw-dividends',
-    name: 'Дивиденды'
-  },
-  {
-    id: 16,
-    section_id: 10,
-    tagName: 'deposit',
-    tagType: 'deposit-weekly-contributions',
-    name: 'Еженедельные взносы'
-  },
-  {
-    id: 17,
-    section_id: 10,
-    tagName: 'deposit',
-    tagType: 'deposit-gift',
-    name: 'Дар'
-  },
-  {
-    id: 19,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'debet_card',
-    name: 'Дебетовая карта'
-  },
-])
+// const wallet_fund_group = ref([
+//   {
+//     id: 1,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Накопительные счета'
+//   },
+//   {
+//     id: 2,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'cash',
+//     name: 'Наличка'
+//   },
+//   {
+//     id: 3,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'mutual_funds',
+//     name: 'ПИФы'
+//   },
+//   {
+//     id: 4,
+//     section_id: 2 ,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Брокерские счета'
+//   },
+//   {
+//     id: 5,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-wallet',
+//     name: 'Кошельки'
+//   },
+//   {
+//     id: 6,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-stock',
+//     name: 'Балансы бирж'
+//   },
+//   {
+//     id: 7,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-stacking',
+//     name: 'Стэйкинг'
+//   },
+//   {
+//     id: 8,
+//     section_id: 4,
+//     tagName: 'invested_deposit',
+//     tagType: 'deposit-capitalize',
+//     name: 'С капитализацией'
+//   },
+//   {
+//     id: 9,
+//     section_id: 4,
+//     tagName: 'invested_deposit',
+//     tagType: 'deposit-wocapitalize',
+//     name: 'Без капитализации'
+//   },
+//   {
+//     id: 10,
+//     section_id: 5,
+//     tagName: 'invested_currency',
+//     tagType: 'currency-usd',
+//     name: 'Доллар'
+//   },
+//   {
+//     id: 11,
+//     section_id: 5,
+//     tagName: 'invested_currency',
+//     tagType: 'currency-cny',
+//     name: 'Юань'
+//   },
+//   {
+//     id: 12,
+//     section_id: 5,
+//     tagName: 'invested_currency',
+//     tagType: 'currency-hkd',
+//     name: 'Гонконский доллар'
+//   },
+//   {
+//     id: 13,
+//     section_id: 6,
+//     tagName: 'credits',
+//     tagType: 'credits-interest',
+//     name: 'Кредит Процентный'
+//   },
+//   {
+//     id: 14,
+//     section_id: 6,
+//     tagName: 'credits',
+//     tagType: 'credits-free',
+//     name: 'Кредит Беспроцентный'
+//   },
+//   {
+//     id: 15,
+//     section_id: 9,
+//     tagName: 'withdraw',
+//     tagType: 'withdraw-salary',
+//     name: 'Зарплаты'
+//   },
+//   {
+//     id: 16,
+//     section_id: 9,
+//     tagName: 'withdraw',
+//     tagType: 'withdraw-dividends',
+//     name: 'Дивиденды'
+//   },
+//   {
+//     id: 16,
+//     section_id: 10,
+//     tagName: 'deposit',
+//     tagType: 'deposit-weekly-contributions',
+//     name: 'Еженедельные взносы'
+//   },
+//   {
+//     id: 17,
+//     section_id: 10,
+//     tagName: 'deposit',
+//     tagType: 'deposit-gift',
+//     name: 'Дар'
+//   },
+//   {
+//     id: 19,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'debet_card',
+//     name: 'Дебетовая карта'
+//   },
+// ])
 //= conspirators funds
 
-const conspirators_fund = ref([
-  {
-    id: 1,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'LambOfArt BOT',
-    brokerTag: 'SBER',
-    invested: 4000.00,
-    price: 4178.70,
-    currency: 'RUB',
-    conspirators: [
-      {
-        userID: 2,
-        userType: 'conspirator'
-      }
-    ]
-  },
-  {
-    id: 2,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'BOT',
-    brokerTag: 'T-Bank',
-    invested: 123383.61,
-    price: 141694.55,
-    currency: 'RUB',
-    conspirators: [
-      {
-        userID: 1,
-        userType: 'user'
-      },
-      {
-        userID: 2,
-        userType: 'conspirator'
-      }
-    ]
-  },
-  {
-    id: 2,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Запасы',
-    brokerTag: 'SBER',
-    invested: 34.05,
-    price: 34.05,
-    currency: 'RUB'
-  },
-  {
-    id: 4,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'mutual_funds',
-    name: 'Фонд локальный',
-    brokerTag: 'SBER',
-    invested: 300.00,
-    price: 308.75,
-    currency: 'RUB'
-  },
-  {
-    id: 5,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЕС',
-    brokerTag: 'SBER',
-    invested: 4681.41,
-    price: 4681.41, 
-    currency: 'RUB'
-  },
-  {
-    id: 6,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'АС',
-    brokerTag: 'SBER',
-    invested: 5385.01,
-    price: 5385.01,
-    currency: 'RUB'
-  },
-  {
-    id: 7,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЮС',
-    brokerTag: 'SBER',
-    invested: 513.46,
-    price: 513.46,
-    currency: 'RUB'
-  },
-  {
-    id: 8,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ДомИнввест',
-    brokerTag: 'SBER',
-    invested: 3362.37,
-    price: 3362.37,
-    currency: 'RUB'
-  },
-  {
-    id: 9,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Юнидрам',
-    brokerTag: 'VTB',
-    invested: 3090.64,
-    price: 3090.64,
-    currency: 'RUB'
-  },
-  {
-    id: 10,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЕС',
-    brokerTag: 'VTB',
-    invested: 350.55,
-    price: 350.55,
-    currency: 'RUB'
-  },
-  {
-    id: 11,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЮС',
-    brokerTag: 'VTB',
-    invested: 5.08,
-    price: 5.08,
-    currency: 'RUB'
-  },
-  {
-    id: 12,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЮД',
-    brokerTag: 'VTB',
-    invested: 1.43,
-    price: 1.43,
-    currency: 'RUB'
-  },
-  {
-    id: 13,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Купоны',
-    brokerTag: 'Yandex',
-    invested: 531.73,
-    price: 531.73,
-    currency: 'RUB'
-  },
-  {
-    id: 14,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Станция',
-    brokerTag: 'Yandex',
-    invested: 53599.28,
-    price: 53599.28,
-    currency: 'RUB'
-  },
-  {
-    id: 15,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЕС',
-    brokerTag: 'Yandex',
-    invested: 23767.03,
-    price: 23767.03,
-    currency: 'RUB'
-  },
-  {
-    id: 16,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЕС ФИИ',
-    brokerTag: 'Yandex',
-    invested: 265.48,
-    price: 265.48,
-    currency: 'RUB'
-  },
-  {
-    id: 17,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЮС',
-    brokerTag: 'Yandex',
-    invested: 1726.05,
-    price: 1726.05,
-    currency: 'RUB'
-  },
-  {
-    id: 18,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Соучастники',
-    brokerTag: 'Yandex',
-    invested: 2194.12,
-    price: 2194.12,
-    currency: 'RUB'
-  },
-  {
-    id: 19,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Соучастники ФИИ',
-    brokerTag: 'Yandex',
-    invested: 1421.14,
-    price: 1421.14,
-    currency: 'RUB'
-  },
-  {
-    id: 20,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЮД',
-    brokerTag: 'Yandex',
-    invested: 1128.00,
-    price: 1128.00,
-    currency: 'RUB'
-  },
-  {
-    id: 21,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ЮС',
-    brokerTag: 'T-Bank',
-    invested: 510.66,
-    price: 510.66,
-    currency: 'RUB'
-  },
-  {
-    id: 22,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Юнидрам',
-    brokerTag: 'T-Bank',
-    invested: 5547.09,
-    price: 5547.09,
-    currency: 'RUB'
-  },
-  {
-    id: 23,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ИС',
-    brokerTag: 'Renesans',
-    invested: 9467.49,
-    price: 9467.49,
-    currency: 'RUB'
-  },
-  {
-    id: 24,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'Магнит',
-    brokerTag: 'Renessans',
-    invested: 3687.60,
-    price: 3687.60,
-    currency: 'RUB'
-  },
-  {
-    id: 25,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'saving_account',
-    name: 'ИС',
-    brokerTag: 'BCS',
-    invested: 379.51,
-    price: 379.51,
-    currency: 'RUB'
-  },
-  {
-    id: 26,
-    section_id: 1,
-    tagName: 'available',
-    tagType: 'cash',
-    name: 'ЮС',
-    brokerTag: 'SBER',
-    invested: 4970.00,
-    price: 4970.00,
-    currency: 'RUB'
-  },
-  {
-    id: 27,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'mutual_funds',
-    name: 'Фонд российских облигаций',
-    brokerTag: 'SBER',
-    invested: 300.00,
-    price: 321.63,
-    currency: 'RUB'
-  },
-  {
-    id: 28,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'mutual_funds',
-    name: 'Фонд Накопительный',
-    brokerTag: 'SBER',
-    invested: 300.00,
-    price: 329.89,
-    currency: 'RUB'
-  },
-  {
-    id: 29,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Инвесткопилка',
-    brokerTag: 'T-Bank',
-    invested: 866.46,
-    price: 866.46,
-    currency: 'RUB'
-  },
-  {
-    id: 30,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Валюта',
-    brokerTag: 'T-Bank',
-    invested: 0.60,
-    price: 0.60,
-    currency: 'RUB'
-  },
-  {
-    id: 31,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Камини',
-    brokerTag: 'T-Bank',
-    // invested: 2679.00,
-    invested: 2700.00,
-    price: 2679.00,
-    currency: 'RUB'
-  },
-  {
-    id: 32,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Сбер Личный',
-    brokerTag: 'T-Bank',
-    invested: 108054.97,
-    price: 108054.97,
-    currency: 'RUB'
-  },
-  {
-    id: 33,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Альфа-инвестиции Личный',
-    brokerTag: 'Alfa-bank',
-    invested: 217.56,
-    price: 217.56,
-    currency: 'RUB'
-  },
-  {
-    id: 34,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'ИС Без имени',
-    brokerTag: 'BCS',
-    invested: 15092.99,
-    price: 15092.99,
-    currency: 'RUB'
-  },
-  {
-    id: 35,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'ИИС Личный',
-    brokerTag: 'BCS',
-    invested: 5660.71,
-    price: 5660.71,
-    currency: 'RUB'
-  },
-  {
-    id: 36,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Кит финанс Личный',
-    brokerTag: 'KF',
-    invested: 0.00,
-    price: 0.00,
-    currency: 'RUB'
-  },
-  {
-    id: 37,
-    section_id: 2,
-    tagName: 'invested_stock',
-    tagType: 'brokerage_account',
-    name: 'Цифра брокер Личный',
-    brokerTag: 'CB',
-    invested: 0.00,
-    price: 0.00,
-    currency: 'RUB'
-  },
-  {
-    id: 38,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-wallet',
-    name: 'BOT',
-    brokerTag: 'Metamask BSC',
-    invested: 234.91,
-    price: 234.91,
-    currency: 'USD'
-  },
-  {
-    id: 39,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-wallet',
-    name: 'BOT',
-    brokerTag: 'Telegram Wallet',
-    invested: 93.42,
-    price: 93.42,
-    currency: 'USD'
-  },
-  {
-    id: 40,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-wallet',
-    name: 'Личный',
-    brokerTag: 'Phantom Wallet',
-    invested: 53.34,
-    price: 249.13,
-    currency: 'USD'
-  },
-  {
-    id: 41,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-stock',
-    name: 'BOT',
-    brokerTag: 'Binance',
-    invested: 0.00,
-    price: 0.00,
-    currency: 'USD'
-  },
-  {
-    id: 42,
-    section_id: 3,
-    tagName: 'invested_crypto',
-    tagType: 'crypto-stacking',
-    name: 'BOT',
-    brokerTag: 'MTT',
-    invested: 0.00,
-    price: 0.00,
-    currency: 'MTT',
-    ownerType: 'conspirators',
-    ownerId: 2
-  },
-  {
-    id: 43,
-    section_id: 4,
-    tagName: 'invested_deposit',
-    tagType: 'deposit-capitalize',
-    name: 'Личный',
-    brokerTag: 'SBER',
-    invested: 0.00,
-    price: 0.00,
-    currency: 'RUB'
-  },
-  {
-    id: 44,
-    section_id: 4,
-    tagName: 'invested_deposit',
-    tagType: 'deposit-wocapitalize',
-    name: 'Личный',
-    brokerTag: 'SBER',
-    invested: 0.00,
-    price: 0.00,
-    currency: 'RUB'
-  },
-  {
-    id: 45,
-    section_id: 5,
-    tagName: 'invested_currency',
-    tagType: 'currency-usd',
-    name: 'Личный',
-    brokerTag: 'T-Bank',
-    invested: 10.00,
-    price: 10.00,
-    currency: 'USD',
-    ownerType: 'user',
-    ownerId: 1
-  },
-  {
-    id: 46,
-    section_id: 5,
-    tagName: 'invested_currency',
-    tagType: 'currency-cny',
-    name: 'Личный',
-    brokerTag: 'T-Bank',
-    invested: 271.00,
-    price: 271.00,
-    currency: 'CNY'
-  },
-  {
-    id: 47,
-    section_id: 5,
-    tagName: 'invested_currency',
-    tagType: 'currency-hkd',
-    name: 'Личный',
-    brokerTag: 'T-Bank',
-    invested: 21.00,
-    price: 21.00,
-    currency: 'HKD'
-  },
-  {
-    id: 48,
-    section_id: 9,
-    tagName: 'withdraw',
-    tagType: 'withdraw-dividends',
-    name: 'Sergey Anfalov',
-    brokerTag: 'Банковская карта',
-    invested: 1000.00,
-    price: 1000.00,
-    currency: 'RUB'
-  },
-  {
-    id: 49,
-    section_id: 10,
-    tagName: 'deposit',
-    tagType: 'deposit-weekly-contributions',
-    name: 'Sergey Anfalov',
-    brokerTag: 'ЕС',
-    invested: 100.00,
-    price: 100.00,
-    currency: 'RUB'
-  },
-  {
-    id: 50,
-    section_id: 10,
-    tagName: 'deposit',
-    tagType: 'deposit-weekly-contributions',
-    name: 'Dzagi',
-    brokerTag: 'ЕС',
-    invested: 100.00,
-    price: 100.00,
-    currency: 'RUB'
-  },
-  {
-    id: 51,
-    section_id: 10,
-    tagName: 'deposit',
-    tagType: 'deposit-weekly-contributions',
-    name: 'Sergy Anfalov',
-    brokerTag: 'ЕС',
-    invested: 1000.00,
-    price: 1000.00,
-    currency: 'RUB',
-  },
-  {
-    id: 52,
-    section_id: 19,
-    tagName: 'available',
-    tagType: 'debet_card',
-    name: 'Serey Anfalov',
-    brokerTag: 'SBER',
-    invested: 1000.00,
-    price: 1000.00,
-    currency: 'RUB',
-    ownerType: 'user',
-    ownerId: 1
-  },
-])
+// const conspirators_fund = ref([
+//   {
+//     id: 1,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'LambOfArt BOT',
+//     brokerTag: 'SBER',
+//     invested: 4000.00,
+//     price: 4178.70,
+//     currency: 'RUB',
+//     conspirators: [
+//       {
+//         userID: 2,
+//         userType: 'conspirator'
+//       }
+//     ]
+//   },
+//   {
+//     id: 2,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'BOT',
+//     brokerTag: 'T-Bank',
+//     invested: 123383.61,
+//     price: 141694.55,
+//     currency: 'RUB',
+//     conspirators: [
+//       {
+//         userID: 1,
+//         userType: 'user'
+//       },
+//       {
+//         userID: 2,
+//         userType: 'conspirator'
+//       }
+//     ]
+//   },
+//   {
+//     id: 2,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Запасы',
+//     brokerTag: 'SBER',
+//     invested: 34.05,
+//     price: 34.05,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 4,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'mutual_funds',
+//     name: 'Фонд локальный',
+//     brokerTag: 'SBER',
+//     invested: 300.00,
+//     price: 308.75,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 5,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЕС',
+//     brokerTag: 'SBER',
+//     invested: 4681.41,
+//     price: 4681.41, 
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 6,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'АС',
+//     brokerTag: 'SBER',
+//     invested: 5385.01,
+//     price: 5385.01,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 7,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЮС',
+//     brokerTag: 'SBER',
+//     invested: 513.46,
+//     price: 513.46,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 8,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ДомИнввест',
+//     brokerTag: 'SBER',
+//     invested: 3362.37,
+//     price: 3362.37,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 9,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Юнидрам',
+//     brokerTag: 'VTB',
+//     invested: 3090.64,
+//     price: 3090.64,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 10,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЕС',
+//     brokerTag: 'VTB',
+//     invested: 350.55,
+//     price: 350.55,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 11,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЮС',
+//     brokerTag: 'VTB',
+//     invested: 5.08,
+//     price: 5.08,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 12,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЮД',
+//     brokerTag: 'VTB',
+//     invested: 1.43,
+//     price: 1.43,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 13,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Купоны',
+//     brokerTag: 'Yandex',
+//     invested: 531.73,
+//     price: 531.73,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 14,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Станция',
+//     brokerTag: 'Yandex',
+//     invested: 53599.28,
+//     price: 53599.28,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 15,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЕС',
+//     brokerTag: 'Yandex',
+//     invested: 23767.03,
+//     price: 23767.03,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 16,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЕС ФИИ',
+//     brokerTag: 'Yandex',
+//     invested: 265.48,
+//     price: 265.48,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 17,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЮС',
+//     brokerTag: 'Yandex',
+//     invested: 1726.05,
+//     price: 1726.05,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 18,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Соучастники',
+//     brokerTag: 'Yandex',
+//     invested: 2194.12,
+//     price: 2194.12,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 19,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Соучастники ФИИ',
+//     brokerTag: 'Yandex',
+//     invested: 1421.14,
+//     price: 1421.14,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 20,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЮД',
+//     brokerTag: 'Yandex',
+//     invested: 1128.00,
+//     price: 1128.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 21,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ЮС',
+//     brokerTag: 'T-Bank',
+//     invested: 510.66,
+//     price: 510.66,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 22,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Юнидрам',
+//     brokerTag: 'T-Bank',
+//     invested: 5547.09,
+//     price: 5547.09,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 23,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ИС',
+//     brokerTag: 'Renesans',
+//     invested: 9467.49,
+//     price: 9467.49,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 24,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'Магнит',
+//     brokerTag: 'Renessans',
+//     invested: 3687.60,
+//     price: 3687.60,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 25,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'saving_account',
+//     name: 'ИС',
+//     brokerTag: 'BCS',
+//     invested: 379.51,
+//     price: 379.51,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 26,
+//     section_id: 1,
+//     tagName: 'available',
+//     tagType: 'cash',
+//     name: 'ЮС',
+//     brokerTag: 'SBER',
+//     invested: 4970.00,
+//     price: 4970.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 27,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'mutual_funds',
+//     name: 'Фонд российских облигаций',
+//     brokerTag: 'SBER',
+//     invested: 300.00,
+//     price: 321.63,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 28,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'mutual_funds',
+//     name: 'Фонд Накопительный',
+//     brokerTag: 'SBER',
+//     invested: 300.00,
+//     price: 329.89,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 29,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Инвесткопилка',
+//     brokerTag: 'T-Bank',
+//     invested: 866.46,
+//     price: 866.46,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 30,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Валюта',
+//     brokerTag: 'T-Bank',
+//     invested: 0.60,
+//     price: 0.60,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 31,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Камини',
+//     brokerTag: 'T-Bank',
+//     // invested: 2679.00,
+//     invested: 2700.00,
+//     price: 2679.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 32,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Сбер Личный',
+//     brokerTag: 'T-Bank',
+//     invested: 108054.97,
+//     price: 108054.97,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 33,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Альфа-инвестиции Личный',
+//     brokerTag: 'Alfa-bank',
+//     invested: 217.56,
+//     price: 217.56,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 34,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'ИС Без имени',
+//     brokerTag: 'BCS',
+//     invested: 15092.99,
+//     price: 15092.99,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 35,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'ИИС Личный',
+//     brokerTag: 'BCS',
+//     invested: 5660.71,
+//     price: 5660.71,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 36,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Кит финанс Личный',
+//     brokerTag: 'KF',
+//     invested: 0.00,
+//     price: 0.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 37,
+//     section_id: 2,
+//     tagName: 'invested_stock',
+//     tagType: 'brokerage_account',
+//     name: 'Цифра брокер Личный',
+//     brokerTag: 'CB',
+//     invested: 0.00,
+//     price: 0.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 38,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-wallet',
+//     name: 'BOT',
+//     brokerTag: 'Metamask BSC',
+//     invested: 234.91,
+//     price: 234.91,
+//     currency: 'USD'
+//   },
+//   {
+//     id: 39,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-wallet',
+//     name: 'BOT',
+//     brokerTag: 'Telegram Wallet',
+//     invested: 93.42,
+//     price: 93.42,
+//     currency: 'USD'
+//   },
+//   {
+//     id: 40,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-wallet',
+//     name: 'Личный',
+//     brokerTag: 'Phantom Wallet',
+//     invested: 53.34,
+//     price: 249.13,
+//     currency: 'USD'
+//   },
+//   {
+//     id: 41,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-stock',
+//     name: 'BOT',
+//     brokerTag: 'Binance',
+//     invested: 0.00,
+//     price: 0.00,
+//     currency: 'USD'
+//   },
+//   {
+//     id: 42,
+//     section_id: 3,
+//     tagName: 'invested_crypto',
+//     tagType: 'crypto-stacking',
+//     name: 'BOT',
+//     brokerTag: 'MTT',
+//     invested: 0.00,
+//     price: 0.00,
+//     currency: 'MTT',
+//     ownerType: 'conspirators',
+//     ownerId: 2
+//   },
+//   {
+//     id: 43,
+//     section_id: 4,
+//     tagName: 'invested_deposit',
+//     tagType: 'deposit-capitalize',
+//     name: 'Личный',
+//     brokerTag: 'SBER',
+//     invested: 0.00,
+//     price: 0.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 44,
+//     section_id: 4,
+//     tagName: 'invested_deposit',
+//     tagType: 'deposit-wocapitalize',
+//     name: 'Личный',
+//     brokerTag: 'SBER',
+//     invested: 0.00,
+//     price: 0.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 45,
+//     section_id: 5,
+//     tagName: 'invested_currency',
+//     tagType: 'currency-usd',
+//     name: 'Личный',
+//     brokerTag: 'T-Bank',
+//     invested: 10.00,
+//     price: 10.00,
+//     currency: 'USD',
+//     ownerType: 'user',
+//     ownerId: 1
+//   },
+//   {
+//     id: 46,
+//     section_id: 5,
+//     tagName: 'invested_currency',
+//     tagType: 'currency-cny',
+//     name: 'Личный',
+//     brokerTag: 'T-Bank',
+//     invested: 271.00,
+//     price: 271.00,
+//     currency: 'CNY'
+//   },
+//   {
+//     id: 47,
+//     section_id: 5,
+//     tagName: 'invested_currency',
+//     tagType: 'currency-hkd',
+//     name: 'Личный',
+//     brokerTag: 'T-Bank',
+//     invested: 21.00,
+//     price: 21.00,
+//     currency: 'HKD'
+//   },
+//   {
+//     id: 48,
+//     section_id: 9,
+//     tagName: 'withdraw',
+//     tagType: 'withdraw-dividends',
+//     name: 'Sergey Anfalov',
+//     brokerTag: 'Банковская карта',
+//     invested: 1000.00,
+//     price: 1000.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 49,
+//     section_id: 10,
+//     tagName: 'deposit',
+//     tagType: 'deposit-weekly-contributions',
+//     name: 'Sergey Anfalov',
+//     brokerTag: 'ЕС',
+//     invested: 100.00,
+//     price: 100.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 50,
+//     section_id: 10,
+//     tagName: 'deposit',
+//     tagType: 'deposit-weekly-contributions',
+//     name: 'Dzagi',
+//     brokerTag: 'ЕС',
+//     invested: 100.00,
+//     price: 100.00,
+//     currency: 'RUB'
+//   },
+//   {
+//     id: 51,
+//     section_id: 10,
+//     tagName: 'deposit',
+//     tagType: 'deposit-weekly-contributions',
+//     name: 'Sergy Anfalov',
+//     brokerTag: 'ЕС',
+//     invested: 1000.00,
+//     price: 1000.00,
+//     currency: 'RUB',
+//   },
+//   {
+//     id: 52,
+//     section_id: 19,
+//     tagName: 'available',
+//     tagType: 'debet_card',
+//     name: 'Serey Anfalov',
+//     brokerTag: 'SBER',
+//     invested: 1000.00,
+//     price: 1000.00,
+//     currency: 'RUB',
+//     ownerType: 'user',
+//     ownerId: 1
+//   },
+// ])
 
 // const ledger = ref([
 // {
@@ -1158,936 +1158,945 @@ const conspirators_fund = ref([
 
 //   return array
 // })
-const ledger = ref([
-    // qty             Int      @default(0)
-    // amount           Decimal  @default(0)
-    // measure         String   @db.VarChar(255)
-    {
-      id: 1,
-      created_at: '2017-05-28T18:33:53.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 100.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 100.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 2,
-      created_at: '2017-05-28T18:53:53.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 100.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 100.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 3,
-      created_at: '2017-05-28T19:33:53.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 15.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 15.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 4,
-      created_at: '2017-05-28T18:53:53.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 15.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 15.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 5,
-      created_at: '2017-06-02T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 300.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 300.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-    {
-      id: 6,
-      created_at: '2017-06-02T12:01:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 300.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 300.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-    {
-      id: 7,
-      created_at: '2017-06-02T12:02:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 50.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 50.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-    {
-      id: 8,
-      created_at: '2017-06-02T12:03:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 50.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 50.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-    {
-      id: 9,
-      created_at: '2017-06-05T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 1000.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 1000.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 10,
-      created_at: '2017-06-05T12:01:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 1000.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 1000.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 11,
-      created_at: '2017-06-05T12:02:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 151.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 151.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-    {
-      id: 12,
-      created_at: '2017-06-05T12:03:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 151.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 151.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 13,
-      created_at: '2017-06-05T12:04:00.000Z',
-      //
-      from_item_id: 11,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 1145.13,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 28,
-      target_item_tag: 'invested_project',
-      target_item_type: 'start_up',
-      target_item_qty: 1,
-      target_item_amount: 1145.13,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: '0506Проект2017',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 14,
-      created_at: '2017-06-05T12:05:00.000Z',
-      //
-      from_item_id: 28,
-      from_item_tag: 'invested_project',
-      from_item_type: 'start_up',
-      from_item_qty: 1,
-      from_item_amount: 1145.13,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 0,
-      target_item_tag: 'expenses',
-      target_item_type: 'goods',
-      target_item_qty: 1,
-      target_item_amount: 1145.13,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Закуп0506Проект2017',
-      comments: 'Закупили брелки разные',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 15,
-      created_at: '2017-06-07T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 50.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 50.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 16,
-      created_at: '2017-06-07T12:01:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 50.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 50.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 17,
-      created_at: '2017-06-10T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 100.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 100.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 18,
-      created_at: '2017-06-10T12:01:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 100.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 100.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 19,
-      created_at: '2017-06-10T12:02:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 29.13,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 29.13,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 20,
-      created_at: '2017-06-10T12:03:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 29.13,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 29.13,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 21,
-      created_at: '2017-06-15T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 100.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 100.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 22,
-      created_at: '2017-06-15T12:01:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 100.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 100.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 23,
-      created_at: '2017-06-18T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 260.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 260.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 24,
-      created_at: '2017-06-18T12:01:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 260.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 260.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 25,
-      created_at: '2017-06-24T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 190.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 190.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 26,
-      created_at: '2017-06-24T12:01:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 190.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 190.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 27,
-      created_at: '2017-06-24T12:02:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 500.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 500.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 28,
-      created_at: '2017-06-24T12:03:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 500.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 500.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 29,
-      created_at: '2017-06-30T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash_sale',
-      from_item_qty: 1,
-      from_item_amount: 250.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 250.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Продажа0506Проект2017',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 30  ,
-      created_at: '2017-06-30T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash_sale',
-      from_item_qty: 1,
-      from_item_amount: 200.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 200.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Продажа0506Проект2017',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-   {
-      id: 31,
-      created_at: '2017-07-04T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 200.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 200.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 32,
-      created_at: '2017-07-04T12:01:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 200.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 200.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 33,
-      created_at: '2017-09-04T12:01:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 200.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 27,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 200.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 34,
-      created_at: '2017-09-04T12:01:00.000Z',
-      //
-      from_item_id: 27,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 200.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 200.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 35,
-      created_at: '2017-09-04T12:02:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 50.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 26,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 50.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Личные сбережения',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 36,
-      created_at: '2017-09-04T12:03:00.000Z',
-      //
-      from_item_id: 26,
-      from_item_tag: 'available',
-      from_item_type: 'cash',
-      from_item_qty: 1,
-      from_item_amount: 50.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 50.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'donation',
-      comments: '',
-      //
-      author_id: 1,
-      author_type: 'user'
-    },
-   {
-      id: 37  ,
-      created_at: '2017-09-09T12:00:00.000Z',
-      //
-      from_item_id: 0,
-      from_item_tag: 'income',
-      from_item_type: 'cash_sale',
-      from_item_qty: 1,
-      from_item_amount: 200.00,
-      from_item_currency: 'RUB',
-      //
-      target_item_id: 11,
-      target_item_tag: 'available',
-      target_item_type: 'cash',
-      target_item_qty: 1,
-      target_item_amount: 200.00,
-      target_item_currency: 'RUB',
-      //
-      fee: 0.00,
-      purpose: 'Продажа0506Проект2017',
-      comments: '',
-      //
-      author_id: 2,
-      author_type: 'user'
-    },
-])
+// const ledger = ref([
+//     // qty             Int      @default(0)
+//     // amount           Decimal  @default(0)
+//     // measure         String   @db.VarChar(255)
+//     // {
+//     //   id: 1,
+//     //   created_at: '2017-05-28T18:33:53.000Z',
+//     //   //
+//     //   from_item_id: 0,
+//     //   from_item_tag: 'income',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 100.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 26,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 100.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'Личные сбережения',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 2,
+//     //   created_at: '2017-05-28T18:53:53.000Z',
+//     //   //
+//     //   from_item_id: 26,
+//     //   from_item_tag: 'available',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 100.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 11,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 100.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 3,
+//     //   created_at: '2017-05-28T19:33:53.000Z',
+//     //   //
+//     //   from_item_id: 0,
+//     //   from_item_tag: 'income',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 15.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 26,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 15.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'Личные сбережения',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 4,
+//     //   created_at: '2017-05-28T18:53:53.000Z',
+//     //   //
+//     //   from_item_id: 26,
+//     //   from_item_tag: 'available',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 15.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 11,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 15.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 5,
+//     //   created_at: '2017-06-02T12:00:00.000Z',
+//     //   //
+//     //   from_item_id: 0,
+//     //   from_item_tag: 'income',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 300.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 27,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 300.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'Личные сбережения',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 1,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 6,
+//     //   created_at: '2017-06-02T12:01:00.000Z',
+//     //   //
+//     //   from_item_id: 27,
+//     //   from_item_tag: 'available',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 300.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 11,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 300.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 1,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 7,
+//     //   created_at: '2017-06-02T12:02:00.000Z',
+//     //   //
+//     //   from_item_id: 0,
+//     //   from_item_tag: 'income',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 50.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 27,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 50.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'Личные сбережения',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 1,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 8,
+//     //   created_at: '2017-06-02T12:03:00.000Z',
+//     //   //
+//     //   from_item_id: 27,
+//     //   from_item_tag: 'available',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 50.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 11,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 50.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 1,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 9,
+//     //   created_at: '2017-06-05T12:00:00.000Z',
+//     //   //
+//     //   from_item_id: 0,
+//     //   from_item_tag: 'income',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 1000.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 26,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 1000.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'Личные сбережения',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 10,
+//     //   created_at: '2017-06-05T12:01:00.000Z',
+//     //   //
+//     //   from_item_id: 26,
+//     //   from_item_tag: 'available',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 1000.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 11,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 1000.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 11,
+//     //   created_at: '2017-06-05T12:02:00.000Z',
+//     //   //
+//     //   from_item_id: 0,
+//     //   from_item_tag: 'income',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 151.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 26,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 151.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//     // {
+//     //   id: 12,
+//     //   created_at: '2017-06-05T12:03:00.000Z',
+//     //   //
+//     //   from_item_id: 26,
+//     //   from_item_tag: 'available',
+//     //   from_item_type: 'cash',
+//     //   from_item_qty: 1,
+//     //   from_item_amount: 151.00,
+//     //   from_item_currency: 'RUB',
+//     //   //
+//     //   target_item_id: 11,
+//     //   target_item_tag: 'available',
+//     //   target_item_type: 'cash',
+//     //   target_item_qty: 1,
+//     //   target_item_amount: 151.00,
+//     //   target_item_currency: 'RUB',
+//     //   //
+//     //   fee: 0.00,
+//     //   purpose: 'donation',
+//     //   comments: '',
+//     //   //
+//     //   author_id: 2,
+//     //   author_type: 'user'
+//     // },
+//   //  {
+//   //     id: 13,
+//   //     created_at: '2017-06-05T12:04:00.000Z',
+//   //     //
+//   //     from_item_id: 11,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 1145.13,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 28,
+//   //     target_item_tag: 'invested_project',
+//   //     target_item_type: 'start_up',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 1145.13,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: '0506Проект2017',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 14,
+//   //     created_at: '2017-06-05T12:05:00.000Z',
+//   //     //
+//   //     from_item_id: 28,
+//   //     from_item_tag: 'invested_project',
+//   //     from_item_type: 'start_up',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 1145.13,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 0,
+//   //     target_item_tag: 'expenses',
+//   //     target_item_type: 'goods',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 1145.13,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Закуп0506Проект2017',
+//   //     comments: 'Закупили брелки разные',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 15,
+//   //     created_at: '2017-06-07T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 50.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 27,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 50.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 16,
+//   //     created_at: '2017-06-07T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 27,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 50.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 50.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 17,
+//   //     created_at: '2017-06-10T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 100.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 26,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 100.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 18,
+//   //     created_at: '2017-06-10T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 26,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 100.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 100.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 19,
+//   //     created_at: '2017-06-10T12:02:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 29.13,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 26,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 29.13,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 20,
+//   //     created_at: '2017-06-10T12:03:00.000Z',
+//   //     //
+//   //     from_item_id: 26,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 29.13,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 29.13,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 21,
+//   //     created_at: '2017-06-15T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 100.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 26,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 100.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 22,
+//   //     created_at: '2017-06-15T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 26,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 100.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 100.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 23,
+//   //     created_at: '2017-06-18T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 260.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 27,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 260.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 24,
+//   //     created_at: '2017-06-18T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 27,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 260.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 260.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 25,
+//   //     created_at: '2017-06-24T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 190.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 27,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 190.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 26,
+//   //     created_at: '2017-06-24T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 27,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 190.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 190.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 27,
+//   //     created_at: '2017-06-24T12:02:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 500.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 26,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 500.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 28,
+//   //     created_at: '2017-06-24T12:03:00.000Z',
+//   //     //
+//   //     from_item_id: 26,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 500.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 500.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 29,
+//   //     created_at: '2017-06-30T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash_sale',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 250.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 250.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Продажа0506Проект2017',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 30  ,
+//   //     created_at: '2017-06-30T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash_sale',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 200.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 200.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Продажа0506Проект2017',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 31,
+//   //     created_at: '2017-07-04T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 200.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 27,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 200.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 32,
+//   //     created_at: '2017-07-04T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 27,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 200.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 200.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 33,
+//   //     created_at: '2017-09-04T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 200.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 27,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 200.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 34,
+//   //     created_at: '2017-09-04T12:01:00.000Z',
+//   //     //
+//   //     from_item_id: 27,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 200.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 200.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 1,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 35,
+//   //     created_at: '2017-09-04T12:02:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 50.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 26,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 50.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Личные сбережения',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 36,
+//   //     created_at: '2017-09-04T12:03:00.000Z',
+//   //     //
+//   //     from_item_id: 26,
+//   //     from_item_tag: 'available',
+//   //     from_item_type: 'cash',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 50.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 50.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'donation',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+//   //  {
+//   //     id: 37  ,
+//   //     created_at: '2017-09-09T12:00:00.000Z',
+//   //     //
+//   //     from_item_id: 0,
+//   //     from_item_tag: 'income',
+//   //     from_item_type: 'cash_sale',
+//   //     from_item_qty: 1,
+//   //     from_item_amount: 200.00,
+//   //     from_item_currency: 'RUB',
+//   //     //
+//   //     target_item_id: 11,
+//   //     target_item_tag: 'available',
+//   //     target_item_type: 'cash',
+//   //     target_item_qty: 1,
+//   //     target_item_amount: 200.00,
+//   //     target_item_currency: 'RUB',
+//   //     //
+//   //     fee: 0.00,
+//   //     purpose: 'Продажа0506Проект2017',
+//   //     comments: '',
+//   //     //
+//   //     author_id: 2,
+//   //     author_type: 'user'
+//   //   },
+// ])
+
+//= transaction popup
+const transaction_popup_isOpened = ref(false)
+const transaction_el = ref({})
+const transaction_onClick = (transaction) => {
+  transaction_popup_isOpened.value = !transaction_popup_isOpened.value
+  transaction_el.value = transaction
+
+}
 
 const isOwnerExist = () => {
 
@@ -2191,12 +2200,12 @@ const transaction_ledger_computed = computed(() => {
   // }
 
   let array:any = []
-
-  array = [...ledger.value].filter((transaction: any) => {
+//[...ledger.value]
+  array = transaction_ledger?.value?.filter((transaction: any) => {
 
     let tr;
 
-    meshes_computed.value.forEach(mesh => {
+    meshes_computed.value.forEach((mesh: any) => {
 
       // mesh.id === transaction.from_item_id 
       // mesh.id === transaction.target_item_id
@@ -2628,37 +2637,37 @@ const calcMeshAvailable = (meshID: number) => {
 }
 // calc mesh profit
 const calcMeshProfit = (meshID: number) => {
-  let result = 0;
-  let mesh;
-  if(mesh_list.value?.length) {
-    mesh = mesh_list.value.find(mesh => {
-        if(mesh.id === meshID) {
-        //   if(currentAffiliation.value.name === 'all') {
-        //   return mesh
-        // }
-        if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
-          return mesh
-        } 
-        else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
+  // let result = 0;
+  // let mesh;
+  // if(mesh_list.value?.length) {
+  //   mesh = mesh_list.value.find(mesh => {
+  //       if(mesh.id === meshID) {
+  //       //   if(currentAffiliation.value.name === 'all') {
+  //       //   return mesh
+  //       // }
+  //       if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
+  //         return mesh
+  //       } 
+  //       else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
 
-          return mesh
-        }
-      }
-    })
-  }
-  let invested = calcMeshInvested(meshID)
-  let available = calcMeshAvailable(meshID)
+  //         return mesh
+  //       }
+  //     }
+  //   })
+  // }
+  // let invested = calcMeshInvested(meshID)
+  // let available = calcMeshAvailable(meshID)
 
-  if(mesh?.bid) {
-    result = -(available - (invested + invested * mesh.bid))
+  // if(mesh?.bid) {
+  //   result = -(available - (invested + invested * mesh.bid))
 
-  } else {
+  // } else {
 
-    result = available - invested
-  }
+  //   result = available - invested
+  // }
 
 
-  return result
+  // return result
 
 }
 // calc mesh profit in percentage
@@ -2680,7 +2689,7 @@ const calcTransactionAmount = (qty: number, amount, from_item_id, target_item_id
 //=  calc mesh amount
 const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_name: string) => {
   let acc = 0
-  transaction_ledger_computed.value.forEach(transaction => {
+  transaction_ledger_computed?.value?.forEach(transaction => {
     if(transaction.from_item_id === mesh_id && transaction.from_item_type === mesh_type && transaction.from_item_type === mesh_type) {
       acc -= +transaction.from_item_qty * +transaction.from_item_amount
     }
@@ -2806,6 +2815,18 @@ onMounted(() => {
   });
 
   choosenChip_section.value = mesh_tag_computed.value ? mesh_tag_computed.value[0] : 'available'
+
+
+  // POPUP TRANSACTION
+  // const transactionPopupContainer = document.getElementById('transaction_popup')
+  // console.log(transactionPopupContainer)
+  window.addEventListener('click', (event) => {
+  
+    console.log(event.target)
+    if(event.target.classList.contains('transaction_popup_container')) {
+      transaction_popup_isOpened.value = false; transaction_el.value = {}
+    }
+  })
 })
 
 // EMITS FUNCTIONs
@@ -3293,16 +3314,16 @@ const setBgColorByOperationType = (operationType: string) => {
 //= set color by profit
 const calcColorByMeshProfit = (meshID: number) => {
 
-  let result = calcMeshProfit(meshID)
-  if(result > 0) {
-    return `var(--color-urgency-low)`
-  } else if (result  < 0) {
-    return `var(--color-urgency-high)`
-  } else if (result === 0) {
-    return `var(--color-btn-wo-bg)`
-  } else {
-    return `orange!important`
-  }
+  // let result = calcMeshProfit(meshID)
+  // if(result > 0) {
+  //   return `var(--color-urgency-low)`
+  // } else if (result  < 0) {
+  //   return `var(--color-urgency-high)`
+  // } else if (result === 0) {
+  //   return `var(--color-btn-wo-bg)`
+  // } else {
+  //   return `orange!important`
+  // }
 }
 
 // CALCULATE
@@ -3310,22 +3331,22 @@ const calcColorByMeshProfit = (meshID: number) => {
 //= sum total
 const sumTotal = (id: number) => {
 
-  const array = conspirators_fund.value.filter(el => el.section_id === id)
+  // const array = conspirators_fund.value.filter(el => el.section_id === id)
   
-  const sum = array.reduce((acc, el) => {
-    return acc + el.invested
-  }, 0)
-  return sum.toFixed(2)
+  // const sum = array.reduce((acc, el) => {
+  //   return acc + el.invested
+  // }, 0)
+  // return sum.toFixed(2)
 
 }
 //= available funds
 const sumTotalAvailable = (id: number) => {
-  const array = conspirators_fund.value.filter(el => el.section_id === id)
+  // const array = conspirators_fund.value.filter(el => el.section_id === id)
   
-  const sum = array.reduce((acc, el) => {
-    return acc + el.price
-  }, 0)
-  return sum.toFixed(2)
+  // const sum = array.reduce((acc, el) => {
+  //   return acc + el.price
+  // }, 0)
+  // return sum.toFixed(2)
 }
 
 // AMOUNT
@@ -3334,32 +3355,32 @@ const sumTotalAvailable = (id: number) => {
 const sumTotalCap = () => {
   // let result  = 0;
 
-  let result = mesh_list.value?.reduce((acc, mesh) => {
-    return acc + calcMeshAvailable(mesh.id)
-  }, 0)
+  // let result = mesh_list.value?.reduce((acc, mesh) => {
+  //   return acc + calcMeshAvailable(mesh.id)
+  // }, 0)
 
-  return result
+  // return result
 }
 //= calc amount by section 
 const sumSectionAmount = (groupType: string) => {
-  let result = 0;
-  mesh_list.value?.filter(el => {
-    if(el.tag === groupType) {
-      // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
-      //   return el
-      // }
-      if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
-        return el
-      } 
-      else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
+  // let result = 0;
+  // mesh_list.value?.filter(el => {
+  //   if(el.tag === groupType) {
+  //     // if(currentAffiliation.value.name === 'all' && el.ownerID === sessionUser.value.id) {
+  //     //   return el
+  //     // }
+  //     if (currentAffiliation.value.name === 'personal' && el.ownerID === sessionUser.value.id) {
+  //       return el
+  //     } 
+  //     else if (el.ownerType === 'conspirator' && el.ownerID === currentAffiliation.value.bandID) {
 
-        return el
-      }
-    }
-  }).forEach(mesh => {
-    result += calcMeshAvailable(mesh.id)
-  })
-  return result
+  //       return el
+  //     }
+  //   }
+  // }).forEach(mesh => {
+  //   result += calcMeshAvailable(mesh.id)
+  // })
+  // return result
 }
 
 // WATCH
@@ -3377,6 +3398,9 @@ watch(currentAffiliation, () => {
     choosenChip_section.value = mesh_tag_computed?.value[0]
   }
   currentFundParagraph.value = 'meshes'
+})
+watch(transaction_popup_isOpened, () => {
+  console.log(`watcher: trasaction popup ${transaction_popup_isOpened.value}`)
 })
 
 // BD
@@ -3606,6 +3630,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
               <section 
                 v-for="transaction in transaction_ledger_computed.filter(item => item.created_at.slice(0 ,10) === date).reverse()"
                 class="transaction_wrapper"  
+                @click="transaction_onClick(transaction)"
               >
  
 
@@ -3639,9 +3664,12 @@ const { data: bank } = useFetch("/api/banks/bank", {
                     > 
                   {{ translateTransactionMeshes(transaction.target_item_tag, transaction.target_item_type, transaction.target_item_id) }}
                 </div>
+
+                <!-- PURPOSE -->
                 <div style="color: var(--color-global-text_second);">
                   {{ transaction.purpose }}
                 </div>
+                <!-- AMOUNT -->
                 <div style="font-weight: bold;">
 
                   <div v-if="transaction.from_item_id > 0 && transaction.target_item_id > 0">
@@ -3670,6 +3698,35 @@ const { data: bank } = useFetch("/api/banks/bank", {
                 </div>
     
               </section>
+            </div>
+          </div>
+
+          <!-- POPUP -->
+          <div v-if="transaction_popup_isOpened" class="transaction_popup_container"
+          id="transaction_popup"
+          >
+
+            <div class="transaction_popup_wrapper">
+
+              <div class="transaction_popup_btn-close" @click.stop="transaction_popup_isOpened = false; transaction_el = {}">
+                <p style="margin: 0; color: var(--color-global-text_second);">TID: {{ transaction_el.id }}</p>
+                <Icon             
+                  name="material-symbols-light:cancel-outline-rounded"
+                  size="2rem"
+                  color="var(--color-global-text)"
+                />
+              </div>
+
+              <div class="transaction_popup_content">
+
+                {{ transaction_el.created_at }}
+                <br>
+                {{ transaction_el.purpose }}
+                <br>
+                <br>
+
+                {{ transaction_el }}
+              </div>
             </div>
           </div>
 
@@ -3986,6 +4043,43 @@ const { data: bank } = useFetch("/api/banks/bank", {
 </template>
 
 <style scoped>
+/* POPUP */
+.transaction_popup_container {
+  position: fixed;
+  /* z-index: -1; */
+  z-index: 999;
+  background: var(--color-bg-popup);
+  backdrop-filter: blur(2px);
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.transaction_popup_wrapper {
+  border-radius: 1rem;
+  padding: 1rem;
+  max-width: 500px;
+  background-color:  var(--color-global-baackground_light);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.transaction_popup_btn-close {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.transaction_popup_content {
+  margin-top: 1rem;
+}
 /*  */
 .switch-title_container {
   display: flex;
@@ -4138,6 +4232,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
     background-color: var(--color-global-baackground_light);
     border-radius: 1rem;
     padding: 1rem 1rem;
+    cursor: pointer;
+    transition: all .2s ease-in;
+  }
+  .transaction_wrapper:hover {
+    box-shadow: var(--hover-shadow)
   }
   .transaction-first {
     grid-area: t_first;
