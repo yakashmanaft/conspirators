@@ -2705,6 +2705,38 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
   // return `${mesh_tag}-${mesh_type}_${mesh_id}`
   return acc
 }
+//= calc section amount
+const calcSectionAmount = (current_section) => {
+  
+  if(current_section === 'available') {
+    
+    let amount = 0
+    let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
+
+
+    transaction_ledger?.value?.forEach(transaction => {
+
+      meshes_group?.forEach(mesh => {
+        
+        if(mesh.id === transaction.from_item_id) {
+          amount -= +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        else if (mesh.id === transaction.target_item_id) {
+          amount += +transaction.target_item_qty * +transaction.target_item_amount
+        }
+        
+      })
+
+    })
+
+
+    console.log(`available: ${amount}`)
+
+    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+  } else {
+    return 'В разработке...'
+  }
+}
 //   let result = 0;
 //   let mesh;
 //   if(mesh_list.value?.length) {
@@ -2822,7 +2854,7 @@ onMounted(() => {
   // console.log(transactionPopupContainer)
   window.addEventListener('click', (event) => {
   
-    console.log(event.target)
+    // console.log(event.target)
     if(event.target.classList.contains('transaction_popup_container')) {
       transaction_popup_isOpened.value = false; transaction_el.value = {}
     }
@@ -3537,7 +3569,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
       </p>
     </div>
 
-    <!-- НАЗВАНИЯ ГРУПП СЕКЦИЙ В КОНКРЕТНОМ ФОНДЕ -->
+    <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
       <!-- MESH TAG -->
@@ -3552,7 +3584,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
         <p style="margin: 0;">{{ el }}</p>
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
-        <p style="margin: 0; font-weight: bold; font-size: 1.2rem;">999,999,999.99{{ currency_to_show.ticket }}</p>
+        <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.2rem;">{{ calcSectionAmount(el) }}</p>
       </Section>
     </div> 
     <!-- {{ choosenChip_section }} -->
