@@ -40,6 +40,11 @@ useHead({
         }
     })
 
+    // CURRENCY TO SHOW
+    const currency_to_show =  ref({
+        ticket:  'RUB'
+    })
+
     //CHIPS
     const chips = [
         {
@@ -317,21 +322,25 @@ useHead({
                     <p>Управляющий: Сергей Анфалов</p>
                 </h2>
             </div> -->
-            <ul>
+            <ul class="loan_info_wrapper">
                 Общее
-                <li>Займ: 00.00 RUB</li>
-                <li>Ставка: 17.00%</li>
+                <li>Ссуда: {{ loan?.amount?.toFixed(2) }} {{currency_to_show.ticket}}</li>
+                <li>Ставка: {{loan.bid * 100}}%</li>
+                <li>К возврату: {{ loan?.amount?.toFixed(2) }} {{currency_to_show.ticket}} * {{loan.bid * 100}}% = <span style='font-weight: bold;'>{{ (loan?.amount + loan?.amount * loan.bid).toFixed(2)}} {{currency_to_show.ticket}}</span></li>
                 <li>Кто (Займодавец): {{ translateOwner(loan.ownerType, loan.ownerID) }}</li>
                 <li>Кому (Заемщик): {{ translateOwner(loan.loanerType, loan.loanerID) }}</li>
                 <li>Остаток к выплате: <span style="background-color: var(--color-wallet-fund-debt-wo); color: var(--color-btn-text);">00.00 RUB</span></li>
             </ul>
-            <ul>
+            <ul class="loan_info_wrapper">
                 График платежей
                 <li>Свободный</li>
                 <li>00.00.0000 00.00 RUB</li>
             </ul>
+            <br/>
+            <p style='margin: 0 1rem;'>
 
-            {{ loan }}
+                {{ loan }}
+            </p>
             <!-- CHIP SECTION -->
              <!-- <Chip :tabs="chips" :default="currentChip" :btn_all_exist="false" @changed="changeChip" style="margin-top: 1rem;"/> -->
             <!-- {{ currentChip }} -->
@@ -397,6 +406,15 @@ useHead({
 @media screen and (max-width: 575px) {
   .show-max-767 {
     display: none;
+  }
+  h1 {
+    margin: 0 1rem;
+  }    
+  .loan_info_wrapper {
+    list-style: none;
+    margin: 0;
+    margin: 1rem 1rem 0 1rem;
+    padding: 0;
   }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
