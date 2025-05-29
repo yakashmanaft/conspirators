@@ -2319,7 +2319,8 @@ const meshes_computed = computed(() => {
           ownerType: item.ownerType,
           loanerID: item.loanerID,
           loanerType: item.loanerType,
-          bid: item.bid
+          bid: item.bid,
+          amount: item.amount
         })
       } else{
         result.push(item)
@@ -2689,12 +2690,21 @@ const calcTransactionAmount = (qty: number, amount, from_item_id, target_item_id
 //=  calc mesh amount
 const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_name: string) => {
   let acc = 0
+
   transaction_ledger_computed?.value?.forEach(transaction => {
-    if(transaction.from_item_id === mesh_id && transaction.from_item_type === mesh_type && transaction.from_item_type === mesh_type) {
+    if(transaction.from_item_id === mesh_id && transaction.from_item_type === mesh_type && transaction.from_item_type === mesh_type && (transaction.from_item_tag !== 'invested_loan' || mesh_tag === 'debt_loan')) {
       acc -= +transaction.from_item_qty * +transaction.from_item_amount
     }
     else if (transaction.target_item_id === mesh_id && transaction.target_item_type === mesh_type && transaction.target_item_type === mesh_type) {
-      acc += +transaction.target_item_qty * +transaction.target_item_amount
+      if(transaction.purpose.substring(0, 9) === 'Погашение') {
+        if(mesh_tag === 'debt_loan') {
+          acc += +transaction.target_item_qty * +transaction.target_item_amount
+        } else {
+          acc -= +transaction.target_item_qty * +transaction.target_item_amount
+        }
+      } else {
+        acc += +transaction.target_item_qty * +transaction.target_item_amount
+      }
     }
     else if (transaction.from_item_tag === 'income' && transaction.purpose === `Продажа${mesh_name}`) {
       acc += +transaction.target_item_qty * +transaction.target_item_amount
@@ -2708,12 +2718,30 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
 //= calc section amount
 const calcSectionAmount = (current_section) => {
   
+  let amount = 0
+  let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
+
   if(current_section === 'available') {
     
-    let amount = 0
-    let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
 
 
+    transaction_ledger?.value?.forEach(transaction => {
+
+      meshes_group?.forEach(mesh => {
+        if(mesh.id === transaction.from_item_id) {
+          amount -= +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        else if (mesh.id === transaction.target_item_id && mesh.tag !== '') {
+          amount += +transaction.target_item_qty * +transaction.target_item_amount
+        }
+        
+      })
+
+    })
+
+    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+  } 
+  if (current_section === 'invested_stock') {
     transaction_ledger?.value?.forEach(transaction => {
 
       meshes_group?.forEach(mesh => {
@@ -2722,18 +2750,62 @@ const calcSectionAmount = (current_section) => {
           amount -= +transaction.from_item_qty * +transaction.from_item_amount
         }
         else if (mesh.id === transaction.target_item_id) {
-          amount += +transaction.target_item_qty * +transaction.target_item_amount
+          amount = +transaction.target_item_qty * +transaction.target_item_amount
         }
         
       })
 
     })
 
+    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+  }
+  if (current_section === 'invested_loan') {
+    transaction_ledger?.value?.forEach(transaction => {
 
-    console.log(`available: ${amount}`)
+      meshes_group?.forEach(mesh => {
+        
+        if(mesh.id === transaction.from_item_id && transaction.from_item_tag !== 'invested_loan' ) {
+          amount -= +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        else if (mesh.id === transaction.target_item_id) {
+          if(transaction.purpose.substring(0, 9) === 'Погашение') {
+            amount -= +transaction.target_item_qty * +transaction.target_item_amount
+          } else {
+
+            amount += +transaction.target_item_qty * +transaction.target_item_amount
+          }
+        }
+        
+      })
+
+    })
 
     return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
-  } else {
+  }
+  if (current_section === 'debt_loan') {
+    transaction_ledger?.value?.forEach(transaction => {
+
+      meshes_group?.forEach(mesh => {
+        
+        if(mesh.id === transaction.from_item_id && transaction.from_item_tag !== 'invested_loan') {
+          amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        else if (mesh.id === transaction.target_item_id) {
+          if(transaction.purpose.substring(0, 9) === 'Погашение') {
+            amount += +transaction.target_item_qty * +transaction.target_item_amount
+          }else {
+
+            amount -= +transaction.target_item_qty * +transaction.target_item_amount
+          }
+        }
+        
+      })
+
+    })
+
+    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+  }
+  else {
     return 'В разработке...'
   }
 }
@@ -2782,6 +2854,30 @@ const calcSectionAmount = (current_section) => {
 //   }
 //   return mesh
 // }
+const translateMeshesGroupName = (name: string) => {
+  if(name === 'available') {
+    return 'Свободные средства'
+  } 
+  if(name === 'invested_stock') {
+    return 'Инвестировано на рынке ценных бумаг'
+  }
+  if(name === 'invested_project') {
+    return 'Инвестировано в проекты'
+  }
+  if(name === 'invested_crypto') {
+    return 'Инвестировано в крипто индустрию'
+  }
+  if(name === 'invested_loan') {
+    return 'Ссуды соучастникам'
+  }
+  if(name === 'debt_loan') {
+    return 'Долговые обязательства'
+  }
+  else {
+    return name
+  }
+    
+}
 
 const translateTransactionMeshes = (tag: string, from_item_type:string, from_item_id:number) => {
   // let mesh;
@@ -3553,7 +3649,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     <!-- TOTAL КАПИТАЛИЗАЦИЯ ПО ФОНДУ -->
     <!--  -->
     <div class="total-cap_container">
-      <p style="margin: 0; font-size: 1.2rem;"><span>TOTAL:</span> <span>~999,999,999.99{{ currency_to_show.ticket }}</span></p>
+      <p style="margin: 0; font-size: 1.2rem;"><span style="width: fit-content;">TOTAL:</span> <span>~999,999,999.99{{ currency_to_show.ticket }}</span></p>
       <!-- <p 
         class="btn_to_fund" 
         @click="$router.push(`/band/${currentAffiliation?.bandID}`);" 
@@ -3572,19 +3668,21 @@ const { data: bank } = useFetch("/api/banks/bank", {
     <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
     <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
-      <!-- MESH TAG -->
+      <!-- MESH GROUP TAG -->
       <Section 
         v-for="el in mesh_tag_computed"
         :fDirection="`column`"
         :fAlignItems="`flex-start`"
+        :fJustifyContent="`space-between`"
+        :fGap="`2rem`"
         :bg="setChoosenWalletSectionColor(el)"
         @click="choosenChip_section = el"
         style="cursor: pointer;"
       >
-        <p style="margin: 0;">{{ el }}</p>
+        <p style="width: 160px; margin: 0;">{{ translateMeshesGroupName(el) }}</p>
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
-        <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.2rem;">{{ calcSectionAmount(el) }}</p>
+        <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }}</p>
       </Section>
     </div> 
     <!-- {{ choosenChip_section }} -->
@@ -3795,9 +3893,14 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   >
                   {{ item.broker_tag?.[0] }}
                   </div>
+                  {{ item }}
                   <div class="mesh_content">
                     <p class="mesh_content-el">{{ item.name }}</p>
-                    <p class="mesh_content-el">{{calcMeshAmount(item.id, item.type, item.tag, item.name)}} {{ currency_to_show.ticket }}</p>
+                    <p class="mesh_content-el">
+                      <span>
+                        {{calcMeshAmount(item.id, item.type, item.tag, item.name)}} {{ currency_to_show.ticket }}
+                      </span>
+                    </p>
                   </div>
                   <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
                 </li>
@@ -4349,13 +4452,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .total-cap_container > p:first-child {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   .total-cap_container > p:first-child > span:first-child {
     font-size: .8rem;
     color: var(--color-global-text_second);
   }
   .total-cap_container > p > span:last-child {
-    font-size: 1.5rem!important;
+    font-size: 2rem!important;
+    margin-top: .5rem;
   }
   .total-cap_container > .btn_to_fund {
     color: var(--color-btn-bg);

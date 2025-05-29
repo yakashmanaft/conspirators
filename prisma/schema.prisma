@@ -182,6 +182,7 @@ model Loan {
   loanerType String   @db.VarChar(60)
   // loanerMeshID Int
   bid        Float    @default(0.00)
+  amount     Float?   @default(0.00)
 }
 
 model BrokerageAccount {
