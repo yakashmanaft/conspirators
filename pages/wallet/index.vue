@@ -2243,7 +2243,7 @@ const transaction_ledger_computed = computed(() => {
           // )
           tr = transaction
         }
-        else if (choosenChip_section.value === 'debt_loan' && (transaction.from_item_tag === 'invested_loan' || transaction.target_item_tag === 'invested_loan')) {
+        if (choosenChip_section.value === 'debt_loan' && (transaction.from_item_tag === 'invested_loan' || transaction.target_item_tag === 'invested_loan')) {
           // console.log(
           //   {
           //     transactionID: transaction.id,
@@ -2253,6 +2253,9 @@ const transaction_ledger_computed = computed(() => {
           // )
           tr = transaction
         }
+      }
+      else if(mesh.tag === 'invested_loan' && transaction.purpose.substring(0, 9) === 'Погашение') {
+        tr = transaction
       }
       else if (choosenChip_section.value === 'invested_project' && transaction.purpose == `Продажа${mesh.name}`) {
         tr = transaction
@@ -2693,22 +2696,25 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
   transaction_ledger_computed?.value?.forEach(transaction => {
 
     // INVESTED_LOAN
-    if(transaction.from_item_id === mesh_id && transaction.from_item_tag === 'invested_loan') {
-      acc -= +transaction.from_item_qty * +transaction.from_item_amount
-      acc -= +transaction.from_item_qty * +transaction.from_item_amount * mesh_bid
+    // if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'invested_loan') {
+    //   acc += +transaction.target_item_qty * +transaction.target_item_amount
+    // }
+    // DEBT LOAN
+    if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'debt_loan' && mesh_tag !== 'available') {
+      acc += +transaction.target_item_qty * +transaction.target_item_amount
     }
-    // INVESTED LOAN ПОГАШЕНИЕ
-    else if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'invested_loan') {
-      if(transaction.purpose.substring(0, 9) === 'Погашение') {
-        acc += +transaction.target_item_qty * +transaction.target_item_amount
-      }
-    }
-
+    // else if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'invested_loan') {
+      
+    //   if(mesh_tag === 'invested_loan') {
+    //     acc += +transaction.target_item_qty * +transaction.target_item_amount
+    //   }
+    // }
     // AVAILABLE
-    else if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'available') {
+    // FROM
+    else if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'available' && transaction.purpose.substring(0, 9) !== 'Погашение') {
       acc -= +transaction.from_item_qty * +transaction.from_item_amount
     }
-    // AVAILABLE
+    // TARGET
     else if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'available') {
       acc += +transaction.target_item_qty * +transaction.target_item_amount
     }
@@ -2716,18 +2722,18 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
     
     
 
-    else if (transaction.target_item_id === mesh_id && transaction.target_item_type === mesh_type && transaction.target_item_type === mesh_type) {
-      if(transaction.purpose.substring(0, 9) === 'Погашение') {
-        if(mesh_tag === 'debt_loan') {
-          // acc += +transaction.target_item_qty * +transaction.target_item_amount
-        } else {
-          // acc -= +transaction.target_item_qty * +transaction.target_item_amount 
-        }
-      } 
-      else {
-        // acc += +transaction.target_item_qty * +transaction.target_item_amount
-      }
-    }
+    // else if (transaction.target_item_id === mesh_id && transaction.target_item_type === mesh_type && transaction.target_item_type === mesh_type) {
+    //   if(transaction.purpose.substring(0, 9) === 'Погашение') {
+    //     if(mesh_tag === 'debt_loan') {
+    //       // acc += +transaction.target_item_qty * +transaction.target_item_amount
+    //     } else {
+    //       // acc -= +transaction.target_item_qty * +transaction.target_item_amount 
+    //     }
+    //   } 
+    //   else {
+    //     // acc += +transaction.target_item_qty * +transaction.target_item_amount
+    //   }
+    // }
     else if (transaction.from_item_tag === 'income' && transaction.purpose === `Продажа${mesh_name}`) {
       acc += +transaction.target_item_qty * +transaction.target_item_amount
     }
@@ -2735,7 +2741,12 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
   })
 
   // return `${mesh_tag}-${mesh_type}_${mesh_id}`
-  return acc
+  if(mesh_tag === 'debt_loan' || mesh_tag === 'invested_loan') {
+    // return acc * -1
+    return acc
+  } else {
+    return acc
+  }
 }
 //= calc section amount
 const calcSectionAmount = (current_section) => {
@@ -2751,7 +2762,7 @@ const calcSectionAmount = (current_section) => {
 
       meshes_group?.forEach(mesh => {
         if(mesh.id === transaction.from_item_id) {
-          if(mesh.type === transaction.from_item_type) {
+          if(mesh.type === transaction.from_item_type && transaction.purpose.substring(0, 9) !== 'Погашение') {
             amount -= +transaction.from_item_qty * +transaction.from_item_amount
           }
         }
@@ -2815,15 +2826,12 @@ const calcSectionAmount = (current_section) => {
 
       meshes_group?.forEach(mesh => {
         
-        if(mesh.id === transaction.from_item_id && transaction.from_item_tag !== 'invested_loan') {
-          amount += +transaction.from_item_qty * +transaction.from_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
+        if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_loan') {
+          amount += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
         }
-        else if (mesh.id === transaction.target_item_id) {
+        else if (mesh.id === transaction.target_item_id && transaction.target_item_tag === 'debt_loan') {
           if(transaction.purpose.substring(0, 9) === 'Погашение') {
-            amount += +transaction.target_item_qty * +transaction.target_item_amount
-          }else {
-
-            amount -= +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
+            amount -= +transaction.target_item_qty * +transaction.target_item_amount
           }
         }
         
@@ -2831,7 +2839,7 @@ const calcSectionAmount = (current_section) => {
 
     })
 
-    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+    return `${(amount * -1).toFixed(2)} ${ currency_to_show.value.ticket }`
   }
   else {
     return 'В разработке...'
@@ -3959,17 +3967,29 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   @click="set_mesh_link_by_tag(item.type, item.id, item.tag)"
                 > 
                   <div
-                    class="mesh_broker-sign"
-                    :style="set_mesh_broker_sign_bgc(item.tag)"
+                  class="mesh_broker-sign"
+                  :style="set_mesh_broker_sign_bgc(item.tag)"
                   >
-                  {{ item.broker_tag?.[0] }}
+                    {{ item.broker_tag?.[0] }}
                   </div>
                   <div class="mesh_content">
+                    <!-- {{ item }} -->
                     <p class="mesh_content-el">{{ item.name }}</p>
-                    <p class="mesh_content-el">
+                    <p class="mesh_content-el" style="display: flex; flex-direction: column; align-items: flex-end;">
                       <!-- {{ item }} -->
+                      <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
+                        <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) === 0" style="color: var(--color-urgency-low); text-transform: uppercase;">Завершен</span>
+                        <span v-else style="color: var(--color-urgency-high);">{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount)).toFixed(2)}}</span>
+                      </span>
                       <span>
-                        {{calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid)}} {{ currency_to_show.ticket }}
+                        
+                        <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
+                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} / {{ ((item.amount * item.bid) + item.amount).toFixed(2) }}
+                        </span>
+                        <span v-else>
+                          {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
+                        </span>
+                         {{ currency_to_show.ticket }}
                       </span>
                     </p>
                   </div>

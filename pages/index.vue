@@ -98,7 +98,7 @@ const changeColorOnClick = (e) => {
           <div class="section_icon" style="background-color: var(--color-urgency-low);">
             <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
           </div>
-          <p style="font-size: 1rem;color: var(--color-urgency-low);">Помощник онлайн</p>
+          <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p>
         </div>
       </section>
   
