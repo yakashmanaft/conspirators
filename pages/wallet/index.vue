@@ -2254,11 +2254,33 @@ const transaction_ledger_computed = computed(() => {
           tr = transaction
         }
       }
-      else if(mesh.tag === 'invested_loan' && transaction.purpose.substring(0, 9) === 'Погашение') {
-        tr = transaction
+      if(choosenChip_section.value === 'invested_loan' ) {
+        // if(transaction.purpose === `РезервСредств${mesh.name}` || transaction.purpose === `Погашение${mesh.name}` || transaction.purpose === `ПереводНаПогашение${mesh.name}`) {
+  
+        //   tr = transaction
+        //   // ПереводНаПогашение
+        //   // Погашение
+        //   // Выдача
+        //   // РезерСредств
+        // }
+        if (transaction.from_item_tag === 'debt_loan' || transaction.target_item_tag === 'debt_loan') {
+          // console.log(
+          //   {
+          //     transactionID: transaction.id,
+          //     from_id: transaction.from_item_id,
+          //     target_id: transaction.target_item_id
+          //   }
+          // )
+          tr = transaction
+        }
       }
-      else if (choosenChip_section.value === 'invested_project' && transaction.purpose == `Продажа${mesh.name}`) {
-        tr = transaction
+      // else if(mesh.tag === 'invested_loan' && transaction.purpose === `Погашение${mesh.name}`) {
+      //   tr = transaction
+      // }
+      else if (choosenChip_section.value === 'invested_project') {
+        if(transaction.purpose === `Продажа${mesh.name}`) {
+          tr = transaction
+        }
       }
 
     })
@@ -2798,6 +2820,24 @@ const calcSectionAmount = (current_section) => {
     // return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
     return 'В разработке...'
   }
+  if(current_section === 'invested_project') {
+    // CALC INVESTED MONEY IN ALL PROJECTS
+    transaction_ledger?.value?.forEach(transaction => {
+      meshes_group?.forEach(mesh => {
+        if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_project' ) {
+          amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        if(transaction.purpose === `Продажа${mesh.name}`) {
+          amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        if(transaction.purpose === `Закуп${mesh.name}`) {
+          amount -= +transaction.from_item_qty * +transaction.from_item_amount
+        }
+      })
+    })
+
+    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+  }
   if (current_section === 'invested_loan') {
     transaction_ledger?.value?.forEach(transaction => {
 
@@ -2843,6 +2883,48 @@ const calcSectionAmount = (current_section) => {
   }
   else {
     return 'В разработке...'
+  }
+}
+//= calc section invested project
+const calcSectionInvested_project = (current_section) => {
+  // Продажа0506Проект2017
+  // Закуп0506Проект2017
+  // 0506Проект2017
+  let invested_amount = 0
+  let invested_returned = 0
+  let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
+  if (current_section === 'invested_project') {
+    transaction_ledger?.value?.forEach(transaction => {
+
+      meshes_group?.forEach(mesh => {
+
+        //  CALC invested_amount
+        if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_project' ) {
+          invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+
+        // CALC invested_returned
+        if(transaction.purpose === `Продажа${mesh.name}`) {
+          invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+        // if(transaction.purpose === `Закуп${mesh.name}`) {
+        //   invested_returned -= +transaction.from_item_qty * +transaction.from_item_amount
+        // }
+      })
+
+
+    })
+    // if(invested_returned > 0) {
+    //   return `${invested_returned.toFixed(2)} ${ currency_to_show.value.ticket } (${((invested_returned / invested_amount) * 100).toFixed(2)}%)`
+    // } else {
+    //   return `${invested_amount.toFixed(2)} ${ currency_to_show.value.ticket } `
+    // }
+    if(invested_returned > 0) {
+      return `${(invested_returned - invested_amount).toFixed(2)} ${ currency_to_show.value.ticket } (${(((invested_returned / invested_amount) - 1) * 100).toFixed(2)}%)`
+    }
+    else {
+      return `${invested_amount.toFixed(2)} ${ currency_to_show.value.ticket } (0%)`
+    }
   }
 }
 //   let result = 0;
@@ -2898,7 +2980,7 @@ const translateMeshesGroupName = (name: string) => {
     return 'Инвестировано на рынке ценных бумаг'
   }
   if(name === 'invested_project') {
-    return 'Инвестировано в проекты'
+    return 'Проекты'
   }
   if(name === 'invested_crypto') {
     return 'Инвестировано в крипто индустрию'
@@ -3761,7 +3843,13 @@ const { data: bank } = useFetch("/api/banks/bank", {
         <p style="width: 160px; margin: 0;">{{ translateMeshesGroupName(el) }}</p>
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
-        <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }}</p>
+          <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }}</p>
+          <p 
+            v-if="el === 'invested_project'"
+            style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
+            >
+            {{ calcSectionInvested_project(el) }}
+          </p>
       </Section>
     </div> 
     <!-- {{ choosenChip_section }} -->
@@ -3982,14 +4070,23 @@ const { data: bank } = useFetch("/api/banks/bank", {
                         <span v-else style="color: var(--color-urgency-high);">{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount)).toFixed(2)}}</span>
                       </span>
                       <span>
-                        
+                        <!-- loan (debt or invested) -->
                         <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
-                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} / {{ ((item.amount * item.bid) + item.amount).toFixed(2) }}
+                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} / {{ ((item.amount * item.bid) + item.amount).toFixed(2) }} {{ currency_to_show.ticket }}
+                        </span>
+                        <!-- invested project -->
+                        <span v-else-if="item.tag === 'invested_project'" style="display: flex; flex-direction: column; align-items: flex-end">
+                          <span>
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} {{ currency_to_show.ticket }}
+                          </span>
+                          <span>
+                            {{calcSectionInvested_project('invested_project')}}
+                          </span>
                         </span>
                         <span v-else>
-                          {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
+                          {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} 
+                          {{ currency_to_show.ticket }}
                         </span>
-                         {{ currency_to_show.ticket }}
                       </span>
                     </p>
                   </div>
