@@ -2859,7 +2859,7 @@ const calcSectionAmount = (current_section) => {
 
     })
 
-    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+    return `К выплате: ${(amount).toFixed(2)} ${ currency_to_show.value.ticket }`
   }
   if (current_section === 'debt_loan') {
     transaction_ledger?.value?.forEach(transaction => {
@@ -2927,6 +2927,48 @@ const calcSectionInvested_project = (current_section) => {
     }
   }
 }
+const calcSectionInvested_loan = (current_section) => {
+
+  let invested_amount = 0;
+  let debt = 0
+  let profit = 0;
+
+  let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
+  if(current_section === 'invested_loan') {
+    meshes_group?.forEach(mesh => {
+      invested_amount += mesh.amount
+      profit += mesh.amount * mesh.bid
+    })
+  }
+
+  transaction_ledger?.value?.forEach(transaction => {
+
+    meshes_group?.forEach(mesh => {
+      
+      if(mesh.id === transaction.from_item_id && transaction.from_item_tag !== 'invested_loan' ) {
+        debt -= +transaction.from_item_qty * +transaction.from_item_amount
+      }
+      else if (mesh.id === transaction.target_item_id) {
+        if(transaction.purpose.substring(0, 9) === 'Погашение') {
+          debt -= +transaction.target_item_qty * +transaction.target_item_amount
+        } else {
+
+          debt += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
+        }
+      }
+      
+    })
+
+  })
+
+  // return '-1111.00 RUB (-4.35%)'
+  // ${debt} | ${invested_amount} + ${profit} 
+  // (${debt + invested_amount} / ${invested_amount + profit}) 
+  return `
+    ${((debt + invested_amount) - (invested_amount + profit)).toFixed(2)} ${currency_to_show.value.ticket} /
+    ${(((debt + invested_amount) / (invested_amount + profit) - 1) * 100).toFixed(2)}%
+  `
+}
 //   let result = 0;
 //   let mesh;
 //   if(mesh_list.value?.length) {
@@ -2986,7 +3028,7 @@ const translateMeshesGroupName = (name: string) => {
     return 'Инвестировано в крипто индустрию'
   }
   if(name === 'invested_loan') {
-    return 'Ссуды соучастникам'
+    return 'Ссуды'
   }
   if(name === 'debt_loan') {
     return 'Долговые обязательства'
@@ -3849,6 +3891,13 @@ const { data: bank } = useFetch("/api/banks/bank", {
             style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
             >
             {{ calcSectionInvested_project(el) }}
+          </p>
+
+          <p
+            v-else-if="el === 'invested_loan'"
+            style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
+          >
+            {{ calcSectionInvested_loan(el) }}
           </p>
       </Section>
     </div> 
