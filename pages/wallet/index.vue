@@ -4116,7 +4116,20 @@ const { data: bank } = useFetch("/api/banks/bank", {
                       <!-- {{ item }} -->
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) === 0" style="color: var(--color-urgency-low); text-transform: uppercase;">Завершен</span>
-                        <span v-else style="color: var(--color-urgency-high);">{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount)).toFixed(2)}}</span>
+                        <span v-else-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) > 0">
+                          <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
+                            +{{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
+                            /
+                            +{{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) / (item.amount + (item.amount * item.bid)) - 1) * 100).toFixed(2) }}%
+                          </span>
+                        </span>
+                        <span v-else>
+                          <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
+                            {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
+                            /
+                            {{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) / (item.amount + (item.amount * item.bid)) - 1) * 100).toFixed(2) }}%
+                          </span>
+                        </span>
                       </span>
                       <span>
                         <!-- loan (debt or invested) -->
