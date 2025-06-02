@@ -2859,7 +2859,7 @@ const calcSectionAmount = (current_section) => {
 
     })
 
-    return `К выплате: ${(amount).toFixed(2)} ${ currency_to_show.value.ticket }`
+    return `К получению: ${(amount).toFixed(2)} ${ currency_to_show.value.ticket }`
   }
   if (current_section === 'debt_loan') {
     transaction_ledger?.value?.forEach(transaction => {
@@ -2920,10 +2920,10 @@ const calcSectionInvested_project = (current_section) => {
     //   return `${invested_amount.toFixed(2)} ${ currency_to_show.value.ticket } `
     // }
     if(invested_returned > 0) {
-      return `${(invested_returned - invested_amount).toFixed(2)} ${ currency_to_show.value.ticket } (${(((invested_returned / invested_amount) - 1) * 100).toFixed(2)}%)`
+      return `${(invested_returned - invested_amount).toFixed(2)} ${ currency_to_show.value.ticket } / ${(((invested_returned / invested_amount) - 1) * 100).toFixed(2)}%`
     }
     else {
-      return `${invested_amount.toFixed(2)} ${ currency_to_show.value.ticket } (0%)`
+      return `${invested_amount.toFixed(2)} ${ currency_to_show.value.ticket } / 0%`
     }
   }
 }
@@ -2932,6 +2932,7 @@ const calcSectionInvested_loan = (current_section) => {
   let invested_amount = 0;
   let debt = 0
   let profit = 0;
+  let returned = 0
 
   let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
   if(current_section === 'invested_loan') {
@@ -2946,14 +2947,16 @@ const calcSectionInvested_loan = (current_section) => {
     meshes_group?.forEach(mesh => {
       
       if(mesh.id === transaction.from_item_id && transaction.from_item_tag !== 'invested_loan' ) {
-        debt -= +transaction.from_item_qty * +transaction.from_item_amount
+        debt += +transaction.from_item_qty * +transaction.from_item_amount
       }
       else if (mesh.id === transaction.target_item_id) {
         if(transaction.purpose.substring(0, 9) === 'Погашение') {
-          debt -= +transaction.target_item_qty * +transaction.target_item_amount
+          debt += +transaction.target_item_qty * +transaction.target_item_amount
+          returned += +transaction.target_item_qty * +transaction.target_item_amount
         } else {
 
-          debt += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
+          debt -= +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
+          
         }
       }
       
@@ -2961,14 +2964,22 @@ const calcSectionInvested_loan = (current_section) => {
 
   })
 
-  // return '-1111.00 RUB (-4.35%)'
-  // ${debt} | ${invested_amount} + ${profit} 
-  // (${debt + invested_amount} / ${invested_amount + profit}) 
-  return `
-    ${((debt + invested_amount) - (invested_amount + profit)).toFixed(2)} ${currency_to_show.value.ticket} /
-    ${(((debt + invested_amount) / (invested_amount + profit) - 1) * 100).toFixed(2)}%
-  `
-}
+  if(returned - invested_amount > 0) {
+    return `
+      +${(returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((returned - invested_amount) / invested_amount * 100).toFixed(2)}%
+      `
+    } else {
+      return `
+        ${(returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((returned - invested_amount) / invested_amount * 100).toFixed(2)}%
+        `
+    }
+  }
+  // (${invested_amount} + ${profit} = ${invested_amount + profit})
+  // (${debt})
+  // (${((invested_amount - debt))})
+  // (${debt} / ${debt / (invested_amount + profit)})
+  // ${(((invested_amount - debt) + invested_amount) - (invested_amount + profit)).toFixed(2)} ${currency_to_show.value.ticket} /
+  // ${(((debt + invested_amount) / (invested_amount + profit) - 1) * 100).toFixed(2)}%
 //   let result = 0;
 //   let mesh;
 //   if(mesh_list.value?.length) {
@@ -3022,13 +3033,13 @@ const translateMeshesGroupName = (name: string) => {
     return 'Инвестировано на рынке ценных бумаг'
   }
   if(name === 'invested_project') {
-    return 'Проекты'
+    return 'Инвестиции в проекты'
   }
   if(name === 'invested_crypto') {
     return 'Инвестировано в крипто индустрию'
   }
   if(name === 'invested_loan') {
-    return 'Ссуды'
+    return 'Финансирование соучастников'
   }
   if(name === 'debt_loan') {
     return 'Долговые обязательства'
@@ -3062,10 +3073,10 @@ const translateMashesSubGroup = (type: string) => {
   }
   // LOAN
   else if (type === 'loan_free') {
-    return 'Беспроцентные ссуды'
+    return 'Ссуды'
   }
   else if (type === 'loan_interest') {
-    return 'Процентные ссуды'
+    return 'Процентные'
   }
   // CRYPTO
   else if (type === 'crypto_wallet') {
@@ -4117,24 +4128,23 @@ const { data: bank } = useFetch("/api/banks/bank", {
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) === 0" style="color: var(--color-urgency-low); text-transform: uppercase;">Завершен</span>
                         <span v-else-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) > 0">
-                          <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
-                            +{{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
-                            /
-                            +{{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) / (item.amount + (item.amount * item.bid)) - 1) * 100).toFixed(2) }}%
-                          </span>
+                          +{{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount)).toFixed(2) }}
                         </span>
                         <span v-else>
                           <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
                             {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
                             /
-                            {{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) / (item.amount + (item.amount * item.bid)) - 1) * 100).toFixed(2) }}%
+                            {{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) / (item.amount) - 1) * 100).toFixed(2) }}%
+                          </span>
+                          <span v-if="item.tag === 'debt_loan'" style="color: var(--color-urgency-high);">
+                            {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
                           </span>
                         </span>
                       </span>
                       <span>
                         <!-- loan (debt or invested) -->
                         <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
-                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} / {{ ((item.amount * item.bid) + item.amount).toFixed(2) }} {{ currency_to_show.ticket }}
+                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} | {{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }} {{ currency_to_show.ticket }}
                         </span>
                         <!-- invested project -->
                         <span v-else-if="item.tag === 'invested_project'" style="display: flex; flex-direction: column; align-items: flex-end">
