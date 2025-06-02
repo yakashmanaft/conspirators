@@ -29,7 +29,7 @@
     --color-urgency-middle-10: rgba(255, 130, 6, .5);
     /* --color-urgency-low: rgba(128, 191, 138, 0.3); */
     --color-urgency-low: rgb(64, 204, 87);
-    --color-urgency-low-10: rgba(64, 204, 87, .5);
+    --color-urgency-low-10: rgba(64, 204, 87, 0.5);
 
 
     /* wallet section color */

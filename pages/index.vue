@@ -137,28 +137,30 @@ const changeColorOnClick = (e) => {
 
     <!--  -->
     <h2 class="sub_title-container">В помощь соучастникам</h2>
+    <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функций и опыт взаимодействия приложением в одном месте</p>
 
     <div class="section_container">
 
       <!-- JOURNAL -->
-      <section @click="$router.push('/journal')" class="default_list_item-container" style="border: 1px solid var(--color-btn-bg); background-color: var(--color-btn-text)">
-        <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Журнал</h3>
-        <p style="color: var(--color-btn-bg)">Бортовой журнал конспиратора. Делимся опытом.</p>
+      <section @click="$router.push('/journal')" class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)">
+        <h3 style="color: var(--color-global-text); margin-top: 1rem;">Журнал</h3>
+        <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
         <div class="section_btn" @click="$router.push(`/landing_offer`)">
           <div class="section_icon">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-bg)"/>
+            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text_second)"/>
           </div>
         </div>
       </section>
 
-      <section @click="$router.push('/landing_stock')" style="background-color: var(--color-wallet-fund-available);">
-        <h3>Все мы чем-то промышляем</h3>
-        <p>Маркетплейс соучастников</p>
+      <section @click="$router.push('/landing_stock')" style="background-color: var(--color-urgency-low-10); position: relative;">
+        <h3 style="color: var(--color-urgency-low);">Маркетплейс соучастников</h3>
+        <p stylre="">Торговая площадка для обмена ценностями</p>
+        <p style="position: absolute; right: -2.5rem; bottom: -47px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
       </section>
 
-      <section class="default_list_item-container"  style="border: 1px solid var(--color-btn-bg); background-color: var(--color-btn-text); padding-bottom: 2rem;">
-        <h3 style="color: var(--color-btn-bg);">Помощь</h3>
-        <ul>
+      <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
+        <h3 style="color: var(--color-gloab-text);">Помощь</h3>
+        <ul style="color: var(--color-global-text_second)"">
           <li style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
           <li style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
           <li style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
