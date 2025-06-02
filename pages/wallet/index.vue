@@ -4050,7 +4050,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
               <ul class="mesh_container" style="padding: 0; list-style: none;">
                 <li 
                   class="mesh_wrapper"
-                  style="cursor: pointer;"
+                  style="cursor: pointer; position: relative;"
                   v-for="item in meshes_computed.filter(el => el.type === type).reverse()"
                   @click="set_mesh_link_by_tag(item.type, item.id, item.tag)"
                 > 
@@ -4063,7 +4063,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   <div class="mesh_content">
                     <!-- {{ item }} -->
                     <p class="mesh_content-el">{{ item.name }}</p>
-                    <p class="mesh_content-el" style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <p class="mesh_content-el" style="">
                       <!-- {{ item }} -->
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) === 0" style="color: var(--color-urgency-low); text-transform: uppercase;">Завершен</span>
@@ -4714,6 +4714,12 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .mesh_content-el:last-child {
     font-size: .8rem;
     color: var(--color-global-text_second);
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
 
@@ -4872,6 +4878,14 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .mesh_content-el {
     margin: 0;
   }
+  .mesh_content-el:last-child {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
   .mesh_content {
 
   }
@@ -4975,6 +4989,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .mesh_content-el {
     margin: 0;
   }
+  .mesh_content-el:last-child {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: .8rem;
+  }
   .mesh_info {
     align-items: center; 
     gap: 24px;
@@ -5069,6 +5092,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .mesh_content-el {
     margin: 0;
+  }
+    .mesh_content-el:last-child {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: .8rem;
   }
   .mesh_info {
     align-items: center; 
@@ -5169,6 +5201,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .mesh_content-el {
     margin: 0;
+  }
+  .mesh_content-el:last-child {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: .8rem;
   }
   .mesh_info {
     align-items: center; 
