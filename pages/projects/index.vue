@@ -521,7 +521,7 @@ const addNewProject = () => {
             <div style="padding-left: 3.5rem; display: flex; flex-direction: column;">
               <span>{{ project?.name }}</span>
               <p style="margin: 0; display: flex; flex-direction: column;">
-                <span style="font-size: .8rem; color: var(--color-global-text_second);">Заказчик: {{ translateName(project?.customer?.[0].userType, project?.customer?.[0].userId)}}</span>
+                <span style="font-size: .8rem; color: var(--color-global-text_second);">Заказчик: {{ translateName(project?.customer?.[0]?.userType, project?.customer?.[0]?.userId)}}</span>
                 <span style="font-size: .8rem; color: var(--color-global-text_second);">Исполнитель: {{ translateName(project?.executor?.[0].userType, project?.executor?.[0].userId)}}</span>
               </p>
             </div>

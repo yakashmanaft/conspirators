@@ -2956,8 +2956,12 @@ const calcSectionInvested_project = (current_section) => {
     // } else {
     //   return `${invested_amount.toFixed(2)} ${ currency_to_show.value.ticket } `
     // }
-    return `${invested_returned - invested_amount} ${currency_to_show.value.ticket}
-    / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+    if(invested_returned - invested_amount === 0) {
+      return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
+    } else {
+
+      return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+    }
     // if(invested_returned > 0) {
     //   return `${(invested_returned - invested_amount).toFixed(2)} ${ currency_to_show.value.ticket } / ${(((invested_returned / invested_amount) - 1) * 100).toFixed(2)}%`
     // }
@@ -2989,8 +2993,12 @@ const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
   }
 
 
-  // return `Инвестировано: ${invested_amount}, Вернулось: ${invested_returned}`
-  return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+  if(invested_returned - invested_amount === 0) {
+    return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
+  } else {
+
+    return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+  }
 }
 //  invested loan
 const calcSectionInvested_loan = (current_section) => {
@@ -3020,20 +3028,20 @@ const calcSectionInvested_loan = (current_section) => {
           else if (mesh.id === transaction.target_item_id) {
             if(transaction.purpose.substring(0, 9) === 'Погашение') {
               amount -= +transaction.target_item_qty * +transaction.target_item_amount
-              returned_amount += +transaction.target_item_qty * +transaction.target_item_amount - overage
+              returned_amount += +transaction.target_item_qty * +transaction.target_item_amount
             } else {
 
               amount += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
             }
             if(amount < 0) {
-              overage -= amount
+              overage += amount
             }
           }
       })
   
     })
   }
-  return `${(returned_amount - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((returned_amount / invested_amount - 1)*100).toFixed(2)}%`
+  return `${((returned_amount + overage) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((returned_amount + overage)/ invested_amount - 1)*100).toFixed(2)}%`
 }
 
   // (${invested_amount} + ${profit} = ${invested_amount + profit})
@@ -4205,17 +4213,18 @@ const { data: bank } = useFetch("/api/banks/bank", {
                         <!-- debt_loan -->
                         <span v-if="item.tag === 'debt_loan'">
 
-                          <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) === 0" style="color: var(--color-urgency-low);">
+                          <!-- <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) === 0" style="color: var(--color-urgency-low);">
                             +1 к карме
-                          </span>
-                          <span v-else-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) > 0" style="color: var(--color-urgency-low);">
+                          </span> -->
+                          <span v-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) > 0" style="color: var(--color-urgency-low);">
                             +1 к щедрости ({{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2)}} {{ currency_to_show.ticket }})
                           </span>
                           <span v-else-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) === 0" style="color: var(--color-urgency-low);">
                             +1 к карме
                           </span>
                           <span v-else>
-                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} | {{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }} {{ currency_to_show.ticket }}
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} из 
+                            <span style="padding: 1px 3px; color: var(--color-global-baackground_light);border-radius: 5px; background-color: var(--color-urgency-high-10);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
                           </span>
                         </span>
                         <!-- invested_loan -->
@@ -4224,7 +4233,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
                             +{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount).toFixed(2)}} {{ currency_to_show.ticket }} / +{{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount) / item.amount * 100).toFixed(2) }}%
                           </span>
                           <span v-else>
-                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} | {{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }} {{ currency_to_show.ticket }}
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} из 
+                            <span style="padding: 1px 3px; color: var(--color-global-baackground_light);border-radius: 5px; background-color: var(--color-wallet-fund-invested);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
                           </span>
                         </span>
                         <!-- invested project -->
