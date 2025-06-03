@@ -2859,7 +2859,13 @@ const calcSectionAmount = (current_section) => {
 
     })
 
-    return `К получению: ${(amount).toFixed(2)} ${ currency_to_show.value.ticket }`
+    if(amount < 0) {
+
+      return `К получению: 0.00 ${ currency_to_show.value.ticket }`
+    } else {
+
+      return `К получению: ${(amount).toFixed(2)} ${ currency_to_show.value.ticket }`
+    }
   }
   if (current_section === 'debt_loan') {
     transaction_ledger?.value?.forEach(transaction => {
@@ -2879,7 +2885,12 @@ const calcSectionAmount = (current_section) => {
 
     })
 
-    return `${(amount * -1).toFixed(2)} ${ currency_to_show.value.ticket }`
+    if(amount * -1 > 0) {
+      return `0.00 ${ currency_to_show.value.ticket }`
+    } else {
+
+      return `${(amount * -1).toFixed(2)} ${ currency_to_show.value.ticket }`
+    }
   }
   else {
     return 'В разработке...'
@@ -4126,10 +4137,10 @@ const { data: bank } = useFetch("/api/banks/bank", {
                     <p class="mesh_content-el" style="">
                       <!-- {{ item }} -->
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
-                        <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) === 0" style="color: var(--color-urgency-low); text-transform: uppercase;">Завершен</span>
-                        <span v-else-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) > 0">
+                        <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-global-text_second); text-transform: uppercase;">Завершен</span>
+                        <!-- <span v-else-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) > 0">
                           +{{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount)).toFixed(2) }}
-                        </span>
+                        </span> -->
                         <span v-else>
                           <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
                             {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
@@ -4142,10 +4153,34 @@ const { data: bank } = useFetch("/api/banks/bank", {
                         </span>
                       </span>
                       <span>
-                        <!-- loan (debt or invested) -->
-                        <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
+                        <!-- debt_loan -->
+                         <span v-if="item.tag === 'debt_loan'">
+
+                          <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) === 0" style="color: var(--color-urgency-low);">
+                            +1 к карме
+                          </span>
+                          <span v-else-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) > 0" style="color: var(--color-urgency-low);">
+                            +1 к щедрости ({{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2)}} {{ currency_to_show.ticket }})
+                          </span>
+                          <span v-else>
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} | {{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }} {{ currency_to_show.ticket }}
+                          </span>
+                         </span>
+                         <!-- invested_loan -->
+                         <span v-else-if="item.tag === 'invested_loan'">
+                          <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-urgency-low);">
+                            +{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount).toFixed(2)}} {{ currency_to_show.ticket }} / +{{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount) / item.amount * 100).toFixed(2) }}%
+                          </span>
+                          <!-- <span v-else-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) > 0" style="color: var(--color-urgency-low);">
+                            +{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount).toFixed(2)}} {{ currency_to_show.ticket }}
+                          </span> -->
+                          <span v-else>
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} | {{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }} {{ currency_to_show.ticket }}
+                          </span>
+                         </span>
+                        <!-- <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} | {{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }} {{ currency_to_show.ticket }}
-                        </span>
+                        </span> -->
                         <!-- invested project -->
                         <span v-else-if="item.tag === 'invested_project'" style="display: flex; flex-direction: column; align-items: flex-end">
                           <span>
@@ -4156,7 +4191,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                           </span>
                         </span>
                         <span v-else>
-                          {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} 
+                          {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
                           {{ currency_to_show.ticket }}
                         </span>
                       </span>
