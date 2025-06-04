@@ -2995,7 +2995,11 @@ const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
 
   if(invested_returned - invested_amount === 0) {
     return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
-  } else {
+  } 
+  else if (invested_returned - invested_amount > 0) {
+    return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+  }
+  else {
 
     return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
   }
@@ -3044,57 +3048,8 @@ const calcSectionInvested_loan = (current_section) => {
   return `${((returned_amount + overage) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((returned_amount + overage)/ invested_amount - 1)*100).toFixed(2)}%`
 }
 
-  // (${invested_amount} + ${profit} = ${invested_amount + profit})
-  // (${debt})
-  // (${((invested_amount - debt))})
-  // (${debt} / ${debt / (invested_amount + profit)})
-  // ${(((invested_amount - debt) + invested_amount) - (invested_amount + profit)).toFixed(2)} ${currency_to_show.value.ticket} /
-  // ${(((debt + invested_amount) / (invested_amount + profit) - 1) * 100).toFixed(2)}%
-//   let result = 0;
-//   let mesh;
-//   if(mesh_list.value?.length) {
-//     mesh = mesh_list.value.find(mesh => {
-//       if(mesh.id === meshID) {
-//         //   if(currentAffiliation.value.name === 'all') {
-//         //   return mesh
-//         // }
-//         if (currentAffiliation.value.name === 'personal' && mesh.ownerID === sessionUser.value.id) {
-//           return mesh
-//         } 
-//         else if (mesh.ownerType === 'conspirator' && mesh.ownerID === currentAffiliation.value.bandID) {
-
-//           return mesh
-//         }
-//       }
-//     })
-//   }
-  
-//   let invested = calcMeshInvested(meshID)
-//   let available = calcMeshAvailable(meshID)
-
-//   if(mesh?.bid) {
-
-//     result = -(available - (invested + invested * mesh.bid)) / (invested + invested * mesh.bid) * 100
-
-//   } else {
-
-//     result = (available - invested) / invested * 100
-//   }
-
-//   return result
-
-// }
-
 // TRANSLATE
-//
-//= meshes id in transactions
-// const translateMeshByID = (id: number) => {
-//   let mesh;
-//   if(mesh_list.value?.length) {
-//     mesh = mesh_list.value.find(mesh => mesh.id === id)
-//   }
-//   return mesh
-// }
+//= mesh group name
 const translateMeshesGroupName = (name: string) => {
   if(name === 'available') {
     return 'Свободные средства'
@@ -3119,7 +3074,7 @@ const translateMeshesGroupName = (name: string) => {
   }
     
 }
-
+// mesh sub group
 const translateMashesSubGroup = (type: string) => {
   // available
   if(type === 'cash') {
@@ -3162,7 +3117,7 @@ const translateMashesSubGroup = (type: string) => {
     return type
   }
 }
-
+// transaction meshes
 const translateTransactionMeshes = (tag: string, from_item_type:string, from_item_id:number) => {
   // let mesh;
   // if(mesh_list.value?.length) {
