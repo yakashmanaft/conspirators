@@ -2970,7 +2970,7 @@ const calcSectionInvested_project = (current_section) => {
     // }
   }
 }
-// 
+//== actual invested project mesh amount
 const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
   let invested_amount = 0;
   let invested_returned = 0;
@@ -3004,7 +3004,7 @@ const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
     return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
   }
 }
-//  invested loan
+//==  invested loan
 const calcSectionInvested_loan = (current_section) => {
   let amount = 0;
   let invested_amount = 0;
