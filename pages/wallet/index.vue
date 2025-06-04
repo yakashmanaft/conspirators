@@ -4209,7 +4209,12 @@ const { data: bank } = useFetch("/api/banks/bank", {
                       </span>
                     </p>
                   </div>
-                  <p style="font-size: .8rem; color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}</p>
+                  <p style="font-size: .8rem; margin: 0;">
+
+                    <span style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}
+                    </span>
+                    <span v-if="item.tag === 'invested_project'" style="margin-left: 3px; color: var(--color-wallet-fund-invested); border-radius: 5px"> {{ item.desc }}</span>
+                  </p>
                 </li>
               </ul>
             </main>
