@@ -2714,6 +2714,7 @@ const calcTransactionAmount = (qty: number, amount, from_item_id, target_item_id
 }
 //=  calc mesh amount
 const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_name: string, mesh_bid) => {
+  
   let acc = 0
   transaction_ledger_computed?.value?.forEach(transaction => {
 
@@ -2721,6 +2722,7 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
     if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'debt_loan' && mesh_tag !== 'available') {
       acc += +transaction.target_item_qty * +transaction.target_item_amount
     }
+
     // AVAILABLE
     // FROM
     else if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'available' && transaction.purpose.substring(0, 9) !== 'Погашение') {
@@ -2745,6 +2747,8 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
     else if (transaction.purpose === `Закуп${mesh_name}`) {
       acc -= +transaction.target_item_qty * +transaction.target_item_amount
     }
+
+    // INVESTED LOAN
   })
 
   // return `${mesh_tag}-${mesh_type}_${mesh_id}`
@@ -2895,7 +2899,8 @@ const calcSectionAmount = (current_section) => {
         else if (mesh.id === transaction.target_item_id) {
           if(transaction.purpose.substring(0, 9) === 'Погашение') {
             amount -= +transaction.target_item_qty * +transaction.target_item_amount
-          } else {
+          } 
+          else {
 
             amount += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
           }
