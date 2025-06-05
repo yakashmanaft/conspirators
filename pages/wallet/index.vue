@@ -2725,7 +2725,7 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
 
     // AVAILABLE
     // FROM
-    else if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'available' && transaction.purpose.substring(0, 9) !== 'Погашение') {
+    if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'available' && transaction.purpose !== `Погашение${mesh_id}`) {
       acc -= +transaction.from_item_qty * +transaction.from_item_amount
     }
     // TARGET
@@ -2879,33 +2879,23 @@ const calcSectionAmount = (current_section) => {
     transaction_ledger?.value?.forEach(transaction => {
 
       meshes_group?.forEach(mesh => {
-        
-        // if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_loan') {
-        //   amount += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
-        // }
-        // else if (mesh.id === transaction.target_item_id && transaction.target_item_tag === 'debt_loan') {
-        //   if(transaction.purpose.substring(0, 9) === 'Погашение') {
-        //     amount -= +transaction.target_item_qty * +transaction.target_item_amount
-        //   }
-        // }
+
         if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_loan') {
 
           invested_amount += mesh.amount
           waiting_amount += mesh.amount + (mesh.amount * mesh.bid)
-        }
-        if(mesh.id === transaction.from_item_id && transaction.from_item_tag !== 'invested_loan' ) {
-          amount -= +transaction.from_item_qty * +transaction.from_item_amount
-        }
-        else if (mesh.id === transaction.target_item_id) {
-          if(transaction.purpose.substring(0, 9) === 'Погашение') {
-            amount -= +transaction.target_item_qty * +transaction.target_item_amount
-          } 
-          else {
 
-            amount += +transaction.target_item_qty * +transaction.target_item_amount + (+transaction.target_item_qty * +transaction.target_item_amount * mesh.bid)
-          }
+          amount += +transaction.target_item_qty * +transaction.target_item_amount
+          amount += +transaction.target_item_qty * +transaction.target_item_amount * mesh.bid
+        }
+        else if (mesh.id === transaction.target_item_id && transaction.target_item_tag === 'debt_loan' && transaction.purpose === `Погашение${mesh.name}`) {
+          amount -= +transaction.target_item_qty * +transaction.target_item_amount
+
+        }
+
+        else if (mesh.id === transaction.target_item_id) {
           if(amount < 0) {
-            overage -= amount
+            overage = amount
           }
         }
         
@@ -2913,14 +2903,7 @@ const calcSectionAmount = (current_section) => {
 
     })
 
-    // if(amount * -1 > 0) {
-    //   return `0.00 ${ currency_to_show.value.ticket }`
-    // } else {
-
-    //   return `${(amount * -1).toFixed(2)} ${ currency_to_show.value.ticket }`
-    // }
-    // return `${invested_amount} | ${waiting_amount} | ${overage} | ${amount}`
-    return `${((amount + overage) * -1).toFixed(2)} ${currency_to_show.value.ticket}`
+    return `${((amount * -1) + overage).toFixed(2)} ${currency_to_show.value.ticket}`
   }
   else {
     return 'В разработке...'
@@ -4158,6 +4141,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-global-text_second); text-transform: uppercase;">Завершен</span>
                         <span v-else>
+                        {{ item.amount }} | {{  item.bid }}
                           <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
                             {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
                             /
