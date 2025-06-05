@@ -5058,7 +5058,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .wallet-section_container {
     margin-top: 1.5rem;
     padding: 0 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 2rem;
   }
   .section-header_wrapper p {
     font-size: 32px;
@@ -5180,7 +5180,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     padding-left: 1rem;
     margin-right: -.5rem;
     padding-right: .5rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 2rem;
   }
   .fund_list {
     gap: 1rem;
@@ -5289,7 +5289,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 2rem;
   }
   .fund_list {
     gap: 1rem;
@@ -5397,7 +5397,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 2rem;
   }
   .fund_list {
     gap: 1rem;
