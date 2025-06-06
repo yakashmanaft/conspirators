@@ -140,8 +140,6 @@ const changeColorOnClick = (e) => {
     <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функций и опыт взаимодействия приложением в одном месте</p>
 
     <div class="section_container">
-
-      <!-- JOURNAL -->
       <section @click="$router.push('/journal')" class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)">
         <h3 style="color: var(--color-global-text); margin-top: 1rem;">Журнал</h3>
         <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
@@ -152,28 +150,37 @@ const changeColorOnClick = (e) => {
         </div>
       </section>
 
-      <section @click="$router.push('/landing_stock')" style="background-color: var(--color-urgency-low-10); position: relative;">
+      <section @click="$router.push('/landing_stock')" style="border: 1px solid var(--color-urgency-low-10); position: relative;">
         <h3 style="color: var(--color-urgency-low);">Маркетплейс соучастников</h3>
-        <p stylre="">Торговая площадка для обмена ценностями</p>
-        <p style="position: absolute; right: -2.5rem; bottom: -47px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
+        <p style="color: var(--color-global-text_second)">Торговая площадка для обмена ценностями</p>
+        <p style="position: absolute; right: -2.5rem; bottom: -45px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
+        <div class="section_btn" @click="$router.push(`/landing_stock`)">
+          <div class="section_icon">
+            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
       </section>
+      
+
 
       <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
         <h3 style="color: var(--color-gloab-text);">Помощь</h3>
-        <ul style="color: var(--color-global-text_second)"">
+        <ul style="color: var(--color-global-text_second)">
           <li style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
           <li style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
           <li style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
         </ul>
       </section>
-    </div>
+    </div> 
 
     <!-- НАШИ ЦИФРЫ -->
     <h2 class="sub_title-container">Наши цифры</h2>
 
     <div class="section_container">
 
-      <section class="default_list_item-container">123</section>
+      <section class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Наберем силы и похвастаемся :)</h3>
+      </section>
     </div>
 
     <!-- Отчеты и документы -->
@@ -181,15 +188,17 @@ const changeColorOnClick = (e) => {
 
     <div class="section_container">
 
-      <section class="default_list_item-container">123</section>
+      <section class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Формируем...</h3>
+      </section>
     </div>
 
     <!-- Инвесторам и акционерам -->
     <h2 class="sub_title-container">Инвесторам и акционерам</h2>
 
-    <div class="section_container">
+    <div class="section_container" >
 
-      <section class="default_list_item-container">Whitepaper</section>
+      <section class="default_list_item-container" @click="$router.push('/whitepaper')" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);"><h3>Whitepaper</h3></section>
     </div>
 
   </Container>

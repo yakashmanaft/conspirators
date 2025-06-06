@@ -127,6 +127,7 @@ const translateEndPoint = (str: string) => {
     // loan
     case 'loan':
       return 'Кредит'
+    // whitepaper
     // default
     default:
       return `#${pathArr.value[pathArr.value.length - 1] }`

@@ -50,7 +50,7 @@ const featuresListAuth = ref([
   },
   {
     path: "/band",
-    title: "Мои банды",
+    title: "Банды",
     auth: true
   },
   {
@@ -331,6 +331,10 @@ const translateRoutePath = (path: string) => {
   //= LANDING OFFER
   else if (path === '/landing_offer') {
     return 'Ваш отдел маркетинга'
+  }
+  //= whitepaper
+  else if (path === '/whitepaper') {
+    return 'Whitepaper'
   }
   // ELSE
   else {

@@ -7,7 +7,9 @@ export default defineEventHandler(async () => {
    return await prisma.landing.findMany({
         select: {
             id: true,
-            name: true
+            name: true,
+            title: true,
+            desc: true
         }
    })
   })

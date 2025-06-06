@@ -2089,6 +2089,11 @@ const currency_to_show =  ref({
 //   //   },
 // ])
 
+// POPUP
+// info total amount
+const info_total_popup_isOpened = ref(false)
+
+
 //= transaction popup
 const transaction_popup_isOpened = ref(false)
 const transaction_el = ref({})
@@ -3315,9 +3320,14 @@ onMounted(() => {
   // console.log(transactionPopupContainer)
   window.addEventListener('click', (event) => {
   
-    // console.log(event.target)
+    // transaction popup close
     if(event.target.classList.contains('transaction_popup_container')) {
-      transaction_popup_isOpened.value = false; transaction_el.value = {}
+      transaction_popup_isOpened.value = false; 
+      transaction_el.value = {}
+    }
+    // total popup close
+    if(event.target.classList.contains('info_total_popup_container')) {
+      info_total_popup_isOpened.value = false; 
     }
   })
 })
@@ -4014,7 +4024,21 @@ const { data: bank } = useFetch("/api/banks/bank", {
     <!-- TOTAL КАПИТАЛИЗАЦИЯ ПО ФОНДУ -->
     <!--  -->
     <div class="total-cap_container">
-      <p style="margin: 0; font-size: 1.2rem;"><span style="width: fit-content;">TOTAL:</span> <span>~999,999,999.99{{ currency_to_show.ticket }}</span></p>
+      <p 
+        style="margin: 0; font-size: 1.2rem; position: relative;"
+      >
+        <span style="width: fit-content;">TOTAL:</span> 
+        <span style="position: relative; ">~999,999,999.99 {{ currency_to_show.ticket }}
+          <span 
+            @click="info_total_popup_isOpened = true"
+            style="cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 100%; border: 1px solid var(--color-global-text_second); color: var(--color-global-text_second); width: 1rem; height: 1rem; font-size: 1rem; position: absolute; top: 0; right: -1rem;"
+          >
+            ?
+          </span>
+        </span>
+        <!-- <span style="position: absolute; top: 0; right: -2rem;">?</span> -->
+      
+      </p>
       <!-- <p 
         class="btn_to_fund" 
         @click="$router.push(`/band/${currentAffiliation?.bandID}`);" 
@@ -4028,6 +4052,40 @@ const { data: bank } = useFetch("/api/banks/bank", {
       >
         Перейти в фонд
       </p>
+    </div>
+
+    <!-- POPUP -->
+    <!-- TOTAL INFO -->
+    <div v-if="info_total_popup_isOpened" id="info_total_popup" class="info_total_popup_container">
+
+      <div class="info_total_popup_wrapper">
+        
+        <div class="info_total_popup_btn-close" @click.stop="info_total_popup_isOpened = false">
+          <p style="margin: 0; color: var(--color-global-text_second);">Как считается:</p>
+          <Icon             
+            name="material-symbols-light:cancel-outline-rounded"
+            size="2rem"
+            color="var(--color-global-text)"
+          />
+        </div>
+        <div class="info_total_popup_content">
+
+          <p>В TOTAL не входит: </p>
+          <ul>
+            <li>Баланс проектов</li>
+            <li>Задолежнность по кредитам в разделе "Долговые обязательства"</li>
+          </ul>
+          <p>В TOTAL входит: </p>
+          <ul>
+            <li>Сумма из раздела "Свободные средства"</li>
+            <li>
+              Сумма к получению из раздела "Финансирование соучастников"
+            </li>
+          </ul>
+          <p>Не нашли что искали? Давайте попробуем посомтреть в разделе <nuxt-link to="/help">Помощь</nuxt-link></p>
+          <p>Либо напишите нам в разделе <nuxt-link to="/about">Контакты</nuxt-link></p>
+        </div>
+      </div>
     </div>
 
     <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
@@ -4210,6 +4268,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
           </div>
 
           <!-- POPUP -->
+           <!-- TRANSACTION INFO -->
           <div v-if="transaction_popup_isOpened" class="transaction_popup_container"
           id="transaction_popup"
           >
@@ -4617,7 +4676,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
 
 <style scoped>
 /* POPUP */
-.transaction_popup_container {
+.transaction_popup_container,
+.info_total_popup_container {
   position: fixed;
   /* z-index: -1; */
   z-index: 999;
@@ -4633,7 +4693,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
   align-items: center;
   justify-content: center;
 }
-.transaction_popup_wrapper {
+.transaction_popup_wrapper,
+.info_total_popup_wrapper {
   border-radius: 1rem;
   padding: 1rem;
   max-width: 500px;
@@ -4643,15 +4704,19 @@ const { data: bank } = useFetch("/api/banks/bank", {
   justify-content: center;
   align-items: center;
 }
-.transaction_popup_btn-close {
+.transaction_popup_btn-close,
+.info_total_popup_btn-close {
   width: 100%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.transaction_popup_content {
+.transaction_popup_content,
+.info_total_popup_content {
   margin-top: 1rem;
+  max-height: 60vh;
+  overflow: scroll;
 }
 /*  */
 .switch-title_container {
