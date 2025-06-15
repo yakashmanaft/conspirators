@@ -2827,33 +2827,17 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
 
 // CALC
 //= section amount
-const calcSectionAmount = (current_section) => {
+const calcSectionAmount = (current_section: any) => {
   
   let amount = 0
   let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
 
   if(current_section === 'available') {
-    
-    let income = 0;
-    let outcome = 0;
 
 
     transaction_ledger?.value?.forEach(transaction => {
 
       meshes_group?.forEach(mesh => {
-        // if(mesh.id === transaction.from_item_id) {
-        //   if(mesh.type === transaction.from_item_type && transaction.purpose.substring(0, 9) !== 'Погашение') {
-        //     outcome += +transaction.from_item_qty * +transaction.from_item_amount
-        //     amount -= +transaction.target_item_qty * +transaction.target_item_amount
-        //   }
-        // }
-        // else if (mesh.id === transaction.target_item_id) {
-        //   if(mesh.type === transaction.target_item_type) {
-        //     income += +transaction.target_item_qty * +transaction.target_item_amount
-
-        //     amount += +transaction.target_item_qty * +transaction.target_item_amount
-        //   }
-        // }
 
         // FROM
         if(mesh.id === transaction.from_item_id) {
@@ -2914,7 +2898,7 @@ const calcSectionAmount = (current_section) => {
   if (current_section === 'invested_stock') {
     transaction_ledger?.value?.forEach(transaction => {
 
-      meshes_group?.forEach(mesh => {
+      meshes_group?.forEach((mesh: any) => {
         
         if(mesh.id === transaction.from_item_id) {
           amount -= +transaction.from_item_qty * +transaction.from_item_amount
@@ -2933,7 +2917,7 @@ const calcSectionAmount = (current_section) => {
   if(current_section === 'invested_project') {
     // CALC INVESTED MONEY IN ALL PROJECTS
     transaction_ledger?.value?.forEach(transaction => {
-      meshes_group?.forEach(mesh => {
+      meshes_group?.forEach((mesh:any) => {
         if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_project') {
           amount += +transaction.from_item_qty * +transaction.from_item_amount
         }
@@ -3027,13 +3011,24 @@ const calcSectionAmount = (current_section) => {
 
     return `${((amount * -1) + overage).toFixed(2)} ${currency_to_show.value.ticket}`
   }
+  if (current_section === 'invested_crypto') {
+    transaction_ledger?.value?.forEach(transaction => {
+      meshes_group?.forEach((mesh:any) => {
+        if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
+          amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+      })
+    })
+
+    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+  }
   else {
     return 'В разработке...'
   }
 }
 //= invested project
 //== section
-const calcSectionInvested_project = (current_section) => {
+const calcSectionInvested_project = (current_section: any) => {
   // Доход0506Проект2017
   // Закуп0506Проект2017
   // 0506Проект2017
@@ -3043,7 +3038,7 @@ const calcSectionInvested_project = (current_section) => {
   if (current_section === 'invested_project') {
     transaction_ledger?.value?.forEach(transaction => {
 
-      meshes_group?.forEach(mesh => {
+      meshes_group?.forEach((mesh: any) => {
 
         //  income transactions
         if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_project' ) {
@@ -3330,7 +3325,25 @@ onMounted(() => {
       info_total_popup_isOpened.value = false; 
     }
   })
+
+  // CRYPTO PRICES GET
+  getCoinPrice()
 })
+
+
+// CRYPTO PRICES GET
+const getCoinPrice = async () => {
+  
+  const {data: crypto_price_list} = await useFetch("/api/cryptoPrice/crypto_price", {
+    lazy: false,
+    transform: (crypto_price_list) => {
+      // return Object.entries(crypto_price_list)
+      return crypto_price_list
+    }
+  })
+
+  console.log(`Цена BTC: ${crypto_price_list?.value?.BTCRUB}`)
+}
 
 // EMITS FUNCTIONs
 
@@ -3486,7 +3499,7 @@ const set_mesh_link_by_tag = (mesh_type: string, mesh_id: number, mesh_tag: stri
         }
       } 
       else if (mesh_type === 'mutual_fund') {
-        alert('Мешок не подвзан к ПИФу')
+        alert('Мешок не подвязан к ПИФу')
       } 
       else {
         alert('А сбой какой-то... напишите нам, приложите скрин')
@@ -4106,13 +4119,22 @@ const { data: bank } = useFetch("/api/banks/bank", {
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
           <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }}</p>
+          <!-- INVESTED PROJECT-->
           <p 
             v-if="el === 'invested_project'"
             style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
             >
             {{ calcSectionInvested_project(el) }}
           </p>
+          <!-- INVESTED CRYPTO -->
+          <p
+            v-else-if="el === 'invested_crypto'"
+            style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
+          >
+          123
+          </p>
 
+          <!-- INVESTED LOAN -->
           <p
             v-else-if="el === 'invested_loan'"
             style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
