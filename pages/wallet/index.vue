@@ -2722,15 +2722,16 @@ const calcCryptoPair = (tr: any) => {
  //transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee
   let btcrub = 718286.59999
 
-  if(tr.target_item_currency === 'RUB') {
+  if(tr.target_item_currency === 'BTC') {
     
-    return tr.target_item_qty * tr.target_item_amount - tr.fee 
-  }
-  else if (tr.target_item_currency === 'BTC') {
-
     return (tr.target_item_qty * tr.target_item_amount - tr.fee) * btcrub;
   }
+  else if(tr.from_item_currency === 'BTC') {
+    
+    return (tr.from_item_qty * tr.from_item_amount - tr.fee) * btcrub;
+  }
   else {
+    // return tr.from_item_qty * tr.from_item_amount - tr.fee
     return 0
   }
 
