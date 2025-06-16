@@ -2718,13 +2718,17 @@ const calcTransactionAmount = (qty: number, amount, from_item_id, target_item_id
   }
 }
 // calc crypto pair
-const calcCryptoPair = (targetCurrency, targetQty, TargetAmount, targetFee) => {
-
+const calcCryptoPair = (tr: any) => {
+ //transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee
   let btcrub = 718286.59999
 
-  if(targetCurrency === 'BTC') {
+  if(tr.target_item_currency === 'RUB') {
     
-    return (targetQty * TargetAmount - targetFee) * btcrub;
+    return tr.target_item_qty * tr.target_item_amount - tr.fee 
+  }
+  else if (tr.target_item_currency === 'BTC') {
+
+    return (tr.target_item_qty * tr.target_item_amount - tr.fee) * btcrub;
   }
   else {
     return 0
@@ -2772,7 +2776,7 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
         if(mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
           if(transaction.purpose.slice(0,4) === `Свап`) {
 
-            acc += calcCryptoPair(transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee)
+            acc += calcCryptoPair(transaction)
           } else {
             acc += transaction.from_item_qty * transaction.from_item_amount
           }
@@ -3057,7 +3061,7 @@ const calcSectionAmount = (current_section: any) => {
         if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
           if(transaction.purpose.slice(0,4) === `Свап`) {
 
-            amount += calcCryptoPair(transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee)
+            amount += calcCryptoPair(transaction)
           } else {
             amount += transaction.from_item_qty * transaction.from_item_amount
           }
@@ -3233,7 +3237,7 @@ const calcSectionInvested_crypto = (current_section: any) => {
         if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
           // invested_returned += 1
           if(transaction.purpose.slice(0,4) === `Свап`) {
-            invested_returned += calcCryptoPair(transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee)
+            invested_returned += calcCryptoPair(transaction)
           } else {
             invested_returned += +transaction.target_item_qty * +transaction.target_item_amount
           }
