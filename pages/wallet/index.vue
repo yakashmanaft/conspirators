@@ -3267,7 +3267,7 @@ const translateMeshesGroupName = (name: string) => {
     return 'Баланс проектов'
   }
   if(name === 'invested_crypto') {
-    return 'Инвестировано в крипто индустрию'
+    return 'Баланс крипты'
   }
   if(name === 'invested_loan') {
     return 'Финансирование соучастников'
