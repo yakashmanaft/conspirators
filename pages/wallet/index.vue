@@ -2736,6 +2736,7 @@ const calcCryptoPair = (tr: any) => {
   }
 
 }
+// CALC MESH
 //=  calc mesh amount
 const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_name: string, mesh_bid: any) => {
   
@@ -2864,8 +2865,91 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
     return acc
   }
 }
+//== actual invested project mesh amount
+const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
+  let invested_amount = 0;
+  let invested_returned = 0;
 
-// CALC
+  let mesh = meshes_computed.value.find(el => el.id === mesh_id)
+
+  if(mesh) {
+    transaction_ledger?.value?.forEach(transaction => {
+      if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_project') {
+        invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+      }
+      // CALC invested_returned
+      if(transaction.purpose === `Доход${mesh.name}`) {
+        invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
+      }
+      // if(transaction.purpose === `Закуп${mesh.name}`) {
+      //   invested_returned -= +transaction.from_item_qty * +transaction.from_item_amount
+      // }
+    })
+  }
+
+
+  if(invested_returned - invested_amount === 0) {
+    return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
+  } 
+  else if (invested_returned - invested_amount > 0) {
+    return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+  }
+  else {
+
+    return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+  }
+}
+//= actual invested crypto mesh amount
+const calc_mesh_invested_crypto_actual = (mesh_id: number) => {
+  let invested_amount = 0;
+  let invested_returned = 0;
+  let acc = 0
+  transaction_ledger_computed?.value?.forEach((transaction: any) => {
+    // if(mesh_id === transaction.from_item_id ) {
+    //   if(mesh_id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
+    //     acc -= transaction.from_item_qty * transaction.from_item_amount
+    //   }
+    //   if(mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
+    //     if(transaction.purpose.slice(0,4) === `Свап`) {
+
+    //       acc += calcCryptoPair(transaction)
+    //     } else {
+    //       acc += transaction.from_item_qty * transaction.from_item_amount
+    //     }
+    //   }
+    // }
+    // else if (mesh_id === transaction.target_item_id) {
+    //   if (transaction.target_item_tag === 'invested_crypto') {
+        
+    //     if(transaction.purpose.slice(0,6) === `Выдача`) {
+    //       acc += transaction.from_item_qty * transaction.from_item_amount
+    //     } 
+
+    //   }
+    // }
+            if(mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
+          // invested_returned += 1
+          if(transaction.purpose.slice(0,4) === `Свап`) {
+            invested_returned += calcCryptoPair(transaction)
+          } else {
+            invested_returned += +transaction.target_item_qty * +transaction.target_item_amount
+          }
+        }
+        if(mesh_id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
+          invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+  })
+  if(!Number.isNaN(invested_returned / invested_amount)) {
+    return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
+  } 
+  else {
+    return `${invested_amount.toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
+  }
+}
+
+
+
+// CALC in SECTIONs
 //= section amount
 const calcSectionAmount = (current_section: any) => {
   
@@ -3112,40 +3196,6 @@ const calcSectionInvested_project = (current_section: any) => {
       return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
     }
 
-  }
-}
-//== actual invested project mesh amount
-const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
-  let invested_amount = 0;
-  let invested_returned = 0;
-
-  let mesh = meshes_computed.value.find(el => el.id === mesh_id)
-
-  if(mesh) {
-    transaction_ledger?.value?.forEach(transaction => {
-      if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_project') {
-        invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
-      }
-      // CALC invested_returned
-      if(transaction.purpose === `Доход${mesh.name}`) {
-        invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
-      }
-      // if(transaction.purpose === `Закуп${mesh.name}`) {
-      //   invested_returned -= +transaction.from_item_qty * +transaction.from_item_amount
-      // }
-    })
-  }
-
-
-  if(invested_returned - invested_amount === 0) {
-    return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
-  } 
-  else if (invested_returned - invested_amount > 0) {
-    return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
-  }
-  else {
-
-    return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
   }
 }
 //==  invested loan
@@ -4437,6 +4487,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                     <p class="mesh_content-el">{{ item.name }}</p>
                     <p class="mesh_content-el" style="">
 
+                      <!-- invested)loan or debt_loan -->
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-global-text_second); text-transform: uppercase;">Завершен</span>
                         <span v-else>
@@ -4450,6 +4501,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
                           </span>
                         </span>
                       </span>
+                      <!-- invested crypto -->
+                      <span v-else-if="item.tag === 'invested_crypto'" style="display: flex; flex-direction: column; align-items: flex-end">
+                      {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid)).toFixed(2) }} {{ currency_to_show.ticket }}
+                      </span>
+
                       
                       <span>
                         <!-- debt_loan -->
@@ -4489,9 +4545,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
                           </span>
                         </span>
                         <!-- invested crypto -->
-                         <span v-else-if="item.tag === 'invested_crypto'" style="display: flex; flex-direction: column; align-items: flex-end">
-                          {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid)).toFixed(2) }} {{ currency_to_show.ticket }}
-                         </span>
+                        <span v-else-if="item.tag === 'invested_crypto'" style="color: var(--color-global-text_second);">{{ calc_mesh_invested_crypto_actual(item.id) }}
+                        </span>
 
                         <span v-else>
                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
