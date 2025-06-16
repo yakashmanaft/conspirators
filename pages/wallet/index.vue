@@ -3246,24 +3246,6 @@ const calcSectionInvested_crypto = (current_section: any) => {
           invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
         }
 
-        // income transactions
-        // if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
-        //   amount -= +transaction.target_item_qty * +transaction.target_item_amount
-        //   amount += calcCryptoPair(transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee)
-        //   // amount -= calcCryptoPair(transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee)
-        //   if(transaction.purpose === `Свап${mesh.name}`) {
-        //     // amount -= +transaction.target_item_qty * +transaction.target_item_amount
-        //     console.log(mesh.name)
-        //   }
-        // }
-        // if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
-        //   amount -= +transaction.from_item_qty * +transaction.from_item_amount
-          
-        //   if(transaction.purpose === `Свап${mesh.name}`) {
-
-        //     amount += calcCryptoPair(transaction.target_item_currency, transaction.target_item_qty, transaction.target_item_amount, transaction.fee)
-        //   }
-        // }
 
       })
     })
