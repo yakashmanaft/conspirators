@@ -297,6 +297,32 @@ useHead({
         }
     })
 
+    // transactions
+    const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
+    lazy: false,
+    transform: (transaction_ledger) => {
+        let array:any = []
+
+        brokerage?.value?.invested_mash?.forEach(el => {
+                transaction_ledger.filter(tr => {
+                if(el.id === tr.from_item_id || el.id === tr.target_item_id) {
+
+                    
+                    if(
+                        (tr.target_item_tag === 'invested_stock' && tr.target_item_type === 'brokerage_account') || 
+                        (tr.from_item_tag === 'invested_stock' && tr.from_item_type === 'brokerage_account') 
+                    ) {
+                        
+                        array.push(tr)
+                    }
+                }
+            })
+        })
+        return array;
+    }
+    })
+
+
 </script>
 
 
@@ -381,6 +407,15 @@ useHead({
 
 
             {{ brokerage }}
+            <br>
+            <p><span>Портфель</span> <span>Операции</span> <span>Пополнения</span> <span>Выводы</span></p>
+            <ul>
+                <li v-for="tr in transaction_ledger">
+                    {{ tr }}
+                </li>
+            </ul>
+
+
 
             <div style="position: fixed; bottom: 4rem; left: 0; width: 100%; padding: 0 1rem 1rem 1rem;">
 

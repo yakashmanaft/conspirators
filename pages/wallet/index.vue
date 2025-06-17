@@ -2784,6 +2784,7 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
           }
         }
       }
+      
     }
     // TARGET
     else if(mesh_id === transaction.target_item_id) {
@@ -2808,6 +2809,13 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
         }
       }
       else if (transaction.target_item_tag === 'invested_crypto') {
+        
+        if(transaction.purpose.slice(0,6) === `Выдача`) {
+          acc += transaction.from_item_qty * transaction.from_item_amount
+        } 
+
+      }
+      else if (transaction.target_item_tag === 'invested_stock') {
         
         if(transaction.purpose.slice(0,6) === `Выдача`) {
           acc += transaction.from_item_qty * transaction.from_item_amount
@@ -3302,6 +3310,26 @@ const calcSectionInvested_crypto = (current_section: any) => {
     })
   }
   return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
+}
+//== invested stock
+const calcSectionInvested_stock = (current_section: any) => {
+  //Выдача0902Брокерскийсчет2020
+  let invested_amount = 0;
+  let invested_returned = 0;
+  let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
+
+  if(current_section === 'invested_stock') {
+    transaction_ledger?.value?.forEach(transaction => {
+      meshes_group?.forEach(mesh => {
+        
+        if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_stock') {
+          invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+        }
+      })
+    })
+  } 
+
+  return `invested: ${invested_amount} | returned: ${invested_returned}`
 }
 
 // TRANSLATE
@@ -4271,6 +4299,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
           >
             {{ calcSectionInvested_loan(el) }}
           </p>
+
+          <!-- INVESTED STOCK -->
+          <p v-else-if="el === 'invested_stock'" style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;">
+            {{ calcSectionInvested_stock(el) }}
+          </p>
       </Section>
     </div> 
     <!-- {{ choosenChip_section }} -->
@@ -4417,6 +4450,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
                 <br>
                 {{ transaction_el.purpose }}
                 <br>
+                {{ transaction_el.comments }}
+                <br>
                 <br>
 
                 {{ transaction_el }}
@@ -4505,6 +4540,10 @@ const { data: bank } = useFetch("/api/banks/bank", {
                       <span v-else-if="item.tag === 'invested_crypto'" style="display: flex; flex-direction: column; align-items: flex-end">
                       {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid)).toFixed(2) }} {{ currency_to_show.ticket }}
                       </span>
+                      <!-- invested stock -->
+                      <span v-else-if="item.tag === 'invested_stock'" style="display: flex; flex-direction: column; align-items: flex-end">
+                        Инвестировано: {{ calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) }}
+                      </span>
 
                       
                       <span>
@@ -4547,7 +4586,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
                         <!-- invested crypto -->
                         <span v-else-if="item.tag === 'invested_crypto'" style="color: var(--color-global-text_second);">{{ calc_mesh_invested_crypto_actual(item.id) }}
                         </span>
-
+                        <!-- invested stock -->
+                        <span v-else-if="item.tag === 'invested_stock'" style="color: var(--color-global-text_second);">
+                          {{ 123 }}
+                        </span>
+                        <!-- else -->
                         <span v-else>
                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
                           {{ currency_to_show.ticket }}
