@@ -259,6 +259,39 @@ usersInBand.value = [
 // ТМЦ
 const items = ref([]);
 
+// COMPUTED
+//= computed patner
+const computedPartner = computed(() => {
+  return partner_list.value 
+})
+//= computed partner is a part of a band
+const curret_partner_band_list_computed = computed(() => {
+
+  let array = []
+  
+  band_list?.value?.forEach(band => {
+    if(band.sharers) {
+      // console.log(band.sharers)
+      band?.sharers?.forEach(sharer => {
+        if(sharer.userType === 'user' && sharer.userId === computedPartner.value.userId) {
+          // console.log(computedPartner.value.userId)
+          // console.log(sharer)
+          array.push(band)
+        }
+      })
+    }
+  })
+
+  return array
+})
+
+// ONCLICK
+//= open link plug
+const openLinkPlug = (text) => {
+  alert(`Действия с кнопкой в разработке...`)
+}
+
+
 // When accessing /posts/1, route.params.id will be 1
 
 // onMounted(async () => {
@@ -269,90 +302,12 @@ const items = ref([]);
 // let btnPrev = document.querySelector('#prevUserBtn')
 // console.log(btnPrev)
 onMounted(async () => {
-  // console.log(organizations.value)
-  // users.value = await getUsers();
-  // user.value = [...users.value]
-  //   .map((user) => {
-  //     return {
-  //       id: user.id,
-  //       email: user.email,
-  //       name: user.name,
-  //       middleName: user.middleName,
-  //       surname: user.surname,
-  //       // "password": "Anfalov123[eq",
-  //       phone: user.phone,
-  //       role: user.role,
-  //       groupStatus: user.groupStatus,
-  //       created_at: user.created_at,
-  //       update_at: user.update_at,
-  //     };
-  //   })
-  //   .find((item) => item.id === +route.params.id);
-
-  // if (users.value.indexOf(user.value) === 0) {
-  //   isFlipperPrevUserBtnExist.value = false;
-  // } else if (users.value.length - 1 === users.value.indexOf(user.value)) {
-  //   isFlipperNextUserBtnExist.value = false;
-  // }
 
   wageFund.value = sumUserSalary() + rest.value;
   productionFund.value = sumUserProductionSalary() + rest.value;
-
-  //
-  // items.value = await getItems();
-  // items.value = items.value.filter(
-  //   (el) => el.ownerType === "user" && el.ownerID === user.value.id
-  // );
 });
 
 
-// COMPUTED
-const computedPartner = computed(() => {
-  return partner_list.value 
-})
-// const computedSharerOrganizations = computed(() => {
-//   if (organizations.value) {
-//     let organizationsArrayWhereUserIs = [];
-
-//     organizations.value.forEach((organization) => {
-//       if (organization.sharers.length) {
-//         organization.sharers.forEach((sharer) => {
-//           if (
-//             sharer.userType === "user" &&
-//             sharer.userID === +route.params.id
-//           ) {
-//             organizationsArrayWhereUserIs.push(organization);
-//           }
-//         });
-//       }
-//     });
-//     return organizationsArrayWhereUserIs;
-//   }
-//   // sharers = [
-//   //  {
-//   //    userID: number
-//   //    userType: string
-//   //  }
-//   // ]
-
-//   // Users - id
-//   // organizations.value.sharers
-// });
-// const computedMyOrganizations = computed(() => {
-//   if (organizations.value) {
-//     return [...organizations.value].filter((organization) => {
-//       if (organization.ownerID === +route.params.id) {
-//         return organization;
-//       }
-//     });
-//   }
-// });
-// const { data: organizations } = await useFetch(
-//   "/api/organizations/organizations",
-//   {
-//     lazy: false,
-//   }
-// );
 /**
  * @desc Get users
  */
@@ -378,48 +333,17 @@ const { data: partner_list, pending, refresh, error } = useFetch("/api/partnerGu
 
     }
 })
+const { data: band_list } = useFetch("/api/band/band", {
+  lazy: false,
+  trasform: (band_list) => {
+    // console.log(11232)
+    return band_list
+  }
 
-/**
- * @desc Users flipper
- */
-// const usersFlipper = (user, actionType, usersArray) => {
-//   let prevUserID = usersArray.indexOf(user)
-//     ? usersArray[usersArray.indexOf(user) - 1].id
-//     : null;
-//   let nextUserID =
-//     usersArray.indexOf(user) < usersArray.length - 1
-//       ? usersArray[usersArray.indexOf(user) + 1].id
-//       : null;
-
-//   if (actionType === "prev" && prevUserID) {
-//     router.push(`${prevUserID}`);
-//   }
-//   if (actionType === "next" && nextUserID) {
-//     router.push(`${nextUserID}`);
-//   }
-// };
-
-/**
- * @desc  Calculation Salary
- */
-
-// const test = () => {
-//   return Object.values(usersInBand.value).reduce((acc, current) => {
-//     acc += current.hours;
-//     return acc;
-//   }, 0);
-// };
-
-//  <!-- Час * КТУ -->
-// {{ item.hours * item.c }}
-// const sumUserHourStakeIndex = () => {
-//   return Object.values(usersInBand.value).reduce((acc, current) => {
-//     if (current.category !== "#2") {
-//       acc += current.hours * current.stakeIndex;
-//     }
-//     return +acc.toFixed(2);
-//   }, 0);
-// };
+  // const computedPartner = computed(() => {
+  //  return partner_list.value 
+  // })
+})
 
 // <!-- ЗП (выработка) -->
 // {{ (item.hours * item.stakeIndex) * wageRate }}
@@ -588,8 +512,17 @@ const createMyNewBand = () => {
             class="avatar_btn" 
             @click="$router.push('/account')"
             v-if="computedPartner.userId === sessionUser.id"
+            style="display: flex; justify-content: center;"
           >
-            В аккаунт
+            <span style="color: var(--color-global-text_second)">В аккаунт</span>
+            <span>     
+              <Icon
+                class="link"
+                name="material-symbols-light:arrow-back-ios"
+                size="24px"
+                color="var(--color-global-text_second)"
+              />
+            </span>
           </div>
         </div>
 
@@ -610,7 +543,7 @@ const createMyNewBand = () => {
 
           <div v-if="computedPartner.phone">
 
-            <div class="phone_wrapper">
+            <div class="phone_wrapper" @click="openLinkPlug(computedPartner.phone)">
               <div class="phone_btn">
                 <div class="phone_btn-icon">
                   <!-- <Icon
@@ -630,7 +563,7 @@ const createMyNewBand = () => {
               </div>
             </div>
 
-            <div class="phone_wrapper">
+            <div class="phone_wrapper" @click="openLinkPlug(computedPartner.phone)">
               <div class="phone_btn">
                 <div class="phone_btn-icon">
                   Сотовый
@@ -654,7 +587,7 @@ const createMyNewBand = () => {
         <div class="email-container">
 
           <div v-if="computedPartner.email" >
-            <div class="email_wrapper">
+            <div class="email_wrapper" @click="openLinkPlug(computedPartner.email)">
               <div class="email_btn">
                 <div class="email_btn-icon">
                   <Icon
@@ -668,7 +601,7 @@ const createMyNewBand = () => {
                 </p>
               </div>
             </div>
-            <div class="email_wrapper">
+            <!-- <div class="email_wrapper">
               <div class="email_btn">
                 <div class="email_btn-icon">
                   <Icon
@@ -681,7 +614,7 @@ const createMyNewBand = () => {
                   {{ computedPartner.email }}
                 </p>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div v-else class="email_wrapper">
@@ -691,23 +624,21 @@ const createMyNewBand = () => {
         
         <div class="band_container">
 
-          <!-- V IF -->
-          <div v-if="computedPartner.email">
-            <div class="band_wrapper">
-              Банк ЕС
-            </div>
-            <div class="band_wrapper">
-              Zipmarket.ru
-            </div>
-            <div class="band_wrapper">
-              Conspirators
-            </div>
-          </div>
-
-          <!-- V ELSE -->
-          <div v-else class="band_wrapper">
+          <div v-if="!curret_partner_band_list_computed.length">
             Кооперативы не указаны
           </div>
+
+          <div v-else>
+            <div @click="$router.push(`/band/${band.id}`)" class="band_wrapper" v-for="band in curret_partner_band_list_computed">
+
+              <!-- NAME -->
+               <!-- http://localhost:3000/band/1 -->
+              <div>
+                {{band.name}}
+              </div>
+            </div>  
+          </div>
+
         </div>
 
 
@@ -1204,6 +1135,24 @@ const createMyNewBand = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .avatar_btn {
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+  }
+  .avatar_btn span:first-child{
+    /* background-color: blue; */
+  }
+  .avatar_btn span:nth-child(2){
+    /* background-color: green; */
+  }
+  .avatar_btn span:nth-child(2) > svg {
+    /* background-color: purple; */
+    transform: rotate(180deg);
+  }
+  .avatar_btn span:nth-child(2) svg path{
+
   }
   .avatar_btn:hover {
     cursor: pointer;
