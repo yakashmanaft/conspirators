@@ -629,7 +629,7 @@ const createMyNewBand = () => {
           </div>
 
           <div v-else>
-            <div @click="$router.push(`/band/${band.id}`)" class="band_wrapper" v-for="band in curret_partner_band_list_computed">
+            <div @click="openLinkPlug(computedPartner.id)" class="band_wrapper" v-for="band in curret_partner_band_list_computed">
 
               <!-- NAME -->
                <!-- http://localhost:3000/band/1 -->
