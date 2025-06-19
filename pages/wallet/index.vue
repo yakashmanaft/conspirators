@@ -2892,8 +2892,8 @@ const calc_mesh_invested_crypto_actual = (mesh_id: number) => {
     if(mesh_id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
 
       invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
-      if(transaction.purpose.slice(0,7) === `Возврат`) {
-        invested_amount -= +transaction.from_item_qty * +transaction.from_item_amount
+      if(transaction.purpose.slice(0,5) === `Доход`) {
+        invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
       }
     }
   })
@@ -3259,14 +3259,15 @@ const calcSectionInvested_crypto = (current_section: any) => {
           // invested_returned += 1
           if(transaction.purpose.slice(0,4) === `Свап`) {
             invested_returned += calcCryptoPair(transaction)
-          } else {
+          } 
+          else {
             invested_returned += +transaction.target_item_qty * +transaction.target_item_amount
           }
         }
         if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
           invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
-          if(transaction.purpose.slice(0,7) === `Возврат`) {
-            invested_amount -= +transaction.from_item_qty * +transaction.from_item_amount
+          if(transaction.purpose.slice(0,5) === `Доход`) {
+            invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
           }
         }
 
