@@ -2827,42 +2827,6 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
     else if(transaction.purpose === `Доход${mesh_name}`) {
         acc += transaction.from_item_qty * transaction.from_item_amount
     }
-
-
-
-
-
-    // // DEBT LOAN && AVAILABLE
-    // if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'debt_loan' && mesh_tag !== 'available') {
-    //   acc += +transaction.target_item_qty * +transaction.target_item_amount
-    // }
-
-    // // AVAILABLE
-    // // FROM
-    // if (transaction.from_item_id === mesh_id && transaction.from_item_tag === 'available' && transaction.purpose !== `Погашение${mesh_id}`) {
-    //   acc -= +transaction.from_item_qty * +transaction.from_item_amount
-    // }
-    // // TARGET
-    // else if (transaction.target_item_id === mesh_id && transaction.target_item_tag === 'available') {
-    //   acc += +transaction.target_item_qty * +transaction.target_item_amount
-    // }
-    // // INCOME && ДОХОД
-    // else if (transaction.from_item_tag === 'income' && transaction.purpose === `Доход${mesh_name}`) {
-    //   acc += +transaction.target_item_qty * +transaction.target_item_amount
-    // }
-
-    // // INVESTED PROJECT
-    // else if (mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_project') {
-    //   acc += +transaction.target_item_qty * +transaction.target_item_amount
-    // }
-    // else if (transaction.purpose === `Доход${mesh_name}`) {
-    //   acc += +transaction.target_item_qty * +transaction.target_item_amount
-    // }
-    // else if (transaction.purpose === `Закуп${mesh_name}`) {
-    //   acc -= +transaction.target_item_qty * +transaction.target_item_amount
-    // }
-
-    // INVESTED LOAN
   })
 
   // return `${mesh_tag}-${mesh_type}_${mesh_id}`
@@ -2889,9 +2853,7 @@ const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
       if(transaction.purpose === `Доход${mesh.name}`) {
         invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
       }
-      // if(transaction.purpose === `Закуп${mesh.name}`) {
-      //   invested_returned -= +transaction.from_item_qty * +transaction.from_item_amount
-      // }
+
     })
   }
 
@@ -2900,7 +2862,11 @@ const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
     return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
   } 
   else if (invested_returned - invested_amount > 0) {
-    return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+    if(invested_amount === 0) {
+      return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +0.00%`
+    } else {
+      return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+    }
   }
   else {
 
@@ -2913,39 +2879,23 @@ const calc_mesh_invested_crypto_actual = (mesh_id: number) => {
   let invested_returned = 0;
   let acc = 0
   transaction_ledger_computed?.value?.forEach((transaction: any) => {
-    // if(mesh_id === transaction.from_item_id ) {
-    //   if(mesh_id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
-    //     acc -= transaction.from_item_qty * transaction.from_item_amount
-    //   }
-    //   if(mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
-    //     if(transaction.purpose.slice(0,4) === `Свап`) {
 
-    //       acc += calcCryptoPair(transaction)
-    //     } else {
-    //       acc += transaction.from_item_qty * transaction.from_item_amount
-    //     }
-    //   }
-    // }
-    // else if (mesh_id === transaction.target_item_id) {
-    //   if (transaction.target_item_tag === 'invested_crypto') {
-        
-    //     if(transaction.purpose.slice(0,6) === `Выдача`) {
-    //       acc += transaction.from_item_qty * transaction.from_item_amount
-    //     } 
+    if(mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
+    // invested_returned += 1
+      if(transaction.purpose.slice(0,4) === `Свап`) {
+        invested_returned += calcCryptoPair(transaction)
+      } 
+      else {
+        invested_returned += +transaction.target_item_qty * +transaction.target_item_amount
+      }
+    }
+    if(mesh_id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
 
-    //   }
-    // }
-            if(mesh_id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
-          // invested_returned += 1
-          if(transaction.purpose.slice(0,4) === `Свап`) {
-            invested_returned += calcCryptoPair(transaction)
-          } else {
-            invested_returned += +transaction.target_item_qty * +transaction.target_item_amount
-          }
-        }
-        if(mesh_id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
-          invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
-        }
+      invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+      if(transaction.purpose.slice(0,7) === `Возврат`) {
+        invested_amount -= +transaction.from_item_qty * +transaction.from_item_amount
+      }
+    }
   })
   if(!Number.isNaN(invested_returned / invested_amount)) {
     return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
@@ -3199,10 +3149,22 @@ const calcSectionInvested_project = (current_section: any) => {
 
     if(invested_returned - invested_amount === 0) {
       return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
-    } else {
+    } 
+    else if (invested_returned - invested_amount > 0) {
+      if(invested_amount === 0) {
+        return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +0.00%`
+      } else {
+        return `+${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / +${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
+      }
+    }
+    else {
 
       return `${(invested_returned - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${((invested_returned - invested_amount) / invested_amount * 100).toFixed(2)}%`
     }
+
+
+
+
 
   }
 }
@@ -3303,6 +3265,9 @@ const calcSectionInvested_crypto = (current_section: any) => {
         }
         if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
           invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+          if(transaction.purpose.slice(0,7) === `Возврат`) {
+            invested_amount -= +transaction.from_item_qty * +transaction.from_item_amount
+          }
         }
 
 
@@ -3310,6 +3275,7 @@ const calcSectionInvested_crypto = (current_section: any) => {
     })
   }
   return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
+
 }
 //== invested stock
 const calcSectionInvested_stock = (current_section: any) => {
