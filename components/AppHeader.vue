@@ -441,7 +441,7 @@ watch(
       <h1 v-if="useAuthStore().loggedIn === true" class="current-route_container">
         {{ translateRoutePath(route.path) }}
       </h1>
-      
+      <h1 v-else-if="route.path.includes('/journal')" class="current-route_container">{{ translateRoutePath(route.path) }}</h1>
       <!-- LIST of links -->
       <div
       class="links_container"
