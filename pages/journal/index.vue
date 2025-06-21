@@ -11,62 +11,66 @@
     <Container>
 
         <!-- TITLE PAGE SECTION -->
-        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+        <div class="show-max-767 bread-crumbs_container">
             <BreadCrumbs/>
              
         </div>
 
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-                
-                <div style="grid-column: span 2;">
+        <main>
+
+            <section>
+                <div class="header">
                     <p style="font-weight: bold; font-size: 5rem;">Журнал</p>
                     <h1 style="color: var(--color-wallet-fund-invested-wo)">А ты ведешь бортовой журнал конcпиратора?</h1>
-                    <p style="width: fit-content;" @click="connect_to_journal">Присоединиться</p>
+                    <p style="margin: 0;width: fit-content;" @click="connect_to_journal">Присоединиться</p>
+                    <Search/>
                 </div>
+                <article>
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>
+                <article @click="$router.push('/journal/1')">
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>
+                <article>
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>
+                <article>
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>
+                <article>
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>
+                <article>
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>                
+                <article>
+                    <div class="img_container"></div>
+                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
+                    <p style="text-align: center;">Рассказ конспиратора</p>
+                </article>
 
-                <div >
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>
-                <div @click="$router.push('/journal/1')">
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>
-                <div>
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>
-                <div>
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>
-                <div>
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>
-                <div>
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>                <div>
-                    <div class="img_container"></div>
-                    <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
-                    <p style="text-align: center;">Рассказ конспиратора</p>
-                </div>
-
-                <div style="border-top: 1px solid var( --color-status-canceled); padding-top: 1rem; grid-column: span 3; display : flex; align-items: center; justify-content: space-around; gap: 2rem;">
+                <!-- АВТОРЫ -->
+                 <!-- grid-column: span 3; -->
+                <div class="author" style="border-top: 1px solid var( --color-status-canceled); padding-top: 1rem;  display : flex; align-items: center; justify-content: space-around; gap: 2rem;">
                     <h3 style="">Авторы проекта</h3>
                     <p style="flex: 1; margin: 0;">Автор 1, Автор 2, Автор 3</p>
                 </div>
 
-                <div style="grid-column: span 3; display: grid; grid-template-columns: 1fr 1fr 1fr;">
+                <!-- СОУЧАСТНИКИ -->
+                <div class="philanthropist" style="display: grid; ">
                     <div>
                         <h4>Больше чем благотворитель</h4>
                         <p>Автор 1</p>
@@ -80,10 +84,13 @@
                         <p>Автор 3</p>
                     </div>
                 </div>
-                <div style="grid-column: span 2;">
+                <!-- grid-column: span 2; -->
+                <div class="conspirators">
                     <h4>Соучастники</h4>
                     <p>Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3, Автор 1, Автор 2, Автор 3</p>
                 </div>
+
+                <!-- РЕЙТИНГ -->
                 <div>
                     <h4>Рейтинг:</h4>
                     <p style="margin: 0;">999 999 999.99 RUB</p>
@@ -91,7 +98,8 @@
                     <p style="">100 соучастников</p>
                     <p>Подробнее о рейтинге</p>
                 </div>
-            </div>
+            </section>
+            <!-- ASIDE -->
             <div style="background-color: var(--color-operation-type-donation)">
                 
                 <div>
@@ -107,7 +115,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </main>
 
         <div class="yandex_banners-container">
             <div style="background-color: var(--color-wallet-fund-debt-wo); width: 240px; height: 400px;">
@@ -183,6 +191,7 @@
     import { Form_landing_offer } from '@/components/form'
     import { Toast } from '@/components/toast'
     import { BreadCrumbs } from '~/components/breadcrumbs';
+    import { Search } from '~/components/search';
 
     // PROPS
     const props = defineProps({
@@ -277,18 +286,164 @@
     display: none;
 }
 @media screen and (max-width: 575px) {
-
+    .bread-crumbs_container {
+        margin: 0 1rem; 
+    }
+    main {
+        display: grid; 
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+    section {
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 1rem;
+        margin: 0 1rem;
+    }
+    section .header {
+        grid-column: span 2;
+    }
+    article {
+        background-color: cyan;
+    }
+    section .author {
+        grid-column: span 2;
+    }
+    section .philanthropist {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    section .conspirators {
+        grid-column: span 2;
+        background-color: red;
+        margin: 0 -1rem;
+    }
+        .img_container {
+        background-color: var(--color-btn-hover-bg);
+        width: 100%;
+        height: 15rem;
+        background: url('https://cdn1.ozone.ru/s3/multimedia-l/6263146341.jpg');
+        background-position: center;
+        background-size: cover;  
+    }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
-
+    main {
+        display: grid; 
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+    section {
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1fr; 
+        gap: 1rem;
+        margin: 0 1rem;
+    }
+    section .header {
+        grid-column: span 3;
+    }
+    article {
+        background-color: blue;
+    }
+    section .author {
+        grid-column: span 3;
+    }
+    section .philanthropist {
+        grid-column: span 3;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    section .conspirators {
+        grid-column: span 3;
+    }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
-
+    main {
+        display: grid; 
+        grid-template-columns: 70% 30%; 
+        gap: 1rem;
+    }
+    section {
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1fr; 
+        gap: 1rem;
+    }
+    section .header {
+        grid-column: span 3;
+    }
+    article {
+        background-color: blue;
+    }
+    section .author {
+        grid-column: span 3;
+    }
+    section .philanthropist {
+        grid-column: span 3;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    section .conspirators {
+        grid-column: span 3;
+    }
 } 
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-
+    main {
+        display: grid; 
+        grid-template-columns: 70% 30%; 
+        gap: 1rem;
+    }
+    section {
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1fr; 
+        gap: 1rem;
+    }
+    section .header {
+        grid-column: span 3;
+    }
+    article {
+        background-color: blue;
+    }
+    section .author {
+        grid-column: span 3;
+    }
+    section .philanthropist {
+        grid-column: span 3;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    section .conspirators {
+        grid-column: span 3;
+    }
 }
 @media screen and (min-width: 1200px) {
+    main {
+        display: grid; 
+        grid-template-columns: 70% 30%; 
+        gap: 1rem;
+    }
+    section {
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1fr; 
+        gap: 1rem;
+    }
+    section .header {
+        grid-column: span 3;
+    }
+    article {
+        background-color: blue;
+    }
+    section .author {
+        grid-column: span 3;
+    }
+    section .philanthropist {
+        grid-column: span 3;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    section .conspirators {
+        grid-column: span 3;
+    }
     .img_container {
         background-color: var(--color-btn-hover-bg);
         width: 100%;
