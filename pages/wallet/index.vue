@@ -3000,14 +3000,23 @@ const calcSectionAmount = (current_section: any) => {
     // CALC INVESTED MONEY IN ALL PROJECTS
     transaction_ledger?.value?.forEach(transaction => {
       meshes_group?.forEach((mesh:any) => {
-        if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_project') {
-          amount += +transaction.from_item_qty * +transaction.from_item_amount
-        }
+        // if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_project') {
+        //   amount += +transaction.from_item_qty * +transaction.from_item_amount
+        // }
+        if (transaction.purpose === `Выдача${mesh.name}`) {
+          amount += +transaction.target_item_qty * +transaction.target_item_amount
+          // +2,356.25
+        } 
         else if (transaction.purpose === `Доход${mesh.name}`) {
           amount += +transaction.target_item_qty * +transaction.target_item_amount
+          // +2,300.00
+          // +400.00
+          // +800.00
+          // +50.00
         } 
         else if (transaction.purpose === `Закуп${mesh.name}`) {
           amount -= +transaction.from_item_qty * +transaction.from_item_amount
+          // -2,356.25
         }
       })
     })
