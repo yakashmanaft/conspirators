@@ -207,6 +207,14 @@ const translateRoutePath = (path: string) => {
   else if (path === "/wallet") {
     return "Мой кошелек"
   }
+  // JOURNAL
+  else if (path === "/journal") {
+    return "Бортовой журнал";
+  } else if (path.includes("/journal/")) {
+    let startIndex = path.lastIndexOf("/");
+    let id = path.substr(startIndex + 1);
+    return `Статья #${id}`;
+  }
   // PROJECTS
   else if (path === "/projects") {
     return "Проекты";
@@ -286,7 +294,7 @@ const translateRoutePath = (path: string) => {
     return `Брокерский счет`;
   }
   // BROKERAGE
-  else if (path === "/саф") {
+  else if (path === "/cfa") {
     return "Цифровые активы"
   } else if (path.includes("/cfa/")) {
     let startIndex = path.lastIndexOf("/");

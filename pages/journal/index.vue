@@ -26,12 +26,12 @@
                     <p style="width: fit-content;" @click="connect_to_journal">Присоединиться</p>
                 </div>
 
-                <div>
+                <div >
                     <div class="img_container"></div>
                     <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
                     <p style="text-align: center;">Рассказ конспиратора</p>
                 </div>
-                <div>
+                <div @click="$router.push('/journal/1')">
                     <div class="img_container"></div>
                     <h2 style="font-size: 1rem; margin-top: 1rem; text-align: center;">Ты даже не заметишь как сложный процент сделает своё дело</h2>
                     <p style="text-align: center;">Рассказ конспиратора</p>
@@ -95,8 +95,16 @@
             <div style="background-color: var(--color-operation-type-donation)">
                 
                 <div>
-                    Предложить сбор средств
-                    Инвестировать
+                    <ul>
+                        <li>Предложить сбор средств</li>
+                        <li>Инвестировать</li>
+                    </ul>
+                    
+                    <ul>
+                        <li>7 лет банкам</li>
+                        <li>Собрано еженедельными 1000000</li>
+                        <li>Собрано донатами 10000</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -189,6 +197,7 @@
     })
     //
     const route = useRoute()
+    const router = useRouter()
 
     // variables
     const popup_opened = ref(false)

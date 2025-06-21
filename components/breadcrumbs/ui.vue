@@ -101,6 +101,9 @@ const translateCrumb = (str: string) => {
       // LOAN
       case 'loan':
           return 'Кошелек'
+      // JOURNAL
+      case 'journal':
+          return 'Журнал'
       // default
       default:
           str
@@ -170,6 +173,9 @@ const compileRoute = (str: string) => {
       // LOAN
       case "loan":
           return 'wallet'
+      // JOURNAL
+      case "journal":
+          return 'journal'
       default:
           str
   }
