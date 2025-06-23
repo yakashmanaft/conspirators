@@ -4197,7 +4197,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
         class="btn_to_fund" 
         @click="set_owner_route" 
       >
-        Перейти в фонд
+      <span>Перейти в фонд</span>
+      <span>     
+        <Icon
+          class="link"
+          name="material-symbols-light:arrow-back-ios"
+          size="18px"
+          color="var(--color-global-text_second)"
+        />
+      </span>
       </p>
     </div>
 
@@ -5091,16 +5099,29 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container > .btn_to_fund {
     margin: 0;
-    color: var(--color-btn-bg);
+    /* color: var(--color-global-text_second); */
     /* background-color: var(--color-btn-hover-bg); */
-    padding: 2px 8px;
-    border-radius: 1rem;
-    text-align: right;
+    /* padding: 2px 8px; */
+    /* border-radius: 1rem; */
+    /* text-align: right; */
     transition: all .2s ease-in;
+    /*  */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .total-cap_container > .btn_to_fund span:first-child {
+    color: var(--color-global-text_second);
+  }
+  .total-cap_container > .btn_to_fund > span:nth-child(2) {
+    margin-bottom: .25rem;
+  }
+  .total-cap_container > .btn_to_fund span:nth-child(2) > svg {
+    transform: rotate(180deg);
   }
   .total-cap_container > .btn_to_fund:hover {
     cursor: pointer;
-    background-color: var(--color-btn-hover-bg);
+    /* background-color: var(--color-btn-hover-bg); */
   }
 
   .mesh_wrapper {
@@ -5126,11 +5147,12 @@ const { data: bank } = useFetch("/api/banks/bank", {
     display: none;
   }
   .total-cap_container {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding-right: 1rem;
     padding-left: 1rem;
     justify-content: space-between;
     flex-direction: column;
+    gap: 0;
   }
   .total-cap_container > p:first-child {
     display: flex;
@@ -5143,11 +5165,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container > p > span:last-child {
     font-size: 2rem!important;
-    margin-top: .5rem;
+    /* margin-top: .5rem; */
   }
   .total-cap_container > .btn_to_fund {
     color: var(--color-btn-bg);
-    background-color: var(--color-btn-hover-bg);
+    /* background-color: var(--color-btn-hover-bg); */
     font-size: .8rem;
   }
   .wallet-section_container {
@@ -5297,7 +5319,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container > .btn_to_fund {
     color: var(--color-btn-bg);
-    background-color: var(--color-btn-hover-bg);
+    /* background-color: var(--color-btn-hover-bg); */
     font-size: .8rem;
   }
   .wallet-section_container {
@@ -5411,16 +5433,27 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container > .btn_to_fund {
     position: absolute;
-    bottom: -1.25rem;
+    bottom: -3rem;
     left: 0;
     font-size: .8rem;
+    /* background-color: red; */
+    /* width: 200px; */
+    display: flex;
+    flex-direction: row;
   }
+   .total-cap_container > .btn_to_fund > span:first-child {
+    /* background-color: green; */
+    margin-bottom: -.3rem;
+   } 
+   .total-cap_container > .btn_to_fund > span:nth-child(2) {
+    /* background-color: blue; */
+   } 
   .total-cap_container > .btn_to_fund:hover {
     cursor: pointer;
-    background-color: var(--color-btn-hover-bg);
+    /* background-color: var(--color-btn-hover-bg); */
   }
   .wallet-section_container {
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
     margin-right: -.5rem;
@@ -5515,10 +5548,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container > .btn_to_fund {
     position: absolute;
-    bottom: -1.75rem;
+    bottom: -3rem;
     left: 0;
     font-size: .8rem;
+    display: flex;
+    flex-direction: row;
   }
+   .total-cap_container > .btn_to_fund > span:first-child {
+    margin-bottom: -.3rem;
+   } 
   .total-cap_container > p {
     display: flex;
     flex-direction: column;
@@ -5630,10 +5668,16 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .total-cap_container > .btn_to_fund {
     position: absolute;
-    bottom: -1.75rem;
+    bottom: -3rem;
     left: 0;
     font-size: .8rem;
+    display: flex;
+    flex-direction: row;
   }
+   .total-cap_container > .btn_to_fund > span:first-child {
+    /* background-color: green; */
+    margin-bottom: -.3rem;
+   } 
   /* .total-cap_container > .btn_to_fund  {
     background-color: unset;
     position: relative;
