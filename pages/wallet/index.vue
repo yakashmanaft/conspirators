@@ -2876,6 +2876,7 @@ const calc_mesh_invested_project_amount_actual = (mesh_id: number) => {
 //= actual invested crypto mesh amount
 const calc_mesh_invested_crypto_actual = (mesh_id: number) => {
   let invested_amount = 0;
+  let withdraw = 0;
   let invested_returned = 0;
   let acc = 0
   transaction_ledger_computed?.value?.forEach((transaction: any) => {
@@ -2897,12 +2898,35 @@ const calc_mesh_invested_crypto_actual = (mesh_id: number) => {
       }
     }
   })
-  if(!Number.isNaN(invested_returned / invested_amount)) {
-    return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
-  } 
-  else {
-    return `${invested_amount.toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
-  }
+  // if(!Number.isNaN(invested_returned / invested_amount)) {
+  //   return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
+  // } 
+  // else {
+  //   return `${invested_amount.toFixed(2)} ${currency_to_show.value.ticket} / 0.00%`
+  // }
+  return `Инвестировано: ${invested_amount} | withdraw: ${withdraw} | returned: ${invested_returned}`
+}
+//== actual invested stock mesh amount
+const calc_mesh_invested_stock_actual = (mesh_id: number) => {
+  let invested_amount = 0;
+  let withdraw = 0;
+  let invested_returned = 0;
+
+  let meshes_group = meshes_computed.value.filter(el => el.tag === 'invested_stock')
+
+  transaction_ledger_computed?.value?.forEach((transaction: any) => {
+    meshes_group?.forEach(mesh => {
+        if (mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_stock' && mesh.id === mesh_id)
+        {
+          // Вывод1002Брокерскийсчет2021
+          if(transaction.purpose.slice(0,5) === `Вывод`) {
+            withdraw += +transaction.from_item_qty * +transaction.from_item_amount
+          }
+        }
+    })
+  })
+
+  return `withdraw: ${withdraw} | returned: ${invested_returned}`
 }
 
 
@@ -3121,7 +3145,8 @@ const calcSectionAmount = (current_section: any) => {
       })
     })
 
-    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+    // return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+    return 'В разработке...'
   }
   else {
     return 'В разработке...'
@@ -3273,7 +3298,7 @@ const calcSectionInvested_crypto = (current_section: any) => {
             invested_returned += +transaction.target_item_qty * +transaction.target_item_amount
           }
         }
-        if(mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_crypto') {
+        if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_crypto') {
           invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
           if(transaction.purpose.slice(0,5) === `Доход`) {
             invested_returned += +transaction.from_item_qty * +transaction.from_item_amount
@@ -3284,7 +3309,8 @@ const calcSectionInvested_crypto = (current_section: any) => {
       })
     })
   }
-  return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
+  // return `${((invested_returned - invested_amount) - invested_amount).toFixed(2)} ${currency_to_show.value.ticket} / ${(((invested_returned - invested_amount) - invested_amount) * 100 / invested_amount).toFixed(2)}%`
+  return `Инвестировано: ${invested_amount} | Вернулось: ${invested_returned}`
 
 }
 //== invested stock
@@ -3292,6 +3318,7 @@ const calcSectionInvested_stock = (current_section: any) => {
   //Выдача0902Брокерскийсчет2020
   let invested_amount = 0;
   let invested_returned = 0;
+  let withdraw = 0;
   let meshes_group = meshes_computed.value.filter(el => el.tag === current_section)
 
   if(current_section === 'invested_stock') {
@@ -3299,13 +3326,23 @@ const calcSectionInvested_stock = (current_section: any) => {
       meshes_group?.forEach(mesh => {
         
         if(mesh.id === transaction.target_item_id && transaction.target_item_tag === 'invested_stock') {
-          invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+          if(transaction.purpose.slice(0,6) === `Выдача`) {
+            invested_amount += +transaction.from_item_qty * +transaction.from_item_amount
+          }
         }
+        else if (mesh.id === transaction.from_item_id && transaction.from_item_tag === 'invested_stock')
+        {
+          // Вывод1002Брокерскийсчет2021
+          if(transaction.purpose.slice(0,5) === `Вывод`) {
+            withdraw += +transaction.from_item_qty * +transaction.from_item_amount
+          }
+        }
+          
       })
     })
   } 
 
-  return `invested: ${invested_amount} | returned: ${invested_returned}`
+  return `invested: ${invested_amount} | withdraw: ${withdraw} | returned: xxx`
 }
 
 // TRANSLATE
@@ -4503,7 +4540,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
                   </div>
                   <div class="mesh_content">
                     <!-- {{ item }} -->
-                    <p class="mesh_content-el">{{ item.name }}</p>
+                      
+                    <p class="mesh_content-el">{{ item.id }} | {{ item.name }}</p>
                     <p class="mesh_content-el" style="">
 
                       <!-- invested)loan or debt_loan -->
@@ -4528,7 +4566,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                       <span v-else-if="item.tag === 'invested_stock'" style="display: flex; flex-direction: column; align-items: flex-end">
                         Инвестировано: {{ calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) }}
                       </span>
-
+                      
                       
                       <span>
                         <!-- debt_loan -->
@@ -4572,7 +4610,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
                         </span>
                         <!-- invested stock -->
                         <span v-else-if="item.tag === 'invested_stock'" style="color: var(--color-global-text_second);">
-                          {{ 123 }}
+                          {{ calc_mesh_invested_stock_actual(item.id) }}
                         </span>
                         <!-- else -->
                         <span v-else>

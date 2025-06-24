@@ -60,6 +60,9 @@ useHead({
     const router = useRouter()
     const accessPlug = ref(false)
 
+    const currency_to_show =  ref({
+    ticket:  'RUB'
+    })
     //= stocks list
     // const 
     //= bonds list
@@ -210,6 +213,83 @@ useHead({
             return `${user_investor?.surname} ${user_investor?.name}`
         }
 
+    }
+
+    // CALC
+
+    //= calc total invested
+    const calcTotalInvested = () => {
+        
+        let invested_amount = transaction_ledger.value.reduce((acc, current) => {
+            
+            if(current.purpose.slice(0,6) === 'Выдача') {
+                acc += current.target_item_qty * current.target_item_amount
+            }
+
+            return acc  
+        }, 0)
+
+        return invested_amount
+    }
+
+    //= calc total withdraw
+    const calcTotalWithdraw = () => {
+
+        let withdraw_amount = transaction_ledger.value.reduce((acc, current) => {
+
+            if(current.purpose.slice(0,5) === 'Вывод') {
+                acc += current.target_item_qty * current.target_item_amount
+            }
+
+            return acc
+        }, 0)
+        return withdraw_amount
+    }
+
+    //= calc Allocation of mesh investor
+    const calcInvestorAllocation = (mesh_id: number) => {
+        let invested_amount = 0;
+        let withdraw = 0;
+
+        transaction_ledger.value.forEach(tr => {
+            if(tr.target_item_id === mesh_id) {
+
+                invested_amount += tr.target_item_qty * tr.target_item_amount
+            }
+            else if (tr.from_item_id === mesh_id) {
+                if(tr.purpose.slice(0,5) === 'Вывод') {
+                    withdraw += tr.target_item_qty * tr.target_item_amount
+                }
+            }
+        })
+        return invested_amount - withdraw
+    }
+    //= calc investor invested
+    const calcInvestorInvested = (mesh_id: number) => {
+        let invested_amount = 0;
+
+        transaction_ledger.value.forEach(tr => {
+            if(tr.target_item_id === mesh_id) {
+
+                invested_amount += tr.target_item_qty * tr.target_item_amount
+            }
+        })
+
+        return invested_amount
+    }
+    //= calc investor withdraw
+    const calcInvesrtorWithdraw = (mesh_id: number) =>{
+        let withdraw = 0;
+
+        transaction_ledger.value.forEach(tr => {
+
+            if (tr.from_item_id === mesh_id) {
+                if(tr.purpose.slice(0,5) === 'Вывод') {
+                    withdraw += tr.target_item_qty * tr.target_item_amount
+                }
+            }
+        })
+        return withdraw
     }
 
     // DB
@@ -380,11 +460,37 @@ useHead({
             <div class="about_container">
 
                 <div class="about_wrapper">
-                    <p style="margin: 0;">Инвесторы:</p>
+                    <h2 style="margin: 0;">Инвесторы:</h2>
                     <ul>
+                        <li>
+                            Total по фонду
+                            <ul>
+                                <li style="font-weight: bold;">actual: xxx.xx (+- xxx.xx / +- 0.00%)</li>
+                                <li style="font-weight: bold;">Инвестиции: {{ calcTotalInvested() - calcTotalWithdraw() }}</li>
+                                <ul>
+
+                                    <li>Инвестировано: {{ calcTotalInvested() }}</li>
+                                    <li>withdraw: {{ calcTotalWithdraw() }}</li>
+                                </ul>
+                            </ul>
+                        </li>
                         <li v-for="investor in brokerage.invested_mash" 
                         @click="link_to_investor(investor.id)">
-                            {{translate_invested_meshes(investor.id)}} 0.00%
+                        {{translate_invested_meshes(investor.id)}} | mesh_id: {{ investor.id }}
+                            <ul>
+                                <li style="font-weight: bold;">Доля: {{ (calcInvestorAllocation(investor.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }}%</li>
+                                <li style="font-weight: bold;">actual: xxx.xx (+- xxx.xx / +- 0.00%)</li>
+                                <li style="font-weight: bold;">Инвестиции: {{ calcInvestorAllocation(investor.id) }} </li>
+                                <ul>
+                                    
+                                    <li>
+                                        Инвестировано: {{ calcInvestorInvested(investor.id) }}
+                                    </li>
+                                    <li>
+                                        withdraw: {{ calcInvesrtorWithdraw(investor.id) }}
+                                    </li>
+                                </ul>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -409,9 +515,26 @@ useHead({
             {{ brokerage }}
             <br>
             <p><span>Портфель</span> <span>Операции</span> <span>Пополнения</span> <span>Выводы</span></p>
-            <ul>
-                <li v-for="tr in transaction_ledger">
-                    {{ tr }}
+            <ul class="transaction-list_container">
+                <li 
+                    v-for="tr in transaction_ledger.sort(function(a,b){
+                        return new Date(b.created_at) - new Date(a.created_at);
+                    })" 
+                    style=""
+                    class="transaction-list_el"
+                >
+                    <p style="margin: 0;">{{ tr.created_at }}</p>
+                    <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">
+                        -{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }}
+                    </p>
+                    <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">
+                        +{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
+                    </p>
+                    <p style="margin: 0;" v-else>
+                        {{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
+                    </p>
+                    <p style="margin: 0;">{{ tr.comments }}</p>
+                    <!-- {{ tr }} -->
                 </li>
             </ul>
 
@@ -601,6 +724,30 @@ useHead({
     display: flex;
     flex-direction: column;
   }
+
+    /* ОПЕРАЦИИ */
+    .transaction-list_container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        padding: 0 1rem;
+    }
+    .transaction-list_el {
+        background-color: var(--color-global-baackground_light);
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+    .transaction-list_el p:first-child {
+        font-size: .8rem;
+        margin-bottom: .5rem!important;
+    }
+    .transaction-list_el p:last-child {
+        
+    }
+
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
     .show-max-767 {

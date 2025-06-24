@@ -368,6 +368,28 @@
         <h3>Виды работ / прайс</h3>
         <p>Требуется понимание где их размещать. отдельную БД?</p>
       </div>
+      <!-- ПО сервису стата-->
+      <div v-if="
+        user_info?.id === 1 &&
+        user_info?.name === 'Сергей' &&
+        user_info?.middleName === 'Владимирович' &&
+        user_info?.surname === 'Анфалов' &&
+        user_info?.phone === '+79617582573'
+      ">
+        <h3>Общие пказатели</h3>
+        
+        <ul>
+          <li>
+            <h4>Кредиты</h4>
+            <ol>
+              <li v-for="loan in loan_list">
+                {{ loan.name }}
+              </li>
+            </ol>
+          </li> 
+        </ul>
+      </div>
+
 
     </div>
 
@@ -630,6 +652,13 @@ const { data: band } = useFetch("/api/band/band", {
         }
       }
     })
+  }
+})
+//= loan
+const { data: loan_list } = useFetch("/api/loan/loan", {
+  lazy: false,
+  transform: (loan_list) => {
+    return loan_list
   }
 })
 
