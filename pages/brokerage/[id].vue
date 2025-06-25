@@ -534,6 +534,12 @@ useHead({
                         {{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
                     </p>
                     <p style="margin: 0;">{{ tr.comments }}</p>
+
+                    <!--  -->
+                    <div style="position: absolute; top: 1rem; right: 1rem;">
+                        <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">mesh: {{ tr.target_item_id }}</p>
+                        <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">mesh: {{ tr.from_item_id }}</p>
+                    </div>
                     <!-- {{ tr }} -->
                 </li>
             </ul>
@@ -739,6 +745,7 @@ useHead({
         background-color: var(--color-global-baackground_light);
         border-radius: 1rem;
         padding: 1rem;
+        position: relative;
     }
     .transaction-list_el p:first-child {
         font-size: .8rem;
