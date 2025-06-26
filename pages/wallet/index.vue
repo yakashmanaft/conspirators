@@ -2791,7 +2791,7 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
       if (transaction.from_item_tag === 'income') {
         acc += transaction.from_item_qty * transaction.from_item_amount
       }
-      else if(transaction.target_item_tag === 'available') {
+      else if(transaction.target_item_tag === 'available' && mesh_tag !== 'invested_loan') {
         acc += transaction.target_item_qty * transaction.target_item_amount
       }
       else if(transaction.target_item_tag === 'invested_project') {
@@ -3089,7 +3089,8 @@ const calcSectionAmount = (current_section: any) => {
       return `К получению: 0.00 ${ currency_to_show.value.ticket }`
     } else {
 
-      return `К получению: ${(amount - overage).toFixed(2)} ${ currency_to_show.value.ticket }`
+      // return `К получению: ${(amount - overage).toFixed(2)} ${ currency_to_show.value.ticket }`
+      return `overage: ${overage} | invested_amount: ${invested_amount} | waiting_amount: ${waiting_amount}`
     }
   }
   if (current_section === 'debt_loan') {
@@ -4576,7 +4577,8 @@ const { data: bank } = useFetch("/api/banks/bank", {
                             +1 к карме
                           </span> -->
                           <span v-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) > 0" style="color: var(--color-urgency-low);">
-                            +1 к щедрости ({{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2)}} {{ currency_to_show.ticket }})
+                            +1 к щедрости 
+                            <!-- ({{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2)}} {{ currency_to_show.ticket }}) -->
                           </span>
                           <span v-else-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) === 0" style="color: var(--color-urgency-low);">
                             +1 к карме
