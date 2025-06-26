@@ -3125,7 +3125,8 @@ const calcSectionAmount = (current_section: any) => {
 
     })
 
-    return `${((amount * -1) + overage).toFixed(2)} ${currency_to_show.value.ticket}`
+    // return `${((amount * -1) + overage).toFixed(2)} ${currency_to_show.value.ticket}`
+    return `invested: ${invested_amount} | waiting: ${waiting_amount} | overage: ${overage}`
   }
   if (current_section === 'invested_crypto') {
     transaction_ledger?.value?.forEach(transaction => {
