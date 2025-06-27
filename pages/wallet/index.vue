@@ -4294,9 +4294,11 @@ const { data: bank } = useFetch("/api/banks/bank", {
         style="cursor: pointer;"
       >
         <p style="width: 160px; height: 3rem; margin: 0; ">{{ translateMeshesGroupName(el) }}</p>
-        <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
-          -->
-          <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }} {{ currency_to_show.ticket }}</p>
+
+          <!-- FIRST ROW -->
+          <p style="white-space: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }} {{ currency_to_show.ticket }}</p>
+
+          <!-- SECOND ROW -->
           <!-- INVESTED PROJECT-->
           <p 
             v-if="el === 'invested_project'"
