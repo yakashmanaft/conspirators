@@ -77,4 +77,8 @@
 
     /* SHADOWS */
     --hover-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
+
+    /*  */
+    --bs-border-radius: 1rem;
 }
+

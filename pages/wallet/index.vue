@@ -2999,7 +2999,7 @@ const calcSectionAmount = (current_section: any) => {
 
     })
 
-    return `${amount.toFixed(2)} ${ currency_to_show.value.ticket }`
+    return `${amount.toFixed(2)}`
   } 
   if (current_section === 'invested_stock') {
     transaction_ledger?.value?.forEach(transaction => {
@@ -4210,42 +4210,39 @@ const { data: bank } = useFetch("/api/banks/bank", {
     <!-- TOTAL КАПИТАЛИЗАЦИЯ ПО ФОНДУ -->
     <!--  -->
     <div class="total-cap_container">
-      <p 
-        style="margin: 0; font-size: 1.2rem; position: relative;"
-      >
-        <span style="width: fit-content;">TOTAL:</span> 
-        <span style="position: relative; ">~999,999,999.99 {{ currency_to_show.ticket }}
-          <span 
-            @click="info_total_popup_isOpened = true"
-            style="cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 100%; border: 1px solid var(--color-global-text_second); color: var(--color-global-text_second); width: 1rem; height: 1rem; font-size: 1rem; position: absolute; top: 0; right: -1rem;"
-          >
-            ?
-          </span>
-        </span>
-        <!-- <span style="position: absolute; top: 0; right: -2rem;">?</span> -->
       
-      </p>
-      <!-- <p 
-        class="btn_to_fund" 
-        @click="$router.push(`/band/${currentAffiliation?.bandID}`);" 
-        v-if="currentAffiliation.bandID !== 0"
-      >
-        Перейти в {{ currentAffiliation.name }}
-      </p> -->
-      <p 
-        class="btn_to_fund" 
-        @click="set_owner_route" 
-      >
-      <span>Перейти в фонд</span>
-      <span>     
-        <Icon
-          class="link"
-          name="material-symbols-light:arrow-back-ios"
-          size="18px"
-          color="var(--color-global-text_second)"
-        />
-      </span>
-      </p>
+      
+      <div class="total-cap_wrapper">
+        <div class="total-cap_avatar">
+          
+          <!-- USER: 7671d7d0538011f08c8dda33849e98dc_1 -->
+           <!-- CONSPIRATORS: d2536b5d538611f09581aa35b3d6ca3e_1 -->
+          
+          <img v-if="currentAffiliation.name === 'personal'" width="256" height="256" alt="Страница на доработке..." src="@/assets/img/band_avatar/7671d7d0538011f08c8dda33849e98dc_1.jpeg"/>
+          <img v-else-if="currentAffiliation.name !== 'personal'" width="256" height="256" alt="Страница на доработке..." src="@/assets/img/band_avatar/d2536b5d538611f09581aa35b3d6ca3e_1.jpeg"/>
+        </div>
+        <div style="margin-top: 1rem; position: relative;">
+          <!-- {{ currentAffiliation }} -->
+          <!-- <h2 class="total-cap_subtitle">Total:</h2> -->
+          <h2 class="total-cap_subtitle">{{currentAffiliation.title}}</h2>
+          <p class="total-cap_count">999 999 999.99 {{ currency_to_show.ticket }}</p>
+          <p class="total-cap_help" style="cursor: pointer;" @click="info_total_popup_isOpened = true">?</p>
+          <div class="action_btn open-details" style="cursor: pointer;" @click="set_owner_route" >
+            <p>Перейти в фонд 
+              <span>        
+                <Icon
+                  class="link"
+                  name="material-symbols-light:arrow-back-ios"
+                  size="18px"
+                  color="var(--color-global-baackground_light)"
+                />
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    
     </div>
 
     <!-- POPUP -->
@@ -4296,10 +4293,10 @@ const { data: bank } = useFetch("/api/banks/bank", {
         @click="choosenChip_section = el"
         style="cursor: pointer;"
       >
-        <p style="width: 160px; height: 3rem; margin: 0;">{{ translateMeshesGroupName(el) }}</p>
+        <p style="width: 160px; height: 3rem; margin: 0; ">{{ translateMeshesGroupName(el) }}</p>
         <!-- <p style="margin: 0;">{{transformToFixed(sumSectionAmount(el))}}{{ currency_to_show.ticket }}</p> 
           -->
-          <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }}</p>
+          <p style="text-wrap: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }} {{ currency_to_show.ticket }}</p>
           <!-- INVESTED PROJECT-->
           <p 
             v-if="el === 'invested_project'"
@@ -5090,9 +5087,6 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-top: 1rem;
   }
   .transaction_wrapper {
-    /* display: grid; */
-    /* align-items: center; */
-    /* grid-template-columns: 20% 20% 1fr 20%; */
     grid-template-columns: 1fr;
     grid-template-areas: 't_first details details detatils';
     margin-top: 1rem;
@@ -5131,40 +5125,6 @@ const { data: bank } = useFetch("/api/banks/bank", {
     grid-area: details;
   }
 
-  /* TOTAL CAP */
-  .total-cap_container {
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  .total-cap_container > .btn_to_fund {
-    margin: 0;
-    /* color: var(--color-global-text_second); */
-    /* background-color: var(--color-btn-hover-bg); */
-    /* padding: 2px 8px; */
-    /* border-radius: 1rem; */
-    /* text-align: right; */
-    transition: all .2s ease-in;
-    /*  */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .total-cap_container > .btn_to_fund span:first-child {
-    color: var(--color-global-text_second);
-  }
-  .total-cap_container > .btn_to_fund > span:nth-child(2) {
-    margin-bottom: .25rem;
-  }
-  .total-cap_container > .btn_to_fund span:nth-child(2) > svg {
-    transform: rotate(180deg);
-  }
-  .total-cap_container > .btn_to_fund:hover {
-    cursor: pointer;
-    /* background-color: var(--color-btn-hover-bg); */
-  }
-
   .mesh_wrapper {
     /* background-color: rgb(244, 153, 153); */
     position: relative;
@@ -5195,26 +5155,78 @@ const { data: bank } = useFetch("/api/banks/bank", {
     flex-direction: column;
     gap: 0;
   }
-  .total-cap_container > p:first-child {
-    display: flex;
-    flex-direction: column;
+
+  /*  TOTAL CAP */
+  .total-cap_wrapper {
+    border-radius: 1rem;
+    width: 100%;
+    /* background-color: blue; */
+    /* padding: 1rem; */
+    overflow: hidden;
+  }
+  .total-cap_avatar {
+    margin: 0 auto;
+    background-color: var(--color-global-text);
+    width: 15rem;
+    height: 15rem;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex; 
     align-items: center;
   }
-  .total-cap_container > p:first-child > span:first-child {
-    font-size: .8rem;
+  .total-cap_avatar img {
+    width: 100%;
+    height: 100%;
+  }
+  .action_btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-global-text);
+    border-radius: 1rem;
+    padding: .4rem;
+  }
+  .action_btn p{
+    color: var(--color-global-baackground_light);
+    margin: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .action_btn p span > svg {
+    transform: rotate(180deg);
+    margin-bottom: 3px;
+  }
+  .total-cap_subtitle {
     color: var(--color-global-text_second);
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
   }
-  .total-cap_container > p > span:last-child {
-    font-size: 2rem!important;
-    /* margin-top: .5rem; */
+  .total-cap_count {
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-align: center;
   }
-  .total-cap_container > .btn_to_fund {
-    color: var(--color-btn-bg);
-    /* background-color: var(--color-btn-hover-bg); */
-    font-size: .8rem;
+  .total-cap_help {
+    position: absolute;
+    color: var(--color-global-text_second);
+    top: 0;
+    right: 1rem;
+    margin: 0;
+    border: 1px solid var(--color-global-text_second);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: lighter;
   }
+
+  /* WALLET SECTION */
+
   .wallet-section_container {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding: 0 1rem 0 1rem;
     padding-bottom: 2rem;
     gap: .5rem;
@@ -5345,26 +5357,81 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .total-cap_container {
     margin-left: 1rem;
     margin-right: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
-  .total-cap_container > p:first-child {
+
+  /* TOTAL CAP */
+  .total-cap_wrapper {
+    border-radius: 1rem;
+    width: 100%;
+    /* background-color: blue; */
+    /* padding: 1rem; */
+    overflow: hidden;
+  }
+  .total-cap_avatar {
+    margin: 0 auto;
+    background-color: var(--color-global-text);
+    width: 15rem;
+    height: 15rem;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex; 
+    align-items: center;
+  }
+  .total-cap_avatar img {
+    width: 100%;
+    height: 100%;
+  }
+  .action_btn {
+    /* width: 100%; */
+    width: fit-content;
+    margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-global-text);
+    border-radius: 1rem;
+    padding: .4rem 2rem;
   }
-  .total-cap_container > p:first-child > span:first-child {
-    font-size: .8rem;
+  .action_btn p{
+    color: var(--color-global-baackground_light);
+    margin: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .action_btn p span > svg {
+    transform: rotate(180deg);
+    margin-bottom: 3px;
+  }
+  .total-cap_subtitle {
     color: var(--color-global-text_second);
+    text-transform: uppercase;
+    /* font-size: 1rem; */
+    text-align: center;
   }
-  .total-cap_container > p > span:last-child {
-    font-size: 2rem!important;
+  .total-cap_count {
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-align: center;
   }
-  .total-cap_container > .btn_to_fund {
-    color: var(--color-btn-bg);
-    /* background-color: var(--color-btn-hover-bg); */
-    font-size: .8rem;
+  .total-cap_help {
+    position: absolute;
+    color: var(--color-global-text_second);
+    top: 0;
+    right: 1rem;
+    margin: 0;
+    border: 1px solid var(--color-global-text_second);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: lighter;
   }
+
+  /* WALLET SECTION */
   .wallet-section_container {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding: 0 1rem;
     padding-bottom: 2rem;
   }
@@ -5461,40 +5528,85 @@ const { data: bank } = useFetch("/api/banks/bank", {
     margin-top: 2rem;
     position: relative;
   }
-  .total-cap_container > p {
-    display: flex;
-    flex-direction: column;
-  }
-  .total-cap_container > p:first-child > span:first-child {
-    font-size: .8rem;
-    color: var(--color-global-text_second);
-  }
-  .total-cap_container > p > span:last-child {
-    font-size: 3rem!important;
-  }
-  .total-cap_container > .btn_to_fund {
-    position: absolute;
-    bottom: -3rem;
-    left: 0;
-    font-size: .8rem;
-    /* background-color: red; */
-    /* width: 200px; */
-    display: flex;
-    flex-direction: row;
-  }
-   .total-cap_container > .btn_to_fund > span:first-child {
-    /* background-color: green; */
-    margin-bottom: -.3rem;
-   } 
-   .total-cap_container > .btn_to_fund > span:nth-child(2) {
+
+  /* TOTAL CAP */
+  .total-cap_wrapper {
+    border-radius: 1rem;
+    width: 100%;
     /* background-color: blue; */
-   } 
-  .total-cap_container > .btn_to_fund:hover {
-    cursor: pointer;
-    /* background-color: var(--color-btn-hover-bg); */
+    /* padding: 1rem; */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
   }
+  .total-cap_wrapper div:last-child {
+    align-items: flex-start;
+    margin: 0!important;
+  }
+  .total-cap_avatar {
+    /* margin: 0 auto; */
+    background-color: var(--color-global-text);
+    width: 15rem;
+    height: 15rem;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex; 
+    align-items: center;
+  }
+  .total-cap_avatar img {
+    width: 100%;
+    height: 100%;
+  }
+  .action_btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-global-text);
+    border-radius: 1rem;
+    padding: .4rem;
+  }
+  .action_btn p{
+    color: var(--color-global-baackground_light);
+    margin: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .action_btn p span > svg {
+    transform: rotate(180deg);
+    margin-bottom: 3px;
+  }
+  .total-cap_subtitle {
+    color: var(--color-global-text_second);
+    text-transform: uppercase;
+    /* font-size: 1rem; */
+    /* text-align: center; */
+  }
+  .total-cap_count {
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-align: center;
+  }
+  .total-cap_help {
+    position: absolute;
+    color: var(--color-global-text_second);
+    top: -2rem;
+    left: 0;
+    margin: 0;
+    border: 1px solid var(--color-global-text_second);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: lighter;
+  }
+
+  /* WALLET SECTION */
+
   .wallet-section_container {
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-left: -1rem;
     padding-left: 1rem;
     margin-right: -.5rem;
@@ -5582,37 +5694,94 @@ const { data: bank } = useFetch("/api/banks/bank", {
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   .total-cap_container {
-    margin-top: 2rem;
+    margin-top: 3rem;
     justify-content: space-between;
     align-items: flex-start;
     position: relative;
   }
-  .total-cap_container > .btn_to_fund {
-    position: absolute;
-    bottom: -3rem;
-    left: 0;
-    font-size: .8rem;
+
+
+  /* TOTAL CAP */
+  .total-cap_wrapper {
+    border-radius: 1rem;
+    width: 100%;
+    /* background-color: blue; */
+    /* padding: 1rem; */
+    overflow: hidden;
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
   }
-   .total-cap_container > .btn_to_fund > span:first-child {
-    margin-bottom: -.3rem;
-   } 
-  .total-cap_container > p {
+  .total-cap_wrapper div:last-child {
+    align-items: flex-start;
+    margin: 0!important;
+  }
+  .total-cap_avatar {
+    /* margin: 0 auto; */
+    background-color: var(--color-global-text);
+    width: 15rem;
+    height: 15rem;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex; 
+    align-items: center;
+  }
+  .total-cap_avatar img {
+    width: 100%;
+    height: 100%;
+  }
+  .action_btn {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-global-text);
+    border-radius: 1rem;
+    padding: .4rem;
   }
-  .total-cap_container > p:first-child > span:first-child {
-    font-size: .8rem;
+  .action_btn p{
+    color: var(--color-global-baackground_light);
+    margin: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .action_btn p span > svg {
+    transform: rotate(180deg);
+    margin-bottom: 3px;
+  }
+  .total-cap_subtitle {
     color: var(--color-global-text_second);
+    text-transform: uppercase;
+    font-weight: bold;
+    /* font-size: 1rem; */
+    /* text-align: center; */
   }
-  .total-cap_container > p > span:last-child {
-    font-size: 3rem!important;
+  .total-cap_count {
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-align: center;
   }
+  .total-cap_help {
+    position: absolute;
+    color: var(--color-global-text_second);
+    top: -2rem;
+    left: 0;
+    margin: 0;
+    border: 1px solid var(--color-global-text_second);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: lighter;
+  }
+
+  /* WALLET SECTION */
   .wallet-section_container {
     margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
+    padding-right: 1rem;
     padding-bottom: 2rem;
   }
   .fund_list {
@@ -5691,42 +5860,93 @@ const { data: bank } = useFetch("/api/banks/bank", {
 }
 @media screen and (min-width: 1200px) {
   .total-cap_container {
-    margin-top: 2rem;
+    margin-top: 3rem;
     justify-content: space-between;
     align-items: flex-start;
     position: relative;
   }
-  .total-cap_container > p {
+
+  /* TOTAL CAP */
+  .total-cap_wrapper {
+    border-radius: 1rem;
+    width: 100%;
+    /* background-color: blue; */
+    /* padding: 1rem; */
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
-  .total-cap_container > p:first-child > span:first-child {
-    font-size: .8rem;
+  .total-cap_wrapper div:last-child {
+    align-items: flex-start;
+    margin: 0!important;
+  }
+  .total-cap_avatar {
+    /* margin: 0 auto; */
+    background-color: var(--color-global-text);
+    width: 15rem;
+    height: 15rem;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex; 
+    align-items: center;
+  }
+  .total-cap_avatar img {
+    width: 100%;
+    height: 100%;
+  }
+  .action_btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-global-text);
+    border-radius: 1rem;
+    padding: .4rem;
+  }
+  .action_btn p{
+    color: var(--color-global-baackground_light);
+    margin: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .action_btn p span > svg {
+    transform: rotate(180deg);
+    margin-bottom: 3px;
+  }
+  .total-cap_subtitle {
     color: var(--color-global-text_second);
+    text-transform: uppercase;
+    font-weight: bold;
+    /* font-size: 1rem; */
+    /* text-align: center; */
   }
-  .total-cap_container > p > span:last-child {
-    font-size: 3rem!important;
+  .total-cap_count {
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-align: center;
   }
-  .total-cap_container > .btn_to_fund {
+  .total-cap_help {
     position: absolute;
-    bottom: -3rem;
+    color: var(--color-global-text_second);
+    top: -2rem;
     left: 0;
-    font-size: .8rem;
+    margin: 0;
+    border: 1px solid var(--color-global-text_second);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-weight: lighter;
   }
-   .total-cap_container > .btn_to_fund > span:first-child {
-    /* background-color: green; */
-    margin-bottom: -.3rem;
-   } 
-  /* .total-cap_container > .btn_to_fund  {
-    background-color: unset;
-    position: relative;
-  } */
+
+  /* WALLET SECTION */
   .wallet-section_container {
     margin-top: 3rem;
     margin-left: -1rem;
     padding-left: 1rem;
+    padding-right: 1rem;
     padding-bottom: 2rem;
   }
   .fund_list {
@@ -5754,7 +5974,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
   .mesh_wrapper {
     border-radius: 1rem;
