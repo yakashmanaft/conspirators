@@ -547,35 +547,96 @@ useHead({
             </div>
 
             <!-- PAPERS -->
-            <div style="margin-top: 1rem;">
-                <h2>Состав ценных бумаг</h2>
-                <ul>
-                    <li>
-                        <h3 style="margin: 0;">Акции</h3>
+            <article class="papers_container">
+                <header>
+                    <!-- <p>Фонды | Акции | Облигации | Валюта</p> -->
+                    <h2>Состав ценных бумаг</h2>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex;">
+                        <li>
+                            <input id="bonds" type="checkbox">
+                            <label for="bonds">Облигации</label>
+                        </li>
+                        <li>
+                            <input id="stocks" type="checkbox">
+                            <label for="stocks">Акции</label>
+                        </li>
+                        <li>
+                            <input id="mutual" type="checkbox">
+                            <label for="mutual">ПИФы</label>
+                        </li>
+                        <li>
+                            <input id="currency" type="checkbox">
+                            <label for="currency">Валюта</label>
+                        </li>
+                    </ul>
+                </header>
+
+                <section>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li>
+                            <h3 style="margin: 0;">Акции</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">РусГидро</li>
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">КАМАЗ</li>
+                            </ul>
+                        </li>
+                        <li style="margin-top: 1rem;">
+                            <h3 style="margin: 0;">Облигации</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">АФК Система выппуск 7</li>
+                            </ul>
+                        </li>
+                        <li style="margin-top: 1rem;">
+                            <h3 style="margin: 0;">Фонды</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Вечный портфель</li>
+                            </ul>
+                        </li>
+                        <li style="margin-top: 1rem;">
+                            <h3 style="margin: 0;">Валюта и металлы</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Доллар</li>
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Рубль</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+
+            <!-- ABOUNT BROKERAGE ACCOUNT -->
+            <article class="about_container">
+
+                <header>
+                    <h2>О счете</h2>
+                    <p>Действующие правила по счету / фонду</p>
+                </header>
+
+                <div class="about_el_container">
+
+                    <div class="about_el_wrapper">
+                        <p>{{ brokerage.broker_tag }}</p>
+                    </div>
+    
+                    <div class="about_el_wrapper">
+                        <p style="margin: 0;">Тарифы</p>
                         <ul>
-                            <li>РусГидро</li>
+                            <li>fee: {{ brokerage.fee }}</li>
+                            <li>tax: {{ brokerage.tax }}</li>
+                            <li>Тариф у брокера: Инвестор</li>
                         </ul>
-                    </li>
-                    <li>
-                        <h3 style="margin: 0;">Облигации</h3>
-                        <ul>
-                            <li>АФК Система выппуск 7</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <h3 style="margin: 0;">Фонды</h3>
-                    </li>
-                    <li>
-                        <h3 style="margin: 0;">Валюта и металлы</h3>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+
+                    <div class="about_el_wrapper" style="grid-column: span 3">
+                         {{ brokerage }}
+                    </div>
+                </div>
+            </article>
 
             <!-- Invested band and conspirators -->
-            <article class="investor_container" style="background-color: var( --color-paused-wrapper-bg); margin: 1rem; border-radius: var(--bs-border-radius); ">
+            <article class="investor_container" style="margin: 1rem; border-radius: var(--bs-border-radius); ">
                 <header>
                     <h2>Доли</h2>
-                    <p>Текущий расклад | <span style="text-transform: uppercase;">Инвестировано</span> </p>
+                    <p>Распределение средств, согласно текущей аллокации</p>
                 </header>
 
                 <!-- DIAGRAM -->
@@ -598,7 +659,7 @@ useHead({
                     </svg>
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
 
-                        <div v-if="current_mesh.id">
+                        <div v-if="current_mesh?.id">
                             <p style="margin: 0;">
                                 <span style="color:var(--color-global-text_second); font-size: .8rem;">{{ (calcInvestorAllocation(current_mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }} %</span> <br>
                                 <span>{{ translate_invested_meshes(current_mesh.id) }}</span> <br>
@@ -621,93 +682,45 @@ useHead({
 
             </article>
 
-            <div class="about_container">
+            <!-- TRANSACTIONS -->
+            <article class="transaction_container">
+                <header>
+                    <h2>Транзакции</h2>
+                    <p>Пополнения, приобретения, продажи, доходы, выводы</p>
+                </header>
 
-                <!-- <div class="about_wrapper">
-                    <h2 style="margin: 0;">Инвесторы:</h2>
-                    <ul>
-                        <li>
-                            Total по фонду
-                            <ul>
-                                <li style="font-weight: bold;">actual: xxx.xx (+- xxx.xx / +- 0.00%)</li>
-                                <li style="font-weight: bold;">Инвестиции: {{ calcTotalInvested() - calcTotalWithdraw() }}</li>
-                                <ul>
-
-                                    <li>Инвестировано: {{ calcTotalInvested() }}</li>
-                                    <li>withdraw: {{ calcTotalWithdraw() }}</li>
-                                </ul>
-                            </ul>
-                        </li>
-                        <li v-for="investor in brokerage.invested_mash" 
-                        @click="link_to_investor(investor.id)">
-                        {{translate_invested_meshes(investor.id)}} | mesh_id: {{ investor.id }}
-                            <ul>
-                                <li style="font-weight: bold;">Доля: {{ (calcInvestorAllocation(investor.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }}%</li>
-                                <li style="font-weight: bold;">actual: xxx.xx (+- xxx.xx / +- 0.00%)</li>
-                                <li style="font-weight: bold;">Инвестиции: {{ calcInvestorAllocation(investor.id) }} </li>
-                                <ul>
-                                    
-                                    <li>
-                                        Инвестировано: {{ calcInvestorInvested(investor.id) }}
-                                    </li>
-                                    <li>
-                                        withdraw: {{ calcInvesrtorWithdraw(investor.id) }}
-                                    </li>
-                                </ul>
-                            </ul>
+                <section>
+                    <ul class="transaction-list_container">
+                        <li 
+                            v-for="tr in transaction_ledger?.sort(function(a,b){
+                                return new Date(b.created_at) - new Date(a.created_at);
+                            })" 
+                            style=""
+                            class="transaction-list_el"
+                        >
+                            <p style="margin: 0;">{{ tr.created_at }}</p>
+                            <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">
+                                -{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }}
+                            </p>
+                            <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">
+                                +{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
+                            </p>
+                            <p style="margin: 0;" v-else>
+                                {{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
+                            </p>
+                            <p style="margin: 0;">{{ tr.comments }}</p>
+        
+                            <!--  -->
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">mesh: {{ tr.target_item_id }}</p>
+                                <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">mesh: {{ tr.from_item_id }}</p>
+                            </div>
+                            <!-- {{ tr }} -->
                         </li>
                     </ul>
-                </div> -->
-                <div class="about_wrapper">
-                    <p>{{ brokerage.broker_tag }}</p>
-                </div>
 
-                <div class="about_wrapper">
-                    <p style="margin: 0;">Тарифы</p>
-                    <ul>
-                        <li>fee: {{ brokerage.fee }}</li>
-                        <li>tax: {{ brokerage.tax }}</li>
-                        <li>Тариф у брокера: Инвестор</li>
-                    </ul>
-                </div>
-            </div>
-
-
-
-
-
-            {{ brokerage }}
-            <br>
-            <p><span>Портфель</span> <span>Операции</span> <span>Пополнения</span> <span>Выводы</span></p>
-            <ul class="transaction-list_container">
-                <li 
-                    v-for="tr in transaction_ledger?.sort(function(a,b){
-                        return new Date(b.created_at) - new Date(a.created_at);
-                    })" 
-                    style=""
-                    class="transaction-list_el"
-                >
-                    <p style="margin: 0;">{{ tr.created_at }}</p>
-                    <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">
-                        -{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }}
-                    </p>
-                    <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">
-                        +{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
-                    </p>
-                    <p style="margin: 0;" v-else>
-                        {{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
-                    </p>
-                    <p style="margin: 0;">{{ tr.comments }}</p>
-
-                    <!--  -->
-                    <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">mesh: {{ tr.target_item_id }}</p>
-                        <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">mesh: {{ tr.from_item_id }}</p>
-                    </div>
-                    <!-- {{ tr }} -->
-                </li>
-            </ul>
-
+                </section>
+            </article>
 
 
             <div style="position: fixed; bottom: 4rem; left: 0; width: 100%; padding: 0 1rem 1rem 1rem;">
@@ -935,29 +948,62 @@ useHead({
   .show-max-767 {
     display: none;
   }
-  .about_container {
-    display: flex;
-    flex-direction: column;
-    background-color: red;
-  }
 
   /* investor section style */
   .investor_container {
-
-  }
-  .diagram_wrapper {
+      /* background-color: var(--color-btn-wo-bg); */
+    }
+    .diagram_wrapper {
     display: flex; 
-    background-color: var(--color-btn-hover-bg); 
+    background-color: var(--color-global-baackground_light);
+    /* background-color: var(--color-btn-hover-bg);  */
     width: 25rem; 
     height: 25rem; 
     position: relative;
     width: 100%;
+    border-radius: var(--bs-border-radius);
   }
   .diagram_wrapper svg{
     margin: 0 auto;
   }
 
+    /* ABOUT SECTION */
+    .about_container {
+        display: flex;
+        flex-direction: column;
+        margin: 1rem;
+        
+    }
+    .about_el_container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+    }
+    .about_el_wrapper {
+        background-color: var(--color-global-baackground_light);
+        border-radius: var(--bs-border-radius);
+        padding: 1rem;
+    }
+    .about_el_wrapper:nth-child(2) {
+        grid-column: span 2;
+    }
+
+    /* PAPERS */
+    .papers_container {
+        margin: 0 1rem;
+    }
+    .papers_container section {
+        background-color: var(--color-global-baackground_light);
+        border-radius: var(--bs-border-radius);
+        padding: 1rem;
+    }
+
+
     /* ОПЕРАЦИИ */
+    .transaction_container {
+        margin: 0 1rem;
+
+    }
     .transaction-list_container {
         display: flex;
         flex-direction: column;
@@ -965,7 +1011,7 @@ useHead({
         list-style: none;
         margin: 0;
         padding: 0;
-        padding: 0 1rem;
+        /* padding: 0 1rem; */
     }
     .transaction-list_el {
         background-color: var(--color-global-baackground_light);
