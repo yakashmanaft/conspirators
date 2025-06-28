@@ -1587,7 +1587,8 @@ useHead({
     .sharers_container {
         margin: 0 1rem;
         margin-top: 2rem;
-        max-width: 85%;
+        /* max-width: 85%; */
+        max-width: 100%;
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {

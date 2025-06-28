@@ -73,6 +73,20 @@ useHead({
         }
     ])
 
+    const colors = ref({
+        unit1: '#86cfa3',
+        unit2: '#a2c6e0',
+        unit3: '#ffc7ec',
+        unit4: '#f8faa0',
+        unit5: '#adffd8',
+        unit6: '#f2c48f',
+        unit7: '#e3bfe2',
+        unit8: '#6f75ad',
+    },) 
+
+    // current_task
+    const current_mesh = ref()
+
     // CLICK
     const addTaskLedgerItem = () => {
         alert('В разработке')
@@ -103,10 +117,39 @@ useHead({
         return 
     })
 
+    // ONMOUNTED
+    //
+    onMounted(( ) => {
+        
+        setTimeout(() => {
+
+            setStrokeDashArrayAndOffset()
+        }, 1000)
+    })
+    // onBeforeMount(() => {
+    //     setTimeout(() => {
+
+    //         setStrokeDashArrayAndOffset()
+    //     }, 160)
+    // })
+
+    let body = document.querySelector('body')
+    body?.addEventListener('click', (e) => {
+        // Убираем ховер на unit в диаграме (если нету класс unit + если попап не открыт)
+        if(!e.target.classList?.contains('unit')) {
+            const unitsList = document.querySelectorAll('.unit');
+            current_mesh.value = {}
+            for(let i = 0; i <= unitsList.length; i++) {
+                if(unitsList[i] && unitsList[i].classList.contains('unit__hovered')) {
+                    unitsList[i].classList.remove('unit__hovered');
+                }
+            }
+        }
+    })
+
 
     // ******* DB
     // *** GET
-
     // task list
     const { data: task_list } = useFetch("/api/taskGuarded/task", {
         lazy: false,
@@ -120,7 +163,6 @@ useHead({
             return task_list.find(el => el.id === +route.params.id)
         }
     })
-
     // task ledger item
     const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
         lazy: false,
@@ -132,7 +174,6 @@ useHead({
             }
         }
     }) 
-
     //= projects
     const { data: current_project } = useFetch("/api/projectGuarded/project", {
         lazy: false,
@@ -170,6 +211,68 @@ useHead({
         }
     }
     // SET
+    //= setStrokeDashArrayAndOffset
+    const setStrokeDashArrayAndOffset = () => {
+        let chart = document.querySelector('.chart')
+
+        if(chart) {
+
+            let units = chart.querySelectorAll('.unit')
+            
+            // console.log(units)
+            // console.log(brokerage?.value?.invested_mash)
+
+            for(let i = 0; i <= brokerage?.value?.invested_mash?.length; i++) {
+
+                if(brokerage?.value?.invested_mash[i]) {
+
+                    let ratio = calcInvestorInvested(brokerage?.value?.invested_mash[i].id) / calcTotalInvested() * 100
+
+                    units[i].setAttribute('stroke-dasharray', `${ratio},100`)
+                    units[i].setAttribute('stroke-dashoffset', 0);
+
+                    if(i === 0) {
+                        units[i].setAttribute('stroke-dashoffset', 0);
+                    } else {
+                        // Получаем значение 'stroke-dasharray' предыдущего элемента
+                        let sdArrPrev = parseFloat(units[i - 1].getAttribute('stroke-dasharray')) * (-1);
+                         // Получаем значение 'stroke-dashoffset' предыдущего элемента
+                        let sdOffPrev = parseFloat(units[i - 1].getAttribute('stroke-dashoffset'));
+                        // Суммируем значения
+                        let sumParam = sdArrPrev + sdOffPrev;
+                        // console.log(sumParam );
+                        // Устанавливаем значения в текущий элемент
+                        units[i].setAttribute('stroke-dashoffset', sumParam);
+                    }
+                }
+            }
+            // setTimeout(() => {
+
+            // }, 110)
+        }
+    }
+    //= set_current_mesh(el, index)
+    const set_current_mesh = (el: any, index: number) => {
+        // console.log(el)
+        // console.log(index)
+        
+        const unitsList = document.querySelectorAll('.unit');
+        // Очищаем все элементы от класса 
+        unitsList.forEach(item => item.classList.remove('unit__hovered'))
+        // Действуем
+        if(unitsList[index].classList.contains('unit__hovered')) {
+            unitsList[index].classList?.remove('unit__hovered');
+            current_mesh.value = null
+            // if(popup_opened.value) {
+            //     popup_opened.value = false
+            // }
+        } else if(!unitsList[index].classList.contains('unit__hovered')){
+            unitsList[index].classList.add('unit__hovered');
+            current_mesh.value = el
+        }
+    }
+
+    // CREATE
     //= create link to owner
     const linkToOwner = (ownerType: string, ownerID: number) => {
         if(ownerType === 'user') {
@@ -216,11 +319,11 @@ useHead({
     }
 
     // CALC
-
+    //
     //= calc total invested
     const calcTotalInvested = () => {
         
-        let invested_amount = transaction_ledger.value.reduce((acc, current) => {
+        let invested_amount = transaction_ledger?.value?.reduce((acc, current) => {
             
             if(current.purpose.slice(0,6) === 'Выдача') {
                 acc += current.target_item_qty * current.target_item_amount
@@ -231,11 +334,10 @@ useHead({
 
         return invested_amount
     }
-
     //= calc total withdraw
     const calcTotalWithdraw = () => {
 
-        let withdraw_amount = transaction_ledger.value.reduce((acc, current) => {
+        let withdraw_amount = transaction_ledger?.value?.reduce((acc, current) => {
 
             if(current.purpose.slice(0,5) === 'Вывод') {
                 acc += current.target_item_qty * current.target_item_amount
@@ -245,13 +347,12 @@ useHead({
         }, 0)
         return withdraw_amount
     }
-
     //= calc Allocation of mesh investor
     const calcInvestorAllocation = (mesh_id: number) => {
         let invested_amount = 0;
         let withdraw = 0;
 
-        transaction_ledger.value.forEach(tr => {
+        transaction_ledger?.value?.forEach((tr: any) => {
             if(tr.target_item_id === mesh_id) {
 
                 invested_amount += tr.target_item_qty * tr.target_item_amount
@@ -268,7 +369,7 @@ useHead({
     const calcInvestorInvested = (mesh_id: number) => {
         let invested_amount = 0;
 
-        transaction_ledger.value.forEach(tr => {
+        transaction_ledger?.value?.forEach(tr => {
             if(tr.target_item_id === mesh_id) {
 
                 invested_amount += tr.target_item_qty * tr.target_item_amount
@@ -281,7 +382,7 @@ useHead({
     const calcInvesrtorWithdraw = (mesh_id: number) =>{
         let withdraw = 0;
 
-        transaction_ledger.value.forEach(tr => {
+        transaction_ledger?.value?.forEach(tr => {
 
             if (tr.from_item_id === mesh_id) {
                 if(tr.purpose.slice(0,5) === 'Вывод') {
@@ -291,6 +392,8 @@ useHead({
         })
         return withdraw
     }
+
+
 
     // DB
     //
@@ -379,7 +482,7 @@ useHead({
 
     // transactions
     const { data: transaction_ledger } = useFetch("/api/transaction/transaction", {
-    lazy: false,
+    lazy: true,
     transform: (transaction_ledger) => {
         let array:any = []
 
@@ -400,6 +503,15 @@ useHead({
         })
         return array;
     }
+    })
+
+    // WATCH
+    // watch(transaction_ledger, () => {
+
+    // })
+    // 
+    watch(current_mesh, () => {
+        console.log(current_mesh.value)
     })
 
 
@@ -434,7 +546,9 @@ useHead({
                 </ul>
             </div>
 
+            <!-- PAPERS -->
             <div style="margin-top: 1rem;">
+                <h2>Состав ценных бумаг</h2>
                 <ul>
                     <li>
                         <h3 style="margin: 0;">Акции</h3>
@@ -457,9 +571,59 @@ useHead({
                 </ul>
             </div>
 
+            <!-- Invested band and conspirators -->
+            <article class="investor_container" style="background-color: var( --color-paused-wrapper-bg); margin: 1rem; border-radius: var(--bs-border-radius); ">
+                <header>
+                    <h2>Доли</h2>
+                    <p>Текущий расклад | <span style="text-transform: uppercase;">Инвестировано</span> </p>
+                </header>
+
+                <!-- DIAGRAM -->
+                <!-- ДОЛИ -->
+                <section class="diagram_wrapper">
+                    <!-- <h3>Заголовок</h3> -->
+                    <svg class="chart" viewBox="0 0 40 50">
+
+                        <circle 
+                            v-for="(mesh, index) in brokerage.invested_mash"  
+                            class="unit" 
+                            r="15.9" 
+                            cx="50%" 
+                            cy="50%" 
+                            @click.stop="set_current_mesh(mesh, index)"
+                            @mouseover="current_mesh = mesh"
+                        >
+                           {{ mesh }}
+                        </circle>
+                    </svg>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+
+                        <div v-if="current_mesh.id">
+                            <p style="margin: 0;">
+                                <span style="color:var(--color-global-text_second); font-size: .8rem;">{{ (calcInvestorAllocation(current_mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }} %</span> <br>
+                                <span>{{ translate_invested_meshes(current_mesh.id) }}</span> <br>
+                                <span style="font-weight: bold;">{{(calcInvestorInvested(current_mesh.id) - calcInvesrtorWithdraw(current_mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</span> 
+                            </p>
+                        </div>
+                        <div v-else>
+                            <p style="margin: 0;">
+                                <span style="color:var(--color-global-text_second); font-size: .8rem;">100%</span> <br>
+                                <span>TOTAL</span> <br> 
+                                <span style="font-weight: bold;">{{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}</span>
+                            </p>
+                        </div>
+                        <div style="font-size: .8rem; margin-top: 1rem;">
+                            <p style="margin: 0;">+12 345.99 / +57.89%</p>
+                        </div>
+                    </div>
+                </section>
+
+
+            </article>
+
             <div class="about_container">
 
-                <div class="about_wrapper">
+                <!-- <div class="about_wrapper">
                     <h2 style="margin: 0;">Инвесторы:</h2>
                     <ul>
                         <li>
@@ -493,7 +657,7 @@ useHead({
                             </ul>
                         </li>
                     </ul>
-                </div>
+                </div> -->
                 <div class="about_wrapper">
                     <p>{{ brokerage.broker_tag }}</p>
                 </div>
@@ -517,7 +681,7 @@ useHead({
             <p><span>Портфель</span> <span>Операции</span> <span>Пополнения</span> <span>Выводы</span></p>
             <ul class="transaction-list_container">
                 <li 
-                    v-for="tr in transaction_ledger.sort(function(a,b){
+                    v-for="tr in transaction_ledger?.sort(function(a,b){
                         return new Date(b.created_at) - new Date(a.created_at);
                     })" 
                     style=""
@@ -722,6 +886,51 @@ useHead({
     padding: 0;
     list-style-type: none;
 }
+
+/* DIAGRAM */
+.unit {
+    fill: none;
+    stroke-width: 5;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+/* #1 */
+.unit:nth-child(1) {
+    stroke: v-bind('colors.unit1');
+}
+/* #2 */
+.unit:nth-child(2) {
+    stroke: v-bind('colors.unit2');
+}
+/* #3 */
+.unit:nth-child(3) {
+    /* stroke: #ffc7ec; */
+    stroke: v-bind('colors.unit3');
+}
+/* #4 */
+.unit:nth-child(4) {
+    stroke: v-bind('colors.unit4');
+}
+/* 5 */
+.unit:nth-child(5) {
+    stroke: v-bind('colors.unit5');
+}
+/* #6 */
+.unit:nth-child(6) {
+    stroke: v-bind('colors.unit6');
+}
+/* #7 */
+.unit:nth-child(7) {
+    stroke: v-bind('colors.unit7');
+}
+/* #8 */
+.unit:nth-child(8) {
+    stroke: v-bind('colors.unit8');
+}
+.unit__hovered {
+    stroke-width: 8;
+}
+
 @media screen and (max-width: 575px) {
   .show-max-767 {
     display: none;
@@ -729,6 +938,23 @@ useHead({
   .about_container {
     display: flex;
     flex-direction: column;
+    background-color: red;
+  }
+
+  /* investor section style */
+  .investor_container {
+
+  }
+  .diagram_wrapper {
+    display: flex; 
+    background-color: var(--color-btn-hover-bg); 
+    width: 25rem; 
+    height: 25rem; 
+    position: relative;
+    width: 100%;
+  }
+  .diagram_wrapper svg{
+    margin: 0 auto;
   }
 
     /* ОПЕРАЦИИ */
@@ -775,7 +1001,9 @@ useHead({
         display: flex;
         gap: 1rem;
         margin-top: 1rem;
-        margin-left: 1rem;
+        /* margin-left: 1rem; */
+        padding: 0 1rem;
+        background-color: yellow;
     }
      .about_wrapper {
         border: 1px solid var(--color-global-text_second);
