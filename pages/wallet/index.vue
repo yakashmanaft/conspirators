@@ -2762,6 +2762,9 @@ const calcMeshAmount = (mesh_id:number, mesh_type:string, mesh_tag:string, mesh_
         if(transaction.purpose.slice(0,5) === `Закуп`) {
           acc -= transaction.from_item_qty * transaction.from_item_amount
         }
+        else if(transaction.purpose.slice(0,5) === `Транш`) {
+          acc -= transaction.from_item_qty * transaction.from_item_amount
+        }
       }
       else if (transaction.target_item_tag === 'invested_loan') {
         // if(transaction.purpose.slice(0,5) === `Выдача`) {
@@ -2959,6 +2962,9 @@ const calcSectionAmount = (current_section: any) => {
             if(transaction.purpose.slice(0,5) === `Закуп`) {
               amount -= transaction.from_item_qty * transaction.from_item_amount
             }
+            else if(transaction.purpose.slice(0,5) === `Транш`) {
+              amount -= transaction.from_item_qty * transaction.from_item_amount
+            }
           }
           else if (transaction.target_item_tag === 'invested_loan') {
             // if(transaction.purpose.slice(0,5) === `Выдача`) {
@@ -3041,6 +3047,9 @@ const calcSectionAmount = (current_section: any) => {
         else if (transaction.purpose === `Закуп${mesh.name}`) {
           amount -= +transaction.from_item_qty * +transaction.from_item_amount
           // -2,356.25
+        }
+        else if(transaction.purpose.slice(0,5) === `Транш`) {
+          amount -= transaction.from_item_qty * transaction.from_item_amount
         }
       })
     })
@@ -3159,6 +3168,7 @@ const calcSectionAmount = (current_section: any) => {
 const calcSectionInvested_project = (current_section: any) => {
   // Доход0506Проект2017
   // Закуп0506Проект2017
+  // Транш0207Проект2025
   // 0506Проект2017
   let invested_amount = 0
   let invested_returned = 0

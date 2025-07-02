@@ -286,17 +286,37 @@ useHead({
     const link_to_investor = (mesh_id: number) => {
         let current_mesh = mesh?.value?.find(el => el.id === mesh_id)
 
-        if(current_mesh?.ownerType === 'conspirator') {
+        if(current_mesh) {
 
-            let band_investor = band.value?.find(el => el.id === current_mesh.ownerID)
+            // console.log(current_mesh?.ownerType)
+            // console.log(current_mesh?.ownerID)
 
-            router.push(`/band/${band_investor?.id}`)
+            if(current_mesh.ownerType === 'conspirator') {
+
+                let band_investor = band.value?.find(el => el.id === current_mesh.ownerID)
+
+                router.push(`/band/${band_investor.id}`)
+                console.log(band_investor)
+            }
+            else if (current_mesh.ownerType === 'user') {
+
+                let user_investor = partner.value?.find(el => el.userId === current_mesh.ownerID)
+                router.push(`/partners/${user_investor.id}`)
+                // console.log(user_investor)
+            }
         }
-        else if (current_mesh?.ownerType === 'user') {
-            let user_investor = partner.value?.find(el => el.userId === current_mesh.ownerID)
+        // if(mesh?.ownerType === 'conspirator') {
 
-            router.push(`/partners/${user_investor?.id}`)
-        }
+        //     let band_investor = band.value?.find(el => el.id === mesh.id)
+
+        //     router.push(`/band/${band_investor?.id}`)
+        // }
+        // else if (mesh?.ownerType === 'user') {
+        //     let user_investor = partner.value?.find(el => el.userId === mesh.id)
+
+        //     router.push(`/partners/${user_investor?.id}`)
+        // }
+
     }
 
     // TRANSLATE
@@ -313,7 +333,7 @@ useHead({
 
             let user_investor = partner.value?.find(el => el.userId === current_mesh.ownerID)
 
-            return `${user_investor?.surname} ${user_investor?.name}`
+            return `${user_investor?.surname} ${user_investor?.name?.[0]}. ${user_investor?.middleName?.[0]}.`
         }
 
     }
@@ -379,7 +399,7 @@ useHead({
         return invested_amount
     }
     //= calc investor withdraw
-    const calcInvesrtorWithdraw = (mesh_id: number) =>{
+    const calcInvestorWithdraw = (mesh_id: number) =>{
         let withdraw = 0;
 
         transaction_ledger?.value?.forEach(tr => {
@@ -511,7 +531,7 @@ useHead({
     // })
     // 
     watch(current_mesh, () => {
-        console.log(current_mesh.value)
+        // console.log(current_mesh.value)
     })
 
 
@@ -633,53 +653,91 @@ useHead({
             </article>
 
             <!-- Invested band and conspirators -->
-            <article class="investor_container" style="margin: 1rem; border-radius: var(--bs-border-radius); ">
+            <article style="margin: 1rem; border-radius: var(--bs-border-radius); ">
                 <header>
                     <h2>Доли</h2>
                     <p>Распределение средств, согласно текущей аллокации</p>
                 </header>
-
-                <!-- DIAGRAM -->
-                <!-- ДОЛИ -->
-                <section class="diagram_wrapper">
-                    <!-- <h3>Заголовок</h3> -->
-                    <svg class="chart" viewBox="0 0 40 50">
-
-                        <circle 
-                            v-for="(mesh, index) in brokerage.invested_mash"  
-                            class="unit" 
-                            r="15.9" 
-                            cx="50%" 
-                            cy="50%" 
-                            @click.stop="set_current_mesh(mesh, index)"
-                            @mouseover="current_mesh = mesh"
-                        >
-                           {{ mesh }}
-                        </circle>
-                    </svg>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-
-                        <div v-if="current_mesh?.id">
-                            <p style="margin: 0;">
-                                <span style="color:var(--color-global-text_second); font-size: .8rem;">{{ (calcInvestorAllocation(current_mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }} %</span> <br>
-                                <span>{{ translate_invested_meshes(current_mesh.id) }}</span> <br>
-                                <span style="font-weight: bold;">{{(calcInvestorInvested(current_mesh.id) - calcInvesrtorWithdraw(current_mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</span> 
-                            </p>
+                <div class="investor_container">
+                    <!-- ДОЛИ -->
+                    <!-- DIAGRAM -->
+                    <section class="diagram_wrapper">
+                        <!-- <h3>Заголовок</h3> -->
+                        <svg class="chart" viewBox="0 0 40 50">
+    
+                            <circle 
+                                v-for="(mesh, index) in brokerage.invested_mash"  
+                                class="unit" 
+                                r="15.9" 
+                                cx="50%" 
+                                cy="50%" 
+                                @click.stop="set_current_mesh(mesh, index)"
+                                @mouseover="current_mesh = mesh"
+                            >
+                               {{ mesh }}
+                            </circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+    
+                            <div v-if="current_mesh?.id">
+                                <p style="margin: 0;">
+                                    <span style="color:var(--color-global-text_second); font-size: .8rem;">{{ (calcInvestorAllocation(current_mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }} %</span> <br>
+                                    <span>{{ translate_invested_meshes(current_mesh.id) }}</span> <br>
+                                    <span style="font-weight: bold;">{{(calcInvestorInvested(current_mesh.id) - calcInvestorWithdraw(current_mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</span> 
+                                </p>
+                            </div>
+                            <div v-else>
+                                <p style="margin: 0;">
+                                    <span style="color:var(--color-global-text_second); font-size: .8rem;">100%</span> <br>
+                                    <span>TOTAL</span> <br> 
+                                    <span style="font-weight: bold;">{{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}</span>
+                                </p>
+                            </div>
+                            <div style="font-size: .8rem; margin-top: 1rem;">
+                                <p style="margin: 0; color: var(--color-global-text_second);">+12 345.99 / +57.89%</p>
+                            </div>
                         </div>
-                        <div v-else>
-                            <p style="margin: 0;">
-                                <span style="color:var(--color-global-text_second); font-size: .8rem;">100%</span> <br>
-                                <span>TOTAL</span> <br> 
-                                <span style="font-weight: bold;">{{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}</span>
-                            </p>
-                        </div>
-                        <div style="font-size: .8rem; margin-top: 1rem;">
-                            <p style="margin: 0;">+12 345.99 / +57.89%</p>
-                        </div>
-                    </div>
-                </section>
-
-
+                    </section>
+                    <!-- LIST -->
+                     <br>
+                    <section class="list-diagram_wrapper">
+                        <ul style="border-bottom: 1px solid var(--color-global-text_second); padding-bottom: 1rem;">
+                            <li>
+                                <div class="list-diagram-el_allocation">100%</div>
+                                <div class="list-diagram-el_investor">
+                                    <div style="text-transform: uppercase;">Total</div>
+                                    <div class="list-diagram-el_investor_amount">
+                                        {{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}
+                                    </div>
+                                </div>
+                                <div class="list-diagram-el_amount">
+                                    <div class="list-diagram-el_profit">
+                                        +0.00 / +0.00%
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul style="margin-top: 1rem;" v-if="brokerage?.invested_mash?.length">
+                            <li 
+                                v-for="mesh in brokerage.invested_mash"
+                                @click="link_to_investor(mesh.id)"
+                            >
+                                <div class="list-diagram-el_allocation">{{ (calcInvestorAllocation(mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }}%</div>
+                                <div class="list-diagram-el_investor">
+                                    <div>
+                                        {{ translate_invested_meshes(mesh?.id) }}
+                                    </div>
+                                    <div class="list-diagram-el_investor_amount">{{(calcInvestorInvested(mesh.id) - calcInvestorWithdraw(mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</div>
+                                </div>
+                                <div class="list-diagram-el_profit">+12 345.99 / +57.89%</div>
+                            </li>
+                        </ul>
+                        <ul style="margin-top: 1rem;" v-else>
+                            Нет инвесторов
+                        </ul>
+                    </section>
+                    
+                </div>
             </article>
 
             <!-- TRANSACTIONS -->
@@ -953,19 +1011,75 @@ useHead({
   .investor_container {
       /* background-color: var(--color-btn-wo-bg); */
     }
+
+    /* DIAGRAM */
+    /* round */
     .diagram_wrapper {
-    display: flex; 
-    background-color: var(--color-global-baackground_light);
-    /* background-color: var(--color-btn-hover-bg);  */
-    width: 25rem; 
-    height: 25rem; 
-    position: relative;
-    width: 100%;
-    border-radius: var(--bs-border-radius);
-  }
-  .diagram_wrapper svg{
-    margin: 0 auto;
-  }
+        display: flex; 
+        background-color: var(--color-global-baackground_light);
+        /* background-color: var(--color-btn-hover-bg);  */
+        width: 25rem; 
+        height: 25rem; 
+        position: relative;
+        width: 100%;
+        border-radius: var(--bs-border-radius);
+    }
+    .diagram_wrapper svg{
+        margin: 0 auto;
+    }
+    /* list */
+    .list-diagram_wrapper {
+        background-color: var(--color-global-baackground_light);
+        border-radius: var(--bs-border-radius);
+        padding: 2rem 1.5rem;
+    }
+    .list-diagram_wrapper ul {
+        list-style: none; 
+        padding: 0;
+        margin: 0;
+    }
+    .list-diagram_wrapper ul li {
+        display: grid;
+        grid-template-columns: 50px 1fr 1fr;
+        align-items: center;
+        gap: 1rem;
+    }
+    .list-diagram_wrapper ul li:not(:first-child) {
+        padding: .45rem 0;
+
+    }
+    .list-diagram_wrapper ul li div:last-child {
+        text-align: end;
+
+    }
+    .list-diagram-el_allocation {
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+    }
+    .list-diagram-el_investor {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start
+    }
+    .list-diagram-el_investor_amount {
+        font-weight: bold;
+        font-size: .8rem;
+    }
+    .list-diagram-el_profit {
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+    }
+
+    /* BTN switch diagram / list */
+    /* .investor_container {
+        position: relative;
+    }
+    .switch-btn_container {
+        position: absolute;
+        top: 5rem;
+        right: 0;
+        background-color: red;
+    } */
 
     /* ABOUT SECTION */
     .about_container {
@@ -1057,6 +1171,7 @@ useHead({
         border-radius: 1rem;
         padding: 1rem;
      }
+
 }
 @media screen and (min-width: 768px) and (max-width: 991px)  {
     .content-setion_container {
@@ -1065,7 +1180,70 @@ useHead({
     }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
+    .investor_container {
+        display: flex;
+        gap: 1rem;
+    }
+    .diagram_wrapper {
+        flex: 50%;
+        display: flex; 
+        background-color: var(--color-global-baackground_light);
+        /* background-color: var(--color-btn-hover-bg);  */
+        width: 25rem; 
+        height: 25rem; 
+        position: relative;
+        width: 100%;
+        border-radius: var(--bs-border-radius);
+    }
+    .diagram_wrapper svg{
+        margin: 0 auto;
+    }
+    .list-diagram_wrapper {
+        flex: 50%;
+        background-color: var(--color-global-baackground_light);
+        border-radius: var(--bs-border-radius);
+        padding: 2rem 0;
+    }
+    .list-diagram_wrapper ul {
+        list-style: none; 
+        padding: 0;
+        margin: 0;
+    }
+    .list-diagram_wrapper ul li {
+        display: grid;
+        grid-template-columns: 50px 1fr 1fr;
+        align-items: center;
+        gap: 1rem;
+        transition: all .2s ease-in;
+    }
+    .list-diagram_wrapper ul li:hover {
+        background-color :white;
+        cursor: pointer;
+    }
+    .list-diagram_wrapper ul li {
+        padding: .45rem 1.5rem;
+    }
+    .list-diagram_wrapper ul li div:last-child {
+        text-align: end;
 
+    }
+    .list-diagram-el_allocation {
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+    }
+    .list-diagram-el_investor {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start
+    }
+    .list-diagram-el_investor_amount {
+        font-weight: bold;
+        font-size: .8rem;
+    }
+    .list-diagram-el_profit {
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+    }
 }
 @media screen and (min-width: 1200px) {
 

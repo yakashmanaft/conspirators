@@ -759,7 +759,8 @@ useHead({
                                         <p>{{ index + 1 }}. <span @click="setSharerRoute(sharer.userId, sharer.userType)">{{ translateSharerName(sharer.userId, sharer.userType) }}</span></p>
                                     </div>
                                     <div class="sharers-list_item-el">
-                                        <p>{{ sharer.position }} <span>{{ sharer.allocation }}</span></p>
+                                        <p>Статус: {{ sharer.position }}</p>
+                                        <p>Доля: {{ sharer.allocation * 100 }}%</p>
                                     </div>
                                 </li>
                             </ul>
