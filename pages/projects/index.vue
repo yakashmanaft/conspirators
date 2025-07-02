@@ -11,7 +11,7 @@ import { Search } from "~/components/search";
 // utils
 import { H3Error } from "h3";
 import { v4 as uuidv4 } from "uuid";
-import { translateName }  from '@/utils/translators'
+import { translateName, translateExecutorsName, translateCustomersName }  from '@/utils/translators'
 
 useHead({
   title: "Мои проекты",
@@ -237,6 +237,9 @@ const searchInputChanged = (str: string) => {
 //   project.workType = null;
 //   project.completion = 0;
 // };
+
+// TRANSLATE
+
 
 
 // const translateCurator = (curatorID: number, curatorType: string) => {
@@ -519,11 +522,29 @@ const addNewProject = () => {
           >
             <!-- {{ project }} -->
             <div style="padding-left: 3.5rem; display: flex; flex-direction: column;">
-              <span>{{ project?.name }}</span>
-              <p style="margin: 0; display: flex; flex-direction: column;">
-                <span style="font-size: .8rem; color: var(--color-global-text_second);">Заказчик: {{ translateName(project?.customer?.[0]?.userType, project?.customer?.[0]?.userId)}}</span>
-                <span style="font-size: .8rem; color: var(--color-global-text_second);">Исполнитель: {{ translateName(project?.executor?.[0].userType, project?.executor?.[0].userId)}}</span>
-              </p>
+              <p style="margin: 0;">{{ project?.name }}</p>
+              <div style="display: flex; flex-direction: column;">
+                <!-- <span style="font-size: .8rem; color: var(--color-global-text_second);">Заказчик: {{ translateName(project?.customer?.[0]?.userType, project?.customer?.[0]?.userId)}}</span> -->
+
+                <p class="project-item_customers_wrapper">
+                  <span>Заказчик: </span>
+                  <span class="project-item_customers_list" v-if="translateCustomersName(project?.customer).length">
+                    <span v-for="customer in translateCustomersName(project?.customer)">
+                      {{ customer }}
+                    </span>
+                  </span>
+                  <span v-else>Нет</span>
+                </p>
+                <p class="project-item_executors_wrapper">
+                  <span>Исполнитель: </span>
+                  <span class="project-item_executors_list" v-if="translateExecutorsName(project?.executor).length">
+                    <span v-for="executor in translateExecutorsName(project?.executor)">
+                       {{ executor }}
+                    </span>
+                  </span>
+                  <span v-else>Нет</span>
+                </p>
+              </div>
             </div>
           
             <!-- Symbol -->
@@ -644,6 +665,19 @@ const addNewProject = () => {
 }
 .project-list_wrapper {
   margin-top: 1.5rem;
+}
+.project-item_executors_wrapper,
+.project-item_customers_wrapper {
+  font-size: .8rem;
+  margin: 0;
+}
+.project-item_executors_wrapper span,
+.project-item_customers_wrapper span {
+  color: var(--color-global-text_second); 
+}
+.project-item_executors_list span
+.project-item_customers_list span {
+  margin-left: .2rem;
 }
 @media screen and (max-width: 575px) {
   .no-project_warapper {

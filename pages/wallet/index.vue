@@ -4329,46 +4329,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
       </Section>
     </div> 
     <!-- {{ choosenChip_section }} -->
-        
-    <!-- === INFO SECTION === -->
-    <!-- <div id="fund-block" class="wallet-section_container">
 
-      <Section 
-        v-for="section in wallet_sections" 
-        :bg="set_section_bgColor(section)" 
-        :fDirection="`column`" 
-        class="section-header_wrapper"
-        @click="choosenChip_section = section.name"
-      >
-        
-        <header>
-          <h2 :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="text-wrap: nowrap; font-size: unset; font-weight: unset;">{{ section.title }}</h2>
-
-          <p v-if="section.name  === 'available'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotalAvailable(section.id) }} {{ currency_to_show.ticket }}</p>
-
-          <p v-else-if="section.name === 'invested_deposit'" :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ sumTotal(section.id) }} {{ currency_to_show.ticket }}</p>
-
-          <p v-else :style="choosenChip_section === section.name ? 'color: #fff' : 'color: unset'" style="margin: 0; text-wrap: nowrap;">{{ 0.00 }} {{ currency_to_show.ticket }}</p>
-          
-
-          <p 
-            v-if="section.name === 'invested_stock' || section.name === 'invested_currency'" 
-            style="font-size: 0.8rem; font-weight: normal;"
-          >
-            Инвестировано: {{sumTotal(section.id)}} {{ currency_to_show.ticket }} <br> +3736.00RUB  / +10%
-          </p>
-          <p 
-            v-if="section.name === 'invested_crypto'" 
-            style="font-size: 0.8rem; font-weight: normal;"
-          >
-            Инвестировано: {{sumTotal(section.id)}} USD / ~0.00 RUB<br> +3736.00RUB  / +10%
-          </p>
-        </header>
-
-
-      </Section>
-
-    </div> -->
 
     <!-- CHIP -->
     <!-- ПЕРЕКЛЮЧАТЕЛЬ MESH && TRANSACTION  -->
@@ -4516,12 +4477,24 @@ const { data: bank } = useFetch("/api/banks/bank", {
       <div v-if="currentFundParagraph === 'meshes'" class="current-fund_wrapper">
         <!-- LENGTH -->
         <div v-if="meshes_computed?.length">
+          <div style="margin-top: 2rem; cursor: pointer;">
+            
+            <ul style="list-style: none; padding: 0; display: flex; gap: 1rem;">
+              <li>
+                <input type="checkbox" id="mesh_status_completed">
+                <label for="mesh_status_completed">Завершенные</label>
+              </li>
+              <li>
+                <input type="checkbox" id="mesh_status_process">
+                <label for="mesh_status_process">В процессе</label>
+              </li>
+            </ul>
+          </div>
 
           <section 
             v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
               return obj.type
             }) ])]"
-            style="margin-top: 1rem;"
             class="mesh_group_container"
           > 
             <header><h4>{{ translateMashesSubGroup(type) }}</h4></header>

@@ -248,15 +248,16 @@ useHead({
     const band_list_computed = computed(() => {
 
 
-        return band_list.value?.filter(item => {
-            if(item.sharers && route.params.id) {
-                let sharers = Object.values(item.sharers)
+        // return band_list.value?.filter(item => {
+        //     if(item.sharers && route.params.id) {
+        //         let sharers = Object.values(item.sharers)
 
-                if(sharers.find(sharer => sharer.userType === 'conspirator' && sharer.userId === +route.params.id)) {
-                    return item
-                }
-            }
-        })
+        //         if(sharers.find(sharer => sharer.userType === 'conspirator' && sharer.userId === +route.params.id)) {
+        //             return item
+        //         }
+        //     }
+        // })
+        return band_list.value
     })
     //=m y_band_list_computed
     const my_band_list_computed = computed(() => {
@@ -291,6 +292,8 @@ useHead({
         // user, conspirator, bank
         if(userType === 'conspirator') {
             let sharer = band_list_computed?.value?.find(el => el.id === userID)
+            console.log(userID)
+            console.log(userType)
             return sharer ? sharer?.name : 'Неизвестная банда'
         } 
         else if (userType === 'user') {
@@ -803,7 +806,7 @@ useHead({
         <!-- CHIP titles -->
         <div class="current_band_paragraph" style="margin-top: 2rem;">
             <h2 v-for="el in band_paragraph" :class="currentBandParagraph === el.name ? 'title_active' : ''" style="cursor:pointer;">
-                <span @click="currentBandParagraph = el.name;">{{ el.title }}</span>
+                <span style="white-space: nowrap;" @click="currentBandParagraph = el.name;">{{ el.title }}</span>
             </h2>
         </div>
 
