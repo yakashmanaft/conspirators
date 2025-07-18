@@ -7,7 +7,7 @@
             <div class="main-banner_wrapper">
 
                 <!-- MARK -->
-                <p style="font-size: .8rem;color: var(--color-global-text_second);text-align: right; margin: 0; grid-area: mark">made on cnsprtrs by <span style="font-weight: bold;">@kashmanaft</span></p>
+                <p class="author-mark" style="font-size: .8rem;color: var(--color-global-text_second); margin: 0; grid-area: mark" @click.stop="$router.push('/')">made on cnsprtrs by <span style="font-weight: bold;">@kashmanaft</span></p>
 
                 <!-- LEFT -->
                 <h2 style="grid-area: left">
@@ -25,7 +25,7 @@
                 <!-- RIGHT -->
                 <div class="main-banner_area-right">
 
-                    <h1 style="margin: 0; font-weight: bold;">Карточки товаров <br><span>для маркетплейсов</span></h1>
+                    <h1 style="margin: 0; font-weight: bold;">Готовим <br><span>карточки товаров для маркетплейсов</span></h1>
                     <p>Или для вашего собственного web-ресурса</p>
                     <ul class="main-banner_icon-wrapper">
                         <!--  -->
@@ -52,7 +52,7 @@
     
                     </ul>
             
-                    <a href="#start" style="padding: 16px 32px; background-color: var(--color-global-text); color: var(--color-btn-text); border-radius: 2rem;">С чего начать</a>
+                    <a href="#start" style="padding: 16px 32px; background-color: var(--color-global-text); color: var(--color-btn-text); border-radius: 2rem;">Начать</a>
                 </div>
             </div>
         </Container>
@@ -83,7 +83,7 @@
 
                         <!-- OL table contents -->
                         <ol class="ol-step_wrapper">
-                            <li v-for="(group, idx) in [...new Set([...specification_step.map((obj: any) => {return obj.group})])]">
+                            <li v-for="(group, idx) in [...new Set([...specification_step.map((obj: any) => {return obj.group})])].reverse()">
                                 <h4>{{idx + 1}}. {{ group }}</h4>
                                 <ol>
                                     <li v-for="(step, index) in specification_step.filter(el => el.group === group)" @click="current_specification_step = step.name">
@@ -98,6 +98,7 @@
                                             :id="`${group}_${index}`" v-model="current_specification_step"
                                             :checked="step.name === current_specification_step"
                                         >
+                                        
                                     </li>
                                 </ol>
                             </li>
@@ -187,11 +188,11 @@
     const paragraphChipList = ref([
         {
             name: 'specification-first', 
-            title: 'Начнем с ТЗ'
+            title: 'Создать ТЗ вместе'
         },
         {
             name: 'choose-pattern', 
-            title: 'Купить шаблон'
+            title: 'Выбрать готовое решение'
         }
     ])
     //= currentParagraphChip
@@ -241,6 +242,15 @@
     ])
     //= specification_step
     const current_specification_step = ref(specification_step?.value ? specification_step.value[0].name : '')
+
+    //= specification_step_content
+    const specification_step_content = ref([
+        {
+            specification_step_name_id: 1,
+            title: '',
+        }
+    ])
+
     //= form_obj
     const form_obj = ref({
         customer_id: null,
@@ -325,11 +335,126 @@
     }
     /* MAIN BANNER */
     .main-banner_container {
-        padding-top: 5rem;
+        padding-top: 2rem;
         padding-bottom: 1rem;
     }
     .main-banner_wrapper {
-        background-color: cyan;
+        padding: 0 2rem;
+        margin-top: 4.5rem;
+        /* background-color: red; */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-content: space-between;
+        grid-template-areas: 
+        "mark mark"
+        "left left"
+        "right right"
+        ;
+    }
+    .main-banner_area-right {
+        grid-area: right; 
+        text-align: right;
+        text-align: left;
+        /* position: relative; */
+        margin-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .author-mark {
+        text-align: center!important;
+    }
+    .main-banner_area-right h1 {
+        font-size: 3rem;
+    }
+    .main-banner_area-right h1 span {
+        color :var(--color-as-ym-white);
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        padding: 0 .5rem;
+    }
+    .main-banner_area-right p {
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .main-banner_area-right ul {
+        margin-top: 1rem;
+        padding-bottom: 3rem;
+    }
+    .main-banner_area-right > a {
+        /* position: absolute; */
+        /* top: 50%; */
+        /* right: 0; */
+        /* transform: translateY(-200%); */
+        display: flex;
+        justify-content: center;
+    }
+    /*  */
+    h2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2.5rem;;
+    }
+    h2 span {
+        width: fit-content;
+        height: 175px;  
+        display: flex;
+        align-items: flex-end;
+        box-shadow: var(--hover-shadow);
+        position: relative;
+        border-radius: 1rem;
+        transition: all .5s ease-in-out;
+    }
+    h2 span:hover {
+        cursor: pointer;  
+        opacity: .8;      
+    }
+    h2 span:nth-child(1) {
+        margin-left: -8rem;
+        border-bottom-left-radius: 1.5rem;
+        border-bottom-right-radius: 7px;
+        z-index: 2;
+    }
+    h2 span:nth-child(2) {
+        /* margin-left: 3.2rem; */
+        margin-left: 10rem;
+        margin-top: -4rem;
+        margin-bottom: -4rem;
+        z-index: 1;
+    }
+    h2 span:nth-child(3) {
+        margin-left: 1rem;
+        /* width: 400px; */
+        margin-top: -1rem;
+        margin-left: -5rem;
+    }
+    h2 span img {
+        width: 200px;
+    }
+    /*  */
+    /* APP ICON wrapper */
+    .main-banner_icon-wrapper {
+        /* background-color: blue; */
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        /* margin-top: 3rem!important; */
+    }
+    .icon_el {
+        width: 32px;
+        height: 32px;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon_el img {
+        width: 100%;
+        height: 100%;
     }
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -344,11 +469,116 @@
     }
     /* MAIN BANNER */
     .main-banner_container {
-        padding-top: 5rem;
+        padding-top: 2rem;
         padding-bottom: 1rem;
     }
     .main-banner_wrapper {
-        background-color: cyan;
+        padding: 0 2rem;
+        margin-top: 4.5rem;
+        /* background-color: red; */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-content: space-between;
+        grid-template-areas: 
+        "mark mark"
+        "left left"
+        "right right"
+        ;
+    }
+    .main-banner_area-right {
+        grid-area: right; 
+        text-align: right;
+        text-align: left;
+        /* position: relative; */
+        margin-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .author-mark {
+        text-align: center!important;
+    }
+    .main-banner_area-right h1 {
+        font-size: 3rem;
+    }
+    .main-banner_area-right h1 span {
+        color :var(--color-as-ym-white);
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        padding: 0 .5rem;
+    }
+    .main-banner_area-right p {
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .main-banner_area-right ul {
+        margin-top: 1rem;
+        padding-bottom: 3rem;
+    }
+    .main-banner_area-right > a {
+        /* position: absolute; */
+        /* top: 50%; */
+        /* right: 0; */
+        /* transform: translateY(-200%); */
+    }
+    /*  */
+    h2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2.5rem;;
+    }
+    h2 span {
+        width: fit-content;
+        height: 175px;  
+        display: flex;
+        align-items: flex-end;
+        box-shadow: var(--hover-shadow);
+        position: relative;
+        border-radius: 1rem;
+        transition: all .5s ease-in-out;
+    }
+    h2 span:hover {
+        cursor: pointer;  
+        opacity: .8;      
+    }
+    h2 span:nth-child(1) {
+        border-bottom-left-radius: 2.7rem;
+        border-bottom-right-radius: 7px;
+        z-index: 2;
+    }
+    h2 span:nth-child(2) {
+        margin-left: 3.2rem;
+        margin-top: -4rem;
+        margin-bottom: -4rem;
+        z-index: 1;
+    }
+    h2 span:nth-child(3) {
+        margin-left: 1rem;
+        width: 400px;
+    }
+    /*  */
+    /* APP ICON wrapper */
+    .main-banner_icon-wrapper {
+        /* background-color: blue; */
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        /* margin-top: 3rem!important; */
+    }
+    .icon_el {
+        width: 32px;
+        height: 32px;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon_el img {
+        width: 100%;
+        height: 100%;
     }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -363,8 +593,115 @@
         padding-bottom: 1rem;
     }
     .main-banner_wrapper {
+        padding: 0 2rem;
         margin-top: 4.5rem;
-        background-color: cyan;
+        /* background-color: red; */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-content: space-between;
+        grid-template-areas: 
+        "mark mark"
+        "left left"
+        "right right"
+        ;
+    }
+    .main-banner_area-right {
+        grid-area: right; 
+        text-align: right;
+        text-align: left;
+        position: relative;
+        margin-top: 2.5rem;
+    }
+        /*  */
+    .main-banner_area-right .author-mark {
+        text-align: left!important;
+    }
+    .main-banner_area-right h1 {
+        font-size: 3rem;
+    }
+    .main-banner_area-right h1 span {
+        color :var(--color-as-ym-white);
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        padding: 0 .5rem;
+    }
+    .main-banner_area-right p {
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .main-banner_area-right ul {
+        margin-top: 1rem;
+        padding-bottom: 5rem;
+    }
+    .main-banner_area-right > a {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-200%);
+    }
+    /*  */
+    h2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-top: 2.5rem;;
+    }
+    h2 span {
+        width: fit-content;
+        height: 220px;  
+        display: flex;
+        align-items: flex-end;
+        box-shadow: var(--hover-shadow);
+        position: relative;
+        border-radius: 1rem;
+        transition: all .5s ease-in-out;
+    }
+    h2 span:hover {
+        cursor: pointer;  
+        opacity: .8;      
+    }
+    h2 span:nth-child(1) {
+        border-bottom-left-radius: 2.7rem;
+        border-bottom-right-radius: 7px;
+        z-index: 2;
+    }
+    h2 span:nth-child(2) {
+        /* margin-left: 3.2rem; */
+        margin-right: 7rem;
+        margin-top: -8rem;
+        margin-bottom: -8rem;
+        z-index: 1;
+    }
+    h2 span:nth-child(3) {
+        margin-left: 1rem;
+        width: 400px;
+        margin-top: 3.5rem;
+        margin-right: 3rem;
+    }
+    /*  */
+    /* APP ICON wrapper */
+    .main-banner_icon-wrapper {
+        /* background-color: blue; */
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        margin-top: 3rem!important;
+    }
+    .icon_el {
+        width: 32px;
+        height: 32px;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon_el img {
+        width: 100%;
+        height: 100%;
     }
 
     /* specification-first-content_container */
@@ -387,10 +724,10 @@
         padding-top: 1rem;
         padding-bottom: 1rem;
     }
-    .main-banner_wrapper {
+    /* .main-banner_wrapper {
         margin-top: 4.5rem;
         background-color: cyan;
-    }
+    } */
     /* 
         TABLE CONTENTS
     */
@@ -432,6 +769,123 @@
     }
     .ol-step_wrapper li ol li input {
         display: none;
+    }
+
+    /* MAIN BANNER */
+    .main-banner_container {
+        padding-top: 1rem;
+        padding-bottom: 3rem;
+    }
+    .main-banner_wrapper {
+        padding: 0 2rem;
+        margin-top: 4.5rem;
+        /* background-color: red; */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-content: space-between;
+        grid-template-areas: 
+        "mark mark"
+        "left right"
+        ;
+    }
+    .main-banner_area-right {
+        grid-area: right; 
+        text-align: right;
+    }
+    .main-banner_area-right h1 {
+        font-size: 4rem;
+    }
+    .main-banner_area-right h1 span {
+        color :var(--color-as-ym-white);
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        padding: 0 .5rem;
+    }
+    .main-banner_area-right p {
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .main-banner_area-right ul {
+        margin-top: 1rem;
+        padding-bottom: 5rem;
+    }
+    /*  */
+    h2 {
+        display: flex;
+        flex-direction: column;
+    }
+    h2 span {
+        width: fit-content;
+        height: 220px;  
+        display: flex;
+        align-items: flex-end;
+        box-shadow: var(--hover-shadow);
+        position: relative;
+        border-radius: 1rem;
+        transition: all .5s ease-in-out;
+    }
+    h2 span:hover {
+        cursor: pointer;  
+        opacity: .8;      
+    }
+    h2 span:nth-child(1) {
+        border-bottom-left-radius: 2.7rem;
+        border-bottom-right-radius: 7px;
+        z-index: 2;
+    }
+    h2 span:nth-child(2) {
+        margin-left: 3.2rem;
+        margin-top: -2rem;
+        margin-bottom: -2rem;
+        z-index: 1;
+    }
+    h2 span:nth-child(3) {
+        margin-left: 1rem;
+        width: 400px;
+    }
+    /*  */
+    /* APP ICON wrapper */
+    .main-banner_icon-wrapper {
+        /* background-color: blue; */
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .icon_el {
+        width: 32px;
+        height: 32px;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon_el img {
+        width: 100%;
+        height: 100%;
+    }
+    .main-banner_area-right {
+        grid-area: right; 
+        text-align: right;
+    }
+    .main-banner_area-right h1 {
+        font-size: 4rem;
+    }
+    .main-banner_area-right h1 span {
+        color :var(--color-as-ym-white);
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        padding: 0 .5rem;
+    }
+    .main-banner_area-right p {
+        margin: 0;
+        margin-top: 1rem;
+    }
+    .main-banner_area-right ul {
+        margin-top: 1rem;
+        padding-bottom: 5rem;
     }
 }
 @media screen and (min-width: 1200px) {
@@ -507,7 +961,6 @@
     /*  */
     /* APP ICON wrapper */
     .main-banner_icon-wrapper {
-        /* background-color: blue; */
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -519,7 +972,6 @@
     .icon_el {
         width: 32px;
         height: 32px;
-        /* background-color: red; */
         display: flex;
         align-items: center;
         justify-content: center;
