@@ -25,7 +25,7 @@
                 <!-- RIGHT -->
                 <div class="main-banner_area-right">
 
-                    <h1 style="margin: 0; font-weight: bold;">Готовим <br><span>карточки товаров для маркетплейсов</span></h1>
+                    <h1 style="margin: 0; font-weight: bold;">Готовим <br><span>карточки товаров </span><br><span style="padding: 0; font-size: 2rem; text-wrap: nowrap; background: unset; color: var(--color-global-text)">для маркетплейсов</span></h1> 
                     <p>Или для вашего собственного web-ресурса</p>
                     <ul class="main-banner_icon-wrapper">
                         <!--  -->
@@ -365,6 +365,7 @@
     }
     .main-banner_area-right h1 {
         font-size: 3rem;
+        line-height: 4rem;
     }
     .main-banner_area-right h1 span {
         color :var(--color-as-ym-white);
@@ -373,7 +374,7 @@
     }
     .main-banner_area-right p {
         margin: 0;
-        margin-top: 1rem;
+        margin-top: -.2rem;
     }
     .main-banner_area-right ul {
         margin-top: 1rem;
@@ -429,7 +430,7 @@
         margin-left: -5rem;
     }
     h2 span img {
-        width: 200px;
+        width: 180px;
     }
     /*  */
     /* APP ICON wrapper */
@@ -442,7 +443,7 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        /* margin-top: 3rem!important; */
+        margin-top: 1.5rem!important;
     }
     .icon_el {
         width: 32px;
@@ -499,6 +500,7 @@
     }
     .main-banner_area-right h1 {
         font-size: 3rem;
+        line-height: 4rem; 
     }
     .main-banner_area-right h1 span {
         color :var(--color-as-ym-white);
@@ -507,7 +509,7 @@
     }
     .main-banner_area-right p {
         margin: 0;
-        margin-top: 1rem;
+        margin-top: -.5rem;
     }
     .main-banner_area-right ul {
         margin-top: 1rem;
@@ -528,7 +530,8 @@
     }
     h2 span {
         width: fit-content;
-        height: 175px;  
+        /* height: 175px;   */
+        height: 250px;
         display: flex;
         align-items: flex-end;
         box-shadow: var(--hover-shadow);
@@ -546,14 +549,17 @@
         z-index: 2;
     }
     h2 span:nth-child(2) {
-        margin-left: 3.2rem;
-        margin-top: -4rem;
-        margin-bottom: -4rem;
+        margin-left: -10rem;
+        margin-top: -10.5rem;
+        margin-bottom: -9rem;
         z-index: 1;
     }
     h2 span:nth-child(3) {
-        margin-left: 1rem;
-        width: 400px;
+        margin-left: 10rem;
+        /* width: 400px; */
+    }
+    h2 span img {
+        width: 250px;
     }
     /*  */
     /* APP ICON wrapper */
@@ -566,7 +572,7 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        /* margin-top: 3rem!important; */
+        margin-top: 2rem!important;
     }
     .icon_el {
         width: 32px;
@@ -608,7 +614,6 @@
     }
     .main-banner_area-right {
         grid-area: right; 
-        text-align: right;
         text-align: left;
         position: relative;
         margin-top: 2.5rem;
@@ -619,6 +624,7 @@
     }
     .main-banner_area-right h1 {
         font-size: 3rem;
+        line-height: 4rem;
     }
     .main-banner_area-right h1 span {
         color :var(--color-as-ym-white);
@@ -627,7 +633,7 @@
     }
     .main-banner_area-right p {
         margin: 0;
-        margin-top: 1rem;
+        margin-top: -.5rem;
     }
     .main-banner_area-right ul {
         margin-top: 1rem;
@@ -637,18 +643,19 @@
         position: absolute;
         top: 50%;
         right: 0;
-        transform: translateY(-200%);
+        transform: translateY(-215%);
     }
     /*  */
     h2 {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: center;
         margin-top: 2.5rem;;
     }
     h2 span {
         width: fit-content;
-        height: 220px;  
+        height: 250px;  
+        width:250px;
         display: flex;
         align-items: flex-end;
         box-shadow: var(--hover-shadow);
@@ -663,20 +670,24 @@
     h2 span:nth-child(1) {
         border-bottom-left-radius: 2.7rem;
         border-bottom-right-radius: 7px;
+         margin-right:-9rem;
         z-index: 2;
     }
     h2 span:nth-child(2) {
         /* margin-left: 3.2rem; */
         margin-right: 7rem;
         margin-top: -8rem;
-        margin-bottom: -8rem;
+        margin-bottom: -9rem;
         z-index: 1;
     }
     h2 span:nth-child(3) {
-        margin-left: 1rem;
-        width: 400px;
+        margin-left: 7rem;
+        width: 250px;
         margin-top: 3.5rem;
-        margin-right: 3rem;
+        margin-right: 7rem;
+    }
+    h2 span img {
+        width: 250px;
     }
     /*  */
     /* APP ICON wrapper */
@@ -689,7 +700,7 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        margin-top: 3rem!important;
+        /* margin-top: 4rem!important; */
     }
     .icon_el {
         width: 32px;
@@ -791,10 +802,11 @@
     }
     .main-banner_area-right {
         grid-area: right; 
-        text-align: right;
+        text-align: left;
     }
     .main-banner_area-right h1 {
         font-size: 4rem;
+        line-height: 5rem;
     }
     .main-banner_area-right h1 span {
         color :var(--color-as-ym-white);
@@ -813,10 +825,13 @@
     h2 {
         display: flex;
         flex-direction: column;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
     h2 span {
         width: fit-content;
-        height: 220px;  
+        height: 250px; 
+        width: 250px; 
         display: flex;
         align-items: flex-end;
         box-shadow: var(--hover-shadow);
@@ -834,14 +849,14 @@
         z-index: 2;
     }
     h2 span:nth-child(2) {
-        margin-left: 3.2rem;
-        margin-top: -2rem;
-        margin-bottom: -2rem;
+        margin-left: 5.5rem;
+        margin-top: -5.5rem;
+        margin-bottom: -7.5rem;
         z-index: 1;
     }
     h2 span:nth-child(3) {
-        margin-left: 1rem;
-        width: 400px;
+        margin-left: 3rem;
+        /* width: 400px; */
     }
     /*  */
     /* APP ICON wrapper */
@@ -881,7 +896,7 @@
     }
     .main-banner_area-right p {
         margin: 0;
-        margin-top: 1rem;
+        margin-top: -1rem;
     }
     .main-banner_area-right ul {
         margin-top: 1rem;
@@ -916,10 +931,12 @@
     h2 {
         display: flex;
         flex-direction: column;
+        margin-top: 3rem;
     }
     h2 span {
         width: fit-content;
-        height: 220px;  
+        height: 300px;  
+        width: 300px;
         display: flex;
         align-items: flex-end;
         box-shadow: var(--hover-shadow);
@@ -946,16 +963,17 @@
         border-bottom-left-radius: 2.7rem;
         border-bottom-right-radius: 7px;
         z-index: 2;
+        margin-left: 3rem;
     }
     h2 span:nth-child(2) {
-        margin-left: 3.2rem;
-        margin-top: -2rem;
-        margin-bottom: -2rem;
+        margin-left: 9.5rem;
+        margin-top: -10.5rem;
+        margin-bottom: -5.5rem;
         z-index: 1;
     }
     h2 span:nth-child(3) {
         margin-left: 1rem;
-        width: 400px;
+        /* width: 400px; */
     }
 
     /*  */
@@ -987,6 +1005,7 @@
     }
     .main-banner_area-right h1 {
         font-size: 4rem;
+        line-height: 5.5rem;
     }
     .main-banner_area-right h1 span {
         color :var(--color-as-ym-white);
@@ -995,7 +1014,7 @@
     }
     .main-banner_area-right p {
         margin: 0;
-        margin-top: 1rem;
+        margin-top: -1rem;
     }
     .main-banner_area-right ul {
         margin-top: 1rem;
@@ -1004,5 +1023,8 @@
     /* .main-banner_area-right a {
         margin-top: 5rem!important;
     } */
+    h2 span img {
+        width: 300px;
+    }
 }
 </style>
