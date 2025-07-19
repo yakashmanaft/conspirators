@@ -64,7 +64,7 @@
 
         <!-- QUIZZZ -->
          <!-- chip -->
-            <div class="chip_paragraph" style="margin-top: 1rem;">
+            <div class="chip_paragraph">
                 <h3 
                     :class="currentParagraphChip === el.name ? 'paragraph-title_active' : ''" style="cursor: pointer;"
                     v-for="el in paragraphChipList">
@@ -72,23 +72,23 @@
                 </h3>
             </div>
 
-            <div style="margin-top: 1rem;" >
+            <div class="chip_content_wrapper" >
 
                 <!-- specification-first content -->
                 <div v-if="currentParagraphChip === 'specification-first'" class="specification-first-content_container">
-                    <div v-if="current_specification_step === ''">
+                    <div v-if="!current_specification_step?.id">
                         <p>Придумываем как преподнести для вас анкету</p> 
                     </div>
                     <div v-else class="table-contents_wrapper">
 
                         <!-- OL table contents -->
-                        <ol class="ol-step_wrapper">
-                            <li v-for="(group, idx) in [...new Set([...specification_step.map((obj: any) => {return obj.group})])].reverse()">
+                        <ol class="ol-step_wrapper" id="specification_step_container">
+                            <li v-for="(group, idx) in [...new Set([...specification_step.map((obj: any) => {return obj.group})])]">
                                 <h4>{{idx + 1}}. {{ group }}</h4>
                                 <ol>
-                                    <li v-for="(step, index) in specification_step.filter(el => el.group === group)" @click="current_specification_step = step.name">
+                                    <li v-for="(step, index) in specification_step.filter(el => el.group === group)" @click="current_specification_step = step">
                                         <label 
-                                            :class="step.name === current_specification_step ? 'checked_input' : ''"
+                                            :class="step === current_specification_step ? 'checked_input' : ''"
                                             :for="`${group}_${index}`"
                                         >
                                             {{ idx + 1 }}. {{ index + 1 }}. {{ step.name }}
@@ -96,9 +96,8 @@
                                         <input 
                                             type="radio" 
                                             :id="`${group}_${index}`" v-model="current_specification_step"
-                                            :checked="step.name === current_specification_step"
+                                            :checked="step === current_specification_step"
                                         >
-                                        
                                     </li>
                                 </ol>
                             </li>
@@ -109,9 +108,47 @@
                             <form action="">
                                 {{ current_specification_step }}
                                 <br>
+
+                                <br>
+                                <div v-if="specification_step_content">
+
+                                    <div v-for="el in specification_step_content.filter(el => el.specification_step_id === current_specification_step.id)">
+
+                                        <p>{{ el.title }}</p>
+                                        <p>{{ el.text }}</p>
+                                    </div>
+                                </div>
+                                <br>
                                 <label for="">Заказчик</label>
                                 <input type="text" placeholder="Как к вам обращаться">
+
+                                <div>
+                                    <ul>
+                                        <li>
+                                            1. Отрисовка эскиза . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 500,00
+                                        </li>
+                                    </ul>
+                                </div>
                             </form>
+                            <div class="step_prev_next_container">
+
+                                <div class="step_prev_next_wrapper">
+                                    <div 
+                                        class="step_prev_next_el" 
+                                        :class="specification_step[0].id === current_specification_step.id ? 'step_prev_next_el-disabled' : ''" @click="step_func(current_specification_step.id, 'prev')">
+                                        < Назад
+                                    </div>
+                                    <div class="step_prev_next_el">
+                                        |
+                                    </div>
+                                    <div 
+                                        class="step_prev_next_el" 
+                                        :class="specification_step[specification_step.length - 1].id ===  current_specification_step.id ? 'step_prev_next_el-disabled' : ''"
+                                        @click="step_func(current_specification_step.id, 'next')">
+                                        Дальше >
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,6 +164,11 @@
                     
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta uaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
 
+                </div>
+
+                <!-- check-status -->
+                <div v-if="currentParagraphChip === 'check-status'">
+                    Проверка статус заказа в разработке
                 </div>
             </div>
 
@@ -192,7 +234,11 @@
         },
         {
             name: 'choose-pattern', 
-            title: 'Выбрать готовое решение'
+            title: 'Выбрать готовый шаблон'
+        },
+        {
+            name: 'check-status', 
+            title: 'Проверить статус'
         }
     ])
     //= currentParagraphChip
@@ -200,55 +246,102 @@
     //= content by paragraph
     const specification_step = ref([
         {
+            id: 1,
             group: 'Условия',
-            name: 'Предмет договора'
+            name: 'Предмет договора',
         },
         {
-            group: 'Условия',
-            name: 'Оплата'
-        },
-        {
+            id: 2,
             group: 'Условия',
             name: 'Стороны и контакты'
         },
         {
+            id: 3,
             group: 'ТЗ',
             name: 'Продукт'
         },
         {
+            id: 4,
             group: 'ТЗ',
             name: 'Площадки'
         },
         {
+            id: 5,
             group: 'ТЗ',
             name: 'Артикул и прочие пометки'
         },
         {
+            id: 6,
             group: 'ТЗ',
             name: 'Описание и характеристики'
         },
         {
+            id: 7,
             group: 'ТЗ',
             name: 'Что вас привлекает'
         },
         {
+            id: 8,
             group: 'ТЗ',
             name: 'Фото и другие исходники'
         },
         {
+            id: 9,
             group: 'Итого',
-            name: 'Завершаем постановку задачи'
-        }
+            name: 'Заказ'
+        },
+        {
+            id: 10,
+            group: 'Итого',
+            name: 'Оплата'
+        },
     ])
     //= specification_step
-    const current_specification_step = ref(specification_step?.value ? specification_step.value[0].name : '')
+    const current_specification_step = ref(specification_step?.value ? specification_step.value[0] : null)
 
     //= specification_step_content
     const specification_step_content = ref([
         {
-            specification_step_name_id: 1,
-            title: '',
-        }
+            specification_step_id: 1,
+            title: 'Отрисовка эскиза',
+            text: 'Для 1 (Одного) уникального товара, при наличии исходных фото (несколько ракурсов): карточка товара с 5 (Пятью) слайдами (1.Титульный, 2.Характеристики, 3.Применение, 4.Фото + описание, 5. Фото + описание). Заявка на выполнение работ попадает в график специалиста только после оплаты. Отрисованный эскиз вы получаете не позднее 7(Семи) рабочих дней с момента получения оплаты исполнителем.'
+        },
+        {
+            specification_step_id: 1,
+            title: 'Условия оплаты',
+            text: '7 500,00 (5 часов работы специалиста, ставка - 1 500,00 (Тысяча пятьсот рублей 00 копеек) в час. Оплата производится любыми указанными в пункте 3.2. способами.',
+        },
+        {
+            specification_step_id: 1,
+            title: 'Дополнительные слайды к карточке товара',
+            text: 'Каждый дополнительный слайд является доработкой эскиза, отрисовывается согласно разработанному к нему ТЗ по ставке, аналогичной ставке отрисовки эскиза  - 1 500,00.'
+        },
+        {
+            specification_step_id: 1,
+            title: 'Доработки / правки',
+            text: 'Доработки и правки к выполненному эскизу отрисовываются согласно разработанному к нему ТЗ (по сути, в данном случае список хотелок к изменению разработанного эскиза) по ставке, аналогичной ставке отрисовки эскиза  - 1 500,00'
+        },
+        {
+            specification_step_id: 1,
+            title: 'Примечание 1',
+            text: 'Выполнение работы согласно загруженности специалиста (Другими словами, оплата работ по отрисовке эскиза не гарантирует, что через 5 часов после оплаты заказа у вас на руках окажутся эскизы, оплата гарантирует выполнение специалистом работ и получение эскиза).',
+        },
+        {
+            specification_step_id: 1,
+            title: 'Примечание 2',
+            text: 'Доработки, правки, дополнительные слайды и другое, выполняются согласно загруженности специалиста, аналогично примечанию 1 и только после осуществления работ по отрисовке эскиза',
+        },
+        {
+            specification_step_id: 1,
+            title: 'Примечание 3',
+            text: 'Эскиз является самостоятельным элементом визуальной составляющей вашего продукта / услуги и может сразу использовать на площадках (маркетплейсы или ваш сайт)',
+        },
+        // //
+        // {
+        //     specification_step_id: 9,
+        //     title: 'Отрисовка эскиза',
+        //     text: '7 500,00 (5 часов работы специалиста, ставка - 1 500,00 (Тысяча пятьсот рублей 00 копеек) в час',
+        // }
     ])
 
     //= form_obj
@@ -258,6 +351,57 @@
         executor_id: 6,
         executor: 'noname'
     })
+
+    // 
+    onMounted(() => {
+        // specification_step_container
+        const specificationStepContainer = document.getElementById('specification_step_container');
+
+        specificationStepContainer?.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            specificationStepContainer.scrollLeft += e.deltaY;
+        })
+    })
+
+    // FUNCs
+    const step_next_func = (current_id: number) => {
+
+        if(specification_step.value[specification_step.value.length - 1].id === +current_id) {
+            alert ('Это последний шаг :)')
+        } else {
+
+            current_specification_step.value = specification_step.value.find(el => el.id === current_id + 1)
+            document.getElementById('specification_step_container').scrollIntoView();
+        }
+    }
+    const step_prev_func = (current_id: number) => {
+        if(specification_step.value[0].id === +current_id) {
+            alert ('Это первый шаг же только куда... :)')
+        } else {
+            current_specification_step.value = specification_step.value.find(el => el.id === current_id - 1)
+            document.getElementById('specification_step_container').scrollIntoView();
+        }
+    }
+
+    const step_func = (current_id: number, type: string) => {
+        if(type === 'next') {
+            if(specification_step.value[specification_step.value.length - 1].id === +current_id) {
+                alert ('Это последний шаг :)')
+            } else {
+                document.getElementById('specification_step_container')?.scrollIntoView();
+                current_specification_step.value = specification_step.value.find(el => el.id === current_id + 1)
+            }
+        }
+        else if (type === 'prev') {
+            if(specification_step.value[0].id === +current_id) {
+                alert ('Это первый шаг же только куда... :)')
+            } else {
+                document.getElementById('specification_step_container')?.scrollIntoView();
+                current_specification_step.value = specification_step.value.find(el => el.id === current_id - 1)
+            }
+        }
+    }
+
 </script>
 
 <style scoped>
@@ -295,10 +439,14 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: var(--color-wallet-fund-available-wo)
+    border-radius: 1rem;
+    /* background-color: var(--color-wallet-fund-available-wo); */
+    background-color: var(--color-global-text)
 }
 .paragraph-title_active span {
-    color: var(--color-wallet-fund-available-wo);
+    /* color: var(--color-wallet-fund-available-wo); */
+    color: var(--color-global-text);
+    font-weight: bold;
 }
 
 /* specification-first sf */
@@ -322,6 +470,9 @@
     list-style: none;
     padding: 0;
 } 
+.step_prev_next_el-disabled {
+    color: var(--color-global-text_second);
+}
 
 @media screen and (max-width: 575px) {
     .chip_paragraph {
@@ -404,7 +555,7 @@
         box-shadow: var(--hover-shadow);
         position: relative;
         border-radius: 1rem;
-        transition: all .5s ease-in-out;
+        transition: all .2s ease-in-out;
     }
     h2 span:hover {
         cursor: pointer;  
@@ -537,7 +688,7 @@
         box-shadow: var(--hover-shadow);
         position: relative;
         border-radius: 1rem;
-        transition: all .5s ease-in-out;
+        transition: all .2s ease-in-out;
     }
     h2 span:hover {
         cursor: pointer;  
@@ -642,7 +793,7 @@
     .main-banner_area-right > a {
         position: absolute;
         top: 50%;
-        right: 0;
+        right: 1rem;
         transform: translateY(-215%);
     }
     /*  */
@@ -661,7 +812,7 @@
         box-shadow: var(--hover-shadow);
         position: relative;
         border-radius: 1rem;
-        transition: all .5s ease-in-out;
+        transition: all .2s ease-in-out;
     }
     h2 span:hover {
         cursor: pointer;  
@@ -723,6 +874,115 @@
     .choose-pattern-content_container {
 
     }
+    
+    /* 
+        TABLE CONTENTS (CHIP paragraph / CHIP content)
+    */
+    .table-contents_wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+    .ol_content {
+        background-color: var(--color-global-baackground_light);
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-top: .5rem;
+        /* width: 100%; */
+    }
+    .ol-step_wrapper {
+        display: flex;
+        gap: .5rem;
+        width: 100vw;
+        margin-top: 1rem;
+        margin-right: -1rem!important;
+        margin-left: -1rem!important;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none; 
+        padding: 1rem 2rem!important;
+    }
+    .ol-step_wrapper ::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .ol-step_wrapper li {
+        margin-top: .5rem;
+        /* background-color :red; */
+    }
+    .ol-step_wrapper li h4 {
+        margin: 0;
+    }
+    .ol-step_wrapper li ol {
+        display: flex;
+        gap: .5rem;
+        margin-top: 1.5rem;
+    }
+    .ol-step_wrapper li ol li {
+        /* border-radius: 1rem; */
+        text-wrap: nowrap;
+        position: relative;
+    }
+    .ol-step_wrapper > li > ol > li:after {
+        content: '>';
+        positioN: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+        color: var(--color-global-text_second);
+    }
+    .ol-step_wrapper > li:last-child > ol > li:last-child:after {
+        content: '';
+    }
+    .ol-step_wrapper > li > ol > li > label {
+        transition: all .2s ease-in-out;
+        /* border: 1px solid blue; */
+        padding: 6px 18px;
+        border-radius: 1rem;
+        margin-right: 1rem;
+        background-color: var(--color-global-baackground_light)
+    }
+    .ol-step_wrapper > li:last-child > ol > li:last-child > label {
+        margin-right: 0;
+    }
+    .ol-step_wrapper > li > ol > li > label:hover {
+        background-color: var(--color-btn-disabled-text);
+        color :var(--color-btn-text);
+        cursor: pointer;
+    }
+    .ol-step_wrapper li ol li input {
+        display: none;
+    }
+    .chip_paragraph {
+        margin-left: 1em;
+        margin-right: 1rem;
+        padding-top: 4rem!important;
+    }
+    .chip_content_wrapper {
+        /* margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        margin-top: 1.5rem; */
+    }
+    .checked_input {
+        font-weight: bold;
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        color: white;
+        padding: 2px 4px;
+    }
+    .step_prev_next_container {
+        /* background-color: blue; */
+        padding: 1rem 0;
+    }
+    .step_prev_next_wrapper {
+        margin: 0 auto;
+        width: fit-content;
+        display: flex;
+        gap: .5rem;
+    }
+    .step_prev_next_el {
+        /* background-color:red; */
+    }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
     .container-inside {
@@ -739,48 +999,7 @@
         margin-top: 4.5rem;
         background-color: cyan;
     } */
-    /* 
-        TABLE CONTENTS
-    */
-    .table-contents_wrapper{
-        display: flex;
-    }
-    .ol_content {
-        background-color: var(--color-btn-disabled-bg);
-        width: 100%;
-    }
-    .ol-step_wrapper {
 
-    }
-    .ol-step_wrapper li {
-
-    }
-    .ol-step_wrapper li h4 {
-
-    }
-    .ol-step_wrapper li ol {
-
-    }
-    .ol-step_wrapper li ol li {
-
-    }
-    .ol-step_wrapper > li > ol > li > label {
-        transition: all .2s ease-in-out;
-    }
-    .ol-step_wrapper > li > ol > li > label:hover {
-        background-color: var(--color-urgency-low-wo);
-        cursor: pointer;
-    }
-    /* .ol-step_wrapper > li > ol > li > input:checked + .ol-step_wrapper > li > ol > li > label{
-        background-color: red!important;
-    } */
-    .checked_input {
-        font-weight: bold;
-        background-color: var(--color-urgency-low-wo);
-    }
-    .ol-step_wrapper li ol li input {
-        display: none;
-    }
 
     /* MAIN BANNER */
     .main-banner_container {
@@ -837,7 +1056,7 @@
         box-shadow: var(--hover-shadow);
         position: relative;
         border-radius: 1rem;
-        transition: all .5s ease-in-out;
+        transition: all .2s ease-in-out;
     }
     h2 span:hover {
         cursor: pointer;  
@@ -902,6 +1121,62 @@
         margin-top: 1rem;
         padding-bottom: 5rem;
     }
+
+    /* 
+        TABLE CONTENTS (CHIP paragraph / CHIP content)
+    */
+    .table-contents_wrapper{
+        display: flex;
+    }
+    .ol_content {
+        background-color: var(--color-btn-disabled-bg);
+        width: 100%;
+    }
+    .ol-step_wrapper {
+        width: 33%;
+    }
+    .ol-step_wrapper li {
+        margin-top: .5rem;
+    }
+    .ol-step_wrapper li h4 {
+
+    }
+    .ol-step_wrapper li ol {
+
+    }
+    .ol-step_wrapper li ol li {
+
+    }
+    .ol-step_wrapper > li > ol > li > label {
+        transition: all .2s ease-in-out;
+        padding: 2px 4px;
+    }
+    .ol-step_wrapper > li > ol > li > label:hover {
+        /* background-color: var(--color-urgency-low-wo); */
+        background-color: var(--color-btn-disabled-text);
+        color :var(--color-btn-text);
+        cursor: pointer;
+    }
+    .ol-step_wrapper li ol li input {
+        display: none;
+    }
+    .chip_paragraph {
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        padding-top: 4rem!important;
+    }
+    .chip_content_wrapper {
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    .checked_input {
+        font-weight: bold;
+        /* background-color: var(--color-urgency-low-wo); */
+        background: linear-gradient(90deg,rgba(0, 105, 255, 1) 0%, rgba(255, 22, 191, 1) 53%, rgba(237, 221, 83, 1) 100%);
+        color: white;
+        padding: 2px 4px;
+    }
 }
 @media screen and (min-width: 1200px) {
     .container-inside {
@@ -942,7 +1217,7 @@
         box-shadow: var(--hover-shadow);
         position: relative;
         border-radius: 1rem;
-        transition: all .5s ease-in-out;
+        transition: all .2s ease-in-out;
     }
     h2 span:hover {
         cursor: pointer;  
