@@ -388,7 +388,7 @@
             if(specification_step.value[specification_step.value.length - 1].id === +current_id) {
                 alert ('Это последний шаг :)')
             } else {
-                document.getElementById('specification_step_container')?.scrollIntoView();
+                document.getElementById('start')?.scrollIntoView();
                 current_specification_step.value = specification_step.value.find(el => el.id === current_id + 1)
             }
         }
@@ -396,7 +396,7 @@
             if(specification_step.value[0].id === +current_id) {
                 alert ('Это первый шаг же только куда... :)')
             } else {
-                document.getElementById('specification_step_container')?.scrollIntoView();
+                document.getElementById('start')?.scrollIntoView();
                 current_specification_step.value = specification_step.value.find(el => el.id === current_id - 1)
             }
         }
