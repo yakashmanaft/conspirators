@@ -149,7 +149,7 @@ watch(
       <div class="footer-wrapper_wo-auth ">
 
         <ul>
-          <li v-for="el in menuList" style="white-space: nowrap;">
+          <li v-for="el in menuList" >
             <router-link :to="el.path">{{ el.title }}</router-link>
           </li>
           <li style="margin-top: 2rem;">

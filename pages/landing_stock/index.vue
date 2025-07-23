@@ -10,17 +10,32 @@
             <p></p> 
         </div>
 
+
         <!-- lENGTH TRUE -->
-        <div v-if="computed_landing_list?.length" class="item_container">
-            
-            <div class="item_wrapper" v-for="item in computed_landing_list">
-                {{ item }}
-                <p style="margin: 0;" @click.stop="$router.push(`/${item.name}`)">Перейти</p>
-            </div>
+        <div class="item_search">
+
+            <Search @searchInputChanged="onInputFunc"/>
         </div>
 
-        <!-- ELSEs -->
-        <div class="no-landing_wrapper" v-else>В магазине пусто</div>
+        
+        <div class="item_container" style="grid-template-columns: 1fr;">
+
+            <div style="margin-bottom: 20.5rem" v-if="searchInput && !computed_landing_list?.length">
+                По запросу ничего не найдено
+            </div>
+
+            <div class="item_wrapper" v-for="item in computed_landing_list" @click.stop="$router.push(`/${item.name}`)">
+                <div>
+                    <!-- <img src="assets/img/logo/ozon.svg" alt="ozon"> -->
+                </div>
+                <p style="margin: 0; font-weight: bold;">{{ item.title }}</p>
+                <p style="margin: 0;">{{ item.desc }}</p>
+            </div>
+
+            <!-- ELSEs -->
+            <div class="no-landing_wrapper" style="margin-bottom: 20.5rem" v-if="searchInput === '' && !computed_landing_list?.length">В магазине пусто</div>
+        </div>
+
 
 
     </Container>
@@ -182,7 +197,42 @@
     gap: 1rem;
     width: 100%; */
   }  
+  /* 
+   */
+   .item_wrapper {
+        transition: all .2s ease-in-out;
+        border: 1px solid var(--color-operation-type-donation);
+        border-radius: 1rem;
+        overflow: hidden;
+   }
+    .item_wrapper:hover {
+        cursor: pointer;
+        box-shadow: var(--hover-shadow);
+    }
+    .item_wrapper div {
+        margin-top: -1rem;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        background-color: var(--color-operation-type-donation)
+    }
+    @media screen and (max-width: 320px) {
+    h1 {
+        font-size: 32px!important;
+    }
 
+    .item_container {
+        display: grid;
+        grid-template-columns: 1fr!important;
+        gap: 1rem;
+    }
+    }
+    @media screen and (min-width:320px) and (max-width: 574px) {
+        .item_container {
+            display: grid;
+            grid-template-columns: 1fr 1fr!important;
+            gap: 1rem;
+        }
+    }
   @media screen and (max-width: 575px) {
     h1 {
         margin: 0 1rem!important;
@@ -202,7 +252,7 @@
     }
     .lead-item-header_wrapper,
     .lead-item_wrapper {
-        grid-template-columns: 2rem 1fr 1fr 1fr   
+        /* grid-template-columns: 2rem 1fr 1fr 1fr    */
     }
     .landing-diagram_container {
         margin-left: 1rem;
@@ -222,14 +272,31 @@
 
     /* 
      */
+     .item_search {
+         /* background-color: red; */
+     }
     .item_container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
         margin: 0 1rem;
+        margin-top: 1.5rem;
     }
     .item_wrapper {
-        background-color: var(--color-operation-type-donation);
+        /* background-color: var(--color-operation-type-donation); */
+        /* background-color: red; */
+        /* border-radius: 1rem; */
+        padding: 1rem;
+    }
+    .item_wrapper div {
+        /* width: 50% */
+        height: 10rem;
+        /* background-color: var(--color-global-baackground_light); */
+        /* border-radius: .5rem; */
+    }
+    .item_wrapper div img {
+        width: 100%;
+    }
+
+    .item_wrapper p {
+        margin-top: .5rem!important;
     }
   }
 
@@ -259,14 +326,34 @@
     }
     /* 
      */
+     .item_search {
+        margin-top: 1.5rem;
+     }
      .item_container {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr!important;
         gap: 1rem;
         margin: 0 1rem;
+        margin-top: 2rem;
     }
     .item_wrapper {
-        background-color: var(--color-operation-type-donation);
+        /* background-color: var(--color-operation-type-donation); */
+        /* background-color: red; */
+        /* border-radius: 1rem; */
+        padding: 1rem;
+    }
+    .item_wrapper div {
+        /* width: 50% */
+        height: 10rem;
+        /* background-color: var(--color-global-baackground_light); */
+        /* border-radius: .5rem; */
+    }
+    .item_wrapper div img {
+        width: 100%;
+    }
+
+    .item_wrapper p {
+        margin-top: .5rem!important;
     }
   }
 
@@ -301,6 +388,7 @@
     .landing-diagram_wrapper {
         width: 100%;
     }
+
   }
   @media screen and (min-width: 768px) {
     .canvas {
@@ -328,16 +416,35 @@
     }
     /* 
      */
+     .item_search {
+        margin-top: 2rem; 
+     }
      .item_container {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr!important;
         gap: 1rem;
+        margin-top: 1.5rem;
     }
     .item_wrapper {
-        background-color: var(--color-operation-type-donation);
+        /* background-color: var(--color-operation-type-donation); */
+        /* background-color: red; */
+        /* border-radius: 1rem; */
+        padding: 1rem;
+    }
+    .item_wrapper div {
+        /* width: 50% */
+        height: 10rem;
+        /* background-color: var(--color-global-baackground_light); */
+        /* border-radius: .5rem; */
+    }
+    .item_wrapper div img {
+        width: 100%;
+    }
+
+    .item_wrapper p {
+        margin-top: .5rem!important;
     }
   }
-
   @media screen and (min-width: 992px) {
     .landing-list-el_wrapper {
         /* width: 480px; */
@@ -347,36 +454,76 @@
         display: grid; 
         grid-template-columns: 3rem 1fr 1fr 1fr
     }
-}
+    }
     @media screen and (min-width: 992px) and (max-width: 1199px) {
-      /* 
-       */
-       .item_container {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          gap: 1rem;
-      }
-      .item_wrapper {
-          background-color: var(--color-operation-type-donation);
-      }
-  }
+        /* 
+        */
+            .item_search {
+            margin-top: 2rem; 
+        }
+        .item_container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr!important;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .item_wrapper {
+            /* background-color: var(--color-operation-type-donation); */
+            /* background-color: red; */
+            /* border-radius: 1rem; */
+            padding: 1rem;
+        }
+        .item_wrapper div {
+            /* width: 50% */
+            height: 10rem;
+            /* background-color: var(--color-global-baackground_light); */
+            /* border-radius: .5rem; */
+        }
+        .item_wrapper div img {
+            width: 100%;
+        }
+
+        .item_wrapper p {
+            margin-top: .5rem!important;
+        }
+    }
   @media screen and (min-width: 1200px) {
       /* 
        */
+        .item_search {
+           margin-top: 2rem; 
+       }
        .item_container {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1fr;
+          grid-template-columns: repeat(4, 1fr) 1fr!important;
           gap: 1rem;
+            margin-top: 1.5rem;
       }
-      .item_wrapper {
-          background-color: var(--color-operation-type-donation);
-      }
+        .item_wrapper {
+            /* background-color: var(--color-operation-type-donation); */
+            /* background-color: red; */
+            /* border-radius: 1rem; */
+            padding: 1rem;
+        }
+        .item_wrapper div {
+            /* width: 50% */
+            height: 10rem;
+            /* background-color: var(--color-global-baackground_light); */
+            /* border-radius: .5rem; */
+        }
+        .item_wrapper div img {
+            width: 100%;
+        }
+
+        .item_wrapper p {
+            margin-top: .5rem!important;
+        }
   }
 </style>
 
 <script lang="ts" setup>
     useHead({
-        title: "Мой огород",
+        title: "Маркетплейс соучастников | Conspirators",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -422,6 +569,7 @@
     // components
     import { Button } from '@/components/button'
     import { BreadCrumbs } from '~/components/breadcrumbs';
+    import { Search } from '~/components/search'
 
 
     // PROPS
@@ -435,6 +583,9 @@
             default: {}
         }
     })
+
+    // VARIABLES
+    const searchInput = ref("");
 
     // ON MOUNTED
     onMounted(() => {
@@ -503,7 +654,7 @@
     // ******* COMPUTED
     // landing_list
     const computed_landing_list = computed(() => {
-        if(landing_list.value) {
+        // if(landing_list.value) {
 
             // type Obj = {
             //     id: Number,
@@ -538,7 +689,31 @@
             // });
             
             // console.log(result)
+
+
+            // }
+        if(searchInput.value === '') {
             return landing_list.value
+
+        } else {
+            return landing_list.value?.filter((item) =>
+                item.title
+                .toLowerCase()
+                .replace(/\s+/g, "")
+                .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+                ||
+                item.desc
+                .toLowerCase()
+                .replace(/\s+/g, "")
+                .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+            )
+        //     console.log(searchInput.value)
+        //     console.log(landing_list.value?.filter((item) => {
+        //         return item ? item.name
+        //   .toLowerCase()
+        //   .replace(/\s+/g, "")
+        //   .includes(searchInput.value.toLowerCase().replace(/\s+/g, "")) : []
+        //     }))
         }
     })
     
@@ -695,6 +870,12 @@
         } else {
             return `row`
         }
+    }
+
+    // WATHERS
+    // on search input
+    const onInputFunc = (e: any) => {
+        searchInput.value = e
     }
 
     // ******* DB
