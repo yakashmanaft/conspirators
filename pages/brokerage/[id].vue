@@ -6,7 +6,8 @@ import {Container} from '@/shared/container'
 import { BreadCrumbs } from '~/components/breadcrumbs';
 import { Button } from '~/components/button';
 import { Chip } from '~/components/chip';
-import { AccessDeniedPlug } from '~/components/plug_access_denied'
+import { AccessDeniedPlug } from '~/components/plug_access_denied';
+import { ChartTest } from "~/components/chart";
 
 useHead({
         title: "brokerage mesh",
@@ -353,6 +354,13 @@ useHead({
         }, 0)
 
         return invested_amount
+    }
+    //= calcTotalInvested graf data
+    const calcTotalByGraphDate = () => {
+        let dates = transaction_ledger?.value.map(tr => tr.created_at.slice(0,10))
+        // return ['2021-02-01', '2021-02-16', '2021-03-01', '2021-03-16', '2021-04-01', '2021-04-16']
+
+        return dates
     }
     //= calc total withdraw
     const calcTotalWithdraw = () => {
@@ -740,6 +748,41 @@ useHead({
                 </div>
             </article>
 
+            <!-- historical graph -->
+            <article class="historical-graph_container">
+
+                <header>
+                    <h2>Анализ</h2>
+                    
+                </header>
+                
+                <section>
+                    <h3>График стоимости портфеля</h3>
+
+                    <div>
+                        <ul style="padding-left: 1rem; display: flex; gap: 2rem;">
+                            <li>
+                                Инвестировано
+                            </li>
+                            <li>
+                                Профит
+                            </li>
+                        </ul>
+                        
+                        <ChartTest
+                            :chart_type="'line'"
+                            :chart_height="350"
+                            :chart_title="'График стоимости портфеля'"
+                            :chart_categories="calcTotalByGraphDate()"
+                        />
+
+                        <div>
+                            {{ calcTotalByGraphDate() }}
+                        </div>
+                    </div>
+                </section>
+            </article>
+
             <!-- TRANSACTIONS -->
             <article class="transaction_container">
                 <header>
@@ -779,6 +822,7 @@ useHead({
 
                 </section>
             </article>
+            
 
 
             <div style="position: fixed; bottom: 4rem; left: 0; width: 100%; padding: 0 1rem 1rem 1rem;">
@@ -1110,6 +1154,12 @@ useHead({
         background-color: var(--color-global-baackground_light);
         border-radius: var(--bs-border-radius);
         padding: 1rem;
+    }
+
+    /* historical graph */
+    .historical-graph_container {
+        margin: 0 1rem;
+
     }
 
 
