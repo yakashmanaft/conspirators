@@ -104,6 +104,14 @@ useHead({
 
     const route = useRoute()
 
+    // ONMOUNTED
+    onMounted(() => {
+        let body = document.getElementsByTagName('body')[0]
+        body.style.margin = 'unset'
+        body.style.height = 'unset'
+        body.style.overflow = 'unset'
+    })
+
     // COMPUTED
     //= current lead
     const current_lead = computed(() => {
@@ -153,6 +161,8 @@ useHead({
         return lead_list.find(el => el.id === +route.params.id)
     }
     })
+
+
 </script>
 
 

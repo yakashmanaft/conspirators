@@ -356,7 +356,7 @@ useHead({
         return invested_amount
     }
     //= calcTotalInvested graf data
-    const calcTotalByGraphDate = () => {
+    const calcTotalByGraphDate_Categories = () => {
         let dates = transaction_ledger?.value.map(tr => tr.created_at.slice(0,10))
         // return ['2021-02-01', '2021-02-16', '2021-03-01', '2021-03-16', '2021-04-01', '2021-04-16']
 
@@ -773,11 +773,11 @@ useHead({
                             :chart_type="'line'"
                             :chart_height="350"
                             :chart_title="'График стоимости портфеля'"
-                            :chart_categories="calcTotalByGraphDate()"
+                            :chart_categories="calcTotalByGraphDate_Categories()"
                         />
 
                         <div>
-                            {{ calcTotalByGraphDate() }}
+                            {{ calcTotalByGraphDate_Categories() }}
                         </div>
                     </div>
                 </section>

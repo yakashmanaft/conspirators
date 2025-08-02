@@ -1,4 +1,12 @@
 <template>
+    <!--  -->
+      <Toast
+        :id="`toast_${route.path}`"
+        :duration="2000"
+        title="Заявка отправлена"
+        content="В ближайшее время порешаем свою рутину и займемся вами :)"
+      />
+    
     <!-- MAIN LIKE A BANNER -->
     <div class="main-banner_container" style="background-color: var(--color-global-baackground_light); border-top: 1px solid red;">
 
@@ -73,6 +81,96 @@
             </div>
 
             <div class="chip_content_wrapper" >
+
+                <!-- contact us -->
+                <div v-if="currentParagraphChip === 'contact-us'" class="contact-us-content_container">
+
+                    <form action="" id="contact-us_form">
+
+                        <ul>
+                            <!-- NAME -->
+                            <li>
+                                <label for="form_name">Как к вам обращаться?</label>
+                                <input type="text"
+                                    v-model="form_obj.customer_name"
+                                    id="form_name"
+                                    placeholder="Имя"
+                                    autocomplete="name"
+                                    class="form-control"
+                                >
+                            </li>
+                            <!-- PHONE -->
+                            <li class="contact-us_phone">
+                                <label for="form_phone">Номер телефона</label>
+                                <input 
+                                    v-model="form_obj.customer_phone"
+                                    id="form_phone" 
+                                    type="text" 
+                                    placeholder="+7( . . ."
+                                    autocomplete="tel"
+                                    v-maska=options
+                                    class="form-control"
+                                >
+    
+                                <p>Спишемся может в мессенджерах?</p>
+                                <ul>
+                                    <li>
+                                        <input id="choose_mes_app_max" type="radio" name="preferred_communciation" v-model="form_obj.preferred_communciation" value="max">
+                                        <label for="choose_mes_app_max">MAX</label>
+                                    </li>
+                                    <li>
+        
+                                        <input id="choose_mes_app_tg" type="radio" name="preferred_communciation" v-model="form_obj.preferred_communciation"  value="tg"checked>
+                                        <label for="choose_mes_app_tg">TELEGRAM</label>
+                                    </li>
+                                    <li>
+        
+                                        <input id="choose_mes_app_vk" type="radio" name="preferred_communciation" v-model="form_obj.preferred_communciation" value="vk">
+                                        <label for="choose_mes_app_vk">VK</label>
+                                    </li>
+                                    <li>
+                                        <input id="choose_mes_app_no" type="radio" name="preferred_communciation" v-model="form_obj.preferred_communciation"  value="no" checked>
+                                        <label for="choose_mes_app_no">Никакой</label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <label for="form_email">Адрес эл.почты</label>
+                                <input 
+                                    id="form_email" 
+                                    type="text" 
+                                    placeholder="your@email.ru" 
+                                    autocomplete="email" 
+                                    class="form-control"
+                                >
+                            </li>
+                            <li class="agreement_wrapper">
+                                <input v-model="form_obj.customer_agreement" id="agreement" type="checkbox" checked>
+                                <label for="agreement">
+                                    <nuxt-link :to="'/policy'">Согласен c политикой конфиденциальности и на обработку персональных данных</nuxt-link>
+                                </label>
+                            </li>
+                            <li style="margin-top: 2rem;">
+                                <!-- sending -->
+                                <p v-if="loadSubmit" class="contact-us-btn_sending">Отправка...</p>
+                                <!-- w/o customer_name -->
+                                <p v-else-if="form_obj.customer_name === ''" class="contact-us-btn_wrong">!Укажите имя</p>
+                                <!-- w/o customer_phone -->
+                                <p v-else-if="form_obj.customer_phone === ''" class="contact-us-btn_wrong">!Укажите телефон для связи</p>
+                                <!-- w/o customer_agreement -->
+                                <p v-else-if="form_obj.customer_agreement != true" class="contact-us-btn_wrong">Согласие на обработку обязательно!</p>
+                                <!-- submit -->
+                                <p v-else @click.prevent="submitForm('contact-us')" class="contact-us-btn_submit">Отправить</p>
+                            </li>
+                        </ul>
+                    </form>
+
+                    <div class="contact-us_tg">
+                        <p>Не хотите ждать обратного звонка?</p>
+                        <p>Пишите нам в telegram</p>
+                        <p><span><nuxt-link to="tg://resolve?domain=Kashmanaft">@Kashmanaft</nuxt-link></span></p>
+                    </div>
+                </div>
 
                 <!-- specification-first content -->
                 <div v-if="currentParagraphChip === 'specification-first'" class="specification-first-content_container">
@@ -155,6 +253,8 @@
 
                 <!-- choose-pattern content -->
                 <div v-if="currentParagraphChip === 'choose-pattern'" class="choose-pattern-content_container">
+
+                    <h4 style="color :var(--color-urgency-high);">Раздел шаблонов в разработке</h4>
                     
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ore nulla aut suscipit placeat? Deleniti, error. Rem nisi dolor soluta uaerat voluptatibus fuga? Eius, ipsum, ea, quidem provident commodi cupiditate beatae quos obcaecati repellendus ipsa dolores natus esse sed voluptas reprehenderit assumenda temporibus ad consequuntur velit repellat labore. Fugit ex officiis sed, quam numquam aliquid neque excepturi iure mollitia ut, quibusdam at dolores, repellat nemo!</p>
 
@@ -167,8 +267,9 @@
                 </div>
 
                 <!-- check-status -->
-                <div v-if="currentParagraphChip === 'check-status'">
-                    Проверка статус заказа в разработке
+                <div v-if="currentParagraphChip === 'check-status'" class="check-status-content_container">
+                    <h4 style="color :var(--color-urgency-high);">Проверка статус заказа в разработке</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate exercitationem distinctio minus? Odio dignissimos error eius minima veritatis natus, maiores asperiores aspernatur vel ipsa consectetur voluptates laboriosam et quidem cupiditate, itaque praesentium placeat sint repellat tempora eaque minus! Iure incidunt hic quidem, sunt suscipit ab praesentium. Repellat quisquam quo id a nesciunt, quos, ex dolore excepturi repellendus debitis blanditiis ipsum porro deleniti ut vitae ea facere enim deserunt sit reiciendis exercitationem molestias, expedita modi. Ullam obcaecati maxime consequatur numquam quo iste maiores laboriosam assumenda, veniam possimus adipisci. Aspernatur molestias culpa esse vitae iure voluptatum ratione repudiandae, reprehenderit dicta, aliquam explicabo saepe assumenda aperiam molestiae rem, voluptatem sequi? Iusto eos quos ut accusamus, dolores debitis quod nulla et maiores veritatis rerum amet doloribus quia rem neque deserunt praesentium beatae, asperiores deleniti reprehenderit provident velit. Nemo porro accusamus explicabo itaque doloremque, voluptatem ratione, maiores quam praesentium dolorum ea vitae fuga suscipit corporis quas ipsum fugiat omnis perferendis alias. Soluta atque earum ipsa esse tempora sequi alias inventore odit hic. Omnis expedita eum a doloribus saepe nostrum, suscipit quis earum exercitationem, iure distinctio alias nisi repellat culpa? Iste quasi numquam beatae ipsam veniam sed animi sint blanditiis molestiae? Veniam id voluptatem consequatur quaerat!</p>
                 </div>
             </div>
 
@@ -222,12 +323,34 @@
     import { Container } from '@/shared/container'
 
     // components
+    import { Toast } from '@/components/toast'
     // import { Button } from '@/components/button';
+
+    // Utils
+    import { vMaska } from 'maska/vue'
+
+    // PROPS
+    const props = defineProps({
+        auth_user_profile: {
+            type: Object,
+            default: {}
+        },
+        auth_user: {
+            type: Object,
+            default: {}
+        }
+    })
 
     // CONST
     //
+    // route
+    const route = useRoute()
     //= paragraphChipList
     const paragraphChipList = ref([
+        {
+            name: 'contact-us', 
+            title: 'Связаться с нами'
+        },
         {
             name: 'specification-first', 
             title: 'Создать ТЗ вместе'
@@ -242,7 +365,7 @@
         }
     ])
     //= currentParagraphChip
-    const currentParagraphChip = ref('specification-first')
+    const currentParagraphChip = ref('contact-us')
     //= content by paragraph
     const specification_step = ref([
         {
@@ -344,13 +467,42 @@
         // }
     ])
 
+    // FORM DATA CONST
+
+    const options = { mask: '+7(###)###-##-##' };
+    // TYPES
+    type FormObj = {
+        customer_id: number | null,
+        customer_name: string,
+        customer_type: string,
+        customer_email: string,
+        customer_phone: string,
+        preferred_communciation: string,
+        executor_id: number | null,
+        executor_type: string,
+        executor: string,
+        landing_id: number | null,
+        mark: string,
+        customer_agreement: boolean
+    }
     //= form_obj
-    const form_obj = ref({
+    const form_obj = ref<FormObj>({
         customer_id: null,
-        customer_name: 'noname',
+        customer_name: '',
+        customer_type: 'ФЛ',
+        customer_email: 'Не указан',
+        customer_phone: '',
+        preferred_communciation: 'no',
         executor_id: 6,
-        executor: 'noname'
+        executor_type: 'conspirator',
+        executor: 'noname',
+        landing_id: null,
+        mark: '',
+        customer_agreement: true
     })
+    // VARIABLES
+    const loadSubmit = ref(false)
+    
 
     // 
     onMounted(() => {
@@ -364,24 +516,24 @@
     })
 
     // FUNCs
-    const step_next_func = (current_id: number) => {
+    // const step_next_func = (current_id: number) => {
 
-        if(specification_step.value[specification_step.value.length - 1].id === +current_id) {
-            alert ('Это последний шаг :)')
-        } else {
+    //     if(specification_step.value[specification_step.value.length - 1].id === +current_id) {
+    //         alert ('Это последний шаг :)')
+    //     } else {
 
-            current_specification_step.value = specification_step.value.find(el => el.id === current_id + 1)
-            document.getElementById('specification_step_container').scrollIntoView();
-        }
-    }
-    const step_prev_func = (current_id: number) => {
-        if(specification_step.value[0].id === +current_id) {
-            alert ('Это первый шаг же только куда... :)')
-        } else {
-            current_specification_step.value = specification_step.value.find(el => el.id === current_id - 1)
-            document.getElementById('specification_step_container').scrollIntoView();
-        }
-    }
+    //         current_specification_step.value = specification_step.value.find(el => el.id === current_id + 1)
+    //         document.getElementById('specification_step_container').scrollIntoView();
+    //     }
+    // }
+    // const step_prev_func = (current_id: number) => {
+    //     if(specification_step.value[0].id === +current_id) {
+    //         alert ('Это первый шаг же только куда... :)')
+    //     } else {
+    //         current_specification_step.value = specification_step.value.find(el => el.id === current_id - 1)
+    //         document.getElementById('specification_step_container').scrollIntoView();
+    //     }
+    // }
 
     const step_func = (current_id: number, type: string) => {
         if(type === 'next') {
@@ -402,6 +554,111 @@
         }
     }
 
+    // current_landing_id
+    // 
+    const current_landing_id = () => {
+
+        let current_landing_name = route.path.split('/', 2)[1]
+
+        let current_landing_id = landing_list?.value?.filter((item: any) => {
+            if(item.name === current_landing_name) {
+                return item
+            }
+        })
+
+        if(current_landing_id) {
+            return current_landing_id[0].id
+        } else {
+
+            return null
+        }
+    }
+
+    // submitForm contact US
+    //
+    const submitForm = (mark: string) => {
+
+        // 
+        form_obj.value.landing_id = current_landing_id()
+        form_obj.value.mark = mark
+        // 
+        addLeadToBD(form_obj.value)
+    }
+    // test send
+    //
+    const mail = useMail()
+    const testSend = async (item: FormObj) => {
+        await mail.send({
+            from: '<ya.kashmanaft@gmail.com>', // Всегда такой будет
+            // from: `<${item.customer_email}>`,
+            to: '<ya.kashmanaft@gmail.com>', // dont work at me
+            subject: 'Конспиратор, тебе заявка!',
+            html: `
+                <b>Откуда: </b>
+                <p><a href='conspirators.su/${route.path}'>${route.path}</a></p>
+                <b>Имя: </b>
+                <p>${item.customer_name}</p>
+                <b>Телефон: </b>
+                <p><a href='tel:${item.customer_phone}'>${item.customer_phone}</a></p>   
+                <p>Списаться в мессенджере: ${item.preferred_communciation}</p>
+                <b>Эл. почта: </b>
+                <p><a href="mailto:${item.customer_email}">${item.customer_email}</a></p>
+            `
+        })
+    }
+
+    // addLeadToBD contact US
+    //
+    const addLeadToBD = async (item: FormObj) => {
+
+        // Создаем пустой объект для БД заявок
+        let addedItem = null
+
+        // Наполняем объект
+        addedItem = await $fetch("/api/lead/lead", {
+            method: 'POST',
+            body: {
+                name: item.customer_name,
+                email: item.customer_email,
+                mobile: item.customer_phone,
+                landingId: item.landing_id,
+                status: 'lead',
+                urgency: 'high'
+            }
+        })
+
+        // Запускаем заглушку
+        loadSubmit.value = true
+
+        // Отправляем письмо
+        await testSend(item)
+
+        
+        // показываем toast
+        let toast = document.getElementById(`toast_${route.path}`)
+        if(toast) {
+            toast.style.display = 'block'
+
+            setTimeout(() => {
+                toast.style.display = 'none'
+            }, 5000)
+        }
+        // Отключаем заглушку
+        loadSubmit.value = false
+    }
+
+    // testSend
+
+
+    // DB
+    // 
+    //= landing_list
+    const { data: landing_list } = useFetch("/api/landing/landing", {
+        lazy: false,
+        transform: (landing_list) => {
+            return landing_list
+        }
+    })
 </script>
 
 <style scoped>
@@ -413,7 +670,8 @@
     -ms-overflow-style: none;  /* IE and Edge */
     overflow: scroll; 
     scrollbar-width: none; 
-    max-width: 99vw!important;
+    max-width: 100vw!important;
+    /* width: 100%; */
     gap: 1rem;
     padding-bottom: .5rem;
     border-bottom: 1px solid var(--color-btn-disabled-bg);
@@ -476,8 +734,8 @@
 
 @media screen and (max-width: 575px) {
     .chip_paragraph {
-        margin-left: 1rem;
-        margin-right: 1rem;
+        /* margin-left: 1rem;
+        margin-right: 1rem; */
     }
     .container-inside {
         margin-top: 0!important;
@@ -611,8 +869,8 @@
 }
 @media screen and (min-width: 576px) and (max-width: 767px) {
     .chip_paragraph {
-        margin-left: 1rem;
-        margin-right: 1rem;
+        /* margin-left: 1rem;
+        margin-right: 1rem; */
     }
     .container-inside {
         margin-top: 0!important;
@@ -866,14 +1124,160 @@
         height: 100%;
     }
 
+    /* 
+        contact-us-content_container    
+    */
+    .contact-us-content_container {
+        margin: 1rem;
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+    .contact-us-content_container form {
+        background-color: var(--color-global-baackground_light);
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+    .contact-us-content_container form ul {
+        list-style: none;
+        padding: 0;
+    }
+    .contact-us-content_container form ul li,
+    .contact-us-content_container form ul li input {
+        margin-top: .5rem;
+    }
+    .contact-us-content_container form ul li label {
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+        margin-left: .5rem;
+    }
+
+    /* contact-us_phone */
+    .contact-us_phone p {
+        margin: 0;
+        margin-left: .5rem;
+        margin-top: 1rem;
+        color: var(--color-global-text_second);
+        font-size: .8rem;
+    }
+    .contact-us_phone ul {
+        margin-top: .5rem;
+        display: flex;
+        gap: 1rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        padding: .5rem!important
+    }
+    .contact-us_phone ul li {
+        margin: 0!important;
+        display: flex;
+    }
+
+    .contact-us_phone ul li input {
+        margin: 0!important;
+        /* margin-top: .3rem!important; */
+    }
+    .contact-us_phone ul li label {
+        color: var(--color-global-text)!important;
+        margin-left: .3rem;
+        /* margin-top: .3rem; */
+    }
+    .contact-us_phone ul li input,
+    .contact-us_phone ul li label:hover {
+        cursor: pointer;
+    }
+
+    /* agreement_wrapper */
+    .agreement_wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: .5rem;
+        margin-left: .5rem;
+    }
+    .agreement_wrapper > input {
+        margin-top: .3rem!important;
+    }
+    .agreement_wrapper > label {
+        margin: 0!important;
+    }
+
+    /* contact-us-btn_submit */
+    .contact-us-btn_submit,
+    .contact-us-btn_wrong,
+    .contact-us-btn_sending {
+        width: fit-content;
+        padding: 1rem;
+    }
+    .contact-us-btn_submit {
+        background-color: var(--color-global-text);
+        color: var(--color-btn-text);
+        border-radius: 2rem;
+        transition: all .3s ease-in-out;
+    }
+    .contact-us-btn_submit:hover {
+        cursor: pointer;
+        color: var(--color-btn-wo-bg)
+    }
+    .contact-us-btn_sending {
+    }
+    .contact-us-btn_wrong {
+        color: var(--color-urgency-high);
+    }
+
+    /* contact-us_tg */
+    .contact-us_tg {
+        height: fit-content;
+        border-radius: 1rem;
+        padding: 1rem 0;
+        padding-bottom: 2rem;
+        background-color: var(--color-wallet-fund-invested);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 300px;
+    }
+
+    .contact-us_tg p{
+        color: var(--color-btn-text);
+    }
+    .contact-us_tg p:first-child {
+        margin-bottom: 5rem;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .contact-us_tg p:last-child {
+        margin-top: 1rem;
+    }
+    .contact-us_tg p span a {
+        background-color: var(--color-global-text);
+        color: var(--color-btn-text);
+        padding: 1rem;
+        border-radius: 2rem;
+    }
+
+
     /* specification-first-content_container */
     .specification-first-content_container {
 
     }
-    /* choose-pattern-content_container */
+    /* 
+        choose-pattern-content_container 
+    */
     .choose-pattern-content_container {
-
+        margin: 1rem;
+        margin-top: 2rem;
     }
+
+    /* 
+        check-status-content_container
+    */
+    .check-status-content_container {
+        margin: 1rem;
+        margin-top: 2rem;
+    }
+
     
     /* 
         TABLE CONTENTS (CHIP paragraph / CHIP content)
@@ -908,7 +1312,7 @@
         height: 0;
     }
     .ol-step_wrapper li {
-        margin-top: .5rem;
+        /* margin-top: .5rem; */
         /* background-color :red; */
     }
     .ol-step_wrapper li h4 {
@@ -917,7 +1321,7 @@
     .ol-step_wrapper li ol {
         display: flex;
         gap: .5rem;
-        margin-top: 1.5rem;
+        margin-top: .5rem;
     }
     .ol-step_wrapper li ol li {
         /* border-radius: 1rem; */
