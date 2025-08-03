@@ -326,6 +326,9 @@
     .list_container {
         padding: 0 1rem;
     }
+    .lead-item_wrapper {
+        display: grid;
+    }
     .lead-item-header_wrapper,
     .lead-item_wrapper {
         grid-template-columns: 2rem 1fr 1fr 1fr   
