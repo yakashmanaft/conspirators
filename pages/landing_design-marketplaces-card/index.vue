@@ -76,7 +76,7 @@
                 <h3 
                     :class="currentParagraphChip === el.name ? 'paragraph-title_active' : ''" style="cursor: pointer;"
                     v-for="el in paragraphChipList">
-                    <span @click="currentParagraphChip = el.name">{{ el.title }}</span>
+                    <span @click="currentParagraphChip = el.name" style="text-wrap: nowrap;">{{ el.title }}</span>
                 </h3>
             </div>
 
@@ -166,7 +166,7 @@
                     </form>
 
                     <div class="contact-us_tg">
-                        <p>Не хотите ждать обратного звонка?</p>
+                        <p style="margin-top: 1rem;">Не хотите ждать <br> обратного звонка?</p>
                         <p>Пишите нам в telegram</p>
                         <p><span><nuxt-link to="tg://resolve?domain=Kashmanaft">@Kashmanaft</nuxt-link></span></p>
                     </div>
@@ -581,13 +581,29 @@
 
     // submitForm contact US
     //
-    const submitForm = (mark: string) => {
+    const submitForm = async (mark: string) => {
 
         // 
         form_obj.value.landing_id = current_landing_id()
         form_obj.value.mark = mark
         // 
-        addLeadToBD(form_obj.value)
+        await addLeadToBD(form_obj.value)
+        //
+        // Сбрасываем значения в форме
+        form_obj.value = {
+            customer_id: null,
+            customer_name: '',
+            customer_type: 'ФЛ',
+            customer_email: 'Не указан',
+            customer_phone: '',
+            preferred_communciation: 'no',
+            executor_id: 6,
+            executor_type: 'conspirator',
+            executor: 'noname',
+            landing_id: null,
+            mark: '',
+            customer_agreement: true
+        }
     }
     // test send
     //
@@ -1760,7 +1776,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        max-width: 300px;
+        min-width: 300px;
     }
 
     .contact-us_tg p{
@@ -2154,7 +2170,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        max-width: 300px;
+        min-width: 300px;
     }
 
     .contact-us_tg p{
@@ -2477,7 +2493,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        max-width: 300px;
+        min-width: 300px;
     }
     .contact-us_tg p{
         color: var(--color-btn-text);
