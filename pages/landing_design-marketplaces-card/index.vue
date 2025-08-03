@@ -76,7 +76,7 @@
                 <h3 
                     :class="currentParagraphChip === el.name ? 'paragraph-title_active' : ''" style="cursor: pointer;"
                     v-for="el in paragraphChipList">
-                    <span @click="currentParagraphChip = el.name" style="text-wrap: nowrap;">{{ el.title }}</span>
+                    <span @click="currentParagraphChip = el.name" style="white-space: nowrap;">{{ el.title }}</span>
                 </h3>
             </div>
 
@@ -188,6 +188,7 @@
                                         <label 
                                             :class="step === current_specification_step ? 'checked_input' : ''"
                                             :for="`${group}_${index}`"
+                                            style="white-space: nowrap;"
                                         >
                                             {{ idx + 1 }}. {{ index + 1 }}. {{ step.name }}
                                         </label>
@@ -1050,8 +1051,8 @@
         margin-top: .5rem;
     }
     .ol_content {
-        margin-right: .5rem;
-        margin-left: .5rem;
+        margin-right: 1rem;
+        margin-left: 1rem;
         margin-top: 1rem;
         padding: 2rem 1rem;
         background-color: var(--color-global-baackground_light);
@@ -1060,7 +1061,7 @@
     .ol-step_wrapper {
         display: flex;
         gap: .5rem;
-        width: 97vw!important;
+        width: 95vw!important;
         margin: 0 auto;
         margin-top: 1.5rem;
         overflow-x: scroll;
