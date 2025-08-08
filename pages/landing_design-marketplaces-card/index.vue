@@ -67,40 +67,44 @@
     </div>
 
     <!-- Portfolio -->
-    <div style="display: flex; gap: 1rem; background-color: var(--color-wallet-fund-invested);">
+    <div style="background-color: var(--color-wallet-fund-invested);">
 
-        <!-- LEFT -->
-        <ul style="border-right: 1px solid red;">
+        <Container style="margin: 0 auto; display: flex; gap: 1rem; align-items: center; justify-content: space-between;">
 
-            <li v-for="item in carousel_content">
-                <input 
-                    :id="`item_${item.id}`" 
-                    type="radio" 
-                    :name="`carousel_content`" 
-                    style="accent-color: #C56FFF;"
-                    :value="`item_${item.id}`"
-                    :checked="item.id === carousel_current_item.id"
-                >
-                <label 
-                    :for="`item_${item.id}`"
-                    @click="carousel_current_item = item"
-                >
-                    <h3>{{ item.title }}</h3>
-                </label>
-            </li>
-
-        </ul>
-
-        <!-- RIGHT -->
-        <div style="display: flex; flex-direction: column;">
-            <div style="flex: 1; background-color: red; max-width: 310px; max-height: 410px; display: flex; align-items: center; justify-content: center; border-radius: 2rem; overflow: hidden; padding: 1rem;">
-                <img :src="img_computed" width="100%" height="100%" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
-                 <!-- <div :style=""></div> -->
+            <!-- LEFT -->
+            <ul style="background-color: var(--color-wallet-fund-available); border-right: 1px solid red;">
+    
+                <li v-for="item in carousel_content">
+                    <input 
+                        :id="`item_${item.id}`" 
+                        type="radio" 
+                        :name="`carousel_content`" 
+                        style="accent-color: #C56FFF;"
+                        :value="`item_${item.id}`"
+                        :checked="item.id === carousel_current_item.id"
+                    >
+                    <label 
+                        :for="`item_${item.id}`"
+                        @click="carousel_current_item = item"
+                    >
+                        <h3>{{ item.title }}</h3>
+                    </label>
+                </li>
+    
+            </ul>
+    
+            <!-- RIGHT -->
+            <div style="background-color: var(--color-status-canceled); display: flex; flex-direction: column;">
+                <div style="flex: 1; background-color: red; max-width: 310px; max-height: 410px; display: flex; align-items: center; justify-content: center; border-radius: 2rem; overflow: hidden; padding: 1rem;">
+                    <img :src="img_computed" width="100%" height="100%" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
+                     <!-- <div :style=""></div> -->
+                </div>
+                {{ carousel_current_item.desc }}
+                <br>
+                {{ carousel_current_item.img }}
             </div>
-            {{ carousel_current_item.desc }}
-            <br>
-            {{ carousel_current_item.img }}
-        </div>
+        </Container>
+        
     </div>
 
     <!-- QIZZZ -->
