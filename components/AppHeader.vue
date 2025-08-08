@@ -20,6 +20,7 @@ const router = useRouter();
 
 const burgerIsOpened = ref(false);
 const accountMenuIsOpened = ref(false);
+const cartMenuIsOpened = ref(false)
 
 // FEATURES LISTS
 const featuresListAuth = ref([
@@ -391,6 +392,18 @@ watch(accountMenuIsOpened, () => {
   }
 });
 
+watch(cartMenuIsOpened, () => {
+  if(cartMenuIsOpened.value) {
+    document.addEventListener("click", (e) => {
+      
+      if(e.target.classList && e.target.classList.contains('cart_container_opened')) {
+        cartMenuIsOpened.value = false
+      }
+
+    })
+  }
+})
+
 // Следим за роутами
 const prevPage = ref(null);
 watch(
@@ -609,6 +622,38 @@ watch(
         </div>
       </div>
 
+      <!-- CART -->
+      <div class="cart">
+          <input id='cart_menu_btn' type="checkbox" v-model="cartMenuIsOpened" />
+          <label for="cart_menu_btn">
+            <div class="cart_icon">
+              <Icon size="32px" name="hugeicons:shopping-basket-01" color="var(--color-global-text_second)"/>
+            </div>
+            <div class="cart_count">
+              99+
+            </div>
+          </label>
+
+          <div class="cart_container" :class="cartMenuIsOpened ? 'cart_container_opened' : 'cart_container_closed'">
+
+            <div class="cart_wrapper">
+
+              <div class="cart_header">
+                <p>Корзина</p>
+                <p @click="cartMenuIsOpened = false">Закрыть</p>
+              </div>
+
+              <div class="cart_main">
+                123
+              </div>
+
+              <div class="cart_footer">
+                footer
+              </div>
+            </div>
+          </div>
+      </div>
+
       <!-- BURGER -->
       <label class="burger">
         <input type="checkbox" v-model="burgerIsOpened" />
@@ -716,6 +761,69 @@ a:visited {
   bottom: 2rem; 
   left: 1.5rem;
 }
+/* cart */
+.cart {
+  /* background-color: red; */
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  position: relative;
+}
+.cart > input {
+  display: none;
+}
+.cart > label > .cart_icon {
+
+}
+.cart > label > .cart_count {
+  position: absolute;
+  bottom: -.15rem;
+  right: 0;
+  background-color: var(--color-global-text);
+  color: var(--color-global-baackground_light);
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: .6rem;
+  text-align: center;
+  line-height: 1.5rem;
+  border-radius: 1rem;
+}
+.cart > .cart_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--color-bg-popup);
+  backdrop-filter: blur(2px)
+}
+.cart > .cart_container_opened {
+  opacity: 1;
+  transition: all .3s ease-in;
+  z-index: 99;
+}
+.cart > .cart_container_closed {
+  opacity: 0;
+  transition: all .3s ease-in-out;
+  z-index: -1;
+}
+.cart_wrapper {
+  width: 70%;
+  height: 100vh;
+  background-color: var(--color-global-baackground_light);
+}
+.cart_header {
+  background-color: red;
+}
+.cart_main {
+
+}
+.cart_footer {
+    background-color: var(--color-global-text_second);
+}
 @media screen and (max-width: 575px) {
   .header_wrapper {
     padding: 0;
@@ -771,6 +879,7 @@ a:visited {
   .header-wrapper {
     /* padding: 0 1rem; */
     padding-left: 1rem;
+    justify-content: flex-end;
   }
   .login_contaner {
     display: none;
@@ -922,6 +1031,7 @@ a:visited {
   .opacity-1-767 {
     display: block;
     opacity: 1;
+    z-index: 99;
   }
 }
 
@@ -1022,6 +1132,7 @@ label input:checked + .menu .hamburger {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
   background-color: #fff;
+  z-index: 100;
 }
 
 label input:checked + .menu .hamburger:after {

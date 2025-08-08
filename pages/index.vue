@@ -89,46 +89,86 @@ const changeColorOnClick = (e) => {
 
       <!-- <Search style="margin: 0;"/> -->
 
-      <section style="background-color: var(--color-wallet-fund-available);">
+      <section 
+      style="background-color: var(--color-wallet-fund-available);" 
+      @click="$router.push(`/landing_crm`)" 
+      class="block_is_link"
+      >
         <h3 style="color: var(--color-global-text);">Контроль финансов и задач</h3>
         <p style="color: var(--color-global-text);">Фиксируй доходы и расходы,отслеживай динамику развития своего кооператива.</p>
         <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
 
-        <div class="section_btn" @click="$router.push(`/landing_crm`)">
-          <div class="section_icon" style="background-color: var(--color-urgency-low);">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+        <div class="section_btn" >
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:wallet-02" color="var(--color-urgency-low)"/>
           </div>
-          <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p>
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:microsoft" color="var(--color-urgency-low)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:chart-line-data-01" color="var(--color-urgency-low)"/>
+          </div>
+          <!-- <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p> -->
         </div>
       </section>
   
-      <section style="background-color: var(--color-btn-hover-bg);">
+      <section 
+        style="background-color: var(--color-btn-hover-bg);" 
+        class="block_is_link" 
+        @click="$router.push(`/landing_offer`)"
+        >
         <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Закрой потребность в отделе маркетинга</h3>
         <p style="color: var(--color-btn-bg)">Поручи разработку и ведение маркетинговой концепции специалистам conspirators</p>
-        <div class="section_btn" @click="$router.push(`/landing_offer`)">
+        <div class="section_btn">
           <div class="section_icon">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-bg)"/>
+            <Icon size="48px" name="hugeicons:paragraph-bullets-point-02" color="var(--color-btn-bg)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:stop-watch" color="var(--color-btn-bg)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:start-up-01" color="var(--color-btn-bg)"/>
           </div>
         </div>
       </section>
   
-      <section style="background-color: var(--color-wallet-fund-debt);">
+      <section 
+        style="background-color: var(--color-wallet-fund-debt);"
+        class="block_is_link"
+        @click="$router.push(`/landing_design`)"
+      >
         <h3 style="color: var(--color-wallet-fund-debt-wo);">Задизайним всё что хочешь</h3>
         <p style="color: var(--color-wallet-fund-debt-wo);">От простой полиграфии до съёмкой корпоративных видео</p>
         <!-- <p style="color: var(--color-wallet-fund-debt-wo);">Мастера визуальных эффектов помогут реализовать и поддерживать фирменный стиль твоего кооператива, начиная от простой полиграфии, заканчивая съёмкой корпоративных видео</p> -->
-        <div class="section_btn" @click="$router.push(`/landing_design`)">
+        <div class="section_btn">
           <div class="section_icon">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-wallet-fund-debt-wo)"/>
+            <Icon size="42px" name="hugeicons:paint-board" color="var(--color-wallet-fund-debt-wo)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:paint-brush-01" color="var(--color-wallet-fund-debt-wo)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:paint-brush-02" color="var(--color-wallet-fund-debt-wo)"/>
           </div>
         </div>
       </section>
 
-      <section style="background-color: var(--color-operation-type-donation);">
+      <section 
+        style="background-color: var(--color-operation-type-donation);"
+        class="block_is_link"
+        @click="$router.push(`/landing_design`)"
+      >
         <h3>Разработка сайтов и приложений</h3>
         <p>Делаем сайты и приложения под ключ с дальнейшим сервисным обслуживанием</p>
-        <div class="section_btn" @click="$router.push(`/landing_design`)">
+        <div class="section_btn">
           <div class="section_icon">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text)"/>
+            <Icon size="42px" name="hugeicons:developer" color="var(--color-global-text)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:web-security" color="var(--color-global-text)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:game-controller-03" color="var(--color-global-text)"/>
           </div>
         </div>
       </section>
@@ -140,35 +180,54 @@ const changeColorOnClick = (e) => {
     <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функций и опыт взаимодействия приложением в одном месте</p>
 
     <div class="section_container">
-      <section @click="$router.push('/journal')" class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)">
+      
+      <section 
+        @click="$router.push('/journal')" 
+        class="default_list_item-container block_is_link"
+        style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)"
+      >
         <h3 style="color: var(--color-global-text); margin-top: 1rem;">Журнал</h3>
         <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
-        <div class="section_btn" @click="$router.push(`/landing_offer`)">
+        <div class="section_btn">
           <div class="section_icon">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text_second)"/>
+            <Icon size="42px" name="hugeicons:artificial-intelligence-03" color="var(--color-global-text_second)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:notebook" color="var(--color-global-text_second)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:maps-editing" color="var(--color-global-text_second)"/>
           </div>
         </div>
       </section>
 
-      <section @click="$router.push('/landing_stock')" style="border: 1px solid var(--color-urgency-low-10); position: relative;">
+      <section 
+        @click="$router.push('/landing_stock')" 
+        style="border: 1px solid var(--color-urgency-low-10); position: relative;"
+        class="block_is_link"
+      >
         <h3 style="color: var(--color-urgency-low);">Маркетплейс соучастников</h3>
         <p style="color: var(--color-global-text_second)">Торговая площадка для обмена ценностями</p>
         <p style="position: absolute; right: -2.5rem; bottom: -45px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
-        <div class="section_btn" @click="$router.push(`/landing_stock`)">
+        <div class="section_btn">
           <div class="section_icon">
-            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text_second)"/>
+            <Icon size="48px" name="hugeicons:creative-market" color="var(--color-global-text_second)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:shopping-cart-01" color="var(--color-global-text_second)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:add-team" color="var(--color-global-text_second)"/>
           </div>
         </div>
       </section>
-      
-
 
       <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
         <h3 style="color: var(--color-gloab-text);">Помощь</h3>
         <ul style="color: var(--color-global-text_second)">
-          <li style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
-          <li style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
-          <li style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
+          <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
+          <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
+          <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
         </ul>
       </section>
     </div> 
@@ -198,7 +257,15 @@ const changeColorOnClick = (e) => {
 
     <div class="section_container" >
 
-      <section class="default_list_item-container" @click="$router.push('/whitepaper')" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);"><h3>Whitepaper</h3></section>
+      <section class="default_list_item-container block_is_link" @click="$router.push('/whitepaper')" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Whitepaper</h3>
+        <p>О продукте</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:file-01" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
     </div>
 
   </Container>
@@ -234,6 +301,24 @@ const changeColorOnClick = (e) => {
   padding: 0 1rem;
   margin: 0;
 }
+
+/* block_is_link */
+.block_is_link {
+  cursor: pointer;
+  transition: all .15s ease-in-out;
+}
+.block_is_link:hover {
+  box-shadow: var(--hover-shadow);
+}
+/* li_is-link */
+.li_is_link {
+  cursor: pointer;
+  transition: all .15s ease-in-out;
+}
+.li_is_link:hover {
+  color: var(--color-global-text);
+}
+/* section-btn */
 .section_btn {
   margin: 1rem;
   display: flex; 
@@ -290,6 +375,16 @@ const changeColorOnClick = (e) => {
   font-weight: normal;
   /* text-align: center; */
 }
+
+/* SECTION HOVER */
+section {
+  /* cursor: pointer;
+  transition: all .2s ease-in-out; */
+}
+section:hover {
+  /* box-shadow: var(--hover-shadow); */
+}
+
 @media screen and (max-width: 575px) {
   .buttons-container {
     flex-direction: column;
@@ -302,6 +397,11 @@ const changeColorOnClick = (e) => {
   }
   .section_container > section > h3 {
     font-size: 1.5rem;
+    margin: 0!important;
+  }
+  .section_container > section > p {
+    margin-top: -1rem;
+    margin-bottom: .5rem;
   }
   .header_container {
     margin-left: 1rem;
@@ -349,7 +449,13 @@ const changeColorOnClick = (e) => {
     grid-template-columns: repeat(2, 1fr);
   }
   .section_container > section > h3 {
-    font-size: 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0!important;
+  }
+  .section_container > section > p {
+    margin-top: -.5rem;
+    margin-bottom: 1rem;
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
@@ -389,6 +495,10 @@ const changeColorOnClick = (e) => {
     margin-top: 1rem;
     /* gap: 2rem; */
     grid-template-columns: repeat(2, 1fr);
+  }
+  .section_container > section > p {
+    margin-top: .5rem;
+    margin-bottom: 1rem;
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
@@ -431,6 +541,10 @@ const changeColorOnClick = (e) => {
     gap: 1.5rem;
     grid-template-columns: repeat(2, 1fr);
   }
+  .section_container > section > p {
+    margin-top: .5rem;
+    margin-bottom: 1rem;
+  }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
     padding-left: .5rem; 
@@ -472,6 +586,10 @@ const changeColorOnClick = (e) => {
     margin-right: 1rem;
     gap: 1.5rem;
     grid-template-columns: repeat(3, 1fr);
+  }
+  .section_container > section > p {
+    margin-top: .5rem;
+    margin-bottom: 1rem;
   }
   .section_container > section {
     padding-left: 1rem;
