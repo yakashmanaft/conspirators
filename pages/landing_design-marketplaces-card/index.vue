@@ -66,6 +66,43 @@
         </Container>
     </div>
 
+    <!-- Portfolio -->
+    <div style="display: flex; gap: 1rem; background-color: var(--color-wallet-fund-invested);">
+
+        <!-- LEFT -->
+        <ul style="border-right: 1px solid red;">
+
+            <li v-for="item in carousel_content">
+                <input 
+                    :id="`item_${item.id}`" 
+                    type="radio" 
+                    :name="`carousel_content`" 
+                    style="accent-color: #C56FFF;"
+                    :value="`item_${item.id}`"
+                    :checked="item.id === carousel_current_item.id"
+                >
+                <label 
+                    :for="`item_${item.id}`"
+                    @click="carousel_current_item = item"
+                >
+                    <h3>{{ item.title }}</h3>
+                </label>
+            </li>
+
+        </ul>
+
+        <!-- RIGHT -->
+        <div style="display: flex; flex-direction: column;">
+            <div style="flex: 1; background-color: red; max-width: 310px; max-height: 410px; display: flex; align-items: center; justify-content: center; border-radius: 2rem; overflow: hidden; padding: 1rem;">
+                <img :src="img_computed" width="100%" height="100%" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
+                 <!-- <div :style=""></div> -->
+            </div>
+            {{ carousel_current_item.desc }}
+            <br>
+            {{ carousel_current_item.img }}
+        </div>
+    </div>
+
     <!-- QIZZZ -->
     <Container class="container-inside" id="start">
 
@@ -302,6 +339,11 @@
 <script lang="ts" setup>
     useHead({
         title: "Рисуем карточки товаров для маркетплейсов: OZON, WILDBERRIES, Яндекс. Маркет",
+        meta: [
+            {
+                name: 'description', content: 'Рисуем карточки товаров для маркетплейсов: OZON, WILDBERRIES, Яндекс. Маркет'
+            }
+        ],
         link: [
             { 
                 rel: 'stylesheet', 
@@ -365,6 +407,81 @@
             title: 'Проверить статус'
         }
     ])
+    //= slides carousel
+    const carousel_content = ref([
+        {
+            id: 1,
+            title: 'Основной слайд',
+            desc: 'Первое о продукте, что видит пользователь на маркетплейсе или вашем собственном web-ресурсе',
+            img: '01_1'
+        },
+        {
+            id: 2,
+            title: 'Характеристики продукта',
+            desc: 'Более детальная информация о Вашем продукте',
+            img: '02_1'
+        },
+        {
+            id: 3,
+            title: 'Еще характеристики',
+            desc: 'Можно добавить еще характеристик о Вашем продукте',
+            img: '03_1'
+        },
+        {
+            id: 4,
+            title: 'Выгоды от использования продукта',
+            desc: 'То, что получает конечным пользваотель от вашего продукта',
+            img: '05_1'
+        },
+        {
+            id: 5,
+            title: 'Инструкция к применению',
+            desc: 'Описываем каким образов или с какими материалами работает продукт',
+            img: '04_1'
+        },
+       {
+            id: 6,
+            title: 'Дополнительные слайды',
+            desc: 'Это могут быть повторения слоганов или просто галерея с фото продукта в разных ракурсах - увеличиваем запоминаемость о продукте',
+            img: '06_1'
+        },
+       {
+            id: 7,
+            title: 'Еще преимущества',
+            desc: 'Как точка в предложении продукта',
+            // img: '07_1'
+            img: '07_1'
+        }
+    ])
+    const carousel_current_item = ref(carousel_content.value[0])
+
+    import img_01_1 from '~/assets/img/cards_project_1/01_1.webp'
+    import img_02_1 from '~/assets/img/cards_project_1/02_1.webp'
+    import img_03_1 from '~/assets/img/cards_project_1/03_1.webp'
+    import img_04_1 from '~/assets/img/cards_project_1/04_1.webp'
+    import img_05_1 from '~/assets/img/cards_project_1/05_1.webp'
+    import img_06_1 from '~/assets/img/cards_project_1/06_1.webp'
+    import img_07_1 from '~/assets/img/cards_project_1/07_1.webp'
+
+    const img_computed = computed(() => {
+
+        switch(carousel_current_item.value.id) {
+            case 1:
+                return img_01_1
+            case 2:
+                return img_02_1
+            case 3:
+                return img_03_1
+            case 4: 
+                return img_05_1
+            case 5: 
+                return img_04_1
+            case 6: 
+                return img_06_1
+            case 7: 
+                return img_07_1
+        }
+    })
     //= currentParagraphChip
     const currentParagraphChip = ref('contact-us')
     //= content by paragraph
