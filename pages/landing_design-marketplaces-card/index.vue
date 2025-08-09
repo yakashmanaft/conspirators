@@ -66,13 +66,14 @@
         </Container>
     </div>
 
-    <!-- Portfolio -->
-    <div style="background-color: var(--color-wallet-fund-invested);">
+    <!-- PORTFOLIO -->
+    <div style="background-color: var(--color-global-baackground_light);">
 
-        <Container style="margin: 0 auto; display: flex; gap: 1rem; align-items: center; justify-content: space-between;">
+        <Container style="" class="container_portfolio">
 
             <!-- LEFT -->
-            <ul style="background-color: var(--color-wallet-fund-available); border-right: 1px solid red;">
+            <!-- portfolio_chip -->
+            <ul class="portfolio_chip">
     
                 <li v-for="item in carousel_content">
                     <input 
@@ -86,7 +87,14 @@
                     <label 
                         :for="`item_${item.id}`"
                         @click="carousel_current_item = item"
+                        :class="item.id === carousel_current_item.id ? 'current_portfolio_chip' : ''"
                     >
+                        <!-- <div class="section_icon">
+                            <Icon size="48px" name="hugeicons:direction-left-01"/>
+                        </div> -->
+                        <div style="width: 3rem; height: 3rem; border: 3px solid var(--color-wallet-fund-invested); border-radius: 1rem; opacity: .6">
+
+                        </div>
                         <h3>{{ item.title }}</h3>
                     </label>
                 </li>
@@ -94,17 +102,37 @@
             </ul>
     
             <!-- RIGHT -->
-            <div style="background-color: var(--color-status-canceled); display: flex; flex-direction: column;">
-                <div style="flex: 1; background-color: red; max-width: 310px; max-height: 410px; display: flex; align-items: center; justify-content: center; border-radius: 2rem; overflow: hidden; padding: 1rem;">
+            <!-- portfolio_content -->
+            <div class="portfolio_content">
+                <div class="portfolio_content_img-container">
                     <img :src="img_computed" width="100%" height="100%" alt="Дизайн карточек товара для OZON/WILDBERRIES/Я.Маркет">
                      <!-- <div :style=""></div> -->
                 </div>
-                {{ carousel_current_item.desc }}
-                <br>
-                {{ carousel_current_item.img }}
+                <h3>{{ carousel_current_item.title }}</h3>
+                <p>{{ carousel_current_item.desc }}</p>
             </div>
+
         </Container>
         
+        <!-- price_offer_container -->
+        <div class="price_offer_container">
+
+            <Container>
+
+                <div class="price_offer_wrapper">
+                    <div class="price_offer_el">
+                        <p style="margin: 0;">Набор слайдов</p>
+                        <p style="margin: 0;"> 7 299,00<span>руб.</span></p>
+                        <p style="margin: 0;">Это 5 часов работы специалиста</p>
+                    </div>
+                    <div class="price_offer_el">
+                        <p style="margin: 0;" class="price_offer_el-price">1 500,00 <span>руб. / час.</span></p>
+                        <p style="margin: 0;" class="price_offer_el-offer">Дополнительные слайды по ставке</p>
+                    </div>
+                </div>
+            </Container>
+
+        </div>
     </div>
 
     <!-- QIZZZ -->
@@ -315,7 +343,7 @@
                 </div>
             </div>
 
-            {{ form_obj }}
+            <!-- {{ form_obj }} -->
         
             <br>
             <br>
@@ -363,7 +391,7 @@
                 integrity: "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
                 crossorigin: "anonymous",
             }
-        ]
+        ],
     })
 
     // shared
@@ -415,13 +443,13 @@
     const carousel_content = ref([
         {
             id: 1,
-            title: 'Основной слайд',
+            title: 'Самый первый',
             desc: 'Первое о продукте, что видит пользователь на маркетплейсе или вашем собственном web-ресурсе',
             img: '01_1'
         },
         {
             id: 2,
-            title: 'Характеристики продукта',
+            title: 'Характеристики',
             desc: 'Более детальная информация о Вашем продукте',
             img: '02_1'
         },
@@ -433,7 +461,7 @@
         },
         {
             id: 4,
-            title: 'Выгоды от использования продукта',
+            title: 'Выгоды',
             desc: 'То, что получает конечным пользваотель от вашего продукта',
             img: '05_1'
         },
@@ -2506,13 +2534,150 @@
     }
 
     /* 
+        PORTFOLIO
+    */
+    .container_portfolio {
+        padding-top: 10rem;
+        margin: 0 auto; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        position: relative;
+    }
+    .portfolio_chip {
+        /* background-color: var(--color-wallet-fund-available);  */
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 50%;
+        padding-left: 10%;
+        position: relative;
+    }
+    .portfolio_chip:after {
+        content: '';
+        position: absolute;
+        top: -10%;
+        right: -1px;
+        border-right: 1px solid var(--color-global-text_second);
+        height: 120%;
+        width: 1px;
+    }
+
+    .portfolio_chip > li > input {
+        display: none;
+    }
+    /* current_portfolio_chip */
+    .current_portfolio_chip {
+        border-right: 3px solid var(--color-wallet-fund-invested);
+        margin-right: 3px; 
+    }
+    .current_portfolio_chip > h3{
+        color: var(--color-global-text)!important;
+    }
+    .current_portfolio_chip > .section_icon > svg {
+        color: var(--color-wallet-fund-invested);
+    }
+    .current_portfolio_chip > div {
+        background-color: var(--color-wallet-fund-invested);
+    }
+    /* other chip */
+    .portfolio_chip > li > label {
+        cursor: pointer;    
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        transition: all .1s ease-in;
+        padding-top: .25rem;
+        padding-bottom: .25rem;
+    }   
+    /* other chip hover */
+    .portfolio_chip > li > label:hover {
+        border-right: 3px solid var(--color-bg-popup);
+        margin-right: 3px; 
+    }
+    .portfolio_chip > li > label:hover > h3 {
+        color: var(--color-bg-popup);
+    }
+    .portfolio_chip > li > label:hover > .section_icon > svg {
+        color: var(--color-bg-popup);
+    }
+    .portfolio_chip > li > label > .section_icon {
+        color: var(--color-global-text_second);
+    }
+    .portfolio_chip > li > label > h3 {
+        font-size: 1rem;
+        margin: 0;
+        font-weight: normal;
+        transition: all .1s ease-in;
+        color: var(--color-global-text_second);
+    }
+
+    .portfolio_content {
+        /* background-color: var(--color-status-canceled);   */
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+    }
+    .portfolio_content_img-container {
+        flex: 1; 
+        background-color: red; 
+        max-width: 310px; 
+        /* 310 / 620 / 930 */
+        /* max-height: 410px;  */
+        /* 410 / 820 / 1230 */
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 2rem; 
+        overflow: hidden; 
+        /* padding: 1rem; */
+    }
+    .portfolio_content h3 {
+        font-weight: bold;
+        margin-top: 1rem;
+    }
+    .portfolio_content p {
+        height: 7rem;
+        width: 50%;
+        text-align: center;
+    }
+
+    /*  */
+    .price_offer_container {
+        background-color: red;
+    }   
+    .price_offer_wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+    }
+    .price_offer_wrapper > .price_offer_el {
+        display: flex;
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-price {
+        font-size: 3rem;
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-offer {
+
+    }
+
+    /* CHIP PARAGRAPH */
+    .chip_paragraph {
+        justify-content: center;
+    }
+
+    /* 
         Связаться с нами 
     */
     .contact-us-content_container {
         /* margin: 1rem; */
         margin-top: 2rem;
         display: flex;
+        justify-content: center;
         gap: 2rem;
+        /* background-color: red; */
+        margin-top: 3.5rem;
     }
     .contact-us-content_container form {
         background-color: var(--color-global-baackground_light);
@@ -2640,7 +2805,7 @@
     */
     .table-contents_wrapper{
         display: flex;
-        margin-top: 2rem;
+        margin-top: 3.5rem;
     }
     .ol_content {
         /* background-color: var(--color-btn-disabled-bg); */
@@ -2692,13 +2857,13 @@
         Выбрать готовый шаблон
     */
     .choose-pattern-content_container {
-        margin-top: 2rem;
+       margin-top: 3.5rem;
     }
     /* 
         Проверить статус
     */
     .check-status-content_container {
-        margin-top: 2rem;
+        margin-top: 3.5rem;
     }
 }
 </style>

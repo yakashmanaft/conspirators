@@ -641,7 +641,6 @@ watch(
 
               <div class="cart_header">
                 <p>Корзина</p>
-                <p @click="cartMenuIsOpened = false">Закрыть</p>
               </div>
 
               <div class="cart_main">
@@ -823,14 +822,25 @@ a:visited {
   width: 70%;
   height: 100vh;
   background-color: var(--color-global-baackground_light);
+  position: relative;
 }
 .cart_header {
   background-color: red;
+  
+}
+.cart_header > p {
+  font-size: 3.5rem;
+  font-weight: bold;
+
 }
 .cart_main {
 
 }
 .cart_footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background-color: var(--color-global-text_second);
 }
 @media screen and (max-width: 575px) {
@@ -872,6 +882,9 @@ a:visited {
 @media screen and (min-width: 768px) {
   .copyright_wrapper {
     display: none
+  }
+  .cart {
+    margin-left: 1rem;
   }
 }
 
@@ -1047,6 +1060,7 @@ a:visited {
     z-index: 99;
   }
 }
+
 
 .user-login__container {
   display: flex;
@@ -1263,5 +1277,18 @@ label a {
   /* .logo_wrapper {
     display: none;
   } */
+   .cart_wrapper {
+      /* height: 70%; */
+      /* position: fixed; */
+      /* top: 0; */
+      /* left: 50%; */
+      width: 1200px;
+      height: 80%;
+      margin-top: 5rem!important;
+      /* margin-right: 5rem; */
+      margin: 0 auto;
+      border-radius: 2rem;
+      overflow: hidden;
+   }
 }
 </style>
