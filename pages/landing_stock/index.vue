@@ -24,9 +24,16 @@
                 По запросу ничего не найдено
             </div>
 
-            <div class="item_wrapper" v-for="item in computed_landing_list" @click.stop="$router.push(`/${item.name}`)">
-                <div>
-                    <!-- <img src="assets/img/logo/ozon.svg" alt="ozon"> -->
+            <div class="item_wrapper" v-for="item in computed_landing_list" @click.stop="$router.push(`/${item.name}`)" :style="set_item_styles('border', item.name)">
+                <div :style="set_item_styles('background', item.name)">
+
+                    <Icon 
+                        v-for="icon in set_item_icons(item.name)"
+                        style="padding: 0;" 
+                        size="42px"
+                        :name="icon.name"
+                        color="var(--color-global-text)"
+                    />
                 </div>
                 <p style="margin: 0; font-weight: bold;">{{ item.title }}</p>
                 <p style="margin: 0;">{{ item.desc }}</p>
@@ -201,7 +208,7 @@
    */
    .item_wrapper {
         transition: all .2s ease-in-out;
-        border: 1px solid var(--color-operation-type-donation);
+        /* border: 1px solid var(--color-operation-type-donation); */
         border-radius: 1rem;
         overflow: hidden;
    }
@@ -213,7 +220,7 @@
         margin-top: -1rem;
         margin-left: -1rem;
         margin-right: -1rem;
-        background-color: var(--color-operation-type-donation)
+        /* background-color: var(--color-operation-type-donation) */
     }
     @media screen and (max-width: 320px) {
     h1 {
@@ -507,9 +514,14 @@
         }
         .item_wrapper div {
             /* width: 50% */
-            height: 10rem;
+
             /* background-color: var(--color-global-baackground_light); */
             /* border-radius: .5rem; */
+            display: flex;  
+            align-items: center; 
+            justify-content: center; 
+            gap: .5rem;
+            height: 200px;
         }
         .item_wrapper div img {
             width: 100%;
@@ -557,6 +569,29 @@
         unit7: '#e3bfe2',
         unit8: '#6f75ad',
     },) 
+
+    const group = ref([
+        {
+            name: 'dev',
+            color: colors.value.unit2
+        },
+        {
+            name: 'design',
+            color: colors.value.unit7
+        },
+        {
+            name: 'design-marketplaces-card',
+            color: colors.value.unit7
+        },
+        {
+            name: 'offer',
+            color: colors.value.unit3
+        },
+        {
+            name: 'crm',
+            color: colors.value.unit1
+        }
+    ])
 
     // trigger popup
     const popup_opened = ref(false)
@@ -826,6 +861,104 @@
     //         }
     //     }
     // }
+    // colors.value
+    const set_item_icons = (item_name: string) => {
+
+        let icon_name_list = [
+            // dev
+            {
+                group: 'dev',
+                name: 'hugeicons:developer'
+            },
+
+            {
+                group: 'dev',
+                name: 'hugeicons:web-security'
+            },
+            {
+                group: 'dev',
+                name: 'hugeicons:game-controller-03'
+            },
+            // design
+            {
+                group: 'design',
+                name: 'hugeicons:paint-board'
+            },
+            {
+                group: 'design',
+                name: 'hugeicons:paint-brush-01'
+            },
+            {
+                group: 'design',
+                name: 'hugeicons:paint-brush-02'
+            }, 
+            {
+                group: 'design-marketplaces-card',
+                name: 'hugeicons:paint-board'
+            }, 
+            {
+                group: 'design-marketplaces-card',
+                name: 'hugeicons:paint-brush-01'
+            },
+            {
+                group: 'design-marketplaces-card',
+                name: 'hugeicons:paint-brush-02'
+            }, 
+            // offer
+            {
+                group: 'offer',
+                name: 'hugeicons:paragraph-bullets-point-02'
+            },
+            {
+                group: 'offer',
+                name: 'hugeicons:stop-watch'
+            },
+            {
+                group: 'offer',
+                name: 'hugeicons:start-up-01'
+            },
+            {
+                group: 'crm',
+                name: 'hugeicons:wallet-02'
+            },
+            {
+                group: 'crm',
+                name: 'hugeicons:microsoft'
+            },
+            {
+                group: 'crm',
+                name: 'hugeicons:chart-line-data-01'
+            }
+        ]
+
+        return icon_name_list.filter(el => el.group === item_name.slice(8, item_name.length))
+    }
+
+    //= set_item_styles
+    const set_item_styles = (subject: string, group_name: string) => {
+
+
+        // console.log(group_name.slice(8, group_name.length))
+        // console.log(group.value)
+
+        let currnt_item = group.value.find(el => el.name === group_name.slice(8, group_name.length))
+
+        if(currnt_item) {
+
+            
+                    if(subject === 'border') {
+            
+                        return `
+                            border: 1px solid ${currnt_item.color};
+                        `
+                    } 
+                    else if (subject === 'background') {
+                        return `
+                            background-color: ${currnt_item.color};
+                        `
+                    }
+        }
+    }
 
     // onClick in desc section item 
     const chooseCurrentLanding = (el: any, index: number) => {

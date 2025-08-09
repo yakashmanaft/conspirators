@@ -119,7 +119,7 @@ const changeColorOnClick = (e) => {
         </div>
       </section>
   
-      <section 
+      <!-- <section 
         style="background-color: var(--color-btn-hover-bg);" 
         class="block_is_link" 
         @click="$router.push(`/landing_offer`)"
@@ -137,16 +137,15 @@ const changeColorOnClick = (e) => {
             <Icon size="48px" name="hugeicons:start-up-01" color="var(--color-btn-bg)"/>
           </div>
         </div>
-      </section>
+      </section> -->
   
-      <section 
+      <!-- <section 
         style="background-color: var(--color-wallet-fund-debt);"
         class="block_is_link"
         @click="$router.push(`/landing_design`)"
       >
         <h3 style="color: var(--color-wallet-fund-debt-wo);">Задизайним всё что хочешь</h3>
         <p style="color: var(--color-wallet-fund-debt-wo);">От простой полиграфии до съёмкой корпоративных видео</p>
-        <!-- <p style="color: var(--color-wallet-fund-debt-wo);">Мастера визуальных эффектов помогут реализовать и поддерживать фирменный стиль твоего кооператива, начиная от простой полиграфии, заканчивая съёмкой корпоративных видео</p> -->
         <div class="section_btn">
           <div class="section_icon">
             <Icon size="42px" name="hugeicons:paint-board" color="var(--color-wallet-fund-debt-wo)"/>
@@ -158,12 +157,12 @@ const changeColorOnClick = (e) => {
             <Icon size="42px" name="hugeicons:paint-brush-02" color="var(--color-wallet-fund-debt-wo)"/>
           </div>
         </div>
-      </section>
+      </section> -->
 
-      <section 
+      <!-- <section 
         style="background-color: var(--color-operation-type-donation);"
         class="block_is_link"
-        @click="$router.push(`/landing_design`)"
+        @click="$router.push(`/landing_dev`)"
       >
         <h3>Разработка сайтов и приложений</h3>
         <p>Делаем сайты и приложения под ключ с дальнейшим сервисным обслуживанием</p>
@@ -178,35 +177,7 @@ const changeColorOnClick = (e) => {
             <Icon size="42px" name="hugeicons:game-controller-03" color="var(--color-global-text)"/>
           </div>
         </div>
-      </section>
-
-    </div>
-
-    <!--  -->
-    <h2 class="sub_title-container">В помощь соучастникам</h2>
-    <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функций и опыт взаимодействия приложением в одном месте</p>
-
-    <div class="section_container">
-      
-      <section 
-        @click="$router.push('/journal')" 
-        class="default_list_item-container block_is_link"
-        style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)"
-      >
-        <h3 style="color: var(--color-global-text); margin-top: 1rem;">Журнал</h3>
-        <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
-        <div class="section_btn">
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:artificial-intelligence-03" color="var(--color-global-text_second)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:notebook" color="var(--color-global-text_second)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:maps-editing" color="var(--color-global-text_second)"/>
-          </div>
-        </div>
-      </section>
+      </section> -->
 
       <section 
         @click="$router.push('/landing_stock')" 
@@ -228,6 +199,33 @@ const changeColorOnClick = (e) => {
           </div>
         </div>
       </section>
+
+      <section 
+        @click="$router.push('/journal')" 
+        class="default_list_item-container block_is_link"
+        style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)"
+      >
+        <h3 style="color: var(--color-global-text); margin-top: 1rem;">Журнал</h3>
+        <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:artificial-intelligence-03" color="var(--color-global-text_second)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:notebook" color="var(--color-global-text_second)"/>
+          </div>
+          <div class="section_icon">
+            <Icon size="42px" name="hugeicons:maps-editing" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!--  -->
+    <h2 class="sub_title-container">В помощь соучастникам</h2>
+    <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функций и опыт взаимодействия приложением в одном месте</p>
+
+    <div class="section_container">
 
       <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
         <h3 style="color: var(--color-gloab-text);">Помощь</h3>

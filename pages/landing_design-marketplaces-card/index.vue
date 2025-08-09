@@ -122,12 +122,16 @@
                 <div class="price_offer_wrapper">
                     <div class="price_offer_el">
                         <p style="margin: 0;">Набор слайдов</p>
-                        <p style="margin: 0;"> 7 299,00<span>руб.</span></p>
-                        <p style="margin: 0;">Это 5 часов работы специалиста</p>
+                        <p style="margin: 0;" class="price_offer_el-price"> 7 299,00 <span style="font-size: 2rem;">руб.</span></p>
+                        <p style="margin: 0; color: var(--color-global-text_second)">Это 5 часов работы специалиста</p>
+                        <div style="margin-top: 2rem;">
+
+                            <a href="#start" style="padding: 16px 32px; background-color: var(--color-global-text); color: var(--color-btn-text); border-radius: 2rem;">Заказать</a>
+                        </div>
                     </div>
                     <div class="price_offer_el">
-                        <p style="margin: 0;" class="price_offer_el-price">1 500,00 <span>руб. / час.</span></p>
-                        <p style="margin: 0;" class="price_offer_el-offer">Дополнительные слайды по ставке</p>
+                        <p style="margin: 0;" class="price_offer_el-price">1 500,00 <span style="font-size: 2rem;">руб. / час.</span></p>
+                        <p style="margin: 0; color: var(--color-global-text_second);" class="price_offer_el-offer">Дополнительные слайды по ставке</p>
                     </div>
                 </div>
             </Container>
@@ -2428,7 +2432,7 @@
     .container-inside {
         margin-top: 0!important;
         margin-bottom: 0!important;
-        padding-top: 3rem;
+        /* padding-top: 3rem; */
     }
     /* MAIN BANNER */
     .main-banner_container {
@@ -2645,18 +2649,22 @@
 
     /*  */
     .price_offer_container {
-        background-color: red;
+        background-color: var(--color-global-baackground_light);
     }   
     .price_offer_wrapper {
         max-width: 1200px;
         margin: 0 auto;
         display: flex;
+        flex-direction: column;
+        gap: 5rem;
+        padding-left: 5%;
+        padding-bottom: 10%;
     }
     .price_offer_wrapper > .price_offer_el {
-        display: flex;
+        background-color: var(--color-global-baackground_light);
     }
     .price_offer_wrapper > .price_offer_el > .price_offer_el-price {
-        font-size: 3rem;
+        font-size: 4rem;
     }
     .price_offer_wrapper > .price_offer_el > .price_offer_el-offer {
 
