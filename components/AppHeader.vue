@@ -396,8 +396,9 @@ watch(cartMenuIsOpened, () => {
   if(cartMenuIsOpened.value) {
     document.addEventListener("click", (e) => {
       
-      if(e.target.classList && e.target.classList.contains('cart_container_opened')) {
+      if(e.target.classList && e.target.classList.contains('cart__opened')) {
         cartMenuIsOpened.value = false
+        
       }
 
     })
@@ -634,7 +635,7 @@ watch(
             </div>
           </label>
 
-          <div class="cart_container" :class="cartMenuIsOpened ? 'cart_container_opened' : 'cart_container_closed'">
+          <div class="cart_container" :class="cartMenuIsOpened ? 'cart__opened' : 'cart_closed'">
 
             <div class="cart_wrapper">
 
@@ -775,8 +776,10 @@ a:visited {
 .cart > input {
   display: none;
 }
+.cart > label {
+  cursor: pointer;
+}
 .cart > label > .cart_icon {
-
 }
 .cart > label > .cart_count {
   position: absolute;
@@ -792,25 +795,31 @@ a:visited {
   border-radius: 1rem;
 }
 .cart > .cart_container {
+  /* display: none; */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
   background-color: var(--color-bg-popup);
-  backdrop-filter: blur(2px)
+  backdrop-filter: blur(2px);
 }
-.cart > .cart_container_opened {
+.cart > .cart__opened {
   opacity: 1;
   transition: all .3s ease-in;
   z-index: 99;
 }
-.cart > .cart_container_closed {
+.cart > .cart_closed {
   opacity: 0;
   transition: all .3s ease-in-out;
   z-index: -1;
+  display: none;
+}
+.cart > .cart_closed > .cart_wrapper {
+  display: none
 }
 .cart_wrapper {
+  /* display: none; */
   width: 70%;
   height: 100vh;
   background-color: var(--color-global-baackground_light);
@@ -880,6 +889,9 @@ a:visited {
     /* padding: 0 1rem; */
     padding-left: 1rem;
     justify-content: flex-end;
+  }
+  .nav-block_left {
+    flex: 1;
   }
   .login_contaner {
     display: none;
@@ -1026,6 +1038,7 @@ a:visited {
   .opacity-0-767 {
     display: none;
     opacity: 0;
+    z-index: -1;
   }
 
   .opacity-1-767 {
