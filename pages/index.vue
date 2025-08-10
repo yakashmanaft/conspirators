@@ -203,9 +203,9 @@ const changeColorOnClick = (e) => {
       <section 
         @click="$router.push('/journal')" 
         class="default_list_item-container block_is_link"
-        style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text)"
+        style="border: 1px solid var(--color-urgency-low-10); background-color: var(--color-btn-text)"
       >
-        <h3 style="color: var(--color-global-text); margin-top: 1rem;">Журнал</h3>
+        <h3 style="color: var(--color-urgency-low); margin-top: 1rem;">Журнал</h3>
         <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
         <div class="section_btn">
           <div class="section_icon">

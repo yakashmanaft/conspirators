@@ -68,9 +68,11 @@
 
     <!-- PORTFOLIO -->
     <div style="background-color: var(--color-global-baackground_light);">
-
+        <Container style="margin: 0 auto; padding-top: 2rem;">
+            <h2 style="font-size: 3rem;margin: 0; text-align: center; text-transform: uppercase; font-weight: bold;">Набор слайдов</h2>
+            <p style="text-align: center; font-size: 1rem;">под заказ</p>
+        </Container>
         <Container style="" class="container_portfolio">
-
             <!-- LEFT -->
             <!-- portfolio_chip -->
             <ul class="portfolio_chip">
@@ -121,7 +123,7 @@
 
                 <div class="price_offer_wrapper">
                     <div class="price_offer_el">
-                        <p style="margin: 0;">Набор слайдов</p>
+                        <p style="margin: 0;">Стоимость:</p>
                         <p style="margin: 0;" class="price_offer_el-price"> 7 299,00 <span style="font-size: 2rem;">руб.</span></p>
                         <p style="margin: 0; color: var(--color-global-text_second)">Это 5 часов работы специалиста</p>
                         <div style="margin-top: 2rem;">
@@ -466,7 +468,7 @@
         {
             id: 4,
             title: 'Выгоды',
-            desc: 'То, что получает конечным пользваотель от вашего продукта',
+            desc: 'То, что получает конечным пользователь от вашего продукта',
             img: '05_1'
         },
         {
@@ -988,6 +990,153 @@
         display: flex;
         justify-content: center;
     }
+
+
+    /*  */
+    /* 
+        PORTFOLIO
+    */
+    .container_portfolio {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto; 
+        padding: 0;
+    }
+    .portfolio_chip {
+        list-style: none;
+        margin: 0 auto;
+        /* margin-top: 1rem; */
+        padding: 0;
+        display: flex;
+        gap: 2rem;
+        width: 90vw;
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        position: relative;
+    }
+    .portfolio_chip::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .portfolio_chip > li > input {
+        display: none;
+    }
+    /* current_portfolio_chip */
+    .current_portfolio_chip {
+    }
+    .current_portfolio_chip:after {
+    }
+    .current_portfolio_chip > h3{
+        color: var(--color-global-text)!important;
+    }
+    .current_portfolio_chip > .section_icon > svg {
+        color: var(--color-wallet-fund-invested);
+    }
+    .current_portfolio_chip > div {
+        background-color: var(--color-wallet-fund-invested);
+    }
+    /* other chip */
+    .portfolio_chip > li > label {
+        cursor: pointer;    
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        transition: all .1s ease-in;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }  
+    .portfolio_chip > li > label > div {
+        height: 2rem!important;
+        width: 2rem!important;
+        border-radius: .5rem!important;
+    }
+     .portfolio_chip > li > label > h3 {
+        white-space: nowrap;
+        margin: 0;
+        font-size: 1rem;
+        font-weight: normal;
+        transition: all .1s ease-in;
+        color: var(--color-global-text_second);
+     }
+    .portfolio_content {
+        /* background-color: var(--color-status-canceled);   */
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        position: relative;
+        padding-bottom: 3rem;
+        margin-top: 3rem;
+    }   
+    .portfolio_content:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        right: -1px;
+        height: 2px;
+        width: 40%;
+        background-color: var(--color-wallet-fund-invested-wo);
+        opacity: .4;
+    }
+    .portfolio_content_img-container {
+        flex: 1; 
+        /* background-color: red;  */
+        max-width: 280px; 
+        /* 310 / 620 / 930 */
+        /* max-height: 410px;  */
+        /* 410 / 820 / 1230 */
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 2rem; 
+        overflow: hidden; 
+    }
+    .portfolio_content h3 {
+        font-weight: bold;
+        margin-top: 2rem;
+    }
+    .portfolio_content p {
+        height: 3rem;
+        width: 90%;
+        text-align: center;
+        margin: 0;
+    }
+    /* 
+        PRICE CONTAAINER
+    */
+    /* .price_offer_container {
+        background-color: var(--color-global-baackground_light);
+    }    */
+    .price_offer_wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+        padding-left: 5%;
+        padding-bottom: 10%;
+    }
+    .price_offer_wrapper > .price_offer_el {
+        background-color: var(--color-global-baackground_light);
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-price {
+        font-size: 3rem;
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-offer {
+
+    }
+
+     /* CHIP PARAGRAPH */
+    .chip_paragraph {
+        /* justify-content: center; */
+        margin-top: -5rem;
+    }
+
     /*  */
     h2 {
         display: flex;
@@ -1438,6 +1587,142 @@
     }
 
     /* 
+        PORTFOLIO
+    */
+    .container_portfolio {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto; 
+        padding: 0;
+    }
+    .portfolio_chip {
+        list-style: none;
+        margin: 0 auto;
+        margin-top: 1rem;
+        padding: 0;
+        display: flex;
+        gap: 2rem;
+        width: 90vw;
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        position: relative;
+    }
+    .portfolio_chip::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .portfolio_chip > li > input {
+        display: none;
+    }
+    /* current_portfolio_chip */
+    .current_portfolio_chip {
+    }
+    .current_portfolio_chip:after {
+    }
+    .current_portfolio_chip > h3{
+        color: var(--color-global-text)!important;
+    }
+    .current_portfolio_chip > .section_icon > svg {
+        color: var(--color-wallet-fund-invested);
+    }
+    .current_portfolio_chip > div {
+        background-color: var(--color-wallet-fund-invested);
+    }
+    /* other chip */
+    .portfolio_chip > li > label {
+        cursor: pointer;    
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        transition: all .1s ease-in;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }  
+    .portfolio_chip > li > label > div {
+        height: 2rem!important;
+        width: 2rem!important;
+        border-radius: .5rem!important;
+    }
+     .portfolio_chip > li > label > h3 {
+        white-space: nowrap;
+        margin: 0;
+        font-weight: normal;
+        font-size: 1rem;
+        transition: all .1s ease-in;
+        color: var(--color-global-text_second);
+     }
+    .portfolio_content {
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        position: relative;
+        padding-bottom: 1.5rem;
+        margin-top: 3rem;
+    }
+    .portfolio_content:before {
+        content: '';
+        position: absolute;
+        bottom: -2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        right: -1px;
+        height: 2px;
+        width: 40%;
+        background-color: var(--color-wallet-fund-invested-wo);
+        opacity: .4;
+    }
+    .portfolio_content_img-container {
+        flex: 1; 
+        /* background-color: red;  */
+        max-width: 310px; 
+        /* 310 / 620 / 930 */
+        /* max-height: 410px;  */
+        /* 410 / 820 / 1230 */
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 2rem; 
+        overflow: hidden; 
+    }
+    .portfolio_content h3 {
+        font-weight: bold;
+        margin-top: 2rem;
+    }
+    .portfolio_content p {
+        height: 3rem;
+        width: 70%;
+        text-align: center;
+        margin: 0;
+    }
+
+    /* 
+        PRICE CONTAAINER
+    */
+    .price_offer_wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+        padding-left: 5%;
+        padding-bottom: 10%;
+        margin-top: 5rem;
+    }
+    .price_offer_wrapper > .price_offer_el {
+        background-color: var(--color-global-baackground_light);
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-price {
+        font-size: 4rem;
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-offer {
+
+    }
+
+    /* 
         chip paragraph 
     */
     .chip_paragraph {
@@ -1445,6 +1730,7 @@
         padding-right: 1rem;
         padding-top: 3rem!important;
         border-bottom: unset;
+        margin-top: -5rem;
     }
 
     /* 
@@ -1707,14 +1993,17 @@
         margin-top: 4.5rem;
         /* background-color: red; */
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         align-items: center;
         justify-content: space-between;
         grid-template-areas: 
-        "mark mark"
-        "left left"
-        "right right"
+        "mark"
+        "left"
+        "right"
         ;
+    }
+    .main-banner_wrapper h2 {
+        /* margin-right: 25rem; */
     }
     .main-banner_area-right {
         grid-area: right; 
@@ -1749,6 +2038,168 @@
         right: 1rem;
         transform: translateY(-215%);
     }
+
+
+    /* 
+        PORTFOLIO
+    */
+    .container_portfolio {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto; 
+        /* margin-top: 5rem; */
+    }
+    .portfolio_chip {
+        list-style: none;
+        margin: 0 auto;
+        margin-top: 1rem;
+        padding: 0;
+        /* width: 50%; */
+        /* padding-left: 10%; */
+        /* position: relative; */
+        /* border-top: 1px solid var(--color-global-text_second); */
+        display: flex;
+        gap: 2rem;
+        width: 90vw;
+        -ms-overflow-style: none;  /* IE and Edge */
+        overflow: scroll; 
+        scrollbar-width: none; 
+        position: relative;
+    }
+    .portfolio_chip::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+    }
+    .portfolio_chip > li > input {
+        display: none;
+    }
+    /* current_portfolio_chip */
+    .current_portfolio_chip {
+        /* border-bottom: 3px solid var(--color-wallet-fund-invested); */
+        /* margin-right: 3px;  */
+        /* position: relative; */
+    }
+    .current_portfolio_chip:after {
+        /* content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70%;
+        height: 3px; */
+        /* background-color: var(--color-wallet-fund-invested); */
+    }
+    .current_portfolio_chip > h3{
+        color: var(--color-global-text)!important;
+    }
+    .current_portfolio_chip > .section_icon > svg {
+        color: var(--color-wallet-fund-invested);
+    }
+    .current_portfolio_chip > div {
+        background-color: var(--color-wallet-fund-invested);
+    }
+    /* other chip */
+    .portfolio_chip > li > label {
+        cursor: pointer;    
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        transition: all .1s ease-in;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }  
+    .portfolio_chip > li > label > div {
+        height: 2rem!important;
+        width: 2rem!important;
+        border-radius: .5rem!important;
+    }
+     .portfolio_chip > li > label > h3 {
+        white-space: nowrap;
+        margin: 0;
+        font-size: 1rem;
+        font-weight: normal;
+        transition: all .1s ease-in;
+        color: var(--color-global-text_second);
+     }
+    .portfolio_content {
+        /* background-color: var(--color-status-canceled);   */
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        position: relative;
+        padding-bottom: 1.5rem;
+        margin-top: 3rem;
+    }
+    .portfolio_content:after {
+        content: '';
+        position: absolute;
+        bottom: -2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        right: -1px;
+        height: 2px;
+        width: 40%;
+        background-color: var(--color-wallet-fund-invested-wo);
+        opacity: .4;
+    }
+    .portfolio_content_img-container {
+        flex: 1; 
+        /* background-color: red;  */
+        max-width: 310px; 
+        /* 310 / 620 / 930 */
+        /* max-height: 410px;  */
+        /* 410 / 820 / 1230 */
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 2rem; 
+        overflow: hidden; 
+    }
+    .portfolio_content h3 {
+        font-weight: bold;
+        margin-top: 2rem;
+    }
+    .portfolio_content p {
+        height: 3rem;
+        width: 50%;
+        text-align: center;
+        margin: 0;
+    }
+
+    /* 
+        PRICE CONTAAINER
+    */
+    /* .price_offer_container {
+        background-color: var(--color-global-baackground_light);
+    }    */
+    .price_offer_wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+        padding-left: 15%;
+        padding-bottom: 10%;
+    }
+    .price_offer_wrapper > .price_offer_el {
+        background-color: var(--color-global-baackground_light);
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-price {
+        font-size: 4rem;
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-offer {
+
+    }
+
+    /* CHIP PARAGRAPH */
+    .chip_paragraph {
+        justify-content: center;
+        margin-top: -5rem;
+    }
+
     /*  */
     h2 {
         display: flex;
@@ -2213,13 +2664,139 @@
     }
 
     /* 
+        PORTFOLIO
+    */
+    .container_portfolio {
+        padding-top: 5rem;
+        margin: 0 auto; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        position: relative;
+    }
+    .portfolio_chip {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 50%;
+        padding-left: 10%;
+        position: relative;
+    }
+    .portfolio_chip:after {
+        content: '';
+        position: absolute;
+        top: -10%;
+        right: -1px;
+        border-right: 1px solid var(--color-global-text_second);
+        height: 120%;
+        width: 1px;
+    }
+    .portfolio_chip > li > input {
+        display: none;
+    }
+    /* current_portfolio_chip */
+    .current_portfolio_chip {
+        border-right: 3px solid var(--color-wallet-fund-invested);
+        margin-right: 3px; 
+    }
+    .current_portfolio_chip > h3{
+        color: var(--color-global-text)!important;
+    }
+    .current_portfolio_chip > .section_icon > svg {
+        color: var(--color-wallet-fund-invested);
+    }
+    .current_portfolio_chip > div {
+        background-color: var(--color-wallet-fund-invested);
+    }
+    /* other chip */
+    .portfolio_chip > li > label {
+        cursor: pointer;    
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        transition: all .1s ease-in;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }  
+    /* other chip hover */
+    .portfolio_chip > li > label:hover {
+        border-right: 3px solid var(--color-bg-popup);
+        margin-right: 3px; 
+    }
+    .portfolio_chip > li > label:hover > h3 {
+        color: var(--color-bg-popup);
+    }
+    .portfolio_chip > li > label:hover > .section_icon > svg {
+        color: var(--color-bg-popup);
+    }
+    .portfolio_chip > li > label > .section_icon {
+        color: var(--color-global-text_second);
+    }
+    .portfolio_chip > li > label > h3 {
+        font-size: 1rem;
+        margin: 0;
+        font-weight: normal;
+        transition: all .1s ease-in;
+        color: var(--color-global-text_second);
+    }
+    .portfolio_content {
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+    }
+    .portfolio_content_img-container {
+        flex: 1; 
+        background-color: red; 
+        max-width: 310px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 2rem; 
+        overflow: hidden; 
+    }
+    .portfolio_content h3 {
+        font-weight: bold;
+        margin-top: 1rem;
+    }
+    .portfolio_content p {
+        height: 7rem;
+        width: 50%;
+        text-align: center;
+    }
+
+    /*  */
+    .price_offer_container {
+        background-color: var(--color-global-baackground_light);
+    }   
+    .price_offer_wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+        padding-left: 20%;
+        padding-bottom: 10%;
+    }
+    .price_offer_wrapper > .price_offer_el {
+        background-color: var(--color-global-baackground_light);
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-price {
+        font-size: 4rem;
+    }
+    .price_offer_wrapper > .price_offer_el > .price_offer_el-offer {
+
+    }
+
+    /* 
         Связаться с нами 
     */
     .contact-us-content_container {
         /* margin: 1rem; */
         margin-top: 2.5rem!important;
         display: flex;
-        justify-content: space-between;
+        /* justify-content: space-between; */
+        justify-content: center;
         gap: 2rem;
     }
     .contact-us-content_container form {
@@ -2393,7 +2970,8 @@
     .chip_paragraph {
         margin-left: 1.5rem;
         margin-right: 1.5rem;
-        padding-top: 3.5rem!important;
+        justify-content: center;
+        /* padding-top: 3.5rem!important; */
         border-bottom: unset;
     }
     .chip_content_wrapper {
@@ -2541,7 +3119,7 @@
         PORTFOLIO
     */
     .container_portfolio {
-        padding-top: 10rem;
+        padding-top: 5rem;
         margin: 0 auto; 
         display: flex; 
         align-items: center; 
@@ -2591,8 +3169,8 @@
         gap: 1rem;
         align-items: center;
         transition: all .1s ease-in;
-        padding-top: .25rem;
-        padding-bottom: .25rem;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
     }   
     /* other chip hover */
     .portfolio_chip > li > label:hover {
@@ -2647,7 +3225,9 @@
         text-align: center;
     }
 
-    /*  */
+    /* 
+        PRICE CONTAAINER
+    */
     .price_offer_container {
         background-color: var(--color-global-baackground_light);
     }   
