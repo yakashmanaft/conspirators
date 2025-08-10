@@ -223,18 +223,27 @@ const changeColorOnClick = (e) => {
 
     <!--  -->
     <h2 class="sub_title-container">В помощь соучастникам</h2>
-    <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функций и опыт взаимодействия приложением в одном месте</p>
+    <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функции и опыт взаимодействия с приложением в одном месте</p>
 
     <div class="section_container">
 
-      <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
+        <div class="help_section-container">
+
+          <ul style="color: var(--color-global-text_second)">
+            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
+            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
+            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
+          </ul>
+        </div>
+
+      <!-- <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
         <h3 style="color: var(--color-gloab-text);">Помощь</h3>
         <ul style="color: var(--color-global-text_second)">
           <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
           <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
           <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
         </ul>
-      </section>
+      </section> -->
     </div> 
 
     <!-- НАШИ ЦИФРЫ -->
@@ -437,6 +446,24 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
   }
+  /* HELP BLOCK */
+  .help_section-container {
+
+  }
+  .help_section-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+  }
+  .help_section-container ul li {
+    padding: 1rem;
+    border-left: 1px solid var(--color-btn-hover-bg);
+    margin: 1rem 0;
+  }
+  .help_section-container ul li:hover {
+    border-left: 1px solid var(--color-urgency-low)
+  }
 
 }
 @media screen and (min-width: 576px) and (max-width: 767px){
@@ -487,6 +514,24 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
   }
+  /* HELP BLOCK */
+  .help_section-container {
+
+  }
+  .help_section-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+  }
+  .help_section-container ul li {
+    padding: 1rem;
+    border-left: 1px solid var(--color-btn-hover-bg);
+    margin: 1rem 0;
+  }
+  .help_section-container ul li:hover {
+    border-left: 1px solid var(--color-urgency-low)
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 991px)  {
   .header_container {
@@ -529,6 +574,24 @@ section:hover {
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
+  }
+  /* HELP BLOCK */
+  .help_section-container {
+
+  }
+  .help_section-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+  }
+  .help_section-container ul li {
+    padding: 1rem;
+    border-left: 1px solid var(--color-btn-hover-bg);
+    margin: 1rem 0;
+  }
+  .help_section-container ul li:hover {
+    border-left: 1px solid var(--color-urgency-low)
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
@@ -575,6 +638,24 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
     border: 1px solid var(--color-btn-hover-bg);
+  }
+  /* HELP BLOCK */
+  .help_section-container {
+
+  }
+  .help_section-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+  }
+  .help_section-container ul li {
+    padding: 1rem;
+    border-left: 1px solid var(--color-btn-hover-bg);
+    margin: 1rem 0;
+  }
+  .help_section-container ul li:hover {
+    border-left: 1px solid var(--color-urgency-low)
   }
 }
 @media screen and (min-width: 1200px) {
@@ -636,6 +717,25 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
     border: 1px solid var(--color-btn-hover-bg);
+  }
+
+  /* HELP BLOCK */
+  .help_section-container {
+
+  }
+  .help_section-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+  }
+  .help_section-container ul li {
+    padding: 1rem;
+    border-left: 1px solid var(--color-btn-hover-bg);
+    margin: 1rem 0;
+  }
+  .help_section-container ul li:hover {
+    border-left: 1px solid var(--color-urgency-low)
   }
 }
 </style>

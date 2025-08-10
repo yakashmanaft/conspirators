@@ -29,10 +29,10 @@
 
                     <Icon 
                         v-for="icon in set_item_icons(item.name)"
-                        style="padding: 0;" 
+                        style="padding: 0; box-shadow: var(--hover-shadow); padding: .5rem; border-radius: .5rem;" 
                         size="42px"
                         :name="icon.name"
-                        color="var(--color-global-text)"
+                        color="var(--color-global-baackground_light)"
                     />
                 </div>
                 <p style="margin: 0; font-weight: bold;">{{ item.title }}</p>
@@ -504,7 +504,7 @@
           display: grid;
           grid-template-columns: repeat(4, 1fr) 1fr!important;
           gap: 1rem;
-            margin-top: 1.5rem;
+          margin-top: 3rem;
       }
         .item_wrapper {
             /* background-color: var(--color-operation-type-donation); */
