@@ -21,6 +21,13 @@ const sessionUser:any = useUserSession().user;
 // useProfileStore().loadData()
 // const profiles = useProfileStore().profiles
 
+const meshesLocal = ref([
+  {
+    id: 1,
+    uuid: '124KJGk2423r'
+  }
+])
+
 // Chips
 //= section fund
 const choosenChip_section = ref('available')
@@ -87,14 +94,10 @@ const affiliationBandChips = ref([
 //   }
 // ]) 
 const currentAffiliation = ref({
-  // name: 'all',
-  // title: 'Всего',
-  // bandID: 0,
-  // id: 1
-  name: 'personal',
-  title: 'Личные',
-  bandID: 0,
-  id: 1
+  id: null,
+  bandID: null,
+  name: 'all',
+  title: 'Все',
 })
 //= fund paragraph
 const fundParagraph = ref([
@@ -2406,7 +2409,6 @@ const bank_computed = computed(() => {
 //= affiliation band chips
 const affiliation_computed = computed(() => {
   let array:any = []
-
   // Добавляем стоковые позиции
   affiliationBandChips.value.forEach(item => {
     array.push(item)
@@ -4204,14 +4206,301 @@ const { data: bank } = useFetch("/api/banks/bank", {
 
     <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p> -->
 
+    <div class="meshes_local_section">
+      
+      <div style="width: 100%; display: flex; align-items: center; justify-content: center;" >
+        <p style="margin-top: 2rem; background-color: var(--color-global-baackground_light); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-global-text_second)">Обновлено 16.03.2026</p>
+      </div>
 
+      <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
+      <!-- {{ currentAffiliation }} -->
+      <Chip
+        id="affiliation-chip-block"
+        :tabs="affiliation_computed"
+        :default="currentAffiliation"
+        :btn_all_exist="true"
+        @changed="changeChipAffiliation"
+        style="margin-top: 1em; padding: 0 1rem;"
+      />
+
+      <!-- ОБЩИЙ БЛОК -->
+       <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 0 1rem; border-radius: 1rem; padding: 1rem">
+         <!-- Заголовок группы -->
+         <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+
+          <h2 style="font-size: 1rem; margin: 0; opacity: .7;">{{ currentAffiliation.title }}</h2>
+          
+
+          <div style="display: flex; gap: 1rem;">
+            <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
+              <Icon
+                class="link"
+                name="mdi:help-circle-outline"
+                size="32px"
+                color="var(--color-global-baackground_light)"
+              />
+            </div>
+            <div class="meshes_local_filter_button">
+              <Icon
+                class="link"
+                name="mdi:clock-outline"
+                size="32px"
+                color="var(--color-global-baackground_light)"
+              />
+            </div>
+            <div class="meshes_local_filter_button">
+              <Icon
+                class="link"
+                name="mdi:google-analytics"
+                size="32px"
+                color="var(--color-global-baackground_light)"
+              />
+            </div>
+
+          </div>
+         </div>
+
+         <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
+         </p>
+         <!-- КНОПКИ КОШЕЛЬКА -->
+         <div style="display: flex; gap: 1rem; justify-content: center;">
+          <div style="display: flex; flex-direction: column; align-items: center;">
+              <Icon
+                class="link"
+                name="mdi:plus"
+                size="32px"
+                color="var(--color-global-baackground_light)"
+              />
+              <p>Принять</p>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <Icon
+                class="link"
+                name="mdi:send"
+                size="32px"
+                color="var(--color-global-baackground_light)"
+              />
+              <p>Отправить</p>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <Icon
+                class="link"
+                name="mdi:swap-horizontal"
+                size="32px"
+                color="var(--color-global-baackground_light)"
+              />
+              <p>Обменять</p>
+            </div>
+         </div>
+       </div>
+
+
+      <!-- Свободные деньги -->
+      <!-- ЗАГОЛОВОК ГРУППЫ -->
+      <div class="meshes_local_group_wrapper" style="margin-top: 2rem;">
+        <div class="group_wrapper_background"></div>
+        <div class="group_wrapper_content">
+
+          <div>
+            <p>Денег на счетах</p>
+            <p>50071,21</p>
+          </div>
+          <!-- <div class="meshes_local_filter_button">
+            <Icon
+              class="link"
+              name="mdi:filter-outline"
+              size="32px"
+              color="var(--color-global-baackground_light)"
+            />
+          </div> -->
+          <!-- mdi:filter -->
+        </div>
+      </div>
+      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
+      <div class="wallet-section_container">
+        <Section         
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+          <p style="color: var(--color-global-text);" >48722,85</p>
+          <p style="color: var(--color-btn-wo-bg);">Валюта ЦБ РФ</p>
+        </Section>
+        <Section
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+        <p style="color: var(--color-global-text);" >1349,12</p>
+        <p style="color: var(--color-btn-wo-bg);">Иностранная валюта</p>
+        </Section>
+      </div>
+
+      <!-- ИНВЕСТИЦИИ -->
+      <!-- ЗАГОЛОВОК ГРУППЫ -->
+      <div class="meshes_local_group_wrapper">
+        <div class="group_wrapper_background" style="background-color: var(--color-wallet-fund-invested-wo)"></div>
+        <div class="group_wrapper_content">
+
+          <div>
+            <p>Инвестиции</p>
+            <p>256755,14</p>
+          </div>
+          <!-- <div class="meshes_local_filter_button">
+            <Icon
+              class="link"
+              name="mdi:filter-outline"
+              size="32px"
+              color="var(--color-global-baackground_light)"
+            />
+          </div> -->
+          <!-- mdi:filter -->
+        </div>
+
+
+      </div>
+      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
+      <div class="wallet-section_container">
+        <Section         
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+          <p style="color: var(--color-global-text);" >221689,11</p>
+          <p style="color: var(--color-btn-wo-bg);">Фондовый рынок</p>
+        </Section>
+        <Section
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+        <p style="color: var(--color-global-text);" >5000,00</p>
+        <p style="color: var(--color-btn-wo-bg);">Вклады</p>
+        </Section>
+        <Section
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+        <p style="color: var(--color-global-text);" >25066,33</p>
+        <p style="color: var(--color-btn-wo-bg);">Крипто дебет</p>
+        </Section>
+      </div>
+
+      <!-- ЗАЙМЫ -->
+      <!-- ЗАГОЛОВОК ГРУППЫ -->
+      <div class="meshes_local_group_wrapper">
+        <div class="group_wrapper_background" style="background-color: var(--color-urgency-middle);"></div>
+        <div class="group_wrapper_content">
+
+          <div>
+            <p>Займы</p>
+            <p>-143679,14</p>
+          </div>
+          <!-- <div class="meshes_local_filter_button">
+            <Icon
+              class="link"
+              name="mdi:filter-outline"
+              size="32px"
+              color="var(--color-global-baackground_light)"
+            />
+          </div> -->
+          <!-- mdi:filter -->
+        </div>
+
+
+      </div>
+      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
+      <div class="wallet-section_container">
+        <Section         
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+          <p style="color: var(--color-global-text);" >141629,14</p>
+          <p style="color: var(--color-btn-wo-bg);">Размещены в заемные средства</p>
+        </Section>
+        <Section
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+        <p style="color: var(--color-global-text);" >2050,00</p>
+        <p style="color: var(--color-btn-wo-bg);">Инвестированы в проекты</p>
+        </Section>
+      </div>
+
+      <!-- Долги -->
+      <!-- ЗАГОЛОВОК ГРУППЫ -->
+      <div class="meshes_local_group_wrapper">
+        <div class="group_wrapper_background" style="background-color: var(--color-urgency-high);"></div>
+        <div class="group_wrapper_content">
+
+          <div>
+            <p>Долговые обязательства</p>
+            <p>-156987,21</p>
+          </div>
+          <!-- <div class="meshes_local_filter_button">
+            <Icon
+              class="link"
+              name="mdi:filter-outline"
+              size="32px"
+              color="var(--color-global-baackground_light)"
+            />
+          </div> -->
+          <!-- mdi:filter -->
+        </div>
+
+
+      </div>
+      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
+      <div class="wallet-section_container">
+        <Section         
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+          <p style="color: var(--color-global-text);" >141629,14</p>
+          <p style="color: var(--color-btn-wo-bg);">Долг к соучастникам</p>
+        </Section>
+        <Section
+          :fDirection="`column`"
+          :fAlignItems="`flex-start`"
+        >
+        <p style="color: var(--color-global-text);" >2050,00</p>
+        <p style="color: var(--color-btn-wo-bg); ">Внешняя задолженность</p>
+        </Section>
+      </div>
+
+      <div class="wallet-section_container">
+        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
+          <p style="color: var(--color-global-text);" >450506,13</p>
+          <p style="color: var(--color-btn-wo-bg);">Потенциал***</p>
+        </div>
+        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">
+          <p style="color: var(--color-global-text);" >306862,13</p>
+          <p style="color: var(--color-btn-wo-bg);">Факт****</p>
+        </div>
+        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">
+          <p style="color: var(--color-global-text);" >0.35* / 2.14**</p>
+          <p style="color: var(--color-btn-wo-bg);">Рейтинг</p>
+        </div>
+
+      </div>
+
+      <div style="margin: 0 1rem; padding-bottom: 1rem;">
+        <p>
+          * Отношение положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) к сумме займов (выданные кредиты, инвеситции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства.</p>
+        <p>
+          ** Отношение суммы положительных средств на счеах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб), инвестиций (фондовый рынок, вклады, крипто-дебет) к сумме займов (выданные кредитов, инвестиции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства (свободные средства + инвестиции).</p>
+        <p>
+          *** Сумма положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб), инвестиций (фондовый рынок, вклады, крипто-дебет) и займов (выданные кредиты, инвеситции в проекты) 
+        </p>
+        <p>
+          **** Сумма положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) и инвестиций (фондовый рынок, вклады, крипто-дебет)
+        </p>
+      </div>
+
+    </div>
 
     <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
     <Chip
       id="affiliation-chip-block"
       :tabs="affiliation_computed"
       :default="currentAffiliation"
-      :btn_all_exist="false"
+      :btn_all_exist="true"
       @changed="changeChipAffiliation"
       style="margin-top: 2rem;"
     />
@@ -4271,17 +4560,15 @@ const { data: bank } = useFetch("/api/banks/bank", {
         </div>
         <div class="info_total_popup_content">
 
-          <p>В TOTAL не входит: </p>
+          <p>В сумму не входит: </p>
           <ul>
-            <li>Баланс проектов</li>
-            <li>Задолежнность по кредитам в разделе "Долговые обязательства"</li>
+            <li>Раздел займы (выданные кредитов, инвестиции в проекты)</li>
+            <li>Раздел Долговые обязательства</li>
           </ul>
-          <p>В TOTAL входит: </p>
+          <p>В сумму входят разделы: </p>
           <ul>
-            <li>Сумма из раздела "Свободные средства"</li>
-            <li>
-              Сумма к получению из раздела "Финансирование соучастников"
-            </li>
+            <li>Положительные средства на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб)</li>
+            <li>Инвестиции (фондовый рынок, вклады, крипто-дебет)</li>
           </ul>
           <p>Не нашли что искали? Давайте попробуем посомтреть в разделе <nuxt-link to="/help">Помощь</nuxt-link></p>
           <p>Либо напишите нам в разделе <nuxt-link to="/about">Контакты</nuxt-link></p>
@@ -5329,6 +5616,44 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .transfer_avatar_container {
   }
+
+  /* meshes local */
+  .meshes_local_section {
+    background-color: var(--color-status-finished);
+    /* padding: 1.5rem;   */
+  }
+  .meshes_local_group_wrapper {
+    position: relative;
+    border-radius: 1rem;
+    margin: 0 1rem;
+  }
+  .group_wrapper_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background: #3498db; */
+    background-color: var(--color-urgency-low);
+    opacity: 0.3;
+    border-radius: 1rem;
+  }
+  .group_wrapper_content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .group_wrapper_content p {
+    margin: 0;
+  }
+  .meshes_local_filter_button {
+      background-color: var(--color-global-text);
+      opacity: .7;
+      border-radius: .3rem;
+  }
 }
 @media screen and (min-width: 576px) {
   .section-header_wrapper {
@@ -6008,5 +6333,6 @@ const { data: bank } = useFetch("/api/banks/bank", {
   .mesh_footer {
     align-items: center;
   }
+
 }
 </style>

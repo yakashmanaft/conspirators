@@ -4,15 +4,16 @@
   currentTitle: {{ currentTitle }}
   <br /> -->
   <div class="tab_wrapper scroll-wheel-container">
-    <!-- Кнопка ALL -->
+    <!-- Кнопка all -->
+    <!-- {{ currentTitle }} -->
     <div class="tab" v-if="props.btn_all_exist">
       <input
         type="radio"
-        :id="`tab-radio_item_null`"
+        id="`tab-radio_item_null`"
+        :value="default_data"
         v-model="currentTitle"
-        :value="default"
       />
-      <label :for="`tab-radio_item_null`" @click="emit_object(props.default)">
+      <label for="tab-radio_item_null" @click="emit_object(default_data)">
         <p>Все</p>
       </label>
     </div>
@@ -46,6 +47,13 @@ const props = defineProps({
   }
 });
 const currentTitle = ref(props?.default);
+//
+const default_data = ref({
+  id: null,
+  bandID: null,
+  name: 'all',
+  title: 'Все',
+})
 
 // EMITS
 // = variables
@@ -53,8 +61,14 @@ const emit = defineEmits(["changed"]);
 // = emits
 const emit_object = (obj: any) => {
   if (obj) {
-    emit("changed", obj);
-    // console.log(name)
+    if(obj.id === null) {
+      currentTitle.value = default_data.value
+      emit("changed", default_data.value);
+    } else {
+
+      emit("changed", obj);
+      // console.log(name)
+    }
   }
 };
 
