@@ -4192,6 +4192,476 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
 })
 
+// meshes_cast
+const currecy_pair = ref([
+  {
+    name: 'RUB / USD',
+    price: 91.98
+  },
+  {
+    name: 'USD / RUB',
+    price: 77.17
+  },
+  {
+    name: 'rub / vnd (Вьетнамский донг)',
+    price: 0.0032
+  },
+  {
+    name: 'CNY / RUB',
+    price: 11.65
+  },
+])
+
+const localGroupList_isOpened = ref(false);
+const meshes_cast = ref([
+  {
+    id: 1,
+    uuid: '19847293hrffdskf1',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКЕС',
+    broker: 'БАНКЕС',
+    name: '',
+    currency: 'RUB',
+    amount: 1350.00
+  },
+  {
+    id: 2,
+    uuid: '19847293hrffdskf2',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКАС',
+    broker: 'БАНКЕС',
+    name: '',
+    currency: 'RUB',
+    amount: 400.00
+  },
+  {
+    id: 3,
+    uuid: '19847293hrffdskf3',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'ЮНИДРАМ',
+    broker: 'БАНКЕС',
+    name: '',
+    currency: 'RUB',
+    amount: 400.00
+  },
+  {
+    id: 4,
+    uuid: '19847293hrffdskf4',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'СЗ_АСВ',
+    broker: 'БАНКЕС',
+    name: '',
+    currency: 'RUB',
+    amount: 150.00
+  },
+  {
+    id: 5,
+    uuid: '19847293hrffdskf5',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКЮС',
+    broker: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 1081.30
+  },
+  {
+    id: 6,
+    uuid: '19847293hrffdsk6',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКЮС',
+    broker: 'БАНКЕС',
+    currency: 'EUR',
+    amount: 5.00
+  },
+  {
+    id:7,
+    uuid: '19847293hrffdskf7',
+    tag: 'Деньги на счетах',
+    type: 'Накопительные счета',
+    owner: 'БАНКЕС',
+    broker: 'ОЗОН',
+    currency: 'RUB',
+    amount: 700.00
+  },
+  {
+    id:8,
+    uuid: '19847293hrffdskf8',
+    tag: 'Деньги на счетах',
+    type: 'Накопительные счета',
+    owner: 'БАНКАС',
+    broker: 'ОЗОН',
+    currency: 'RUB',
+    amount: 1001.52
+  },
+  {
+    id: 9,
+    uuid: '19847293hrffdskf9',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'ЮНИДРАМ',
+    broker: 'ОЗОН',
+    name: '',
+    currency: 'RUB',
+    amount: 2035.08
+  },
+  {
+    id: 10,
+    uuid: '19847293hrffdskf10',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'С.В.Анфалов',
+    broker: 'ОЗОН',
+    name: '',
+    currency: 'RUB',
+    amount: 1004.38
+  },
+  {
+    id: 11,
+    uuid: '19847293hrffdskf11',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЕС',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 1048.74
+  },
+  {
+    id: 12,
+    uuid: '19847293hrffdskf12',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКАС',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 3096.73
+  },
+  {
+    id: 13,
+    uuid: '19847293hrffdskf13',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 63.92
+  },
+  {
+    id: 14,
+    uuid: '19847293hrffdskf14',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЮС',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 395.84
+  },
+  {
+    id: 15,
+    uuid: '19847293hrffdskf15',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'ЮНИДРАМ',
+    broker: 'ВТБ',
+    name: '',
+    currency: 'RUB',
+    amount: 3413.16
+  },
+  {
+    id: 16,
+    uuid: '19847293hrffdskf16',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЕС',
+    broker: 'Яндекс',
+    name: 'ФИИ',
+    currency: 'RUB',
+    amount: 1478.53
+  },
+  {
+    id: 17,
+    uuid: '19847293hrffdskf17',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'Яндекс',
+    name: 'ФИИ',
+    currency: 'RUB',
+    amount: 107.45
+  },  
+  {
+    id: 18,
+    uuid: '19847293hrffdskf18',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 111.36
+  },
+  {
+    id: 19,
+    uuid: '19847293hrffdskf19',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЕС',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 22027.59
+  },
+  {
+    id: 20,
+    uuid: '19847293hrffdskf20',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 153.18
+  },
+  {
+    id: 21,
+    uuid: '19847293hrffdskf21',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЮС',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 353.27
+  },
+  {
+    id: 22,
+    uuid: '19847293hrffdskf22',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'ЮНИДРАМ',
+    broker: 'Т-Банк',
+    name: '',
+    currency: 'RUB',
+    amount: 4046.01
+  },
+  {
+    id: 23,
+    uuid: '19847293hrffdskf23',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЮС',
+    broker: 'Т-Банк',
+    name: '',
+    currency: 'RUB',
+    amount: 165.79
+  },
+  {
+    id: 24,
+    uuid: '19847293hrffdskf24',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'С.В.Анфалов',
+    broker: 'Ренессанс',
+    name: '',
+    currency: 'RUB',
+    amount: 1120.30
+  },
+  {
+    id: 25,
+    uuid: '19847293hrffdskf25',
+    tag: 'Деньги на счетах',
+    type: 'Стандартный счет',
+    owner: 'БАНКЮС',
+    broker: 'Т-Банк',
+    name: '',
+    currency: 'CNY',
+    amount: 10.00
+  },
+  {
+    id: 26,
+    uuid: '19847293hrffdskf26',
+    tag: 'Деньги на счетах',
+    type: 'Стандартный счет',
+    owner: 'БАНКЮС',
+    broker: 'Т-Банк',
+    name: '',
+    currency: 'USD',
+    amount: 10.00
+  },
+  {
+    id: 27,
+    uuid: '19847293hrffdskf27',
+    tag: 'Инвестиции',
+    type: 'Вклады',
+    broker: 'ОЗОН',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 5000.00
+  },
+  {
+    id: 27,
+    uuid: '19847293hrffdskf27',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'Phantom Wallet',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 7797.35
+  },
+  {
+    id: 28,
+    uuid: '19847293hrffdskf28',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'Metamask wallet',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 12515.43
+  },
+  {
+    id: 29,
+    uuid: '19847293hrffdskf29',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'Telegram Wallet',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 3430.58
+  },
+  {
+    id: 30,
+    uuid: '19847293hrffdskf30',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'MTT',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 3430.58
+  },
+  {
+    id: 31,
+    uuid: '19847293hrffdskf31',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 126083.66
+  },
+  {
+    id: 32,
+    uuid: '19847293hrffdskf32',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'БАНКАС',
+    currency: 'RUB',
+    amount: 23376.27
+  },
+  {
+    id: 33,
+    uuid: '19847293hrffdskf33',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'SPORTCLUBTEAM',
+    currency: 'RUB',
+    amount: 900.00
+  },
+  {
+    id: 34,
+    uuid: '19847293hrffdskf34',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'БАНКЮС',
+    currency: 'RUB',
+    amount: 20688.64
+  },
+  {
+    id: 35,
+    uuid: '19847293hrffdskf35',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Сберы',
+    owner: 'БАНКЮС',
+    currency: 'RUB',
+    amount: 1057.93
+  },
+  {
+    id: 36,
+    uuid: '19847293hrffdskf36',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'А-Банк',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 1160.00
+  },
+  {
+    id: 37,
+    uuid: '19847293hrffdskf37',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'А-Банк',
+    owner: 'Ю.О.Титова',
+    currency: 'RUB',
+    amount: 40150.00
+  },
+  {
+    id: 37,
+    uuid: '19847293hrffdskf37',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'БКС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 8272.61
+  },
+])
+const local_list_filtered = ref( meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB'))
+
+const local_list_show = ( (tag_1: string, tag_2: string) => {
+  localGroupList_isOpened.value = true
+  if(tag_1 === 'Деньги на счетах') {
+
+    if(tag_2 === '!RUB') {
+      console.log('!RUB')
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency !== 'RUB')
+    } else if (tag_2 === 'RUB') {
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB')
+      console.log('RUB')
+    }
+  } else if (tag_1 === 'Инвестиции') {
+    if(tag_2 === 'Фондовый рынок'){
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Фондовый рынок')
+    }
+  } else {
+    local_list_filtered.value = []
+  }
+})
+
+watch(localGroupList_isOpened, () => {
+  if(localGroupList_isOpened.value) {
+    document.addEventListener("click", (e) => {
+      
+      if(e.target.classList && e.target.classList.contains('local_list__opened')) {
+        localGroupList_isOpened.value = false
+        
+      }
+
+    })
+  }
+})
+
 
 </script>
 
@@ -4205,6 +4675,24 @@ const { data: bank } = useFetch("/api/banks/bank", {
     </div>
 
     <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p> -->
+
+    <!-- POPUP LOCAL GROUP LIST -->
+    <div 
+      v-if='localGroupList_isOpened' 
+      class="localGroupList_container" 
+      :class="localGroupList_isOpened ? 'local_list__opened' : 'local_list__closed'" 
+    >
+      <div class="local_list_wrapper">
+        <div class="local_list_header">
+          <p>Мешки</p>
+          <div @click="localGroupList_isOpened = false"></div>
+        </div>
+        <div class="local_list_main">
+            <div v-for="cast in local_list_filtered">{{ cast }}</div> 
+        </div>
+        <div class="local_list_footer">footer</div>
+      </div>
+    </div>
 
     <div class="meshes_local_section">
       
@@ -4222,6 +4710,32 @@ const { data: bank } = useFetch("/api/banks/bank", {
         @changed="changeChipAffiliation"
         style="margin-top: 1em; padding: 0 1rem;"
       />
+
+      <!-- 
+      1.     Денег на счетах
+      1.1.   Валюта ЦБ РФ
+      1.1.1. Кэш
+      1.1.2. Счета в банке А
+      1.1.3. Счет в банке Б
+      1.2.   Иностранная валюта
+
+      2.     Инввестиции
+      2.1.   Фондовый рынок
+      2.1.1. Брокер А
+      2.1.2. Брокер Б
+      2.2.   Вклады
+      
+      3.   Займы
+      3.1. Размещены в земные средства
+      3.2. Инвестированы в проекты
+
+      4.   Долговыв обязательства
+      4.1. Долг к соучастникам
+      4.2. Внешняя задолженность
+
+      
+      -->
+
 
       <!-- ОБЩИЙ БЛОК -->
        <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 0 1rem; border-radius: 1rem; padding: 1rem">
@@ -4293,6 +4807,87 @@ const { data: bank } = useFetch("/api/banks/bank", {
             </div>
          </div>
        </div>
+
+      <!-- currency pair -->
+      <div v-for="pair in currecy_pair">
+        {{ pair }}
+      </div>
+      <br>
+
+      <!-- MESHES CAST -->
+      <ul style="list-style: none; padding: 0;">
+
+        <!--  -->
+        <li>
+
+          <!-- local group -->
+          <div class="meshes_local_group_wrapper">
+            <div class="group_wrapper_background"></div>
+            <div class="group_wrapper_content">
+              <p>Деньги на счетах</p>
+              <p>50071,21</p>
+            </div>
+          </div>
+          <!-- local group list -->
+          <ul class="wallet-section_container" style="list-style: none;">
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Деньги на счетах', 'RUB')"
+              >
+                <p style="color: var(--color-global-text);" >48722,85</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">RUB</p>
+              </Section>
+            </li>
+            <li>
+              <Section
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Деньги на счетах', '!RUB')"
+              >
+                <p style="color: var(--color-global-text);" >1349,12</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Иностранная валюта</p>
+              </Section>
+            </li>
+          </ul>
+
+          <br>
+          <!-- <div v-for="cast in meshes_cast.filter(el => el.tag === 'Деньги на счетах')" class="meshes_local_group_wrapper">
+            {{ cast }}
+          </div> -->
+        </li>
+
+        <!--  -->
+        <li>
+
+          <!-- local group -->
+          <div class="meshes_local_group_wrapper">
+            <div class="group_wrapper_background"></div>
+            <div class="group_wrapper_content">
+              <p>Инвестиции</p>
+            </div>
+          </div>
+          <!-- local group list -->
+          <ul class="wallet-section_container" style="list-style: none;">
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Инвестиции', 'Фондовый рынок')"
+              >
+                <p style="color: var(--color-global-text);" >221689,11</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">RUB</p>
+              </Section>
+            </li>
+          </ul>
+
+          <!--  -->
+          <div v-for="cast in meshes_cast.filter(el => el.tag === 'Инвестиции')" class="meshes_local_group_wrapper">
+            {{ cast }}
+          </div>
+        </li>
+      </ul>
 
 
       <!-- Свободные деньги -->
@@ -5620,6 +6215,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
   /* meshes local */
   .meshes_local_section {
     background-color: var(--color-status-finished);
+    /* background-color: var(--color-bg-popup); */
     /* padding: 1.5rem;   */
   }
   .meshes_local_group_wrapper {
@@ -5653,6 +6249,91 @@ const { data: bank } = useFetch("/api/banks/bank", {
       background-color: var(--color-global-text);
       opacity: .7;
       border-radius: .3rem;
+  }
+
+  /*  */
+  .localGroupList_container {
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-bg-popup);
+    backdrop-filter: blur(2px);
+  }
+  .local_list__opened {
+    opacity: 1;
+    transition: all .3s ease-in;
+    z-index: 999;
+  }
+  .local_list__closed {
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: -1;
+    display: none;
+  }
+  .local_list__closed > .local_list_wrapper {
+    display: none
+  }
+  .local_list_wrapper {
+    /* display: none; */
+    width: 90%;
+    height: 90vh;
+    background-color: var(--color-global-baackground_light);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+  }
+  .local_list_header {
+    /* background-color: red; */
+    position: relative;
+    border-bottom: 1px solid var(--color-global-text);
+  }
+  .local_list_header > p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0 1rem;
+  }
+  .local_list_header div{
+    width: 32px;
+    height: 2px;
+    background: var(--color-global-text);
+    /* background: var(--bs-danger); */
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%) rotate(45deg)
+  }
+  .local_list_header div:after {
+    /* -webkit-transition: 0.5s ease-in-out; */
+    /* transition: 0.5s ease-in-out; */
+    content: '';
+    /* background: var(--bs-danger); */
+    background: var(--color-global-text);
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+  }
+  .local_list_main {
+    height: 90%;
+    overflow-y: scroll!important;
+  }
+  .local_list_footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--color-global-text_second);
   }
 }
 @media screen and (min-width: 576px) {
@@ -6332,6 +7013,17 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
   .mesh_footer {
     align-items: center;
+  }
+
+  /*  */
+  .local_list_wrapper {
+      width: 1200px;
+      height: 80%;
+      margin-top: 5rem!important;
+      /* margin-right: 5rem; */
+      margin: 0 auto;
+      border-radius: 2rem;
+      overflow: hidden;
   }
 
 }

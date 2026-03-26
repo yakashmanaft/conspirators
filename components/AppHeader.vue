@@ -519,7 +519,7 @@ watch(
           </ul>
 
           <!-- !Auth -->
-          <span class="copyright_wrapper"><router-link to="/" @click="closeBurgerMenu">© conspirators <span style="color: unset; font-weight: normal;font-size: 0.6rem;">2024-2025</span></router-link></span>
+          <span class="copyright_wrapper"><router-link to="/" @click="closeBurgerMenu">© conspirators <span style="color: unset; font-weight: normal;font-size: 0.6rem;">2024-2026</span></router-link></span>
 
           <!-- LOGIN -->
           <div class="login_wrapper">
@@ -829,7 +829,7 @@ a:visited {
   
 }
 .cart_header > p {
-  font-size: 3.5rem;
+  font-size: 1.5rem;
   font-weight: bold;
 
 }
