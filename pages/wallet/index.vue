@@ -21,7 +21,7 @@ const sessionUser:any = useUserSession().user;
 // useProfileStore().loadData()
 // const profiles = useProfileStore().profiles
 
-const meshesLocal = ref([
+const cc = ref([
   {
     id: 1,
     uuid: '124KJGk2423r'
@@ -4195,7 +4195,7 @@ const { data: bank } = useFetch("/api/banks/bank", {
 // meshes_cast
 const currecy_pair = ref([
   {
-    name: 'RUB / USD',
+    name: 'EUR / RUB',
     price: 91.98
   },
   {
@@ -4203,7 +4203,7 @@ const currecy_pair = ref([
     price: 77.17
   },
   {
-    name: 'rub / vnd (Вьетнамский донг)',
+    name: 'VND / RUB',
     price: 0.0032
   },
   {
@@ -4217,50 +4217,51 @@ const meshes_cast = ref([
   {
     id: 1,
     uuid: '19847293hrffdskf1',
+    name: 'БАНКЕС_Наличка_rub',
     tag: 'Деньги на счетах',
     type: 'Наличка',
     owner: 'БАНКЕС',
     broker: 'БАНКЕС',
-    name: '',
     currency: 'RUB',
     amount: 1350.00
   },
   {
     id: 2,
     uuid: '19847293hrffdskf2',
+    name: 'БАНКАС_Наличка_rub',
     tag: 'Деньги на счетах',
     type: 'Наличка',
     owner: 'БАНКАС',
     broker: 'БАНКЕС',
-    name: '',
     currency: 'RUB',
     amount: 400.00
   },
   {
     id: 3,
     uuid: '19847293hrffdskf3',
+    name: 'ЮНИДРАМ_Наличка_rub',
     tag: 'Деньги на счетах',
     type: 'Наличка',
     owner: 'ЮНИДРАМ',
     broker: 'БАНКЕС',
-    name: '',
     currency: 'RUB',
     amount: 400.00
   },
   {
     id: 4,
     uuid: '19847293hrffdskf4',
+    name: 'СЗ_АСВ_Наличка_rub',
     tag: 'Деньги на счетах',
     type: 'Наличка',
     owner: 'СЗ_АСВ',
     broker: 'БАНКЕС',
-    name: '',
     currency: 'RUB',
     amount: 150.00
   },
   {
     id: 5,
     uuid: '19847293hrffdskf5',
+    name: 'БАНКЮС_Наличка_rub',
     tag: 'Деньги на счетах',
     type: 'Наличка',
     owner: 'БАНКЮС',
@@ -4271,6 +4272,7 @@ const meshes_cast = ref([
   {
     id: 6,
     uuid: '19847293hrffdsk6',
+    name: 'БАНКЮС_Наличка_eur',
     tag: 'Деньги на счетах',
     type: 'Наличка',
     owner: 'БАНКЮС',
@@ -4281,6 +4283,7 @@ const meshes_cast = ref([
   {
     id:7,
     uuid: '19847293hrffdskf7',
+    name: 'БАНКЕС_Накопительный_rub',
     tag: 'Деньги на счетах',
     type: 'Накопительные счета',
     owner: 'БАНКЕС',
@@ -4477,28 +4480,29 @@ const meshes_cast = ref([
   {
     id: 25,
     uuid: '19847293hrffdskf25',
+    name: 'БАНКЮС_Т-Банк_Стандартный счет_cny',
     tag: 'Деньги на счетах',
     type: 'Стандартный счет',
     owner: 'БАНКЮС',
     broker: 'Т-Банк',
-    name: '',
     currency: 'CNY',
     amount: 10.00
   },
   {
     id: 26,
     uuid: '19847293hrffdskf26',
+    name: 'БАНКЮС_Т-Банк_Стандартный счет_usd',
     tag: 'Деньги на счетах',
     type: 'Стандартный счет',
     owner: 'БАНКЮС',
     broker: 'Т-Банк',
-    name: '',
     currency: 'USD',
     amount: 10.00
   },
   {
     id: 27,
     uuid: '19847293hrffdskf27',
+    name: 'БАНКЕС_2703Вклады2026',
     tag: 'Инвестиции',
     type: 'Вклады',
     broker: 'ОЗОН',
@@ -4549,6 +4553,7 @@ const meshes_cast = ref([
   {
     id: 31,
     uuid: '19847293hrffdskf31',
+    name: 'БАНКЕС_2002БрокерскийСчет21',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'Т-Банк',
@@ -4559,6 +4564,7 @@ const meshes_cast = ref([
   {
     id: 32,
     uuid: '19847293hrffdskf32',
+    name: 'БАНКАС_1002БрокерскийCчет21',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'Т-Банк',
@@ -4569,6 +4575,7 @@ const meshes_cast = ref([
   {
     id: 33,
     uuid: '19847293hrffdskf33',
+    name: 'SPORTCLUBTEAM_0207БрокерскийСчет2025',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'Т-Банк',
@@ -4579,6 +4586,7 @@ const meshes_cast = ref([
   {
     id: 34,
     uuid: '19847293hrffdskf34',
+    name: 'БАНКЮС_1901БрокерскийСчет22',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'Т-Банк',
@@ -4589,9 +4597,10 @@ const meshes_cast = ref([
   {
     id: 35,
     uuid: '19847293hrffdskf35',
+    name: 'БАНКЮС_2603БрокерскийСчет2026',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
-    broker: 'Сберы',
+    broker: 'ВТБ',
     owner: 'БАНКЮС',
     currency: 'RUB',
     amount: 1057.93
@@ -4599,6 +4608,7 @@ const meshes_cast = ref([
   {
     id: 36,
     uuid: '19847293hrffdskf36',
+    name: 'С.В.Анфалов_0505БрокерскийСчет2026',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'А-Банк',
@@ -4609,6 +4619,7 @@ const meshes_cast = ref([
   {
     id: 37,
     uuid: '19847293hrffdskf37',
+    name: 'Ю.О.Титова_0505БрокерскийСчет2025',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'А-Банк',
@@ -4619,6 +4630,7 @@ const meshes_cast = ref([
   {
     id: 37,
     uuid: '19847293hrffdskf37',
+    name: 'С.В.Анфалов_2311БрокерскийСчет2023',
     tag: 'Инвестиции',
     type: 'Фондовый рынок',
     broker: 'БКС',
@@ -4626,28 +4638,143 @@ const meshes_cast = ref([
     currency: 'RUB',
     amount: 8272.61
   },
+  {
+    id: 38,
+    uuid: '19847293hrffdskf38',
+    name: 'С.В.Анфалов_2703Кредит2026',
+    tag: 'Вексель',
+    type: 'Кредиты',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 140629.14
+  },
+  {
+    id: 39,
+    uuid: '19847293hrffdskf39',
+    name: 'С.В.Анфалов_2703Займ2026',
+    tag: 'Вексель',
+    type: 'Займы',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 1000.14
+  },
+  {
+    id: 40,
+    uuid: '19847293hrffdskf40',
+    name: 'С.В.Анфалов_2703Проект2026',
+    tag: 'Вексель',
+    type: 'Проекты',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 2050.00
+  },
+  {
+    id: 41,
+    uuid: '19847293hrffdskf41',
+    name: 'С.В.Анфалов_2703ДолгСоучастники2026',
+    tag: 'Долговые обязательства',
+    type: 'Долг к соучастникам',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 2222.33
+  },
+  {
+    id: 41,
+    uuid: '19847293hrffdskf41',
+    name: 'С.В.Анфалов_2703ДолгСоучастники2026',
+    tag: 'Долговые обязательства',
+    type: 'Долг к соучастникам',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 3333.33
+  },
+  {
+    id: 42,
+    uuid: '19847293hrffdskf42',
+    name: 'С.В.Анфалов_2703ДолгВнешний2026',
+    tag: 'Долговые обязательства',
+    type: 'Внешний долг',
+    broker: 'Сбер',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 5556.33
+  },
 ])
+
+const filter_title = ref('Мешки')
 const local_list_filtered = ref( meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB'))
 
 const local_list_show = ( (tag_1: string, tag_2: string) => {
   localGroupList_isOpened.value = true
+  filter_title.value=tag_2
   if(tag_1 === 'Деньги на счетах') {
 
     if(tag_2 === '!RUB') {
       console.log('!RUB')
+      filter_title.value='Иностранная валюта'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency !== 'RUB')
     } else if (tag_2 === 'RUB') {
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB')
       console.log('RUB')
     }
-  } else if (tag_1 === 'Инвестиции') {
+  } 
+  else if (tag_1 === 'Инвестиции') {
     if(tag_2 === 'Фондовый рынок'){
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Фондовый рынок')
     }
-  } else {
+    else if(tag_2 === 'Вклады'){
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Вклады')
+    }
+    else if(tag_2 === 'Крипто-дебет'){
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Крипто-дебет')
+    }
+  }
+  else if (tag_1 === 'Вексель') {
+    if(tag_2 === 'Кредиты') {
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Кредиты')
+    }
+    else if(tag_2 === 'Займы') {
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Займы')
+    }
+    else if(tag_2 === 'Проекты') {
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Проекты')
+    }
+  } 
+  else if (tag_1 === 'Долговые обязательства') {
+    if(tag_2 === 'Долг к соучастникам') {
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Долг к соучастникам')
+    }
+    else if (tag_2 === 'Внешний долг') {
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Внешний долг')
+    }
+  }
+  else {
     local_list_filtered.value = []
   }
 })
+
+const sum_local_list_el_amount = () => {
+  let sum = 0;
+
+  for(let i = 0; i < local_list_filtered.value.length; i++){
+    if(local_list_filtered.value[i].currency === 'RUB') {
+
+      sum += local_list_filtered.value[i].amount
+    } else {
+      let pair = currecy_pair.value.find(j => j.name === `${local_list_filtered.value[i].currency} / RUB`)
+      sum += local_list_filtered.value[i].amount * pair?.price
+      // if(local_list_filtered.value[i].currency === 'EUR') {
+      // }
+    }
+  }
+
+  return sum
+}
 
 watch(localGroupList_isOpened, () => {
   if(localGroupList_isOpened.value) {
@@ -4684,11 +4811,34 @@ watch(localGroupList_isOpened, () => {
     >
       <div class="local_list_wrapper">
         <div class="local_list_header">
-          <p>Мешки</p>
+          <p>{{ filter_title }}</p>
           <div @click="localGroupList_isOpened = false"></div>
         </div>
-        <div class="local_list_main">
-            <div v-for="cast in local_list_filtered">{{ cast }}</div> 
+        <div class="local_list_main" style="padding: 0 .5rem;">
+
+          <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+            <div>{{ local_list_filtered.length }}</div>
+            <div style="font-weight: bold;">Сумма:</div>
+            <div style="font-weight: bold;">{{ sum_local_list_el_amount().toFixed(2) }}RUB</div>
+          </div>
+
+          <div v-for="cast in local_list_filtered" style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--color-btn-disabled-text); margin-top: 1rem; border-radius: 1rem; padding: 1rem;">
+            
+            <!-- SEE set_mesh_link_by_tag function -->
+            <div>
+              <p style="margin: 0;">{{ cast.name }}</p>
+              <p style="margin: 0;">{{ cast.broker }}</p>
+            </div>
+            <p style="margin: 0;">{{ (cast.amount).toFixed(2) }}</p>
+          </div> 
+
+          <br>
+          <br>
+          <br>
+
+          <div v-for="cast in local_list_filtered">
+              {{ cast }}
+            </div> 
         </div>
         <div class="local_list_footer">footer</div>
       </div>
@@ -4738,7 +4888,7 @@ watch(localGroupList_isOpened, () => {
 
 
       <!-- ОБЩИЙ БЛОК -->
-       <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 0 1rem; border-radius: 1rem; padding: 1rem">
+       <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 3rem 1rem; border-radius: 1rem; padding: 1rem">
          <!-- Заголовок группы -->
          <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
 
@@ -4808,18 +4958,12 @@ watch(localGroupList_isOpened, () => {
          </div>
        </div>
 
-      <!-- currency pair -->
-      <div v-for="pair in currecy_pair">
-        {{ pair }}
-      </div>
-      <br>
-
       <!-- MESHES CAST -->
       <ul style="list-style: none; padding: 0;">
 
         <!--  -->
+        <!-- Деньги на счетах -->
         <li>
-
           <!-- local group -->
           <div class="meshes_local_group_wrapper">
             <div class="group_wrapper_background"></div>
@@ -4851,21 +4995,17 @@ watch(localGroupList_isOpened, () => {
               </Section>
             </li>
           </ul>
-
-          <br>
-          <!-- <div v-for="cast in meshes_cast.filter(el => el.tag === 'Деньги на счетах')" class="meshes_local_group_wrapper">
-            {{ cast }}
-          </div> -->
         </li>
 
         <!--  -->
+        <!-- Инвестиции -->
         <li>
-
           <!-- local group -->
           <div class="meshes_local_group_wrapper">
-            <div class="group_wrapper_background"></div>
+            <div class="group_wrapper_background" style="background-color: var(--color-wallet-fund-invested-wo)"></div>
             <div class="group_wrapper_content">
               <p>Инвестиции</p>
+              <p>256755,14</p>
             </div>
           </div>
           <!-- local group list -->
@@ -4877,200 +5017,142 @@ watch(localGroupList_isOpened, () => {
                 @click="local_list_show('Инвестиции', 'Фондовый рынок')"
               >
                 <p style="color: var(--color-global-text);" >221689,11</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">RUB</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Фондовый рынок</p>
+              </Section>
+            </li>
+            
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Инвестиции', 'Вклады')"
+              >
+                <p style="color: var(--color-global-text);" >5000,00</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Вклады</p>
+              </Section>
+            </li>
+
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Инвестиции', 'Крипто-дебет')"
+              >
+                <p style="color: var(--color-global-text);" >25066,33</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Крипто-дебет</p>
               </Section>
             </li>
           </ul>
 
-          <!--  -->
-          <div v-for="cast in meshes_cast.filter(el => el.tag === 'Инвестиции')" class="meshes_local_group_wrapper">
-            {{ cast }}
+        </li>
+
+        <!--  -->
+        <!-- Займы/ Вексель -->
+        <li>
+          <!-- local group -->
+          <div class="meshes_local_group_wrapper">
+            <div class="group_wrapper_background" style="background-color: var(--color-urgency-middle);"></div>
+            <div class="group_wrapper_content">
+              <p>Вексель</p>
+              <p>-143679,14</p>
+            </div>
           </div>
+          <!-- local group list -->
+          <ul class="wallet-section_container" style="list-style: none;">
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Вексель', 'Кредиты')"
+              >
+                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Кредиты процентным доходом</p>
+              </Section>
+            </li>
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Вексель', 'Займы')"
+              >
+                <p style="color: var(--color-global-text);" >1000,14</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Займы без дохода</p>
+              </Section>
+            </li>
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Вексель', 'Проекты')"
+              >
+                <p style="color: var(--color-global-text);" >2050,00</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Инвестированы в проекты</p>
+              </Section>
+            </li>
+          </ul>
+        </li>
+
+        <!--  -->
+        <!-- Долговые обязательства -->
+        <li>
+          <!-- local group -->
+          <div class="meshes_local_group_wrapper">
+            <div class="group_wrapper_background" style="background-color: var(--color-urgency-high);"></div>
+            <div class="group_wrapper_content">
+              <p>Долговые обязательства</p>
+              <p>-156987,21</p>
+            </div>
+          </div>
+
+          <!-- local group list -->
+          <ul class="wallet-section_container" style="list-style: none;">
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Долговые обязательства', 'Долг к соучастникам')"
+              >
+                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Долг к соучастникам</p>
+              </Section>
+            </li>
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                @click="local_list_show('Долговые обязательства', 'Внешний долг')"
+              >
+                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Внешняя задолженность</p>
+              </Section>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- currency pair -->
+      <!-- ВАЛЮТНЫЕ ПАРЫ -->
+      <ul class="wallet-section_container" style="list-style: none; margin: 0;">
+        <li v-for="pair in currecy_pair" style="display: flex; gap: .5rem; align-items: center; justify-content: center;">
+          <p style="margin: 0; color: var(--color-btn-disabled-text)">{{ pair.name }}</p>
+          <p style="margin: 0;">{{ pair.price }}</p>
         </li>
       </ul>
 
 
-      <!-- Свободные деньги -->
-      <!-- ЗАГОЛОВОК ГРУППЫ -->
-      <div class="meshes_local_group_wrapper" style="margin-top: 2rem;">
-        <div class="group_wrapper_background"></div>
-        <div class="group_wrapper_content">
-
-          <div>
-            <p>Денег на счетах</p>
-            <p>50071,21</p>
-          </div>
-          <!-- <div class="meshes_local_filter_button">
-            <Icon
-              class="link"
-              name="mdi:filter-outline"
-              size="32px"
-              color="var(--color-global-baackground_light)"
-            />
-          </div> -->
-          <!-- mdi:filter -->
-        </div>
-      </div>
-      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
-      <div class="wallet-section_container">
-        <Section         
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-          <p style="color: var(--color-global-text);" >48722,85</p>
-          <p style="color: var(--color-btn-wo-bg);">Валюта ЦБ РФ</p>
-        </Section>
-        <Section
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-        <p style="color: var(--color-global-text);" >1349,12</p>
-        <p style="color: var(--color-btn-wo-bg);">Иностранная валюта</p>
-        </Section>
-      </div>
-
-      <!-- ИНВЕСТИЦИИ -->
-      <!-- ЗАГОЛОВОК ГРУППЫ -->
-      <div class="meshes_local_group_wrapper">
-        <div class="group_wrapper_background" style="background-color: var(--color-wallet-fund-invested-wo)"></div>
-        <div class="group_wrapper_content">
-
-          <div>
-            <p>Инвестиции</p>
-            <p>256755,14</p>
-          </div>
-          <!-- <div class="meshes_local_filter_button">
-            <Icon
-              class="link"
-              name="mdi:filter-outline"
-              size="32px"
-              color="var(--color-global-baackground_light)"
-            />
-          </div> -->
-          <!-- mdi:filter -->
-        </div>
-
-
-      </div>
-      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
-      <div class="wallet-section_container">
-        <Section         
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-          <p style="color: var(--color-global-text);" >221689,11</p>
-          <p style="color: var(--color-btn-wo-bg);">Фондовый рынок</p>
-        </Section>
-        <Section
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-        <p style="color: var(--color-global-text);" >5000,00</p>
-        <p style="color: var(--color-btn-wo-bg);">Вклады</p>
-        </Section>
-        <Section
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-        <p style="color: var(--color-global-text);" >25066,33</p>
-        <p style="color: var(--color-btn-wo-bg);">Крипто дебет</p>
-        </Section>
-      </div>
-
-      <!-- ЗАЙМЫ -->
-      <!-- ЗАГОЛОВОК ГРУППЫ -->
-      <div class="meshes_local_group_wrapper">
-        <div class="group_wrapper_background" style="background-color: var(--color-urgency-middle);"></div>
-        <div class="group_wrapper_content">
-
-          <div>
-            <p>Займы</p>
-            <p>-143679,14</p>
-          </div>
-          <!-- <div class="meshes_local_filter_button">
-            <Icon
-              class="link"
-              name="mdi:filter-outline"
-              size="32px"
-              color="var(--color-global-baackground_light)"
-            />
-          </div> -->
-          <!-- mdi:filter -->
-        </div>
-
-
-      </div>
-      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
-      <div class="wallet-section_container">
-        <Section         
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-          <p style="color: var(--color-global-text);" >141629,14</p>
-          <p style="color: var(--color-btn-wo-bg);">Размещены в заемные средства</p>
-        </Section>
-        <Section
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-        <p style="color: var(--color-global-text);" >2050,00</p>
-        <p style="color: var(--color-btn-wo-bg);">Инвестированы в проекты</p>
-        </Section>
-      </div>
-
-      <!-- Долги -->
-      <!-- ЗАГОЛОВОК ГРУППЫ -->
-      <div class="meshes_local_group_wrapper">
-        <div class="group_wrapper_background" style="background-color: var(--color-urgency-high);"></div>
-        <div class="group_wrapper_content">
-
-          <div>
-            <p>Долговые обязательства</p>
-            <p>-156987,21</p>
-          </div>
-          <!-- <div class="meshes_local_filter_button">
-            <Icon
-              class="link"
-              name="mdi:filter-outline"
-              size="32px"
-              color="var(--color-global-baackground_light)"
-            />
-          </div> -->
-          <!-- mdi:filter -->
-        </div>
-
-
-      </div>
-      <!-- ЭЛЕМЕНТЫ ГРУППЫ -->
-      <div class="wallet-section_container">
-        <Section         
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-          <p style="color: var(--color-global-text);" >141629,14</p>
-          <p style="color: var(--color-btn-wo-bg);">Долг к соучастникам</p>
-        </Section>
-        <Section
-          :fDirection="`column`"
-          :fAlignItems="`flex-start`"
-        >
-        <p style="color: var(--color-global-text);" >2050,00</p>
-        <p style="color: var(--color-btn-wo-bg); ">Внешняя задолженность</p>
-        </Section>
-      </div>
-
-      <div class="wallet-section_container">
+      <!-- СВОДКА ПО ПОРТФЕЛЮ -->
+      <div class="wallet-section_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0; margin-top: 1rem;">
         <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
           <p style="color: var(--color-global-text);" >450506,13</p>
-          <p style="color: var(--color-btn-wo-bg);">Потенциал***</p>
+          <p style="color: var(--color-btn-wo-bg); margin: 0;">Потенциал***</p>
         </div>
         <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">
           <p style="color: var(--color-global-text);" >306862,13</p>
-          <p style="color: var(--color-btn-wo-bg);">Факт****</p>
+          <p style="color: var(--color-btn-wo-bg); margin: 0;">Факт****</p>
         </div>
-        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">
-          <p style="color: var(--color-global-text);" >0.35* / 2.14**</p>
-          <p style="color: var(--color-btn-wo-bg);">Рейтинг</p>
+        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem; background: var(--color-urgency-low-10);">
+          <p style="color: var(--color-global-text); font-weight: bold;" >0.35* / 2.14**</p>
+          <p style="color: var(--color-global-text); margin: 0;">Рейтинг</p>
         </div>
 
       </div>
@@ -5849,6 +5931,7 @@ watch(localGroupList_isOpened, () => {
   height: 0;
 }
 
+
 .section-header_wrapper:hover {
   cursor: pointer;
 }
@@ -6252,6 +6335,11 @@ watch(localGroupList_isOpened, () => {
   }
 
   /*  */
+  .wallet-section_container li {
+    min-width: 180px;
+  }
+
+  /*  */
   .localGroupList_container {
     /* display: none; */
     position: fixed;
@@ -6290,7 +6378,8 @@ watch(localGroupList_isOpened, () => {
   .local_list_header {
     /* background-color: red; */
     position: relative;
-    border-bottom: 1px solid var(--color-global-text);
+    /* border-bottom: 1px solid var(--color-global-text); */
+    border-bottom: 1px solid var(--color-wallet-fund-invested);
   }
   .local_list_header > p {
     font-size: 1.5rem;
