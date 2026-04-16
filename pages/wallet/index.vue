@@ -3782,6 +3782,24 @@ const set_mesh_broker_sign_bgc = (tag: string) => {
     return 'background-color: red'
   }
 }
+//= set header line in  popup local list group
+const set_popup_header_line_color = (choosenChip: string) => {
+  if(choosenChip === 'available' || choosenChip === 'available_fc') {
+    return 'border-color: var(--color-urgency-low)'
+  }
+  else if (choosenChip === 'invested_stock' || choosenChip === 'deposit' || choosenChip === 'invested_crypto') {
+    return 'border-color: var(--color-wallet-fund-invested-wo)'
+  }
+  else if (choosenChip === 'invested_loan' || choosenChip === 'invested_project') {
+    return 'border-color: var(--color-urgency-middle)'
+  }
+  else if (choosenChip === 'debt_loan') {
+    return 'border-color: var(--color-urgency-high)'
+  }
+  else {
+    return 'border-color: red'
+  }
+}
 //= set route to owner (user / conspirator)
 const set_owner_route = () => {
   if(!currentAffiliation.value.id) {
@@ -4739,6 +4757,7 @@ const local_list_show = ( (tag_1: string, tag_2: string) => {
     }
   }
   else if (tag_1 === 'Вексель') {
+    // надо бы разделить кредиты и займы в разные подгруппы
     if(tag_2 === 'Кредиты') {
       choosenChip_section.value = 'invested_loan'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Кредиты')
@@ -4753,6 +4772,7 @@ const local_list_show = ( (tag_1: string, tag_2: string) => {
     }
   } 
   else if (tag_1 === 'Долговые обязательства') {
+    // надо бы разделить в разные подгруппы долги к соучастникам и внешние долги
     if(tag_2 === 'Долг к соучастникам') {
       choosenChip_section.value = 'debt_loan'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Долг к соучастникам')
@@ -5161,7 +5181,8 @@ const checkCurrencyPair = (pair: any) => {
     <!-- POPUPs -->
     <!--  -->
     <!-- info -->
-    <div v-if="info_total_popup_isOpened" id="info_total_popup" class="info_total_popup_container">
+    <div v-if="info_total_popup_isOpened" 
+    id="info_total_popup" class="info_total_popup_container">
 
       <div class="info_total_popup_wrapper">
         
@@ -5191,24 +5212,23 @@ const checkCurrencyPair = (pair: any) => {
       </div>
     </div>
     <!-- local list group -->
-    <div 
-      v-if='localGroupList_isOpened' 
+    <div v-if='localGroupList_isOpened' 
       class="localGroupList_container" 
       :class="localGroupList_isOpened ? 'local_list__opened' : 'local_list__closed'" 
     >
       <div class="local_list_wrapper">
-        <div class="local_list_header">
+        <div class="local_list_header" :style="set_popup_header_line_color(choosenChip_section)">
           <p>{{ filter_title }}</p>
           <div @click="localGroupList_isOpened = false"></div>
         </div>
         <div class="local_list_main" style="padding: 0 .5rem;">
 
-          <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+          <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+            {{ choosenChip_section }}
             <div>{{ local_list_filtered.length }}</div>
             <div style="font-weight: bold;">Сумма:</div>
             <div style="font-weight: bold;">{{ sum_local_list_el_amount().toFixed(2) }}RUB</div>
           </div>
-
           <section 
             v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
               return obj.type
@@ -5348,6 +5368,7 @@ const checkCurrencyPair = (pair: any) => {
       </div>
     </div>
     <!-- transaction history -->
+    <div></div>
 
     <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
