@@ -287,13 +287,14 @@ model Transaction {
 // brokerTag
 
 //= wallet tag:
-// available
-// deposit
-// invested_stock_market
-// invested_crypto
-// invested_currency
-// invested_loan
-// invested_project
+// available (Деньги на счетах / RUB)
+// available_fc (Деньги на счетах / Иностранная валюта)
+// deposit (Инвестиции)
+// invested_stock_market (Инвестиции)
+// invested_crypto (Инвестиции)
+// invested_currency (Деньги на счетах)
+// invested_loan (Вексель)
+// invested_project (Вексель)
 // tax_fund
 // dept
 // project

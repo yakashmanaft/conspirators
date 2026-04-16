@@ -3496,8 +3496,6 @@ onMounted(() => {
 
 
   // POPUP TRANSACTION
-  // const transactionPopupContainer = document.getElementById('transaction_popup')
-  // console.log(transactionPopupContainer)
   window.addEventListener('click', (event) => {
   
     // transaction popup close
@@ -3776,7 +3774,7 @@ const set_mesh_broker_sign_bgc = (tag: string) => {
   else if (tag.includes('invested')) {
     return 'background-color: var(--color-wallet-fund-invested);'
   }
-  else if (tag === 'available') {
+  else if (tag === 'available' || tag === 'available_fc') {
     return 'background-color: var(--color-wallet-fund-available);'
   }  
   else {
@@ -3786,14 +3784,17 @@ const set_mesh_broker_sign_bgc = (tag: string) => {
 }
 //= set route to owner (user / conspirator)
 const set_owner_route = () => {
-  // Если фонды 
-  if(currentAffiliation?.value.bandID !== 0) {
-    router.push(`/band/${currentAffiliation?.value.bandID}`)
-  } 
-  // Если на личную страницу
-  else if (currentAffiliation?.value.name === 'personal') {
-    
-    router.push(`/account`)
+  if(!currentAffiliation.value.id) {
+
+  } else {
+    // Если фонды 
+    if(currentAffiliation?.value.bandID !== 0) {
+      router.push(`/band/${currentAffiliation?.value.bandID}`)
+    } 
+    // Если на личную страницу
+    else if (currentAffiliation?.value.name === 'personal') {
+      router.push(`/account`)
+    }
   }
 }
 
@@ -4713,43 +4714,51 @@ const local_list_show = ( (tag_1: string, tag_2: string) => {
   localGroupList_isOpened.value = true
   filter_title.value=tag_2
   if(tag_1 === 'Деньги на счетах') {
-
     if(tag_2 === '!RUB') {
-      console.log('!RUB')
+      choosenChip_section.value = 'available_fc'
       filter_title.value='Иностранная валюта'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency !== 'RUB')
     } else if (tag_2 === 'RUB') {
+      choosenChip_section.value = 'available'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB')
-      console.log('RUB')
     }
   } 
   else if (tag_1 === 'Инвестиции') {
+
     if(tag_2 === 'Фондовый рынок'){
+      choosenChip_section.value = 'invested_stock'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Фондовый рынок')
     }
     else if(tag_2 === 'Вклады'){
+      choosenChip_section.value = 'deposit'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Вклады')
     }
     else if(tag_2 === 'Крипто-дебет'){
+      choosenChip_section.value = 'invested_crypto'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Крипто-дебет')
     }
   }
   else if (tag_1 === 'Вексель') {
     if(tag_2 === 'Кредиты') {
+      choosenChip_section.value = 'invested_loan'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Кредиты')
     }
     else if(tag_2 === 'Займы') {
+      choosenChip_section.value = 'invested_loan'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Займы')
     }
     else if(tag_2 === 'Проекты') {
+      choosenChip_section.value = 'invested_project'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Проекты')
     }
   } 
   else if (tag_1 === 'Долговые обязательства') {
     if(tag_2 === 'Долг к соучастникам') {
+      choosenChip_section.value = 'debt_loan'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Долг к соучастникам')
     }
     else if (tag_2 === 'Внешний долг') {
+      choosenChip_section.value = 'debt_loan'
       local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Внешний долг')
     }
   }
@@ -4782,12 +4791,17 @@ watch(localGroupList_isOpened, () => {
       
       if(e.target.classList && e.target.classList.contains('local_list__opened')) {
         localGroupList_isOpened.value = false
-        
       }
 
     })
   }
 })
+
+// HELPERS...
+/// выбор вылюты к просмотру
+const checkCurrencyPair = (pair: any) => {
+  console.log(pair)
+}
 
 
 </script>
@@ -4795,6 +4809,7 @@ watch(localGroupList_isOpened, () => {
 <template>
   <Container>
 
+    <!-- PAGE TITLE -->
     <div class="show-max-767" >
       <BreadCrumbs/>
       <!-- TITLE -->
@@ -4803,55 +4818,14 @@ watch(localGroupList_isOpened, () => {
 
     <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p> -->
 
-    <!-- POPUP LOCAL GROUP LIST -->
-    <div 
-      v-if='localGroupList_isOpened' 
-      class="localGroupList_container" 
-      :class="localGroupList_isOpened ? 'local_list__opened' : 'local_list__closed'" 
-    >
-      <div class="local_list_wrapper">
-        <div class="local_list_header">
-          <p>{{ filter_title }}</p>
-          <div @click="localGroupList_isOpened = false"></div>
-        </div>
-        <div class="local_list_main" style="padding: 0 .5rem;">
-
-          <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
-            <div>{{ local_list_filtered.length }}</div>
-            <div style="font-weight: bold;">Сумма:</div>
-            <div style="font-weight: bold;">{{ sum_local_list_el_amount().toFixed(2) }}RUB</div>
-          </div>
-
-          <div v-for="cast in local_list_filtered" style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--color-btn-disabled-text); margin-top: 1rem; border-radius: 1rem; padding: 1rem;">
-            
-            <!-- SEE set_mesh_link_by_tag function -->
-            <div>
-              <p style="margin: 0;">{{ cast.name }}</p>
-              <p style="margin: 0;">{{ cast.broker }}</p>
-            </div>
-            <p style="margin: 0;">{{ (cast.amount).toFixed(2) }}</p>
-          </div> 
-
-          <br>
-          <br>
-          <br>
-
-          <div v-for="cast in local_list_filtered">
-              {{ cast }}
-            </div> 
-        </div>
-        <div class="local_list_footer">footer</div>
-      </div>
-    </div>
-
     <div class="meshes_local_section">
       
+      <!-- КНОПКА ОБНОВИТЬ ДАННЫЕ (пока в режиме информации только...) -->
       <div style="width: 100%; display: flex; align-items: center; justify-content: center;" >
-        <p style="margin-top: 2rem; background-color: var(--color-global-baackground_light); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-global-text_second)">Обновлено 16.03.2026</p>
+        <p style="margin-top: 1.5rem; background-color: var(--color-btn-bg); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-btn-text)">Обновлено 16.03.2026</p>
       </div>
 
       <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
-      <!-- {{ currentAffiliation }} -->
       <Chip
         id="affiliation-chip-block"
         :tabs="affiliation_computed"
@@ -4869,13 +4843,14 @@ watch(localGroupList_isOpened, () => {
       1.1.3. Счет в банке Б
       1.2.   Иностранная валюта
 
-      2.     Инввестиции
+      2.     Инвестиции
       2.1.   Фондовый рынок
       2.1.1. Брокер А
       2.1.2. Брокер Б
       2.2.   Вклады
+      2.3.   Крипто-дебет
       
-      3.   Займы
+      3.   Займы (Вексель)
       3.1. Размещены в земные средства
       3.2. Инвестированы в проекты
 
@@ -4887,21 +4862,26 @@ watch(localGroupList_isOpened, () => {
       -->
 
 
-      <!-- ОБЩИЙ БЛОК -->
-       <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 3rem 1rem; border-radius: 1rem; padding: 1rem">
+      <!-- БЛОК-ЗАГОЛОВОК МЕШКОВ> -->
+       <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 2rem 1rem; border-radius: 1rem; padding: 1rem">
          <!-- Заголовок группы -->
          <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
 
-          <h2 style="font-size: 1rem; margin: 0; opacity: .7;">{{ currentAffiliation.title }}</h2>
-          
-
+          <!-- Наименование банка -->
+          <h2 
+            style="font-size: 1rem; margin: 0; opacity: .7;"
+            @click="set_owner_route"  
+          >
+            {{ currentAffiliation.title }}
+          </h2>
+          <!-- Кнопки действий (faq/ история / статистика) -->
           <div style="display: flex; gap: 1rem;">
             <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
               <Icon
                 class="link"
                 name="mdi:help-circle-outline"
                 size="32px"
-                color="var(--color-global-baackground_light)"
+                color="var(--color-global-text)"
               />
             </div>
             <div class="meshes_local_filter_button">
@@ -4909,7 +4889,7 @@ watch(localGroupList_isOpened, () => {
                 class="link"
                 name="mdi:clock-outline"
                 size="32px"
-                color="var(--color-global-baackground_light)"
+                color="var(--color-global-text)"
               />
             </div>
             <div class="meshes_local_filter_button">
@@ -4917,44 +4897,47 @@ watch(localGroupList_isOpened, () => {
                 class="link"
                 name="mdi:google-analytics"
                 size="32px"
-                color="var(--color-global-baackground_light)"
+                color="var(--color-global-text)"
               />
             </div>
 
           </div>
          </div>
-
+         <!-- total amount value -->
          <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
          </p>
          <!-- КНОПКИ КОШЕЛЬКА -->
          <div style="display: flex; gap: 1rem; justify-content: center;">
+          <!-- Принять -->
           <div style="display: flex; flex-direction: column; align-items: center;">
-              <Icon
-                class="link"
-                name="mdi:plus"
-                size="32px"
-                color="var(--color-global-baackground_light)"
-              />
-              <p>Принять</p>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center;">
-              <Icon
-                class="link"
-                name="mdi:send"
-                size="32px"
-                color="var(--color-global-baackground_light)"
-              />
-              <p>Отправить</p>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center;">
-              <Icon
-                class="link"
-                name="mdi:swap-horizontal"
-                size="32px"
-                color="var(--color-global-baackground_light)"
-              />
-              <p>Обменять</p>
-            </div>
+            <Icon
+              class="link"
+              name="mdi:plus"
+              size="32px"
+              style="opacity: .6"
+            />
+            <p style="margin-top: .25rem;">Принять</p>
+          </div>
+          <!-- Отправить -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <Icon
+              class="link"
+              name="mdi:send"
+              size="32px"
+              style="opacity: .6"
+            />
+            <p style="margin-top: .25rem;">Отправить</p>
+          </div>
+          <!-- Обменять -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <Icon
+              class="link"
+              name="mdi:swap-horizontal"
+              size="32px"
+              style="opacity: .6"
+            />
+            <p style="margin-top: .25rem;">Обменять</p>
+          </div>
          </div>
        </div>
 
@@ -4962,7 +4945,7 @@ watch(localGroupList_isOpened, () => {
       <ul style="list-style: none; padding: 0;">
 
         <!--  -->
-        <!-- Деньги на счетах -->
+        <!-- Деньги на счетах / Свободные деньги -->
         <li>
           <!-- local group -->
           <div class="meshes_local_group_wrapper">
@@ -5132,15 +5115,19 @@ watch(localGroupList_isOpened, () => {
 
       <!-- currency pair -->
       <!-- ВАЛЮТНЫЕ ПАРЫ -->
-      <ul class="wallet-section_container" style="list-style: none; margin: 0;">
-        <li v-for="pair in currecy_pair" style="display: flex; gap: .5rem; align-items: center; justify-content: center;">
+      <ul class="wallet-section_container" style="list-style: none; margin: 0; padding-left: 0; padding-right: 0; padding-bottom:1.5rem;">
+        <li 
+          v-for="pair in currecy_pair" 
+          style="display: flex; gap: .5rem; align-items: center; justify-content: center;"
+          @click=checkCurrencyPair(pair)
+        >
           <p style="margin: 0; color: var(--color-btn-disabled-text)">{{ pair.name }}</p>
           <p style="margin: 0;">{{ pair.price }}</p>
         </li>
       </ul>
 
 
-      <!-- СВОДКА ПО ПОРТФЕЛЮ -->
+      <!-- СТАТ-СВОДКА ПО ПОРТФЕЛЮ -->
       <div class="wallet-section_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0; margin-top: 1rem;">
         <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
           <p style="color: var(--color-global-text);" >450506,13</p>
@@ -5156,7 +5143,6 @@ watch(localGroupList_isOpened, () => {
         </div>
 
       </div>
-
       <div style="margin: 0 1rem; padding-bottom: 1rem;">
         <p>
           * Отношение положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) к сумме займов (выданные кредиты, инвеситции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства.</p>
@@ -5172,57 +5158,9 @@ watch(localGroupList_isOpened, () => {
 
     </div>
 
-    <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
-    <Chip
-      id="affiliation-chip-block"
-      :tabs="affiliation_computed"
-      :default="currentAffiliation"
-      :btn_all_exist="true"
-      @changed="changeChipAffiliation"
-      style="margin-top: 2rem;"
-    />
-    <!-- <p>currentAffiliation: {{ currentAffiliation }}</p> -->
-
-    <!-- TOTAL КАПИТАЛИЗАЦИЯ ПО ФОНДУ -->
+    <!-- POPUPs -->
     <!--  -->
-    <div class="total-cap_container">
-      
-      
-      <div class="total-cap_wrapper">
-        <div class="total-cap_avatar">
-          
-          <!-- USER: 7671d7d0538011f08c8dda33849e98dc_1 -->
-           <!-- CONSPIRATORS: d2536b5d538611f09581aa35b3d6ca3e_1 -->
-          
-          <img v-if="currentAffiliation.name === 'personal'" width="256" height="256" alt="Страница на доработке..." src="@/assets/img/band_avatar/7671d7d0538011f08c8dda33849e98dc_1.jpeg"/>
-          <img v-else-if="currentAffiliation.name !== 'personal'" width="256" height="256" alt="Страница на доработке..." src="@/assets/img/band_avatar/d2536b5d538611f09581aa35b3d6ca3e_1.jpeg"/>
-        </div>
-        <div style="margin-top: 1rem; position: relative;">
-          <!-- {{ currentAffiliation }} -->
-          <!-- <h2 class="total-cap_subtitle">Total:</h2> -->
-          <h2 class="total-cap_subtitle">{{currentAffiliation.title}}</h2>
-          <p class="total-cap_count">999 999 999.99 {{ currency_to_show.ticket }}</p>
-          <p class="total-cap_help" style="cursor: pointer;" @click="info_total_popup_isOpened = true">?</p>
-          <div class="action_btn open-details" style="cursor: pointer;" @click="set_owner_route" >
-            <p>Перейти в фонд 
-              <span>        
-                <Icon
-                  class="link"
-                  name="material-symbols-light:arrow-back-ios"
-                  size="18px"
-                  color="var(--color-global-baackground_light)"
-                />
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-    
-    </div>
-
-    <!-- POPUP -->
-    <!-- TOTAL INFO -->
+    <!-- info -->
     <div v-if="info_total_popup_isOpened" id="info_total_popup" class="info_total_popup_container">
 
       <div class="info_total_popup_wrapper">
@@ -5252,6 +5190,164 @@ watch(localGroupList_isOpened, () => {
         </div>
       </div>
     </div>
+    <!-- local list group -->
+    <div 
+      v-if='localGroupList_isOpened' 
+      class="localGroupList_container" 
+      :class="localGroupList_isOpened ? 'local_list__opened' : 'local_list__closed'" 
+    >
+      <div class="local_list_wrapper">
+        <div class="local_list_header">
+          <p>{{ filter_title }}</p>
+          <div @click="localGroupList_isOpened = false"></div>
+        </div>
+        <div class="local_list_main" style="padding: 0 .5rem;">
+
+          <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+            <div>{{ local_list_filtered.length }}</div>
+            <div style="font-weight: bold;">Сумма:</div>
+            <div style="font-weight: bold;">{{ sum_local_list_el_amount().toFixed(2) }}RUB</div>
+          </div>
+
+          <section 
+            v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
+              return obj.type
+            }) ])]"
+            class="mesh_group_container"
+            style="margin-left: .5rem; margin-right: .5rem;"
+          > 
+            <header><h4>{{ translateMashesSubGroup(type) }}</h4></header>
+            <main>
+              <ul class="mesh_container" style="padding: 0; list-style: none;">
+                <li 
+                  class="mesh_wrapper"
+                  style="cursor: pointer; position: relative;"
+                  v-for="item in meshes_computed.filter(el => el.type === type && el.tag == choosenChip_section).reverse()"
+                  @click="set_mesh_link_by_tag(item.type, item.id, item.tag)"
+                > 
+                  <div
+                  class="mesh_broker-sign"
+                  :style="set_mesh_broker_sign_bgc(item.tag)"
+                  >
+                    {{ item.broker_tag?.[0] }}
+                  </div>
+                  <div class="mesh_content">
+                    <!-- {{ item }} -->
+                      
+                    <p class="mesh_content-el">{{ item.id }} | {{ item.name }}</p>
+                    <p class="mesh_content-el" style="">
+
+                      <!-- invested)loan or debt_loan -->
+                      <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
+                        <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-global-text_second); text-transform: uppercase;">Завершен</span>
+                        <span v-else>
+                          <span v-if="item.tag === 'invested_loan'" style="color: var(--color-urgency-high);"> 
+                            {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
+                            /
+                            {{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) / (item.amount) - 1) * 100).toFixed(2) }}%
+                          </span>
+                          <span v-if="item.tag === 'debt_loan'" style="color: var(--color-urgency-high);">
+                            {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2) }} {{ currency_to_show.ticket }}
+                          </span>
+                        </span>
+                      </span>
+                      <!-- invested crypto -->
+                      <span v-else-if="item.tag === 'invested_crypto'" style="display: flex; flex-direction: column; align-items: flex-end">
+                      {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid)).toFixed(2) }} {{ currency_to_show.ticket }}
+                      </span>
+                      <!-- invested stock -->
+                      <span v-else-if="item.tag === 'invested_stock'" style="display: flex; flex-direction: column; align-items: flex-end">
+                        Инвестировано: {{ calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) }}
+                      </span>
+                      
+                      
+                      <span>
+                        <!-- debt_loan -->
+                        <span v-if="item.tag === 'debt_loan'">
+
+                          <!-- <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) === 0" style="color: var(--color-urgency-low);">
+                            +1 к карме
+                          </span> -->
+                          <span v-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) > 0" style="color: var(--color-urgency-low);">
+                            +1 к щедрости 
+                            <!-- ({{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2)}} {{ currency_to_show.ticket }}) -->
+                          </span>
+                          <span v-else-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) === 0" style="color: var(--color-urgency-low);">
+                            +1 к карме
+                          </span>
+                          <span v-else>
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} из 
+                            <span style="padding: 1px 3px; color: var(--color-global-baackground_light);border-radius: 5px; background-color: var(--color-urgency-high-10);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
+                          </span>
+                        </span>
+                        <!-- invested_loan -->
+                        <span v-else-if="item.tag === 'invested_loan'">
+                          <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-urgency-low);">
+                            +{{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount).toFixed(2)}} {{ currency_to_show.ticket }} / +{{ ((calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - item.amount) / item.amount * 100).toFixed(2) }}%
+                          </span>
+                          <span v-else>
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} из 
+                            <span style="padding: 1px 3px; color: var(--color-global-baackground_light);border-radius: 5px; background-color: var(--color-wallet-fund-invested);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
+                          </span>
+                        </span>
+                        <!-- invested project -->
+                        <span v-else-if="item.tag === 'invested_project'" style="display: flex; flex-direction: column; align-items: flex-end">
+                          <span>
+                            {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} {{ currency_to_show.ticket }}
+                          </span>
+                          <span style="color: var(--color-global-text_second);">
+                            {{ calc_mesh_invested_project_amount_actual(item.id) }}
+                          </span>
+                        </span>
+                        <!-- invested crypto -->
+                        <span v-else-if="item.tag === 'invested_crypto'" style="color: var(--color-global-text_second);">{{ calc_mesh_invested_crypto_actual(item.id) }}
+                        </span>
+                        <!-- invested stock -->
+                        <span v-else-if="item.tag === 'invested_stock'" style="color: var(--color-global-text_second);">
+                          {{ calc_mesh_invested_stock_actual(item.id) }}
+                        </span>
+                        <!-- else -->
+                        <span v-else>
+                          {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
+                          {{ currency_to_show.ticket }}
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                  <p style="font-size: .8rem; margin: 0;">
+
+                    <span style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}
+                    </span>
+                    <span v-if="item.tag === 'invested_project'" style="margin-left: 3px; color: var(--color-wallet-fund-invested); border-radius: 5px"> {{ item.desc }}</span>
+                  </p>
+                </li>
+              </ul>
+            </main>
+            
+          </section>
+
+          <div v-for="cast in local_list_filtered" style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--color-btn-disabled-text); margin-top: 1rem; border-radius: 1rem; padding: 1rem;">
+            
+            <!-- SEE set_mesh_link_by_tag function -->
+            <div>
+              <p style="margin: 0;">{{ cast.name }}</p>
+              <p style="margin: 0;">{{ cast.broker }}</p>
+            </div>
+            <p style="margin: 0;">{{ (cast.amount).toFixed(2) }}</p>
+          </div> 
+
+          <br>
+          <br>
+          <br>
+
+          <div v-for="cast in local_list_filtered">
+              {{ cast }}
+            </div> 
+        </div>
+        <div class="local_list_footer">footer</div>
+      </div>
+    </div>
+    <!-- transaction history -->
 
     <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
@@ -5317,7 +5413,7 @@ watch(localGroupList_isOpened, () => {
       </h3>
 
     </div>
-
+    {{ choosenChip_section }}
     <!-- CURRENT SECTION CONTENT -->
     <!-- ledger && meshes -->
      <section class="current-fund_container">
@@ -6297,7 +6393,7 @@ watch(localGroupList_isOpened, () => {
 
   /* meshes local */
   .meshes_local_section {
-    background-color: var(--color-status-finished);
+    /* background-color: var(--color-status-finished); */
     /* background-color: var(--color-bg-popup); */
     /* padding: 1.5rem;   */
   }
@@ -6329,7 +6425,7 @@ watch(localGroupList_isOpened, () => {
     margin: 0;
   }
   .meshes_local_filter_button {
-      background-color: var(--color-global-text);
+      /* background-color: var(--color-global-text); */
       opacity: .7;
       border-radius: .3rem;
   }
@@ -6366,12 +6462,13 @@ watch(localGroupList_isOpened, () => {
   }
   .local_list_wrapper {
     /* display: none; */
-    width: 90%;
+    width: 100%;
     height: 90vh;
     background-color: var(--color-global-baackground_light);
     position: relative;
-    top: 50%;
+    top: 55%;
     left: 50%;
+    bottom: 0;
     transform: translate(-50%, -50%);
     border-radius: 1rem;
   }
