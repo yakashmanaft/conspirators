@@ -5452,11 +5452,14 @@ const checkCurrencyPair = (pair: any) => {
                   </div>
                   <p style="font-size: .8rem; margin: 0;">
                     {{ item }}
-                    <span v-if="currentAffiliation.name === 'all'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ translateOwnerName(item)}}</span>
+                    <!-- <span v-if="currentAffiliation.name === 'all'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ translateOwnerName(item)}}</span>
                     <span v-else-if="item.tag !== 'available'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">
                       {{ item?.broker_tag ? item.broker_tag : set_attr_data(item) }}
                     </span>
-                    <span v-if="item.tag === 'invested_project'" style="color: var(--color-wallet-fund-invested); border-radius: 5px">{{ item.desc }}</span>
+                    <span v-if="item.tag === 'invested_project'" style="color: var(--color-wallet-fund-invested); border-radius: 5px">{{ item.desc }}</span> -->
+                    <span style="background-color: var(--color-urgency-low-10);">{{item.ownerType}}{{ item.ownerID }}</span>
+                    <span style="background-color: var(--color-urgency-middle-10);">{{item.loanerType}}{{ item.loanerID }}</span>
+                    <span style="background-color: var(--color-wallet-fund-invested-wo);">{{ item.broker_tag }}</span>
                   </p>
                 </li>
               </ul>
