@@ -1,7 +1,3 @@
-// % npx prisma db pull 
-// npx prisma generate
-// https://www.programonaut.com/how-to-connect-to-two-databases-using-prisma/
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x"]
@@ -9,8 +5,6 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  // url      = env("DATABASE_URL")
-  // url      = "mysql://caminipk_sb_2:Kashmanaft123[eq@caminipk.beget.tech/caminipk_sb_2"
   url      = "mysql://anfalofo_conspir:Kashmanaft123[eq@anfalofo.beget.tech/anfalofo_conspir"
 }
 
@@ -18,26 +12,17 @@ model auth {
   id                Int                 @id @default(autoincrement())
   login             String              @unique(map: "login") @db.VarChar(60)
   password          String              @db.VarChar(60)
-  // name          String?   @db.VarChar(255)
-  // middleName    String?   @db.VarChar(255)
-  // surname       String?   @db.VarChar(255)
-  // phone         String?   @db.VarChar(15)
-  // role          Role      @default(USER)
-  // groupID      Int?      @default(0)
-  // groupStatus  String?   @db.VarChar(255)
-  // accessModules Json?
-  // favorites     Json?
-  profile           Profile?
   created_at        DateTime            @default(now()) @db.DateTime(0)
   update_at         DateTime?           @updatedAt
   LeadHistoryLedger LeadHistoryLedger[]
+  profile           Profile?
 }
 
 model Profile {
   id        Int     @id @default(autoincrement())
-  user      auth    @relation(fields: [userId], references: [id])
   userId    Int     @unique
   userEmail String? @unique(map: "email") @db.VarChar(60)
+  user      auth    @relation(fields: [userId], references: [id])
 }
 
 model Landing {
@@ -46,11 +31,9 @@ model Landing {
   sharers    Json
   created_at DateTime  @default(now()) @db.DateTime(0)
   update_at  DateTime? @updatedAt
-  lead       Lead[]
-  title      String?   @db.VarChar(255)
   desc       String?   @db.VarChar(255)
-  // partner    Partner   @relation(fields: [partnerId], references: [id])
-  // partnerId  Int
+  title      String?   @db.VarChar(255)
+  lead       Lead[]
 }
 
 model Lead {
@@ -58,12 +41,14 @@ model Lead {
   name       String     @db.VarChar(60)
   mobile     String     @db.VarChar(60)
   email      String     @db.VarChar(255)
-  landing    Landing    @relation(fields: [landingId], references: [id])
   landingId  Int
   status     LeadStatus @default(lead)
   urgency    Urgency    @default(low)
   created_at DateTime   @default(now()) @db.DateTime(0)
   update_at  DateTime?  @updatedAt
+  landing    Landing    @relation(fields: [landingId], references: [id])
+
+  @@index([landingId], map: "Lead_landingId_fkey")
 }
 
 model Project {
@@ -71,14 +56,14 @@ model Project {
   name          String   @db.VarChar(60)
   created_at    DateTime @default(now()) @db.DateTime(0)
   sharers       Json?
+  bandId        Int
   invested_mesh Json?
   customer      Json?
   executor      Json?
-  // [{"userType": "conspirator", "userId": 1}]
-  // Банда заказчика, если нет - Общее (1)
   band          Band     @relation(fields: [bandId], references: [id])
-  bandId        Int
   task          Task[]
+
+  @@index([bandId], map: "Project_bandId_fkey")
 }
 
 model Partner {
@@ -87,16 +72,16 @@ model Partner {
   middleName        String?             @db.VarChar(60)
   surname           String?             @db.VarChar(60)
   phone             String?             @db.VarChar(15)
-  email             String?             @db.VarChar(60)
   sharers           Json?
-  band              Band                @relation(fields: [bandId], references: [id])
   bandId            Int                 @default(0)
-  userId            Int?                @default(0)
-  // landing    Landing[]
-  // project    Project[]
-  TaskProcessLedger TaskProcessLedger[]
   created_at        DateTime            @default(now()) @db.DateTime(0)
   update_at         DateTime?           @updatedAt
+  userId            Int?                @default(0)
+  email             String?             @db.VarChar(60)
+  band              Band                @relation(fields: [bandId], references: [id])
+  TaskProcessLedger TaskProcessLedger[]
+
+  @@index([bandId], map: "Partner_bandId_fkey")
 }
 
 model Band {
@@ -120,16 +105,17 @@ model Task {
   id                Int                 @id @default(autoincrement())
   name              String?             @db.VarChar(60)
   created_at        DateTime            @default(now()) @db.DateTime(0)
-  // ended_at   DateTime?  @default(now()) @db.DateTime(0)
   update_at         DateTime?           @updatedAt
   deadline          DateTime?           @default(now()) @db.DateTime(0)
   ended_at          DateTime?           @default(now()) @db.DateTime(0)
-  project           Project             @relation(fields: [projectId], references: [id])
   projectId         Int
-  TaskProcessLedger TaskProcessLedger[]
   status            TaskStatus          @default(waiting)
   urgency           Urgency             @default(low)
   desc              String?             @db.VarChar(255)
+  project           Project             @relation(fields: [projectId], references: [id])
+  TaskProcessLedger TaskProcessLedger[]
+
+  @@index([projectId], map: "Task_projectId_fkey")
 }
 
 model TaskProcessLedger {
@@ -138,18 +124,23 @@ model TaskProcessLedger {
   ended_at   DateTime   @default(now()) @db.DateTime(0)
   subject    String     @db.VarChar(255)
   taskId     Int
-  player     Partner    @relation(fields: [playerId], references: [id])
   playerId   Int
   status     TaskStatus @default(waiting)
+  player     Partner    @relation(fields: [playerId], references: [id])
   Task       Task       @relation(fields: [taskId], references: [id])
+
+  @@index([playerId], map: "TaskProcessLedger_playerId_fkey")
+  @@index([taskId], map: "TaskProcessLedger_taskId_fkey")
 }
 
 model LeadHistoryLedger {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now()) @db.DateTime(0)
   leadId     Int      @default(0)
-  author     auth     @relation(fields: [authorId], references: [id])
   authorId   Int      @default(0)
+  author     auth     @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "LeadHistoryLedger_authorId_fkey")
 }
 
 model Mesh {
@@ -161,30 +152,21 @@ model Mesh {
   broker_tag String   @db.VarChar(60)
   ownerID    Int      @default(0)
   ownerType  String   @db.VarChar(60)
-  // По сути, хранилище это тот же mesh (спец счет для учета выданных займов)
-  // storageID    Int?     @default(0)
-
-  // bid          Float?   @default(0.00)
-  // Заёмщик (в случае с выдачей займов)
-  // loanerID     Int?
-  // loanerType   String?  @db.VarChar(60)
-  // loanerMeshID Int?
-  desc String? @db.VarChar(255)
+  desc       String?  @db.VarChar(255)
 }
 
 model Loan {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now()) @db.DateTime(0)
   name       String   @db.VarChar(60)
-  type       String   @db.VarChar(60) // loan_interest, loan_free
-  tag        String   @db.VarChar(60) // invested_loan
+  type       String   @db.VarChar(60)
+  tag        String   @db.VarChar(60)
   ownerID    Int      @default(0)
   ownerType  String   @db.VarChar(60)
   loanerID   Int
   loanerType String   @db.VarChar(60)
-  // loanerMeshID Int
-  bid        Float    @default(0.00)
-  amount     Float?   @default(0.00)
+  bid        Float    @default(0)
+  amount     Float?   @default(0)
   bankMeshID Int?     @default(0)
 }
 
@@ -192,34 +174,11 @@ model BrokerageAccount {
   id            Int      @id @default(autoincrement())
   created_at    DateTime @default(now()) @db.DateTime(0)
   name          String   @db.VarChar(60)
-  // owner_mash_id Int
-  // owner_id      Int      @default(0)
-  // owner_type    String   @db.VarChar(60)
-  invested_mash Json?
-  tag           String   @db.VarChar(60) // tag invested_stock
+  tag           String   @db.VarChar(60)
   broker_tag    String   @db.VarChar(60)
-  fee           Float    @default(0.00)
-  tax           Float    @default(0.00)
-  // rate          Json?
-  // player        Partner    @relation(fields: [playerId], references: [id])
-  // status        TaskStatus @default(waiting)
-  // Task          Task       @relation(fields: [taskId], references: [id])
-
-  // rate 
-  // [
-  //  {
-  //    "name": "metals",
-  //    "value": 1.9
-  //  },
-  //  {
-  //    "name": "securities",
-  //    "value": 0.3
-  //  },
-  //  {
-  //    "name":"currencies",
-  //    "value":0.9
-  //  }
-  // ]
+  fee           Float    @default(0)
+  tax           Float    @default(0)
+  invested_mash Json?
 }
 
 model cfaAccount {
@@ -227,10 +186,10 @@ model cfaAccount {
   created_at    DateTime @default(now()) @db.DateTime(0)
   name          String   @db.VarChar(60)
   invested_mash Json?
-  tag           String   @db.VarChar(60) // tag invested_stock
+  tag           String   @db.VarChar(60)
   broker_tag    String   @db.VarChar(60)
-  fee           Float    @default(0.00)
-  tax           Float    @default(0.00)
+  fee           Float    @default(0)
+  tax           Float    @default(0)
 }
 
 model Crypto {
@@ -238,172 +197,41 @@ model Crypto {
   created_at    DateTime @default(now()) @db.DateTime(0)
   name          String   @db.VarChar(60)
   invested_mash Json?
-  tag           String   @db.VarChar(60) // tag invested_crypto
+  tag           String   @db.VarChar(60)
   broker_tag    String   @db.VarChar(60)
-  fee           Float    @default(0.00)
-  tax           Float    @default(0.00)
+  fee           Float    @default(0)
+  tax           Float    @default(0)
 }
 
 model Transaction {
   id                   Int      @id @default(autoincrement())
   created_at           DateTime @default(now()) @db.DateTime(0)
-  //
   from_item_id         Int      @default(0)
   from_item_tag        String   @db.VarChar(255)
   from_item_type       String   @db.VarChar(255)
-  from_item_qty        Float    @default(0.00)
-  from_item_amount     Float    @default(0.00)
+  from_item_qty        Float    @default(0)
+  from_item_amount     Float    @default(0)
   from_item_currency   String   @db.VarChar(60)
-  //
   target_item_id       Int      @default(0)
   target_item_tag      String   @db.VarChar(255)
   target_item_type     String   @db.VarChar(255)
-  target_item_qty      Float    @default(0.00)
-  target_item_amount   Float    @default(0.00)
+  target_item_qty      Float    @default(0)
+  target_item_amount   Float    @default(0)
   target_item_currency String   @db.VarChar(60)
-  //
   purpose              String   @db.VarChar(255)
-  fee                  Float    @default(0.00)
+  fee                  Float    @default(0)
   comments             String   @db.VarChar(255)
-  //
   authorID             Int      @default(0)
   authorType           String   @db.VarChar(60)
 }
 
-// FUND GROUP (Это не надо в БД)
-//= tagName: available, invested_stock, debt
-//= tagType: saving_account, cash
-
-//= tagName: invested_stock, debt
-//= tagType: brokerage_account, mutual_funds
-
-//= brokerTagg: SBER, T-Bank
-
-// FUND Obj
-// id
-// name
-// tagName
-// tagType
-// brokerTag
-
-//= wallet tag:
-// available (Деньги на счетах / RUB)
-// available_fc (Деньги на счетах / Иностранная валюта)
-// deposit (Инвестиции)
-// invested_stock_market (Инвестиции)
-// invested_crypto (Инвестиции)
-// invested_currency (Деньги на счетах)
-// invested_loan (Вексель)
-// invested_project (Вексель)
-// tax_fund
-// dept
-// project
-// expenses
-// salary
-// 
-//
-//
-//= mesh type 
-// saving_account
-// debet_card
-// cash
-// mutual_fund
-// brokerage_account
-// cfa_account
-// crypto-wallet
-// crypto_stock
-// crypto-stacking
-// deposit-capitalize
-// deposit-wocapitalize
-// currency-usd
-// currency-cny
-// currency-hkd
-// loan-interest
-// loan-free
-// start-up
-
-//= purpose of payment
-// deposit (income размывает долю)
-// dividend (дивиденды)
-// coupon (купоны)
-// tax (налог)
-// fee (комиссия)
-// salary (зарплата)
-// weekly (еженедельный взнос)
-// gift (дар)
-// withdraw (outcome размывает долю)
-// repayment (погашение чего-либо (займа))
-// issue (выдача)
-// 
-
-//= tag of payment
-// income
-// outcome
-// buy
-// sale
-
-enum Urgency {
-  low
-  middle
-  high
-}
-
-enum LeadStatus {
-  //1
-  lead
-  // 2
-  blank
-  // 3
-  project
-}
-
-enum TaskStatus {
-  // 1
-  waiting
-  // 2
-  works
-  // 3
-  agreement
-  // 4
-  canceled
-  // 5
-  paused
-  // 6
-  finished
-}
-
-enum Role {
-  SUPER_ADMIN
-  ADMIN
-  GENERAL
-  MASTER
-  USER
-}
-
-// model Account {
-// }
-
-// model Organizations {
-//   id         Int       @id @default(autoincrement())
-//   uuid       String    @unique(map: "uuid") @db.VarChar(60)
-//   title      String    @db.VarChar(255)
-//   ownerID    Int?      @default(0)
-//   sharers    Json?
-//   created_at DateTime  @default(now()) @db.DateTime(0)
-//   update_at  DateTime? @updatedAt
-// }
-
 model Warehouse {
   id              Int      @id @default(autoincrement())
-  //   uuid           String    @unique(map: "uuid") @db.VarChar(60)
   title           String   @db.VarChar(255)
   type            String   @db.VarChar(255)
-  // instrument / auto
   qty             Int      @default(0)
-  price           Decimal  @default(0)
+  price           Decimal  @default(0.000000000000000000000000000000)
   measure         String   @db.VarChar(255)
-  locationType    String?  @db.VarChar(255)
-  location        Location @relation(fields: [locationId], references: [id])
   locationId      Int
   position        String   @db.VarChar(255)
   serial          String   @db.VarChar(255)
@@ -415,302 +243,44 @@ model Warehouse {
   created_at      DateTime @default(now()) @db.DateTime(0)
   update_at       DateTime @updatedAt
   showToAll       Boolean  @default(true)
+  locationType    String?  @db.VarChar(255)
+  location        Location @relation(fields: [locationId], references: [id])
+
+  @@index([locationId], map: "Warehouse_locationId_fkey")
 }
 
-// transactionsTypes (created ok | add ok | sub ok | move ok | changeOwner | changeResponsible)
-
-// если происходит по сути любая транзакция по типу свай - это две транзакции, когда ообоим соучатникам необходимо взаимно отправвить что-то
-
-// model Transaction {
-//   id              Int      @id @default(autoincrement()) // hash
-//   created_at      DateTime @default(now()) @db.DateTime(0)
-//   block_id        Int      @default(0)
-//   from__id        Int      @default(0)
-//   receive_id      Int      @default(0)
-//   import          String   @db.VarChar(255)
-//   import_value    Float    @default(0.00)
-//   transaction_fee Float    @default(0.00)
-//   status          String   @db.VarChar(60)
-
-//   fee                   Float   @default(0.00)
-//   from_mesh_currency    String  @db.VarChar(60)
-//   from_mesh_amount      Float   @default(0.00)
-//   from_mesh_price       Float   @default(0.00)
-//   receive_mesh_currency String  @db.VarChar(60)
-//   receive_mesh_amount   Float   @default(0.00)
-//   receive_mesh_price    Float   @default(0.00)
-//   comments              String  @db.VarChar(255)
-//   authorID              Int?    @default(0)
-//   authorType            String? @db.VarChar(60)
-//   loanID                Int?
-// }
-
-// model WarehouseItemsLedger {
-//   id                   Int      @id @default(autoincrement())
-//   created_at           DateTime @default(now()) @db.DateTime(0)
-//   transactionType      String   @db.VarChar(255)
-//   // itemID                Int       @default(0)
-//   itemTitle            String   @db.VarChar(255)
-//   authorID             Int      @default(0)
-//   locationFrom         String?  @db.VarChar(255)
-//   locationFromID       Int?     @default(0)
-//   locationTo           String   @db.VarChar(255)
-//   locationToID         Int      @default(0)
-//   prevOwnerID          Int?     @default(0)
-//   prevOwnerType        String?  @db.VarChar(255)
-//   currentOwnerID       Int      @default(0)
-//   currentOwnerType     String   @db.VarChar(255)
-//   prevResponsibleID    Int?     @default(0)
-//   currentResponsibleID Int      @default(0)
-//   itemType             String?  @db.VarChar(255)
-//   qty                  Int?     @default(0)
-//   measure              String?  @db.VarChar(255)
-// }
-
-// model Projects {
-//   id          Int       @id @default(autoincrement())
-//   uuid        String    @unique(map: "uuid") @db.VarChar(60)
-//   title       String    @db.VarChar(255)
-//   address     String    @db.VarChar(255)
-//   partnerID   Int       @default(0)
-//   partnerType String    @default("user") @db.VarChar(255)
-//   creator     Int       @default(0)
-//   bandID      Int?      @default(0)
-//   curator     Int       @default(0)
-//   curatorType String?   @db.VarChar(60)
-//   workType    String    @db.VarChar(255)
-//   completion  Float     @default(0.00)
-//   sharers     Json?
-//   stages      Json?
-//   created_at  DateTime  @default(now()) @db.DateTime(0)
-//   update_at   DateTime? @updatedAt
-// }
-
-// model Banks {
-//   id         Int       @id @default(autoincrement())
-//   title      String?   @db.VarChar(255)
-//   creatorID  Int       @default(0)
-//   users      Json
-//   walletBank Json?
-//   created_at DateTime  @default(now()) @db.DateTime(0)
-//   update_at  DateTime? @updatedAt
-// }
-
-// type: expense / income / invest
-// authorType: user / company
-// currency: 'RUB'
-// model BanksLedger {
-//   id                Int      @id @default(autoincrement())
-//   type              String   @db.VarChar(60)
-//   appointment       String   @db.VarChar(255)
-//   appointmentTarget String?  @db.VarChar(255)
-//   desc              String?  @db.VarChar(255)
-//   authorID          Int      @default(0)
-//   authorType        String   @db.VarChar(60)
-//   bankID            Int      @default(0)
-//   price             Float?   @default(0.00)
-//   qty               Float?   @default(0.00)
-//   currency          String?  @db.VarChar(60)
-//   bet               Decimal? @default(0.00) @db.Decimal(3, 2)
-//   walletBankID      Int?     @default(0)
-//   sharerTargetID    Int?     @default(0)
-//   sharerTargetType  String?  @db.VarChar(60)
-//   created_at        DateTime @default(now()) @db.DateTime(0)
-// }
-
-// model BanksStockInvestFunds {
-//   id          Int       @id @default(autoincrement())
-//   title       String    @db.VarChar(255)
-//   creatorID   Int       @default(0)
-//   partners    Json
-//   stockBroker Json
-//   accountType String    @db.VarChar(255)
-//   assets      Json?
-//   created_at  DateTime  @default(now()) @db.DateTime(0)
-//   update_at   DateTime? @updatedAt
-// }
-
-// type buy / sell
-// bonds
-// model StockBondsLedger {
-//   id                 Int      @id @default(autoincrement())
-//   created_at         DateTime @default(now()) @db.DateTime(0)
-//   created_AuthorID   Int      @default(0)
-//   type               String   @db.VarChar(60)
-//   paperType          String?  @db.VarChar(60)
-//   ticker             String   @db.VarChar(60)
-//   stock              String   @db.VarChar(60)
-//   price              Float    @default(0.00)
-//   qty                Float    @default(0.00)
-//   fee                Float    @default(0.00)
-//   accumulated_coupon Float    @default(0.00)
-//   fundID             Int      @default(0)
-// }
-
-// shares
-
-// fiatTransactions
-// model StockShareLedger {
-//   id               Int      @id @default(autoincrement())
-//   created_at       DateTime @default(now()) @db.DateTime(0)
-//   created_AuthorID Int      @default(0)
-//   type             String   @db.VarChar(60)
-//   paperType        String?  @db.VarChar(60)
-//   ticker           String   @db.VarChar(60)
-//   stock            String   @db.VarChar(60)
-//   price            Float    @default(0.00)
-//   qty              Float    @default(0.00)
-//   fee              Float    @default(0.00)
-//   fundID           Int      @default(0)
-// }
-
-// model StockFiatLedger {
-//   id               Int      @id @default(autoincrement())
-//   created_at       DateTime @default(now()) @db.DateTime(0)
-//   created_AuthorID Int      @default(0)
-//   // dividends / coupons / withdraw / cashin
-//   type             String   @db.VarChar(60)
-//   currency         String   @db.VarChar(60)
-//   qty              Float    @default(0.00)
-//   fundID           Int      @default(0)
-// }
-
-// model StockShareLedger {}
-
-// accountType iia (individual investment account)) / ba (brokerage accounts)
-
-// места хранения компании (Склад, Офис, Ремонтные организации)
 model Location {
   id              Int         @id @default(autoincrement())
-  // uuid       String      @unique(map: "uuid") @db.VarChar(60)
   title           String      @db.VarChar(255)
   type            String      @default("office")
-  typeID          Int?        @default(0)
   address         String      @db.VarChar(255)
   ownerID         Int         @default(0)
   ownerType       String      @db.VarChar(255)
-  responsibleID   Int?        @default(0)
-  responsibleType String?     @db.VarChar(255)
   created_at      DateTime    @default(now()) @db.DateTime(0)
   update_at       DateTime    @updatedAt
+  responsibleID   Int?        @default(0)
+  responsibleType String?     @db.VarChar(255)
+  typeID          Int?        @default(0)
   Warehouse       Warehouse[]
 }
 
-// model Salary {
-//   id             Int       @id @default(autoincrement())
-//   bandID         Int       @default(0)
-//   periodStart    String    @db.VarChar(255)
-//   periodEnd      String    @db.VarChar(255)
-//   status         Json?
-//   wageRate       Float     @default(0)
-//   list           Json
-//   listProduction Json?
-//   created_at     DateTime  @default(now()) @db.DateTime(0)
-//   update_at      DateTime? @updatedAt
-// }
+enum Urgency {
+  low
+  middle
+  high
+}
 
-// model Demand {
-//   id           Int       @id @default(autoincrement())
-//   created_at   DateTime  @default(now()) @db.DateTime(0)
-//   update_at    DateTime? @updatedAt
-//   deadline     String    @db.VarChar(255)
-//   type         String    @db.VarChar(255)
-//   status       String    @default("research")
-//   deliveryDate String    @db.VarChar(255)
-//   creatorID    Int       @default(0)
-//   responserID  Int       @default(0)
-//   locationType String    @db.VarChar(255)
-//   locationID   Int       @default(0)
-// }
+enum LeadStatus {
+  lead
+  blank
+  project
+}
 
-// generator client {
-//   provider = "prisma-client-js"
-// }
-
-// datasource db {
-//   provider = "mysql"
-//   url      = env("DATABASE_URL")
-// }
-
-// model users {
-//   id             Int              @id @default(autoincrement())
-//   uuid           String           @unique(map: "uuid") @db.VarChar(60)
-//   email          String           @unique(map: "email") @db.VarChar(255)
-//   password       String           @db.VarChar(255)
-//   avatar         String?          @db.VarChar(1000)
-//   permissions    String?          @db.VarChar(4000)
-//   first_name     String           @db.VarChar(255)
-//   last_name      String           @db.VarChar(255)
-//   role           Role             @default(GENERAL)
-//   email_verified Boolean          @default(false)
-//   is_active      Boolean          @default(true)
-//   last_login     DateTime?        @db.DateTime(0)
-//   created_at     DateTime         @default(now()) @db.DateTime(0)
-//   deleted_at     DateTime?        @db.DateTime(0)
-//   updated_at     DateTime?        @updatedAt
-//   provider_users provider_users[]
-//   refresh_tokens refresh_tokens[]
-//   sessions       sessions[]
-// }
-
-// model provider_users {
-//   id               Int       @id @default(autoincrement())
-//   provider         Provider
-//   provider_user_id String    @unique(map: "provider_user_id")
-//   user_id          Int
-//   updated_at       DateTime? @updatedAt
-//   user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-//   @@index([user_id], map: "provider_users_user_id_fkey")
-// }
-
-// model sessions {
-//   id           Int       @id @default(autoincrement())
-//   user_id      Int
-//   sid          String    @unique(map: "sid")
-//   start_time   DateTime  @default(now())
-//   end_time     DateTime?
-//   access_token String    @db.VarChar(4000)
-//   csrf_token   String    @db.VarChar(255)
-//   is_active    Boolean
-//   ip_address   String
-//   updated_at   DateTime? @updatedAt
-//   user         users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-//   @@index([user_id], map: "sessions_user_id_fkey")
-// }
-
-// model refresh_tokens {
-//   id           Int       @id @default(autoincrement())
-//   token_id     String    @unique(map: "token_id") @db.VarChar(60)
-//   user_id      Int
-//   is_active    Boolean
-//   date_created DateTime  @default(now()) @db.DateTime(0)
-//   updated_at   DateTime? @updatedAt
-//   user         users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-//   @@index([user_id], map: "refresh_tokens_user_id_fkey")
-// }
-
-// model one_time_tokens {
-//   id           Int        @id @default(autoincrement())
-//   token_id     String     @unique(map: "token_id") @db.VarChar(60)
-//   token_type   tokenType?
-//   expires_at   DateTime   @db.DateTime(0)
-//   date_created DateTime   @default(now()) @db.DateTime(0)
-//   updated_at   DateTime?  @updatedAt
-// }
-
-// enum Role {
-//   SUPER_ADMIN
-//   ADMIN
-//   GENERAL
-// }
-
-// enum Provider {
-//   GOOGLE
-// }
-
-// enum tokenType {
-//   RESET
-// }
+enum TaskStatus {
+  waiting
+  works
+  agreement
+  canceled
+  paused
+  finished
+}

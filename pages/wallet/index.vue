@@ -2096,6 +2096,609 @@ const currency_to_show =  ref({
 // info total amount
 const info_total_popup_isOpened = ref(false)
 
+// meshes_cast
+const currecy_pair = ref([
+  {
+    name: 'EUR / RUB',
+    price: 91.98
+  },
+  {
+    name: 'USD / RUB',
+    price: 77.17
+  },
+  {
+    name: 'VND / RUB',
+    price: 0.0032
+  },
+  {
+    name: 'CNY / RUB',
+    price: 11.65
+  },
+])
+
+const localGroupList_isOpened = ref(false);
+const meshes_cast = ref([
+  {
+    id: 1,
+    uuid: '19847293hrffdskf1',
+    name: 'БАНКЕС_Наличка_rub',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКЕС',
+    broker: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 1350.00
+  },
+  {
+    id: 2,
+    uuid: '19847293hrffdskf2',
+    name: 'БАНКАС_Наличка_rub',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКАС',
+    broker: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 400.00
+  },
+  {
+    id: 3,
+    uuid: '19847293hrffdskf3',
+    name: 'ЮНИДРАМ_Наличка_rub',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'ЮНИДРАМ',
+    broker: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 400.00
+  },
+  {
+    id: 4,
+    uuid: '19847293hrffdskf4',
+    name: 'СЗ_АСВ_Наличка_rub',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'СЗ_АСВ',
+    broker: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 150.00
+  },
+  {
+    id: 5,
+    uuid: '19847293hrffdskf5',
+    name: 'БАНКЮС_Наличка_rub',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКЮС',
+    broker: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 1081.30
+  },
+  {
+    id: 6,
+    uuid: '19847293hrffdsk6',
+    name: 'БАНКЮС_Наличка_eur',
+    tag: 'Деньги на счетах',
+    type: 'Наличка',
+    owner: 'БАНКЮС',
+    broker: 'БАНКЕС',
+    currency: 'EUR',
+    amount: 5.00
+  },
+  {
+    id:7,
+    uuid: '19847293hrffdskf7',
+    name: 'БАНКЕС_Накопительный_rub',
+    tag: 'Деньги на счетах',
+    type: 'Накопительные счета',
+    owner: 'БАНКЕС',
+    broker: 'ОЗОН',
+    currency: 'RUB',
+    amount: 700.00
+  },
+  {
+    id:8,
+    uuid: '19847293hrffdskf8',
+    tag: 'Деньги на счетах',
+    type: 'Накопительные счета',
+    owner: 'БАНКАС',
+    broker: 'ОЗОН',
+    currency: 'RUB',
+    amount: 1001.52
+  },
+  {
+    id: 9,
+    uuid: '19847293hrffdskf9',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'ЮНИДРАМ',
+    broker: 'ОЗОН',
+    name: '',
+    currency: 'RUB',
+    amount: 2035.08
+  },
+  {
+    id: 10,
+    uuid: '19847293hrffdskf10',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'С.В.Анфалов',
+    broker: 'ОЗОН',
+    name: '',
+    currency: 'RUB',
+    amount: 1004.38
+  },
+  {
+    id: 11,
+    uuid: '19847293hrffdskf11',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЕС',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 1048.74
+  },
+  {
+    id: 12,
+    uuid: '19847293hrffdskf12',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКАС',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 3096.73
+  },
+  {
+    id: 13,
+    uuid: '19847293hrffdskf13',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 63.92
+  },
+  {
+    id: 14,
+    uuid: '19847293hrffdskf14',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЮС',
+    broker: 'СБЕР',
+    name: '',
+    currency: 'RUB',
+    amount: 395.84
+  },
+  {
+    id: 15,
+    uuid: '19847293hrffdskf15',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'ЮНИДРАМ',
+    broker: 'ВТБ',
+    name: '',
+    currency: 'RUB',
+    amount: 3413.16
+  },
+  {
+    id: 16,
+    uuid: '19847293hrffdskf16',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЕС',
+    broker: 'Яндекс',
+    name: 'ФИИ',
+    currency: 'RUB',
+    amount: 1478.53
+  },
+  {
+    id: 17,
+    uuid: '19847293hrffdskf17',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'Яндекс',
+    name: 'ФИИ',
+    currency: 'RUB',
+    amount: 107.45
+  },  
+  {
+    id: 18,
+    uuid: '19847293hrffdskf18',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 111.36
+  },
+  {
+    id: 19,
+    uuid: '19847293hrffdskf19',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЕС',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 22027.59
+  },
+  {
+    id: 20,
+    uuid: '19847293hrffdskf20',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'СЗ_АСВ',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 153.18
+  },
+  {
+    id: 21,
+    uuid: '19847293hrffdskf21',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЮС',
+    broker: 'Яндекс',
+    name: '',
+    currency: 'RUB',
+    amount: 353.27
+  },
+  {
+    id: 22,
+    uuid: '19847293hrffdskf22',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'ЮНИДРАМ',
+    broker: 'Т-Банк',
+    name: '',
+    currency: 'RUB',
+    amount: 4046.01
+  },
+  {
+    id: 23,
+    uuid: '19847293hrffdskf23',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'БАНКЮС',
+    broker: 'Т-Банк',
+    name: '',
+    currency: 'RUB',
+    amount: 165.79
+  },
+  {
+    id: 24,
+    uuid: '19847293hrffdskf24',
+    tag: 'Деньги на счетах',
+    type: 'Накопительный счет',
+    owner: 'С.В.Анфалов',
+    broker: 'Ренессанс',
+    name: '',
+    currency: 'RUB',
+    amount: 1120.30
+  },
+  {
+    id: 25,
+    uuid: '19847293hrffdskf25',
+    name: 'БАНКЮС_Т-Банк_Стандартный счет_cny',
+    tag: 'Деньги на счетах',
+    type: 'Стандартный счет',
+    owner: 'БАНКЮС',
+    broker: 'Т-Банк',
+    currency: 'CNY',
+    amount: 10.00
+  },
+  {
+    id: 26,
+    uuid: '19847293hrffdskf26',
+    name: 'БАНКЮС_Т-Банк_Стандартный счет_usd',
+    tag: 'Деньги на счетах',
+    type: 'Стандартный счет',
+    owner: 'БАНКЮС',
+    broker: 'Т-Банк',
+    currency: 'USD',
+    amount: 10.00
+  },
+  {
+    id: 27,
+    uuid: '19847293hrffdskf27',
+    name: 'БАНКЕС_2703Вклады2026',
+    tag: 'Инвестиции',
+    type: 'Вклады',
+    broker: 'ОЗОН',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 5000.00
+  },
+  {
+    id: 27,
+    uuid: '19847293hrffdskf27',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'Phantom Wallet',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 7797.35
+  },
+  {
+    id: 28,
+    uuid: '19847293hrffdskf28',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'Metamask wallet',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 12515.43
+  },
+  {
+    id: 29,
+    uuid: '19847293hrffdskf29',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'Telegram Wallet',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 3430.58
+  },
+  {
+    id: 30,
+    uuid: '19847293hrffdskf30',
+    tag: 'Инвестиции',
+    type: 'Крипто-дебет',
+    broker: 'MTT',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 3430.58
+  },
+  {
+    id: 31,
+    uuid: '19847293hrffdskf31',
+    name: 'БАНКЕС_2002БрокерскийСчет21',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'БАНКЕС',
+    currency: 'RUB',
+    amount: 126083.66
+  },
+  {
+    id: 32,
+    uuid: '19847293hrffdskf32',
+    name: 'БАНКАС_1002БрокерскийCчет21',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'БАНКАС',
+    currency: 'RUB',
+    amount: 23376.27
+  },
+  {
+    id: 33,
+    uuid: '19847293hrffdskf33',
+    name: 'SPORTCLUBTEAM_0207БрокерскийСчет2025',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'SPORTCLUBTEAM',
+    currency: 'RUB',
+    amount: 900.00
+  },
+  {
+    id: 34,
+    uuid: '19847293hrffdskf34',
+    name: 'БАНКЮС_1901БрокерскийСчет22',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'Т-Банк',
+    owner: 'БАНКЮС',
+    currency: 'RUB',
+    amount: 20688.64
+  },
+  {
+    id: 35,
+    uuid: '19847293hrffdskf35',
+    name: 'БАНКЮС_2603БрокерскийСчет2026',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'ВТБ',
+    owner: 'БАНКЮС',
+    currency: 'RUB',
+    amount: 1057.93
+  },
+  {
+    id: 36,
+    uuid: '19847293hrffdskf36',
+    name: 'С.В.Анфалов_0505БрокерскийСчет2026',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'А-Банк',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 1160.00
+  },
+  {
+    id: 37,
+    uuid: '19847293hrffdskf37',
+    name: 'Ю.О.Титова_0505БрокерскийСчет2025',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'А-Банк',
+    owner: 'Ю.О.Титова',
+    currency: 'RUB',
+    amount: 40150.00
+  },
+  {
+    id: 37,
+    uuid: '19847293hrffdskf37',
+    name: 'С.В.Анфалов_2311БрокерскийСчет2023',
+    tag: 'Инвестиции',
+    type: 'Фондовый рынок',
+    broker: 'БКС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 8272.61
+  },
+  {
+    id: 38,
+    uuid: '19847293hrffdskf38',
+    name: 'С.В.Анфалов_2703Кредит2026',
+    tag: 'Вексель',
+    type: 'Кредиты',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 140629.14
+  },
+  {
+    id: 39,
+    uuid: '19847293hrffdskf39',
+    name: 'С.В.Анфалов_2703Займ2026',
+    tag: 'Вексель',
+    type: 'Займы',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 1000.14
+  },
+  {
+    id: 40,
+    uuid: '19847293hrffdskf40',
+    name: 'С.В.Анфалов_2703Проект2026',
+    tag: 'Вексель',
+    type: 'Проекты',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 2050.00
+  },
+  {
+    id: 41,
+    uuid: '19847293hrffdskf41',
+    name: 'С.В.Анфалов_2703ДолгСоучастники2026',
+    tag: 'Долговые обязательства',
+    type: 'Долг к соучастникам',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 2222.33
+  },
+  {
+    id: 41,
+    uuid: '19847293hrffdskf41',
+    name: 'С.В.Анфалов_2703ДолгСоучастники2026',
+    tag: 'Долговые обязательства',
+    type: 'Долг к соучастникам',
+    broker: 'БАНКЕС',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 3333.33
+  },
+  {
+    id: 42,
+    uuid: '19847293hrffdskf42',
+    name: 'С.В.Анфалов_2703ДолгВнешний2026',
+    tag: 'Долговые обязательства',
+    type: 'Внешний долг',
+    broker: 'Сбер',
+    owner: 'С.В.Анфалов',
+    currency: 'RUB',
+    amount: 5556.33
+  },
+])
+
+const filter_title = ref('Мешки')
+const local_list_filtered = ref( meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB'))
+
+const local_list_show = ( (tag_1: string, tag_2: string) => {
+  localGroupList_isOpened.value = true
+  filter_title.value=tag_2
+  if(tag_1 === 'Деньги на счетах') {
+    if(tag_2 === '!RUB') {
+      choosenChip_section.value = 'available_fc'
+      filter_title.value='Иностранная валюта'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency !== 'RUB')
+    } else if (tag_2 === 'RUB') {
+      choosenChip_section.value = 'available'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB')
+    }
+  } 
+  else if (tag_1 === 'Инвестиции') {
+
+    if(tag_2 === 'Фондовый рынок'){
+      choosenChip_section.value = 'invested_stock'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Фондовый рынок')
+    }
+    else if(tag_2 === 'Вклады'){
+      choosenChip_section.value = 'deposit'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Вклады')
+    }
+    else if(tag_2 === 'Крипто-дебет'){
+      choosenChip_section.value = 'invested_crypto'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Крипто-дебет')
+    }
+  }
+  else if (tag_1 === 'Вексель') {
+    // надо бы разделить кредиты и займы в разные подгруппы
+    if(tag_2 === 'Кредиты') {
+      choosenChip_section.value = 'invested_loan'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Кредиты')
+    }
+    else if(tag_2 === 'Займы') {
+      choosenChip_section.value = 'invested_loan'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Займы')
+    }
+    else if(tag_2 === 'Проекты') {
+      choosenChip_section.value = 'invested_project'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Проекты')
+    }
+  } 
+  else if (tag_1 === 'Долговые обязательства') {
+    // надо бы разделить в разные подгруппы долги к соучастникам и внешние долги
+    if(tag_2 === 'Долг к соучастникам') {
+      choosenChip_section.value = 'debt_loan'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Долг к соучастникам')
+    }
+    else if (tag_2 === 'Внешний долг') {
+      choosenChip_section.value = 'debt_loan'
+      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Внешний долг')
+    }
+  }
+  else {
+    local_list_filtered.value = []
+  }
+})
+
+// const sum_local_list_el_amount = () => {
+//   let sum = 0;
+
+//   if(meshes_computed.value.filter(item => item.tag === choosenChip_section.value).length) {
+
+  
+//     for(let i = 0; i < local_list_filtered.value.length; i++){
+//       if(local_list_filtered.value[i].currency === 'RUB') {
+  
+//         sum += local_list_filtered.value[i].amount
+//       } else {
+//         let pair = currecy_pair.value.find(j => j.name === `${local_list_filtered.value[i].currency} / RUB`)
+//         sum += local_list_filtered.value[i].amount * pair?.price
+//         // if(local_list_filtered.value[i].currency === 'EUR') {
+//         // }
+//       }
+//     }
+  
+//   }
+
+//   if(sum) {
+//     return `${sum.toFixed(2)} RUB`
+//   } else {
+//     return 'Ничего нет'
+//   }
+// }
+
 
 //= transaction popup
 const transaction_popup_isOpened = ref(false)
@@ -2106,9 +2709,9 @@ const transaction_onClick = (transaction) => {
 
 }
 
-const isOwnerExist = () => {
+// const isOwnerExist = () => {
 
-}
+// }
 
 //= transaction ledger
 const transaction_ledger_computed = computed(() => {
@@ -2336,11 +2939,30 @@ const meshes_computed = computed(() => {
   if(mesh_list.value, loan_list.value) {
     // Дебеторки
     mesh_list.value?.forEach(item => {
-      result.push(item)
+      if(currentAffiliation.value.name === 'all') {
+        if(item.ownerType === 'user' && item.ownerID === sessionUser.value.id) {
+          result.push(item)
+        }
+        else if (item.ownerType === 'conspirator') {
+          band_computed.value?.forEach(band_item => {
+            if(band_item.id === item.ownerID) {
+              result.push(item)
+            }
+          })
+        }
+      }
+      else if (
+        (currentAffiliation.value.name === 'personal' && item.ownerID === sessionUser.value.id) ||
+        (currentAffiliation.value.bandID && (currentAffiliation.value.bandID && (item.ownerType === 'conspirator' && item.ownerID === currentAffiliation.value.bandID)))
+      ) {
+        result.push(item)
+      }
     })
+    
     // Изначально дебиторка, но если пользователь или банда являются заемщиками - переквалифицируем tag как долговой mesh
     loan_list.value.forEach(item => {
-      if(currentAffiliation.value.name === 'personal' && (item.loanerType === 'user' && item.loanerID === sessionUser.value.id) || currentAffiliation.value.name !== 'personal' && (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID)) {
+      //
+      if((currentAffiliation.value.name === 'personal' && (item.loanerType === 'user' && item.loanerID === sessionUser.value.id)) || (currentAffiliation.value.bandID && (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID))) {
         result.push({
           id: item.id,
           created_at: item.created_at,
@@ -2355,19 +2977,125 @@ const meshes_computed = computed(() => {
           bid: item.bid,
           amount: item.amount
         })
-      } else{
+      } 
+      //
+      else if((currentAffiliation.value.name === 'personal' && (item.ownerType === 'user' && item.ownerID === sessionUser.value.id)) || (currentAffiliation.value.bandID && (item.ownerType === 'conspirator' && item.ownerID === currentAffiliation.value.bandID))) {
         result.push(item)
+      } 
+      //
+      else if (currentAffiliation.value.name === 'all' ) {
+        if(item.loanerType === 'user' && item.loanerID === sessionUser.value.id) {
+          result.push({
+            id: item.id,
+            created_at: item.created_at,
+            name: item.name,
+            type: item.type,
+            // Для должников меняем tag invested_loan на debt_loan
+            tag: 'debt_loan',
+            ownerID: item.ownerID,
+            ownerType: item.ownerType,
+            loanerID: item.loanerID,
+            loanerType: item.loanerType,
+            bid: item.bid,
+            amount: item.amount
+          })
+        }
+        if(item.ownerType === 'user' && item.ownerID === sessionUser.value.id) {
+          result.push(item)
+        }
+        if (item.loanerType === 'conspirator') {
+          band_computed.value?.forEach(band_item => {
+
+            if(item.loanerID === band_item.id) {
+              result.push({
+                id: item.id,
+                created_at: item.created_at,
+                name: item.name,
+                type: item.type,
+                // Для должников меняем tag invested_loan на debt_loan
+                tag: 'debt_loan',
+                ownerID: item.ownerID,
+                ownerType: item.ownerType,
+                loanerID: item.loanerID,
+                loanerType: item.loanerType,
+                bid: item.bid,
+                amount: item.amount
+              })
+            } 
+          })
+        }
+        if (item.ownerType === 'conspirator') {
+          band_computed.value?.forEach(band_item => {
+            if(item.ownerID === band_item.id) {
+              result.push(item)
+            } 
+          })
+        }
       }
+      // if(item.loanerType === 'user' && item.loanerID === sessionUser.value.id) {
+      //   result.push({
+      //     id: item.id,
+      //     created_at: item.created_at,
+      //     name: item.name,
+      //     type: item.type,
+      //     // Для должников меняем tag invested_loan на debt_loan
+      //     tag: 'debt_loan',
+      //     ownerID: item.ownerID,
+      //     ownerType: item.ownerType,
+      //     loanerID: item.loanerID,
+      //     loanerType: item.loanerType,
+      //     bid: item.bid,
+      //     amount: item.amount
+      //   })
+      // }
+      // else if (item.loanerType === 'conspirator') {
+      //   band_computed.value?.forEach(band_item => {
+      //     if(item.loanerID === band_item.id) {
+      //     result.push({
+      //       id: item.id,
+      //       created_at: item.created_at,
+      //       name: item.name,
+      //       type: item.type,
+      //       // Для должников меняем tag invested_loan на debt_loan
+      //       tag: 'debt_loan',
+      //       ownerID: item.ownerID,
+      //       ownerType: item.ownerType,
+      //       loanerID: item.loanerID,
+      //       loanerType: item.loanerType,
+      //       bid: item.bid,
+      //       amount: item.amount
+      //     })
+      //     }
+      //   })
+      // }
+      // else{
+      //   result.push(item)
+      // }
     })
+    return result
     // Фильтруем полученный массив мешков (result)
-    // Если Мешки являются личными и принадлежат session user или есть займы...
-    if(currentAffiliation.value.name === 'personal') {
-      return result.filter((item: any) => (item.ownerType === 'user' && item.ownerID === sessionUser.value.id) || (item.loanerType === 'user' && item.loanerID === sessionUser.value.id))
-    } 
-    // Если мешки принадлежат банде или у банды есть займы
-    else {
-      return result.filter((item: any) => (item.ownerType === 'conspirator' && item.ownerID === currentAffiliation.value.bandID) || (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID))
-    }
+    // personal_meshes
+    // let personal_meshes = result.filter((item: any) => (item.ownerType === 'user' && item.ownerID === sessionUser.value.id) || (item.loanerType === 'user' && item.loanerID === sessionUser.value.id))
+    // // current_band_meshes
+    // let current_band_meshes:any = []
+    // if(currentAffiliation.value.bandID) {
+    //   current_band_meshes = result.filter((item: any) => (item.ownerType === 'conspirator' && item.ownerID === currentAffiliation.value.bandID) || (item.loanerType === 'conspirator' && item.loanerID === currentAffiliation.value.bandID))
+    // }
+
+    // // Если Мешки являются личными и принадлежат session user или есть займы...
+    // else if(currentAffiliation.value.name === 'personal') {
+    //   return personal_meshes
+    // } 
+    // else if (currentAffiliation.value.name === 'all') {
+    //   band_computed.value?.forEach(band_item => {
+    //     result.filter((item: any) => (item.ownerType === 'conspirator' && item.ownerID === band_item.id) || (item.loanerType === 'conspirator' && item.loanerID === band_item.id))
+    //   })
+    //   return result
+    // }
+    // // Если мешки принадлежат банде или у банды есть займы
+    // else {
+    //   return current_band_meshes
+    // }
   }
 
   // return mesh_list.value
@@ -2396,6 +3124,7 @@ const meshes_computed = computed(() => {
 })
 //= band list
 const band_computed = computed(() => {
+  // уже фильтрованный массив, фильтруется при загрузке из бд (поправить на загрузку из стора...)
   return band.value
 })
 //= partner list
@@ -2415,13 +3144,6 @@ const affiliation_computed = computed(() => {
   })
   // Добавлям позиции на основе банд в БД
   band_computed.value?.forEach(item => {
-    // if(item.sharers) {
-    //   let sharers = Object.values(item.sharers)
-
-    //   if(sharers.filter(sharer => sharer.userType === 'conspirator' && sharer.userId === sessionUser.id )) {
-    //     console.log(sharers)
-    //   }
-    // }
     if([...affiliationBandChips.value].find(el => el.name !== item.name)) {
       array.push({
         id: array.length + 1,
@@ -3437,6 +4159,48 @@ const translateTransactionMeshes = (tag: string, from_item_type:string, from_ite
   // return mesh
   return `${tag}-${from_item_type}_${from_item_id}`
 }
+// translate mesh owner
+const translateOwnerName = (item:any) => {
+  if(item.tag === 'debt_loan') {
+    let loaner;
+
+    if(item.loanerType === 'conspirator') {
+      loaner = band_computed?.value?.find(el => el.id === item.loanerID)
+      return loaner ? loaner.name : 'Неизвестная банда'
+    }
+    else if (item.loanerType === 'user') {
+      loaner = partner_computed?.value?.find(el => el.userId === item.loanerID)
+      return loaner ? `${loaner.surname} ${loaner?.name[0]}. ${loaner?.middleName?.[0]}.` : 'Неизвестный участник'
+    }  
+    else if (item.loanerType === 'bank') {
+      loaner = bank_computed?.value?.find(el => el.id === item.loanerID)
+      return loaner ? loaner.name : 'Неизвестный банк'
+    } 
+  } 
+  else if (item.tag === 'available' || item.tag === 'available_fc') {
+    return item.broker_tag
+  } 
+  else if (item.tag === 'invested_stock' || item.tag === 'deposit') {
+    return item.broker_tag
+  }
+  else {
+    let owner;
+
+    if(item.ownerType === 'conspirator') {
+      owner = band_computed?.value?.find(el => el.id === item.ownerID)
+      return owner ? owner.name : 'Неизвестная банда'
+    } 
+    else if (item.ownerType === 'user') {
+      owner = partner_computed?.value?.find(el => el.userId === item.ownerID)
+      return owner ? `${owner.surname} ${owner?.name[0]}. ${owner?.middleName?.[0]}.` : 'Неизвестный участник'
+    } 
+    else if (item.ownerType === 'bank') {
+      owner = bank_computed?.value?.find(el => el.id === item.ownerID)
+      return owner ? owner.name : 'Неизвестный банк'
+    }
+  }
+}
+
 //= storageID
 // const translateStorageID = (storageID: number) => {
 //   let mesh;
@@ -3528,35 +4292,6 @@ const getCoinPrice = async () => {
   console.log(`Цена BTC: ${crypto_price_list?.value?.BTCRUB}`)
 }
 
-// EMITS FUNCTIONs
-
-// choose title
-// const titles = ref([
-//   {
-//     title: "Активы",
-//     name: "assets",
-//   },
-//   {
-//     title: "История",
-//     name: "history",
-//   },
-// ]);
-// const currentTitle = ref("assets");
-
-// const listItemType = ref([])
-
-// Инструмент
-// tools
-
-// Расходники
-// consumables
-
-// Техника
-// technic
-
-// Материалы
-// stuff
-
 // Находим выбранный ФОНД фондового рынка
 // const computedFund = computed(() => funds.value[0]);
 // const {
@@ -3598,28 +4333,6 @@ const getCoinPrice = async () => {
 //         return transactions
 //     }
 // })
-
-// TRANSLATORS
-//
-//= translate Fund Name
-// const translateFundName = (fundId) => {
-//   let el = conspirators_fund.value.find(el => el.id === fundId)
-//     return el?.name
-// }
-//= translate fund broker tag
-// const translateFundBrokerTag = (fundId) => {
-//   let el = conspirators_fund.value.find(el => el.id === fundId)
-//     return el?.brokerTag
-// }
-// const translateStockFundType = (type) => {
-//   if(type) {
-//     if(type === 'iia') {
-//       return 'ИИС'
-//     } else if (type === 'ba') {
-//       return 'Брокерский счет'
-//     }
-//   }
-// }
 
 // CLICK
 //
@@ -3767,11 +4480,14 @@ const set_attr_data = (item: any) => {
 }
 //= set mesh broker sign bgc
 const set_mesh_broker_sign_bgc = (tag: string) => {
-
+  console.log(tag)
   if(tag === 'debt_loan') {
    return 'background-color: var(--color-wallet-fund-debt);'
   } 
-  else if (tag.includes('invested')) {
+  else if (choosenChip_section.value === 'invested_loan' || choosenChip_section.value === 'invested_project') {
+     return 'background-color: var(--color-urgency-middle-10)'
+  }
+  else if (tag.includes('invested') || tag === 'deposit') {
     return 'background-color: var(--color-wallet-fund-invested);'
   }
   else if (tag === 'available' || tag === 'available_fc') {
@@ -3819,116 +4535,116 @@ const set_owner_route = () => {
 // COLLRIZED
 //
 //= set_section_bgColor
-const set_section_bgColor = (section: any) => {
-  let color;
+// const set_section_bgColor = (section: any) => {
+//   let color;
 
-  // ****** Title ******
-  if(section.name) {
+//   // ****** Title ******
+//   if(section.name) {
 
-    // Свободные средства
-    if(section.name === 'available') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-available-wo)`
-        color = `var(--color-wallet-fund-available)`
-      } else {
-        // color = `var(--color-wallet-fund-available)`
-      }
-    } 
-    if(section.name === 'invested_stock') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'invested_crypto') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'invested_deposit') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'invested_currency') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'invested_loan') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'credits') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'projects') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-invested-wo)`
-        color = `var(--color-wallet-fund-invested)`
-      } else {
-        // color = `var(--color-wallet-fund-invested)`
-      }
-    }
-    if(section.name === 'debt') {
-      if(choosenChip_section.value === section.name) {
-        // color = `var(--color-wallet-fund-debt-wo)`
-        color = `var(--color-wallet-fund-debt)`
-      } else {
-        // color = `var(--color-wallet-fund-debt)`
-      }
-    }
-    if(section.name === 'withdraw') {
-      if(choosenChip_section.value === section.name) {
+//     // Свободные средства
+//     if(section.name === 'available') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-available-wo)`
+//         color = `var(--color-wallet-fund-available)`
+//       } else {
+//         // color = `var(--color-wallet-fund-available)`
+//       }
+//     } 
+//     if(section.name === 'invested_stock') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'invested_crypto') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'invested_deposit') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'invested_currency') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'invested_loan') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'credits') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'projects') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-invested-wo)`
+//         color = `var(--color-wallet-fund-invested)`
+//       } else {
+//         // color = `var(--color-wallet-fund-invested)`
+//       }
+//     }
+//     if(section.name === 'debt') {
+//       if(choosenChip_section.value === section.name) {
+//         // color = `var(--color-wallet-fund-debt-wo)`
+//         color = `var(--color-wallet-fund-debt)`
+//       } else {
+//         // color = `var(--color-wallet-fund-debt)`
+//       }
+//     }
+//     if(section.name === 'withdraw') {
+//       if(choosenChip_section.value === section.name) {
 
-        color = `var(--color-global-text)`
-      } else {
+//         color = `var(--color-global-text)`
+//       } else {
 
-      }
-    }
-    if(section.name === 'deposit') {
-      if(choosenChip_section.value === section.name) {
+//       }
+//     }
+//     if(section.name === 'deposit') {
+//       if(choosenChip_section.value === section.name) {
 
-        color = `var(--color-global-text)`
-      } else {
+//         color = `var(--color-global-text)`
+//       } else {
 
-      }
-    }
-    if(section.name === 'expenses') {
-      if(choosenChip_section.value === section.name) {
+//       }
+//     }
+//     if(section.name === 'expenses') {
+//       if(choosenChip_section.value === section.name) {
 
-        color = `var(--color-global-text)`
-      } else {
+//         color = `var(--color-global-text)`
+//       } else {
 
-      }
-    }
-    else {
-      // color = null
-    }
-  }
+//       }
+//     }
+//     else {
+//       // color = null
+//     }
+//   }
 
-  return color
-}
+//   return color
+// }
 const setChoosenWalletSectionColor = (tag: any) => {
   let color;
 
@@ -4211,599 +4927,6 @@ const { data: bank } = useFetch("/api/banks/bank", {
   }
 })
 
-// meshes_cast
-const currecy_pair = ref([
-  {
-    name: 'EUR / RUB',
-    price: 91.98
-  },
-  {
-    name: 'USD / RUB',
-    price: 77.17
-  },
-  {
-    name: 'VND / RUB',
-    price: 0.0032
-  },
-  {
-    name: 'CNY / RUB',
-    price: 11.65
-  },
-])
-
-const localGroupList_isOpened = ref(false);
-const meshes_cast = ref([
-  {
-    id: 1,
-    uuid: '19847293hrffdskf1',
-    name: 'БАНКЕС_Наличка_rub',
-    tag: 'Деньги на счетах',
-    type: 'Наличка',
-    owner: 'БАНКЕС',
-    broker: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 1350.00
-  },
-  {
-    id: 2,
-    uuid: '19847293hrffdskf2',
-    name: 'БАНКАС_Наличка_rub',
-    tag: 'Деньги на счетах',
-    type: 'Наличка',
-    owner: 'БАНКАС',
-    broker: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 400.00
-  },
-  {
-    id: 3,
-    uuid: '19847293hrffdskf3',
-    name: 'ЮНИДРАМ_Наличка_rub',
-    tag: 'Деньги на счетах',
-    type: 'Наличка',
-    owner: 'ЮНИДРАМ',
-    broker: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 400.00
-  },
-  {
-    id: 4,
-    uuid: '19847293hrffdskf4',
-    name: 'СЗ_АСВ_Наличка_rub',
-    tag: 'Деньги на счетах',
-    type: 'Наличка',
-    owner: 'СЗ_АСВ',
-    broker: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 150.00
-  },
-  {
-    id: 5,
-    uuid: '19847293hrffdskf5',
-    name: 'БАНКЮС_Наличка_rub',
-    tag: 'Деньги на счетах',
-    type: 'Наличка',
-    owner: 'БАНКЮС',
-    broker: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 1081.30
-  },
-  {
-    id: 6,
-    uuid: '19847293hrffdsk6',
-    name: 'БАНКЮС_Наличка_eur',
-    tag: 'Деньги на счетах',
-    type: 'Наличка',
-    owner: 'БАНКЮС',
-    broker: 'БАНКЕС',
-    currency: 'EUR',
-    amount: 5.00
-  },
-  {
-    id:7,
-    uuid: '19847293hrffdskf7',
-    name: 'БАНКЕС_Накопительный_rub',
-    tag: 'Деньги на счетах',
-    type: 'Накопительные счета',
-    owner: 'БАНКЕС',
-    broker: 'ОЗОН',
-    currency: 'RUB',
-    amount: 700.00
-  },
-  {
-    id:8,
-    uuid: '19847293hrffdskf8',
-    tag: 'Деньги на счетах',
-    type: 'Накопительные счета',
-    owner: 'БАНКАС',
-    broker: 'ОЗОН',
-    currency: 'RUB',
-    amount: 1001.52
-  },
-  {
-    id: 9,
-    uuid: '19847293hrffdskf9',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'ЮНИДРАМ',
-    broker: 'ОЗОН',
-    name: '',
-    currency: 'RUB',
-    amount: 2035.08
-  },
-  {
-    id: 10,
-    uuid: '19847293hrffdskf10',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'С.В.Анфалов',
-    broker: 'ОЗОН',
-    name: '',
-    currency: 'RUB',
-    amount: 1004.38
-  },
-  {
-    id: 11,
-    uuid: '19847293hrffdskf11',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКЕС',
-    broker: 'СБЕР',
-    name: '',
-    currency: 'RUB',
-    amount: 1048.74
-  },
-  {
-    id: 12,
-    uuid: '19847293hrffdskf12',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКАС',
-    broker: 'СБЕР',
-    name: '',
-    currency: 'RUB',
-    amount: 3096.73
-  },
-  {
-    id: 13,
-    uuid: '19847293hrffdskf13',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'СЗ_АСВ',
-    broker: 'СБЕР',
-    name: '',
-    currency: 'RUB',
-    amount: 63.92
-  },
-  {
-    id: 14,
-    uuid: '19847293hrffdskf14',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКЮС',
-    broker: 'СБЕР',
-    name: '',
-    currency: 'RUB',
-    amount: 395.84
-  },
-  {
-    id: 15,
-    uuid: '19847293hrffdskf15',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'ЮНИДРАМ',
-    broker: 'ВТБ',
-    name: '',
-    currency: 'RUB',
-    amount: 3413.16
-  },
-  {
-    id: 16,
-    uuid: '19847293hrffdskf16',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКЕС',
-    broker: 'Яндекс',
-    name: 'ФИИ',
-    currency: 'RUB',
-    amount: 1478.53
-  },
-  {
-    id: 17,
-    uuid: '19847293hrffdskf17',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'СЗ_АСВ',
-    broker: 'Яндекс',
-    name: 'ФИИ',
-    currency: 'RUB',
-    amount: 107.45
-  },  
-  {
-    id: 18,
-    uuid: '19847293hrffdskf18',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'СЗ_АСВ',
-    broker: 'Яндекс',
-    name: '',
-    currency: 'RUB',
-    amount: 111.36
-  },
-  {
-    id: 19,
-    uuid: '19847293hrffdskf19',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКЕС',
-    broker: 'Яндекс',
-    name: '',
-    currency: 'RUB',
-    amount: 22027.59
-  },
-  {
-    id: 20,
-    uuid: '19847293hrffdskf20',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'СЗ_АСВ',
-    broker: 'Яндекс',
-    name: '',
-    currency: 'RUB',
-    amount: 153.18
-  },
-  {
-    id: 21,
-    uuid: '19847293hrffdskf21',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКЮС',
-    broker: 'Яндекс',
-    name: '',
-    currency: 'RUB',
-    amount: 353.27
-  },
-  {
-    id: 22,
-    uuid: '19847293hrffdskf22',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'ЮНИДРАМ',
-    broker: 'Т-Банк',
-    name: '',
-    currency: 'RUB',
-    amount: 4046.01
-  },
-  {
-    id: 23,
-    uuid: '19847293hrffdskf23',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'БАНКЮС',
-    broker: 'Т-Банк',
-    name: '',
-    currency: 'RUB',
-    amount: 165.79
-  },
-  {
-    id: 24,
-    uuid: '19847293hrffdskf24',
-    tag: 'Деньги на счетах',
-    type: 'Накопительный счет',
-    owner: 'С.В.Анфалов',
-    broker: 'Ренессанс',
-    name: '',
-    currency: 'RUB',
-    amount: 1120.30
-  },
-  {
-    id: 25,
-    uuid: '19847293hrffdskf25',
-    name: 'БАНКЮС_Т-Банк_Стандартный счет_cny',
-    tag: 'Деньги на счетах',
-    type: 'Стандартный счет',
-    owner: 'БАНКЮС',
-    broker: 'Т-Банк',
-    currency: 'CNY',
-    amount: 10.00
-  },
-  {
-    id: 26,
-    uuid: '19847293hrffdskf26',
-    name: 'БАНКЮС_Т-Банк_Стандартный счет_usd',
-    tag: 'Деньги на счетах',
-    type: 'Стандартный счет',
-    owner: 'БАНКЮС',
-    broker: 'Т-Банк',
-    currency: 'USD',
-    amount: 10.00
-  },
-  {
-    id: 27,
-    uuid: '19847293hrffdskf27',
-    name: 'БАНКЕС_2703Вклады2026',
-    tag: 'Инвестиции',
-    type: 'Вклады',
-    broker: 'ОЗОН',
-    owner: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 5000.00
-  },
-  {
-    id: 27,
-    uuid: '19847293hrffdskf27',
-    tag: 'Инвестиции',
-    type: 'Крипто-дебет',
-    broker: 'Phantom Wallet',
-    owner: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 7797.35
-  },
-  {
-    id: 28,
-    uuid: '19847293hrffdskf28',
-    tag: 'Инвестиции',
-    type: 'Крипто-дебет',
-    broker: 'Metamask wallet',
-    owner: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 12515.43
-  },
-  {
-    id: 29,
-    uuid: '19847293hrffdskf29',
-    tag: 'Инвестиции',
-    type: 'Крипто-дебет',
-    broker: 'Telegram Wallet',
-    owner: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 3430.58
-  },
-  {
-    id: 30,
-    uuid: '19847293hrffdskf30',
-    tag: 'Инвестиции',
-    type: 'Крипто-дебет',
-    broker: 'MTT',
-    owner: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 3430.58
-  },
-  {
-    id: 31,
-    uuid: '19847293hrffdskf31',
-    name: 'БАНКЕС_2002БрокерскийСчет21',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'Т-Банк',
-    owner: 'БАНКЕС',
-    currency: 'RUB',
-    amount: 126083.66
-  },
-  {
-    id: 32,
-    uuid: '19847293hrffdskf32',
-    name: 'БАНКАС_1002БрокерскийCчет21',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'Т-Банк',
-    owner: 'БАНКАС',
-    currency: 'RUB',
-    amount: 23376.27
-  },
-  {
-    id: 33,
-    uuid: '19847293hrffdskf33',
-    name: 'SPORTCLUBTEAM_0207БрокерскийСчет2025',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'Т-Банк',
-    owner: 'SPORTCLUBTEAM',
-    currency: 'RUB',
-    amount: 900.00
-  },
-  {
-    id: 34,
-    uuid: '19847293hrffdskf34',
-    name: 'БАНКЮС_1901БрокерскийСчет22',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'Т-Банк',
-    owner: 'БАНКЮС',
-    currency: 'RUB',
-    amount: 20688.64
-  },
-  {
-    id: 35,
-    uuid: '19847293hrffdskf35',
-    name: 'БАНКЮС_2603БрокерскийСчет2026',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'ВТБ',
-    owner: 'БАНКЮС',
-    currency: 'RUB',
-    amount: 1057.93
-  },
-  {
-    id: 36,
-    uuid: '19847293hrffdskf36',
-    name: 'С.В.Анфалов_0505БрокерскийСчет2026',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'А-Банк',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 1160.00
-  },
-  {
-    id: 37,
-    uuid: '19847293hrffdskf37',
-    name: 'Ю.О.Титова_0505БрокерскийСчет2025',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'А-Банк',
-    owner: 'Ю.О.Титова',
-    currency: 'RUB',
-    amount: 40150.00
-  },
-  {
-    id: 37,
-    uuid: '19847293hrffdskf37',
-    name: 'С.В.Анфалов_2311БрокерскийСчет2023',
-    tag: 'Инвестиции',
-    type: 'Фондовый рынок',
-    broker: 'БКС',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 8272.61
-  },
-  {
-    id: 38,
-    uuid: '19847293hrffdskf38',
-    name: 'С.В.Анфалов_2703Кредит2026',
-    tag: 'Вексель',
-    type: 'Кредиты',
-    broker: 'БАНКЕС',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 140629.14
-  },
-  {
-    id: 39,
-    uuid: '19847293hrffdskf39',
-    name: 'С.В.Анфалов_2703Займ2026',
-    tag: 'Вексель',
-    type: 'Займы',
-    broker: 'БАНКЕС',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 1000.14
-  },
-  {
-    id: 40,
-    uuid: '19847293hrffdskf40',
-    name: 'С.В.Анфалов_2703Проект2026',
-    tag: 'Вексель',
-    type: 'Проекты',
-    broker: 'БАНКЕС',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 2050.00
-  },
-  {
-    id: 41,
-    uuid: '19847293hrffdskf41',
-    name: 'С.В.Анфалов_2703ДолгСоучастники2026',
-    tag: 'Долговые обязательства',
-    type: 'Долг к соучастникам',
-    broker: 'БАНКЕС',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 2222.33
-  },
-  {
-    id: 41,
-    uuid: '19847293hrffdskf41',
-    name: 'С.В.Анфалов_2703ДолгСоучастники2026',
-    tag: 'Долговые обязательства',
-    type: 'Долг к соучастникам',
-    broker: 'БАНКЕС',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 3333.33
-  },
-  {
-    id: 42,
-    uuid: '19847293hrffdskf42',
-    name: 'С.В.Анфалов_2703ДолгВнешний2026',
-    tag: 'Долговые обязательства',
-    type: 'Внешний долг',
-    broker: 'Сбер',
-    owner: 'С.В.Анфалов',
-    currency: 'RUB',
-    amount: 5556.33
-  },
-])
-
-const filter_title = ref('Мешки')
-const local_list_filtered = ref( meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB'))
-
-const local_list_show = ( (tag_1: string, tag_2: string) => {
-  localGroupList_isOpened.value = true
-  filter_title.value=tag_2
-  if(tag_1 === 'Деньги на счетах') {
-    if(tag_2 === '!RUB') {
-      choosenChip_section.value = 'available_fc'
-      filter_title.value='Иностранная валюта'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency !== 'RUB')
-    } else if (tag_2 === 'RUB') {
-      choosenChip_section.value = 'available'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB')
-    }
-  } 
-  else if (tag_1 === 'Инвестиции') {
-
-    if(tag_2 === 'Фондовый рынок'){
-      choosenChip_section.value = 'invested_stock'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Фондовый рынок')
-    }
-    else if(tag_2 === 'Вклады'){
-      choosenChip_section.value = 'deposit'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Вклады')
-    }
-    else if(tag_2 === 'Крипто-дебет'){
-      choosenChip_section.value = 'invested_crypto'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Инвестиции' && el.type === 'Крипто-дебет')
-    }
-  }
-  else if (tag_1 === 'Вексель') {
-    // надо бы разделить кредиты и займы в разные подгруппы
-    if(tag_2 === 'Кредиты') {
-      choosenChip_section.value = 'invested_loan'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Кредиты')
-    }
-    else if(tag_2 === 'Займы') {
-      choosenChip_section.value = 'invested_loan'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Займы')
-    }
-    else if(tag_2 === 'Проекты') {
-      choosenChip_section.value = 'invested_project'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Вексель' && el.type === 'Проекты')
-    }
-  } 
-  else if (tag_1 === 'Долговые обязательства') {
-    // надо бы разделить в разные подгруппы долги к соучастникам и внешние долги
-    if(tag_2 === 'Долг к соучастникам') {
-      choosenChip_section.value = 'debt_loan'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Долг к соучастникам')
-    }
-    else if (tag_2 === 'Внешний долг') {
-      choosenChip_section.value = 'debt_loan'
-      local_list_filtered.value = meshes_cast.value.filter(el => el.tag === 'Долговые обязательства' && el.type === 'Внешний долг')
-    }
-  }
-  else {
-    local_list_filtered.value = []
-  }
-})
-
-const sum_local_list_el_amount = () => {
-  let sum = 0;
-
-  for(let i = 0; i < local_list_filtered.value.length; i++){
-    if(local_list_filtered.value[i].currency === 'RUB') {
-
-      sum += local_list_filtered.value[i].amount
-    } else {
-      let pair = currecy_pair.value.find(j => j.name === `${local_list_filtered.value[i].currency} / RUB`)
-      sum += local_list_filtered.value[i].amount * pair?.price
-      // if(local_list_filtered.value[i].currency === 'EUR') {
-      // }
-    }
-  }
-
-  return sum
-}
 
 watch(localGroupList_isOpened, () => {
   if(localGroupList_isOpened.value) {
@@ -4842,7 +4965,7 @@ const checkCurrencyPair = (pair: any) => {
       
       <!-- КНОПКА ОБНОВИТЬ ДАННЫЕ (пока в режиме информации только...) -->
       <div style="width: 100%; display: flex; align-items: center; justify-content: center;" >
-        <p style="margin-top: 1.5rem; background-color: var(--color-btn-bg); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-btn-text)">Обновлено 16.03.2026</p>
+        <p style="margin-top: 1rem; background-color: var(--color-global-text_second); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-btn-text)">Обновлено 16.03.2026</p>
       </div>
 
       <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
@@ -4882,89 +5005,88 @@ const checkCurrencyPair = (pair: any) => {
       -->
 
 
-      <!-- БЛОК-ЗАГОЛОВОК МЕШКОВ> -->
-       <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 2rem 1rem; border-radius: 1rem; padding: 1rem">
-         <!-- Заголовок группы -->
-         <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+      <!-- ГЛАВНАЯ КАРТОЧКА / TOTAL -->
+      <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 2rem 1rem; border-radius: 1rem; padding: 1rem">
+        <!-- Заголовок группы -->
+        <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
 
-          <!-- Наименование банка -->
-          <h2 
-            style="font-size: 1rem; margin: 0; opacity: .7;"
-            @click="set_owner_route"  
-          >
-            {{ currentAffiliation.title }}
-          </h2>
-          <!-- Кнопки действий (faq/ история / статистика) -->
-          <div style="display: flex; gap: 1rem;">
-            <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
-              <Icon
-                class="link"
-                name="mdi:help-circle-outline"
-                size="32px"
-                color="var(--color-global-text)"
-              />
-            </div>
-            <div class="meshes_local_filter_button">
-              <Icon
-                class="link"
-                name="mdi:clock-outline"
-                size="32px"
-                color="var(--color-global-text)"
-              />
-            </div>
-            <div class="meshes_local_filter_button">
-              <Icon
-                class="link"
-                name="mdi:google-analytics"
-                size="32px"
-                color="var(--color-global-text)"
-              />
-            </div>
+        <!-- Наименование банка -->
+        <h2 
+          style="font-size: 1rem; margin: 0; opacity: .7;"
+          @click="set_owner_route"  
+        >
+          {{ currentAffiliation.title }}
+        </h2>
+        <!-- Кнопки действий (faq/ история / статистика) -->
+        <div style="display: flex; gap: 1rem;">
+          <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
+            <Icon
+              class="link"
+              name="mdi:help-circle-outline"
+              size="32px"
+              color="var(--color-global-text)"
+            />
+          </div>
+          <div class="meshes_local_filter_button">
+            <Icon
+              class="link"
+              name="mdi:clock-outline"
+              size="32px"
+              color="var(--color-global-text)"
+            />
+          </div>
+          <div class="meshes_local_filter_button">
+            <Icon
+              class="link"
+              name="mdi:google-analytics"
+              size="32px"
+              color="var(--color-global-text)"
+            />
+          </div>
 
-          </div>
-         </div>
-         <!-- total amount value -->
-         <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
-         </p>
-         <!-- КНОПКИ КОШЕЛЬКА -->
-         <div style="display: flex; gap: 1rem; justify-content: center;">
-          <!-- Принять -->
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <Icon
-              class="link"
-              name="mdi:plus"
-              size="32px"
-              style="opacity: .6"
-            />
-            <p style="margin-top: .25rem;">Принять</p>
-          </div>
-          <!-- Отправить -->
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <Icon
-              class="link"
-              name="mdi:send"
-              size="32px"
-              style="opacity: .6"
-            />
-            <p style="margin-top: .25rem;">Отправить</p>
-          </div>
-          <!-- Обменять -->
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <Icon
-              class="link"
-              name="mdi:swap-horizontal"
-              size="32px"
-              style="opacity: .6"
-            />
-            <p style="margin-top: .25rem;">Обменять</p>
-          </div>
-         </div>
-       </div>
+        </div>
+        </div>
+        <!-- total amount value -->
+        <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
+        </p>
+        <!-- КНОПКИ КОШЕЛЬКА -->
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+        <!-- Принять -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <Icon
+            class="link"
+            name="mdi:plus"
+            size="32px"
+            style="opacity: .6"
+          />
+          <p style="margin-top: .25rem;">Принять</p>
+        </div>
+        <!-- Отправить -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <Icon
+            class="link"
+            name="mdi:send"
+            size="32px"
+            style="opacity: .6"
+          />
+          <p style="margin-top: .25rem;">Отправить</p>
+        </div>
+        <!-- Обменять -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <Icon
+            class="link"
+            name="mdi:swap-horizontal"
+            size="32px"
+            style="opacity: .6"
+          />
+          <p style="margin-top: .25rem;">Обменять</p>
+        </div>
+        </div>
+      </div>
 
       <!-- MESHES CAST -->
       <ul style="list-style: none; padding: 0;">
 
-        <!--  -->
         <!-- Деньги на счетах / Свободные деньги -->
         <li>
           <!-- local group -->
@@ -5000,7 +5122,6 @@ const checkCurrencyPair = (pair: any) => {
           </ul>
         </li>
 
-        <!--  -->
         <!-- Инвестиции -->
         <li>
           <!-- local group -->
@@ -5066,20 +5187,10 @@ const checkCurrencyPair = (pair: any) => {
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
-                @click="local_list_show('Вексель', 'Кредиты')"
-              >
-                <p style="color: var(--color-global-text);" >141629,14</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Кредиты процентным доходом</p>
-              </Section>
-            </li>
-            <li>
-              <Section 
-                :fDirection="`column`"
-                :fAlignItems="`flex-start`"
                 @click="local_list_show('Вексель', 'Займы')"
               >
-                <p style="color: var(--color-global-text);" >1000,14</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Займы без дохода</p>
+                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Кредиты</p>
               </Section>
             </li>
             <li>
@@ -5089,7 +5200,7 @@ const checkCurrencyPair = (pair: any) => {
                 @click="local_list_show('Вексель', 'Проекты')"
               >
                 <p style="color: var(--color-global-text);" >2050,00</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Инвестированы в проекты</p>
+                <p style="color: var(--color-btn-wo-bg); margin: 0;">Проекты</p>
               </Section>
             </li>
           </ul>
@@ -5148,7 +5259,7 @@ const checkCurrencyPair = (pair: any) => {
 
 
       <!-- СТАТ-СВОДКА ПО ПОРТФЕЛЮ -->
-      <div class="wallet-section_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0; margin-top: 1rem;">
+      <div class="wallet-stat_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0; margin-top: 1rem;">
         <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
           <p style="color: var(--color-global-text);" >450506,13</p>
           <p style="color: var(--color-btn-wo-bg); margin: 0;">Потенциал***</p>
@@ -5163,7 +5274,7 @@ const checkCurrencyPair = (pair: any) => {
         </div>
 
       </div>
-      <div style="margin: 0 1rem; padding-bottom: 1rem;">
+      <div style="margin: 0 1rem; padding-bottom: 1rem; margin-top: 1rem;">
         <p>
           * Отношение положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) к сумме займов (выданные кредиты, инвеситции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства.</p>
         <p>
@@ -5211,7 +5322,7 @@ const checkCurrencyPair = (pair: any) => {
         </div>
       </div>
     </div>
-    <!-- local list group -->
+    <!-- subgroup of meshes -->
     <div v-if='localGroupList_isOpened' 
       class="localGroupList_container" 
       :class="localGroupList_isOpened ? 'local_list__opened' : 'local_list__closed'" 
@@ -5223,12 +5334,15 @@ const checkCurrencyPair = (pair: any) => {
         </div>
         <div class="local_list_main" style="padding: 0 .5rem;">
 
-          <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
-            {{ choosenChip_section }}
-            <div>{{ local_list_filtered.length }}</div>
-            <div style="font-weight: bold;">Сумма:</div>
-            <div style="font-weight: bold;">{{ sum_local_list_el_amount().toFixed(2) }}RUB</div>
+          <!-- ЕСЛИ НИЧЕГО НЕТ -->
+          <div 
+            v-if="![...meshes_computed.filter((item: any) => item.tag === choosenChip_section)].length"
+            style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;"
+          >
+            <div style="font-weight: bold;">Ничего нет</div>
           </div>
+          <!-- {{currentAffiliation}} -->
+
           <section 
             v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
               return obj.type
@@ -5236,9 +5350,12 @@ const checkCurrencyPair = (pair: any) => {
             class="mesh_group_container"
             style="margin-left: .5rem; margin-right: .5rem;"
           > 
+            <!-- ЗАГОЛОВОК ПОДРУГППЫ -->
             <header><h4>{{ translateMashesSubGroup(type) }}</h4></header>
             <main>
               <ul class="mesh_container" style="padding: 0; list-style: none;">
+
+                <!-- МЕШОК -->
                 <li 
                   class="mesh_wrapper"
                   style="cursor: pointer; position: relative;"
@@ -5255,9 +5372,8 @@ const checkCurrencyPair = (pair: any) => {
                     <!-- {{ item }} -->
                       
                     <p class="mesh_content-el">{{ item.id }} | {{ item.name }}</p>
-                    <p class="mesh_content-el" style="">
-
-                      <!-- invested)loan or debt_loan -->
+                    <p class="mesh_content-el" >
+                      <!-- invested_loan or debt_loan -->
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-global-text_second); text-transform: uppercase;">Завершен</span>
                         <span v-else>
@@ -5307,7 +5423,7 @@ const checkCurrencyPair = (pair: any) => {
                           </span>
                           <span v-else>
                             {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} из 
-                            <span style="padding: 1px 3px; color: var(--color-global-baackground_light);border-radius: 5px; background-color: var(--color-wallet-fund-invested);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
+                            <span style="padding: 3px 6px; color: var(--color-global-text);border-radius: 1rem; background-color: var(--color-btn-disabled-bg);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
                           </span>
                         </span>
                         <!-- invested project -->
@@ -5335,10 +5451,12 @@ const checkCurrencyPair = (pair: any) => {
                     </p>
                   </div>
                   <p style="font-size: .8rem; margin: 0;">
-
-                    <span style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ item?.broker_tag ? item?.broker_tag : set_attr_data(item) }}
+                    {{ item }}
+                    <span v-if="currentAffiliation.name === 'all'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ translateOwnerName(item)}}</span>
+                    <span v-else-if="item.tag !== 'available'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">
+                      {{ item?.broker_tag ? item.broker_tag : set_attr_data(item) }}
                     </span>
-                    <span v-if="item.tag === 'invested_project'" style="margin-left: 3px; color: var(--color-wallet-fund-invested); border-radius: 5px"> {{ item.desc }}</span>
+                    <span v-if="item.tag === 'invested_project'" style="color: var(--color-wallet-fund-invested); border-radius: 5px">{{ item.desc }}</span>
                   </p>
                 </li>
               </ul>
@@ -5346,23 +5464,8 @@ const checkCurrencyPair = (pair: any) => {
             
           </section>
 
-          <div v-for="cast in local_list_filtered" style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--color-btn-disabled-text); margin-top: 1rem; border-radius: 1rem; padding: 1rem;">
-            
-            <!-- SEE set_mesh_link_by_tag function -->
-            <div>
-              <p style="margin: 0;">{{ cast.name }}</p>
-              <p style="margin: 0;">{{ cast.broker }}</p>
-            </div>
-            <p style="margin: 0;">{{ (cast.amount).toFixed(2) }}</p>
-          </div> 
-
           <br>
           <br>
-          <br>
-
-          <div v-for="cast in local_list_filtered">
-              {{ cast }}
-            </div> 
         </div>
         <div class="local_list_footer">footer</div>
       </div>
@@ -5372,8 +5475,8 @@ const checkCurrencyPair = (pair: any) => {
 
     <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
-    <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
-      <!-- MESH GROUP TAG -->
+    <!-- <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
+
       <Section 
         v-for="el in mesh_tag_computed"
         :fDirection="`column`"
@@ -5386,18 +5489,18 @@ const checkCurrencyPair = (pair: any) => {
       >
         <p style="width: 160px; height: 3rem; margin: 0; ">{{ translateMeshesGroupName(el) }}</p>
 
-          <!-- FIRST ROW -->
+
           <p style="white-space: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }} {{ currency_to_show.ticket }}</p>
 
-          <!-- SECOND ROW -->
-          <!-- INVESTED PROJECT-->
+
+
           <p 
             v-if="el === 'invested_project'"
             style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
             >
             {{ calcSectionInvested_project(el) }}
           </p>
-          <!-- INVESTED CRYPTO -->
+
           <p
             v-else-if="el === 'invested_crypto'"
             style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
@@ -5405,7 +5508,7 @@ const checkCurrencyPair = (pair: any) => {
             {{ calcSectionInvested_crypto(el) }}
           </p>
 
-          <!-- INVESTED LOAN -->
+
           <p
             v-else-if="el === 'invested_loan'"
             style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
@@ -5413,12 +5516,12 @@ const checkCurrencyPair = (pair: any) => {
             {{ calcSectionInvested_loan(el) }}
           </p>
 
-          <!-- INVESTED STOCK -->
+
           <p v-else-if="el === 'invested_stock'" style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;">
             {{ calcSectionInvested_stock(el) }}
           </p>
       </Section>
-    </div> 
+    </div>  -->
     <!-- {{ choosenChip_section }} -->
 
 
@@ -5908,52 +6011,6 @@ const checkCurrencyPair = (pair: any) => {
       </div>
      </section>
 
-    <!-- <div>
-      <p>Дата создания: {{ computedFund.created_at }}</p>
-      <p>Основатель: {{ computedFund.creatorID }}</p>
-      <p>Брокер: {{ computedFund.stockBroker.title }}</p>
-      <p>Тип счета: {{ translateStockFundType(computedFund.accountType) }}</p>
-    </div> -->
-
-    <!-- Кнопки - заголовки -->
-    <!-- <h2 class="switch-title_container">
-      <div v-for="(title, i) in titles" class="switch-title_el">
-        <input
-          type="radio"
-          :id="i"
-          :value="title.name"
-          v-model="currentTitle"
-        />
-        <label :for="i">{{ title.title }}</label>
-      </div>
-    </h2> -->
-
-    <!-- list of assets -->
-    <!-- <div v-if="currentTitle === 'assets'"> -->
-
-        <!--  -->
-        <!-- <div v-for="(asset, index) in computedFund.assets">
-            {{ asset }}
-        </div>
-    </div> -->
-    <!-- list of history -->
-    <!-- <div v-else-if="currentTitle === 'history'"> -->
-
-        <!--  -->
-        <!-- <div v-if="!computedTransactions.length">
-            Ничего нет...
-        </div> -->
-
-        <!--  -->
-        <!-- <div v-else>
-
-            <div v-for="(transaction) in computedTransactions">
-                {{ transaction.type }} | {{ transaction }}
-            </div>
-        </div> -->
-    <!-- </div> -->
-    <!-- list of else -->
-    <!-- <div v-else>Ни того, ни другого...</div> -->
     <br>
     <br>
     <br>
@@ -6038,6 +6095,12 @@ const checkCurrencyPair = (pair: any) => {
   overflow: scroll; 
   scrollbar-width: none; 
   max-width: 100vw!important;
+  gap: 1rem;
+}
+.wallet-stat_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 1rem;
   gap: 1rem;
 }
 
@@ -6540,7 +6603,9 @@ const checkCurrencyPair = (pair: any) => {
       bottom: 0;
       left: 0;
       width: 100%;
+      height: 48px;
       background-color: var(--color-global-text_second);
+      padding: .5rem 0;
   }
 }
 @media screen and (min-width: 576px) {
