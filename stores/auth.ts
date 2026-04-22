@@ -27,7 +27,6 @@ export const useAuthStore = defineStore('Auth', () => {
         const { users } = storeToRefs(useUsersStore());
         await loadData()
 
-
         if (users.value && loggedUser) {
             let userObj = users.value.find(item => item.login === loggedUser.login && item.password === loggedUser.password)
 

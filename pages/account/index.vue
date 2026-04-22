@@ -226,17 +226,69 @@
       <div>
         <h2>Мои данные</h2>
         {{ $props.auth_user_profile }}
-    
+        <br>
         {{ user_info }}
+        <div style="display: flex; gap: 1rem;">
+          <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+            <p style="margin: 0; font-size: 2rem; font-weight: bold;">{{ $props.auth_user_profile.status.status_id }}</p>
+            <p style="margin: 0; font-size: .8rem; text-align: center">Статус</p>
+          </div>
+          <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+            <p style="margin: 0; font-size: 2rem; font-weight: bold;">0.5</p>
+            <p style="margin: 0; font-size: .8rem; text-align: center">SR</p>
+          </div>
+        </div>
+
+
+        <div>
+          <ul>
+            <li>
+              <p>{{ user_info?.name }}</p>
+            </li>
+            <li>
+              <p>{{ user_info?.middleName }}</p>
+            </li>
+            <li>
+              <p>{{ user_info?.surname }}</p>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Контакты -->
+        <div style="background-color: var(--color-btn-disabled-bg)">
+          <h2>Контакты</h2>
+          <h3 style="background-color: var(--color-wallet-fund-invested-wo)">Мои</h3>
+          <ul>
+            <li>
+              <p>Телефон: {{ user_info?.phone }}</p>
+            </li>
+            <li>
+              <p>Почта: {{ $props.auth_user_profile.userEmail }}</p>
+            </li>
+          </ul>
+          <h3 style="background-color: var(--color-wallet-fund-invested-wo)">Конспираторы</h3>
+          <ul>
+            <li v-for="sharer in user_info?.sharers">
+              <p>{{ sharer }}</p>
+            </li>
+          </ul>
+        </div>
       </div>
   
       <!-- STATs -->
       <div>
         <h2>Статистика</h2>
         <p style="cursor:pointer;" @click="router.push('/wallet')">Перейти в кошелек</p>
-        <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
-          <p style="margin: 0; font-size: 2rem; font-weight: bold;">0.5</p>
-          <p style="margin: 0; font-size: .8rem; text-align: center">SR</p>
+
+        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+          <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+            <p style="margin: 0; font-size: 2rem; font-weight: bold;">0.5</p>
+            <p style="margin: 0; font-size: .8rem; text-align: center">SR</p>
+          </div>
+          <!-- <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+            <p style="margin: 0; font-size: 2rem; font-weight: bold;">0.5</p>
+            <p style="margin: 0; font-size: .8rem; text-align: center">SR</p>
+          </div> -->
         </div>
         <!-- CAP -->
         <div>

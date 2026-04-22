@@ -19,10 +19,13 @@ model auth {
 }
 
 model Profile {
-  id        Int     @id @default(autoincrement())
-  userId    Int     @unique
-  userEmail String? @unique(map: "email") @db.VarChar(60)
-  user      auth    @relation(fields: [userId], references: [id])
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  userEmail    String?  @unique(map: "email") @db.VarChar(60)
+  user         auth     @relation(fields: [userId], references: [id])
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  subscription Json?
+  status       Json?
 }
 
 model Landing {

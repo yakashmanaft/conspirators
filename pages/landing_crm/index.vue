@@ -1,7 +1,7 @@
 <template>
 
 <!--  -->
-    <Container>
+    <Container >
 
         <!-- TITLE PAGE SECTION -->
         <div class="show-max-767 title-page-section" style="margin-bottom: 0.5rem;">
@@ -9,48 +9,136 @@
             <h1 style="margin: 0;">conspirators.CRM</h1> 
         </div>
 
-        <!--  -->
+        <!-- HEADER BANNER -->
         <div class="header-banner_wrapper" style="position: relative; display: flex; align-items: center;">
 
+            <!-- ART -->
             <div class="header-banner_art" style="position: absolute; top: 0; width: 50%; height: 100%; background-color: var(--color-operation-type-donation); z-index: -1;">
 
             </div>
 
+            <!-- CONTENT -->
             <div>
-                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem;">Десять минут в день</h2>
-                <p style="color: var(--color-global-text_second);">Достаточно для того, чтобы быть в курсе дел и финансов</p>
-            </div>
-            <!-- <p style="font-size: 2rem; font-weight: bold; margin: 0; padding-top: 1rem;">Фиксируй</p>
-            <p style="color: var(--color-global-text_second); margin: 0;">Не требует много усилий, достаточно уделять несколько минут в день</p> -->
-            <!-- <p style="font-size: 2rem; font-weight: bold; margin: 0;">Контролируй</p>
-            <p style="color: var(--color-global-text_second); margin: 0;">Все финансы для понимания привычек, целей и задач в одном месте</p>
-            <p style="font-size: 2rem; font-weight: bold; margin: 0;">Владей</p>
-            <p style="color: var(--color-global-text_second); margin: 0; padding-bottom: 2rem;">Полной картиной о состоянии текущих и запланированных дел</p> -->
-        </div>
-    
-    </Container>
-
-
-    <!--  -->
-    <div class="main-banner_container" style="margin-top: -5rem; margin-bottom: -3rem;">
-
-        <div class="main-banner_wrapper">
-
-            <h2 style="color: var(--color-btn-text);">Прокачай осознанность в финансах</h2>
-
-            <div class="main-banner_subtitle">
-                <p style="font-size: .8rem; font-weight: normal; color: var(--color-global-text_second);">Формируй привычки вместе с conspirators</p>
-                <Button style="margin-top: 2rem;" v-if="useAuthStore().loggedIn !== true" type="pseudo-btn" link="/login" bg="bg-stroke" :disabled="false">Войти</Button>
-                <div v-else @click="$router.push(`/wallet`)" style="cursor: pointer;">
-                    <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem;">Один дашборд процессов</h2>
+                <p style="color: var(--color-global-text_second);">Будь в курсе актуальных данных с помощью conspirators.CRM</p>
+                <div>
+                    <Button 
+                        style="margin-top: 2rem;" 
+                        v-if="useAuthStore().loggedIn !== true" 
+                        type="pseudo-btn" 
+                        link="/login" 
+                        bg="bg-stroke" 
+                        :disabled="false"
+                    >
+                        Войти
+                    </Button>
+                    <div 
+                        v-else @click="$router.push(`/wallet`)" 
+                        style="cursor: pointer; margin-top: 1rem; width: fit-content; border: 1px solid var(--color-global-text); border-radius: .5rem;"
+                    >
+                        <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text)"/>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
 
-    <!--  -->
-    <Container>
+        <!-- FEATURES SCROLLED BANNER  -->
+         <!-- Допилить роутер на раззделы для sessionUser и заглушки для неавторизованных -->
+        <div class="articles_container" style="margin-top: 2rem;">
+            <h3>Выбирай фичи под себя</h3>
+            <ul id="article-block" class="blocks_wrapper">
+                <li v-for="feature in features_list_onServer" :key="feature.id" style="border: none;" :style="user_features_computed?.find(el => el.feature_id === feature.id) ? 'background-color: var(--color-urgency-low-10);': ' '">
+                    <Icon size="32px" :name="feature.icon"/>
+                    <p style="margin: 0; margin-top: .5rem;">{{ feature.name_rus }}</p>
 
+                    <!-- ДЛЯ НЕАВТОРИЗОВАННОГО ЮЗЕРА -->
+                    <div v-if="!useAuthStore().user" class="block_available">
+                        <p v-if="feature.available" style="background-color: var(--color-btn-bg); opacity: .8">
+                            <span>{{ feature.price.toFixed(2) }}</span>
+                            <span v-if="feature.per_month"> руб. / мес.</span>
+                            <span v-else> руб.</span>
+                        </p>
+                        <p v-else style="background-color: var(--color-btn-wo-bg)">
+                            <span>В разработке</span>
+                        </p>
+                    </div>
+                    <!-- ДЛЯ АВТОРИЗОВАННОГО, КОГДА ЕСТЬ СЕССИОННЫЙ ЮЗЕР -->
+                    <div v-else class="block_available">
+                        <p v-if="
+                            user_features_computed?.find(el => el.feature_id === feature.id)
+                        " style="background-color: var(--color-urgency-low);">
+                            <span>В подписке</span>
+                        </p>
+                        <p v-else-if="feature.available && !user_features_computed?.find(el => el.feature_id === feature.id)" style="background-color: var(--color-btn-bg); opacity: .8">
+                            <span>{{ feature.price.toFixed(2) }}</span>
+                            <span v-if="feature.per_month"> руб. / мес.</span>
+                            <span v-else> руб.</span>
+                        </p>
+                        <p v-else style="background-color: var(--color-btn-wo-bg)">
+                            <span>В разработке</span>
+                        </p>
+
+                    </div>
+                </li>
+            </ul>
+            <!-- <p>СЕССИЯ: {{ useAuthStore().user }}</p>
+            <p v-if="useAuthStore().session.user">{{ useProfileStore().profiles.find(el => el.userId === useAuthStore().session.user.id).subscription }}</p>
+            <p>user_features_computed:{{ user_features_computed }}</p>
+            <p>features_list_onServer: {{ features_list_onServer }}</p> -->
+        </div>
+
+        <!-- PRICE -->
+        <!-- Одиночка -->
+        <!-- Банда -->
+        <!--  -->
+        <div class="articles_container" style="margin-top: 2rem; ">
+            <h3 style="color: var(--color-global-text)">Подписка</h3>
+            <ul style="background-color: var(--color-urgency-high); list-style: none; padding: 0;">
+                <li>
+                    <h4>Мне достаточно только одной фичи</h4>
+                    <p style="margin: 0; color: var(--color-btn-text)">Цена выбранной фичи</p>
+                </li>
+                <li>
+                    <h4>Выбрать 3 и более</h4>
+                    <p style="margin: 0; color: var(--color-btn-text)">Со скидкой 30% на всё</p>
+                </li>
+                <li>
+                    <h4>Статус ВИП и пользование всеми возможностями</h4>
+                    <p style="margin: 0; color: var(--color-btn-text)">799.00 руб. / мес.</p>
+
+                    <!-- ТИКЕТ ВАША ПОДПИСКА -->
+                    <div v-if="useAuthStore().user && useProfileStore().profiles.find(el => el.userId === useAuthStore().user.id)?.subscription" style="margin: 1rem;">
+                        <ul>
+                            <h5 style="font-weight: bold;">Ваша подписка</h5>
+                            <li>
+
+                                <p>Статус: {{ useProfileStore().profiles.find(el => el.userId === useAuthStore().user.id).status.status_id }}</p>
+                            </li>
+                            <li>
+                                <p>Начиная: {{ useProfileStore().profiles.find(el => el.userId === useAuthStore().user.id).status.status_created_at }}</p>
+                            </li>
+                        </ul>
+                        <ul>
+                            <h5 style="font-weight: bold;">Фичи</h5>
+                            <li v-for="el in useProfileStore().profiles.find(el => el.userId === useAuthStore().user.id)?.subscription">
+                                <p style="margin: 0;">{{ translate_feature(el.feature_id) }} </p>
+                                <p>До {{ el.feature_deadline }}</p>
+                            </li>
+                        </ul>
+                        <!-- <p>{{ useAuthStore().user }}</p> -->
+                        <!-- <p>{{ useProfileStore().profiles.find(el => el.userId === useAuthStore().user.id) }}</p> -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!--  -->
+        <ul style="background-color: var(--color-global-text); margin: 1rem; border-radius: 1rem; padding:0; padding: 1rem; margin-top: 2rem; font-weight: 100;">
+            <p style="color: var(--color-btn-text)">Подключай блоки, расширяй контроль финансового управления</p>
+            <li  style="color: var(--color-btn-text);margin-left: 1rem;" @click="$router.push(`/help`)">Что умеет conspirators.CRM</li>
+            <li style="color: var(--color-btn-text);margin-left: 1rem;" >Что умеет conspirators.CRM</li>
+        </ul>
 
         <!--  -->
         <div style="margin-top: 1rem;" class="value_wrapper">
@@ -104,52 +192,45 @@
                 </div>
             </div>
         </div>
+    
+    </Container>
 
-        <!--  -->
-        <ul style="background-color: var(--color-global-text); margin: 1rem; border-radius: 1rem; padding:0; padding: 1rem; margin-top: 2rem; font-weight: 100;">
-            <p style="color: var(--color-btn-text)">Подключай блоки, расширяй контроль финансового управления</p>
-            <li  style="color: var(--color-btn-text);margin-left: 1rem;" @click="$router.push(`/help`)">Что умеет conspirators.CRM</li>
-            <li style="color: var(--color-btn-text);margin-left: 1rem;" >Что умеет conspirators.CRM</li>
-        </ul>
 
-        <!--  -->
-        <div class="articles_container" style="margin-top: 2rem;">
-            <h3>Используй то, что тебе действительно требуется</h3>
-            <div id="article-block" class="blocks_wrapper" style="margin-top: 2rem;">
-                <div>
-                    <Icon size="32px" name="material-symbols-light:calendar-month-outline"/>
-                    <p style="margin: 0;">Календарь</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:event-note-outline-rounded"/>
-                    <p style="margin: 0;">Гант</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:account-balance-wallet-outline"/>
-                    <p style="margin: 0;">Кошелек</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:action-key-outline-rounded"/>
-                    <p style="margin: 0;">Огород</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:folder-managed-outline-sharp"/>
-                    <p style="margin: 0;">Проекты</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:group-outline-rounded"/>
-                    <p style="margin: 0;">Контакты</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:personal-places-outline-rounded"/>
-                    <p style="margin: 0;">Доска</p>
-                </div>
-                <div>
-                    <Icon size="32px" name="material-symbols-light:warehouse-outline-rounded"/>
-                    <p style="margin: 0;">Склад</p>
+    <!--  -->
+    <!-- <div class="main-banner_container" style="margin-top: -5rem; margin-bottom: -3rem;">
+
+        <div class="main-banner_wrapper">
+
+            <h2 style="color: var(--color-btn-text);">Прокачай осознанность в финансах</h2>
+
+            <div class="main-banner_subtitle">
+                <p style="font-size: .8rem; font-weight: normal; color: var(--color-global-text_second);">Формируй привычки вместе с conspirators</p>
+                <Button 
+                    style="margin-top: 2rem;" 
+                    v-if="useAuthStore().loggedIn !== true" 
+                    type="pseudo-btn" 
+                    link="/login" 
+                    bg="bg-stroke" 
+                    :disabled="false"
+                >
+                    Войти
+                </Button>
+                <div v-else @click="$router.push(`/wallet`)" style="cursor: pointer;">
+                    <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <!--  -->
+    <Container>
+
+
+
+
+
+
+
     </Container>
 </template>
 
@@ -211,6 +292,126 @@
             scrollArticlesContainer.scrollLeft += evt.deltaY
         })
     })
+
+    // FEATURES AVAILABLE
+    const features_list_onServer = ref([
+        {
+            id: 1,
+            name: 'calendar',
+            name_rus: 'Календарь',
+            icon: 'material-symbols-light:calendar-month-outline',
+            price: 299.99,
+            per_month: true,
+            available: false
+        },
+        {
+            id: 2,
+            name: 'gant',
+            name_rus: 'Гант',
+            icon: 'material-symbols-light:event-note-outline-rounded',
+            price: 399.99,
+            per_month: true,
+            available: false
+        },
+        {
+            id: 3,
+            name: 'wallet',
+            name_rus: 'Кошелек',
+            icon: 'material-symbols-light:account-balance-wallet-outline',
+            price: 599.99,
+            per_month: true,
+            available: true
+        },
+        {
+            id: 4,
+            name: 'gardern',
+            name_rus: 'Сад',
+            icon: 'material-symbols-light:action-key-outline-rounded',
+            price: 99.99,
+            per_month: true,
+            available: true
+        },
+        {
+            id: 5,
+            name: 'projects',
+            name_rus: 'Проекты',
+            icon: 'material-symbols-light:folder-managed-outline-sharp',
+            price: 199.99,
+            per_month: false,
+            available: true
+        },
+        {
+            id: 6,
+            name: 'contacts',
+            name_rus: 'Контакты',
+            icon: 'material-symbols-light:group-outline-rounded',
+            price: 99.99,
+            per_month: false,
+            available: true
+        },
+        {
+            id: 7,
+            name: 'dashboard',
+            name_rus: 'Доска',
+            icon: 'material-symbols-light:personal-places-outline-rounded',
+            price: 399.99,
+            per_month: true,
+            available: true
+        },
+        {
+            id: 8,
+            name: 'warehouse',
+            name_rus: 'Склад',
+            icon: 'material-symbols-light:warehouse-outline-rounded',
+            price: 169.99,
+            per_month: true,
+            available: true
+        }
+    ])
+    // [
+    //     {
+    //         "feature_id": 3,
+    //         "feature_deadline": "2026-04-22 15:27:05"
+    //     },
+    //     {
+    //         "feature_id": 4,
+    //         "feature_deadline": "2026-04-22 15:27:05"
+    //     },
+    //     {
+    //         "feature_id": 5,
+    //         "feature_deadline": "2026-04-22 15:27:05"
+    //     },
+    //     {
+    //         "feature_id": 6,
+    //         "feature_deadline": "2026-04-22 15:27:05"
+    //     },
+    //     {
+    //         "feature_id": 7,
+    //         "feature_deadline": "2026-04-22 15:27:05"
+    //     },
+    //     {
+    //         "feature_id": 8,
+    //         "feature_deadline": "2026-04-22 15:27:05"
+    //     }
+    // ]
+    const user_features = ref(null)
+    const user_features_computed = computed(() => {
+        if(useAuthStore().user) {
+            return user_features.value = useProfileStore().profiles.find(el => el.userId === useAuthStore().session.user.id).subscription
+        } else {
+            return []
+        }
+    })
+
+    // USER STATUS
+
+    // TRANSLATORS FUNC
+
+    //== features_list_onServer
+    const translate_feature = (feature_id: number) => {
+
+        return features_list_onServer.value.find(el => el. id === feature_id).name_rus
+    }
 
 </script>
 
@@ -303,17 +504,35 @@
             width: 0;
             height: 0;
         }
-        .blocks_wrapper > div {
+        .blocks_wrapper > li {
             height: 200px;
             min-width: 200px;
             display: flex;
             flex-direction: column;
             border-radius: .8rem;
             align-items: center;
-            padding: .5rem;
+            /* padding: .5rem; */
             justify-content: center;
             color: var(--color-btn-bg);
             background-color: var(--color-btn-hover-bg);
+            position: relative;
+        }
+        .blocks_wrapper > li .block_available {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            /* padding: .2rem 0; */
+            /* background-color: var(--color-btn-bg); */
+            width: 100%;
+            margin: 0;
+            text-align: center;
+        }
+        .blocks_wrapper > li .block_available p {
+            margin: 0;
+            padding: .2rem 0;
+        }
+        .blocks_wrapper > li .block_available p span {
+            color: var(--color-btn-text);
         }
         .blocks_wrapper > div > p {
             font-size: .8rem;
@@ -383,7 +602,7 @@
         /* 
          */
          .header-banner_wrapper {
-            margin-left: 2.5rem;
+            margin-left: 2rem;
             height: 320px; 
         }
         .header-banner_art {
@@ -393,7 +612,7 @@
         .header-banner_wrapper div p {
             margin: 0;
             margin-top: 1rem;
-            width: 200px;
+            width: 250px;
         }
     }
     @media screen and (min-width: 576px) and (max-width: 767px) {

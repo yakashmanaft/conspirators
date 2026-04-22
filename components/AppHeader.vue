@@ -41,7 +41,7 @@ const featuresListAuth = ref([
   // },
   {
     path: "/landing_all",
-    title: 'Посадки',
+    title: 'Сад',
     auth: true
   },
   {
@@ -335,7 +335,7 @@ const translateRoutePath = (path: string) => {
   }
   //= LANDING ALL
   else if (path === '/landing_all') {
-    return 'Мой огород'
+    return 'Мой сад'
   }
   //= LANDING OFFER
   else if (path === '/landing_offer') {

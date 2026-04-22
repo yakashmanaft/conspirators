@@ -5,6 +5,7 @@ type Profile = {
     // uuid: string;
     userId: number,
     userEmail: string;
+    subscription: [];
     // password: string;
     // name: string;
     // middleName: string;
