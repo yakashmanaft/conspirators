@@ -19,7 +19,7 @@
 
             <!-- CONTENT -->
             <div>
-                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem;">Один дашборд процессов</h2>
+                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem;">Органайзер дел и финансов</h2>
                 <p style="color: var(--color-global-text_second);">Будь в курсе актуальных данных с помощью conspirators.CRM</p>
                 <div>
                     <Button 
@@ -92,15 +92,48 @@
         <!-- Одиночка -->
         <!-- Банда -->
         <!--  -->
-        <div class="articles_container" style="margin-top: 2rem; ">
+        <div class="articles_container" style="background-color: var(--color-btn-disabled-bg);">
             <h3 style="color: var(--color-global-text)">Подписка</h3>
-            <ul style="background-color: var(--color-urgency-high); list-style: none; padding: 0;">
-                <li>
+            <ul style=" list-style: none; padding: 0; margin-top: 1rem;">
+                <Section
+                    fDirection="column"
+                    fAlignItems="flex-start"
+                >
+
                     <h4>Мне достаточно только одной фичи</h4>
-                    <p style="margin: 0; color: var(--color-btn-text)">Цена выбранной фичи</p>
-                </li>
+
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid red;">
+                        <Icon size="32px" :name="features_list_onServer[2].icon"/>
+                        <p style="margin: 0; color: var(--color-global-text)">{{ features_list_onServer[2].name_rus }}</p>
+                    </div>
+                    
+                    <div>
+                        <p style="margin: 0;text-decoration: line-through;">
+                            <span></span>{{ features_list_onServer[2].price }} * 12 = 
+                            <span style="">{{ features_list_onServer[2].price * 12 }} за год </span>
+                        </p>
+                        <p style="margin: 0;">
+                            <span>250.00 х 12 = 3000.00 за год</span>
+                        </p>
+                    </div>
+                </Section>
+
                 <li>
                     <h4>Выбрать 3 и более</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        <div>
+                            <Icon size="32px" :name="features_list_onServer[2].icon"/>
+                            <p style="margin: 0; color: var(--color-btn-text)">{{ features_list_onServer[2].name_rus }}</p>
+                        </div>
+                        <div>
+                            <Icon size="32px" :name="features_list_onServer[5].icon"/>
+                            <p style="margin: 0; color: var(--color-btn-text)">{{ features_list_onServer[5].name_rus }}</p>
+                        </div>
+                        <div>
+                            <Icon size="32px" :name="features_list_onServer[4].icon"/>
+                            <p style="margin: 0; color: var(--color-btn-text)">{{ features_list_onServer[4].name_rus }}</p>
+                        </div>
+                    </div>
                     <p style="margin: 0; color: var(--color-btn-text)">Со скидкой 30% на всё</p>
                 </li>
                 <li>
@@ -257,6 +290,7 @@
 
     // shared
     import { Container } from '@/shared/container'
+    import { Section } from '~/shared/section';
 
     // components
     import { Button } from '@/components/button';
@@ -482,8 +516,9 @@
             text-align: center;
         }
         .articles_container {
-            margin-left: 1rem;
-            margin-right: 1rem;
+            /* margin-left: 1rem;
+            margin-right: 1rem; */
+            padding: 1rem;
         }
         /* blocks_wrapper */
         .blocks_wrapper {

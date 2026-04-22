@@ -185,15 +185,7 @@
 
         <!-- MANAGE MODULES -->
         <div>
-          <!-- Button trigger modal -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#manageSubscribeModal"
-          >
-            Управление подпиской
-          </button>
+
           <!-- Modal -->
           <div
             class="modal fade"
@@ -221,18 +213,106 @@
           </div>
         </div>
       </div>
+      
+      <!-- Partner interface module -->
+      <!-- avatar -->
+      <div class="avatar_container">
+        <!-- <div class="avatar">
+          <p>{{ user_info?.surname[0] }}{{ user_info?.name[0] }}</p>
+        </div> -->
+        <div style="padding: 1rem;">
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="font-weight: bold; font-size: 2rem;">
+              <p style="margin: 0;">{{ user_info?.surname }}</p>
+            </li>
+            <li style="font-size: 2rem;">
+              <p style="margin: 0;">{{ user_info?.name }} {{ user_info?.middleName }}</p>
+            </li>
+            <!-- <li>
+              <p style="margin: 0;">{{ user_info?.middleName }}</p>
+            </li> -->
+            <li style="margin-top: 1rem;">
+              <p style="margin: 0;">{{ $props.auth_user_profile?.userEmail }}</p>
+            </li>
+            <li>
+              <p style="margin: 0;">{{ user_info?.phone }}</p>
+            </li>
+            <li style="margin-top: 1rem;">
+              <p style="margin: 0; color: var(--color-global-text_second)">В конспираторах с {{ $props.auth_user_profile?.created_at }}</p>
+            </li>
+          </ul>
+        </div>
 
+        <!--  -->
+        <div class="share-btn_container" style="background-color: var(--color-btn-disabled-bg); border-radius: 1rem; padding: 1rem; display: flex; align-items:center; justify-content: center;">
+         <p style="margin: 0; text-align: center;">Поделиться контактом</p>
+        </div>
+      </div>
+      
+      <!-- SUBSCRIBE -->
+       <!-- ПОДПИСКА -->
+      <Section
+        fDirection="column"
+        fJustifyContent="center"
+        fAlignItems="space-between"
+        style="margin: 1rem;"
+      >
+        <!-- Header -->
+         <div style="display: flex; align-items: center; justify-content: space-between;">
+          <h2>Подписка</h2>
+          <!--  -->
+          <div>
+  
+            <!-- Button trigger modal -->
+             <!-- Управление подпиской -->
+            <button
+              type="button"
+              class="btn"
+              data-bs-toggle="modal"
+              data-bs-target="#manageSubscribeModal"
+            >
+              <Icon
+                size="36px"
+                name="material-symbols:settings-outline-rounded"
+                color="var(--color-global-text)"
+              />
+            </button>
+          </div>
+         </div>
+         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(2, 100px); align-items: flex-start; justify-content: flex-start;">
+
+            <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center; border-radius: 1rem;">
+              <p style="margin: 0; font-size: 2rem; font-weight: bold;">{{ $props.auth_user_profile.status.status_id }}</p>
+              <p style="margin: 0; font-size: .8rem; text-align: center">Статус</p>
+            </div>
+            <div style="background-color: var(--color-wallet-fund-invested); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center; border-radius: 1rem;">
+              <p style="margin: 0; font-size: 2rem; font-weight: bold;">{{ $props.auth_user_profile.subscription.length }}</p>
+              <p style="margin: 0; font-size: .8rem; text-align: center">Фичей</p>
+            </div>
+            <div style=" display: flex; align-items: center;">
+              <p style="text-align: center; margin: 0;">
+                <span style="font-size: 2rem; font-weight: bold">790.99</span> <br>руб. / мес.
+              </p>
+            </div>
+         </div>
+        
+         <!-- Счетчик -->
+        <div style="margin-top: 1rem;">
+          <p style="margin: 0;">До окончания подписки осталось 1 час 12 минут</p>
+        </div>
+      </Section>
+      
       <!-- INFO -->
       <div>
-        <h2>Мои данные</h2>
+        <!-- <h2>Мои данные</h2> -->
         {{ $props.auth_user_profile }}
         <br>
         {{ user_info }}
         <div style="display: flex; gap: 1rem;">
-          <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+          <!-- <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
             <p style="margin: 0; font-size: 2rem; font-weight: bold;">{{ $props.auth_user_profile.status.status_id }}</p>
             <p style="margin: 0; font-size: .8rem; text-align: center">Статус</p>
-          </div>
+          </div> -->
           <div style="background-color: var(--color-btn-hover-bg); width: fit-content; width: 100px; height: 100px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
             <p style="margin: 0; font-size: 2rem; font-weight: bold;">0.5</p>
             <p style="margin: 0; font-size: .8rem; text-align: center">SR</p>
@@ -240,19 +320,7 @@
         </div>
 
 
-        <div>
-          <ul>
-            <li>
-              <p>{{ user_info?.name }}</p>
-            </li>
-            <li>
-              <p>{{ user_info?.middleName }}</p>
-            </li>
-            <li>
-              <p>{{ user_info?.surname }}</p>
-            </li>
-          </ul>
-        </div>
+
 
         <!-- Контакты -->
         <div style="background-color: var(--color-btn-disabled-bg)">
@@ -452,6 +520,7 @@
 
 // shared
 import { Container } from "@/shared/container";
+import { Section } from "@/shared/section";
 
 // components
 import { BreadCrumbs } from "@/components/breadcrumbs";
@@ -720,10 +789,26 @@ const { data: loan_list } = useFetch("/api/loan/loan", {
 .link {
   cursor: pointer;
 }
+@media screen and (max-width: 576px) {
+  .avatar_container {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+  .avatar_container .share-btn_container {
 
-@media screen and (min-width: 576px) {
-
+  }
 }
+@media screen and (min-width: 577px) {
+  .avatar_container {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
 @media screen and (min-width: 576px) and (max-width: 767px) {
   .warehouse-list_container {
     /* background-color: red; */
@@ -739,6 +824,26 @@ const { data: loan_list } = useFetch("/api/loan/loan", {
 @media screen and (max-width: 767px)  {
   .show-max-767 {
       display: none;
+  }
+
+  /* avatar */
+
+  .avatar_container .avatar {
+    /* margin: 16px auto 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 150px;
+    background: var(--color-global-text_second);
+    aspect-ratio:  1;
+    display: flex;
+    align-items: center;
+    justify-content: center; */
+  }
+  .avatar p {
+    /* margin: 0;
+    color: var(--color-btn-text);
+    font-size: 3.5rem;
+    font-weight: bold; */
   }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
