@@ -65,7 +65,7 @@ const  emit_inputString = (name) => {
 .search_wrapper input {
   padding-left: 2.2rem;
   border: unset;
-  border-radius: unset;
+  /* border-radius: unset; */
   outline-width: 0 !important;
   outline: none !important;
   box-shadow: none;
@@ -86,21 +86,56 @@ const  emit_inputString = (name) => {
 }
 
 @media screen and (max-width: 575px) {
- .search_wrapper {
-    margin: 0.5rem;
- }
+  .search_wrapper {
+      margin: 0.5rem;
+    }
+    .search_wrapper input {
+      border-radius: 2rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      background-color: rgba(0, 0, 0, 0.05);
+      border-bottom: unset;
+    }
 }
 
-@media screen and (max-width: 767px) {
-    .search_wrapper {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-    .search_wrapper > input {
-        /* background-color: var(--color-btn-disabled-bg); */
-        background-color: rgba(0, 0, 0, 0.05);
-        border-radius: 1rem;
-        border-bottom: unset;
-    }
+@media (min-width: 576px) and (max-width: 768px) {
+  .search_wrapper {
+    margin: 0 1rem;
+  }
+  .search_wrapper > input {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-bottom: unset;
+    border-radius: 2rem;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .search_wrapper {
+      /* margin-left: 1rem; */
+      /* margin-right: 1rem; */
+  }
+  .search_wrapper > input {
+    /* background-color: rgba(0, 0, 0, 0.05); */
+    border-bottom: unset; 
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .search_wrapper > input {
+    /* background-color: rgba(0, 0, 0, 0.05); */
+    border-bottom: unset; 
+  }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .search_wrapper > input {
+    /* background-color: rgba(0, 0, 0, 0.05); */
+    border-bottom: unset; 
+  }
+}
+@media (min-width: 1400px) {
+  .search_wrapper > input {
+    /* background-color: rgba(0, 0, 0, 0.05); */
+    border-bottom: unset; 
+  }
 }
 </style>

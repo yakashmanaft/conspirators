@@ -101,7 +101,7 @@ const featuresListAuth = ref([
 // NO AUTH
 const featuresListNoAuth = ref([
   {
-    title: 'Маркетплейс соучастников',
+    title: 'Каталог',
     path: '/landing_stock'
   },
   // {
@@ -136,6 +136,116 @@ const featuresListNoAuth = ref([
   //   title: 'Контакты',
   //   path: '/about'
   // },
+])
+
+// Cart list item
+let cart_product_list_items = ref([
+  {
+    item_id: 1,
+    item_name: 'Тумба с раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 29990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 2,
+    item_name: 'Тумба со встроенной раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 3,
+    item_name: 'Тумба с раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 29990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 4,
+    item_name: 'Тумба со встроенной раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 5,
+    item_name: 'Тумба с раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 29990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 6,
+    item_name: 'Тумба со встроенной раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 7,
+    item_name: 'Тумба с раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 29990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 8,
+    item_name: 'Тумба со встроенной раковиной',
+    item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  }
+])
+let cart_service_list_items = ref([
+  {
+    item_id: 1,
+    item_name: 'Установка тумбы',
+    item_text: 'Проведение монтажных работы',
+    item_qty: 1,
+    item_pice: 29990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 2,
+    item_name: 'Демонтажные работы',
+    item_text: 'Снимаем староеы',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 3,
+    item_name: 'Вывоз мусора',
+    item_text: 'Прибираемся посел работы',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 4,
+    item_name: 'Вывоз мусора',
+    item_text: 'Прибираемся посел работы',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  },
+  {
+    item_id: 5,
+    item_name: 'Вывоз мусора',
+    item_text: 'Прибираемся посел работы',
+    item_qty: 1,
+    item_pice: 39990.00,
+    item_curerncy: 'RUB'
+  }
 ])
 
 //
@@ -641,15 +751,82 @@ watch(
 
               <div class="cart_header">
                 <p>Корзина</p>
+                <div>
+                  <p>Избранное</p>
+                  <p>Закрыть</p>
+                </div>
               </div>
 
               <div class="cart_main">
-                123
+                
+                <div style="background-color: var(--color-wallet-fund-debt); grid-column: span 3">
+                  <input type="checkbox">
+                  Выбрать все / Удалить выбранное
+                </div>
+
+                <div class="cart_item">
+
+                  <div class="cart_product_item_container">
+                    <p>Товары</p>
+  
+                    <div style="background-color: var(--color-wallet-fund-debt);">
+                      <input type="radio">
+                      Доставка / 
+                      <input type="radio">
+                      Самовывоз
+                    </div>
+                    <ul>
+                      <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
+    
+                        {{ item }}
+                      </li>
+                    </ul>
+  
+                    <div style="background-color: var(--color-wallet-fund-debt);">
+                      Недоступно для заказа
+                    </div>
+  
+                  </div>
+  
+                  <ul class="cart_service_item_container">
+                    <p>Услуги</p>
+                    <li class="cart_service_item" v-for="item in cart_service_list_items" :key="item.item_id">
+                      {{item}}
+                    </li>
+                  </ul>
+  
+                </div>
+                <div class="cart_total_container">
+                  
+                  <div>
+                    <Button
+                      type="original-btn"
+                      bg="bg-full"
+                      width="100px"
+                    >123</Button>
+                    <p>Перейти к оформлению</p><br>
+                    <p>Доступные способы и время доставки можно выбрать при оформлении заказа</p>
+                  </div>
+
+                  <div>
+                    <p>Ваша корзина</p>
+                    <ul>
+                      <li>Товары (2) 1784.90RUB</li>
+                      <li>Скидка (Подробнее) - 725.87RUB</li>
+                    </ul>
+                    <ul>
+                      <li>Услуги (2) 1784.90RUB</li>
+                      <li>Скидка (Подробнее) - 725.87RUB</li>
+                    </ul>
+                    <p>Общая стоимость 999999.99RUB</p>
+                  </div>
+                </div>
+                
               </div>
 
-              <div class="cart_footer">
+              <!-- <div class="cart_footer">
                 footer
-              </div>
+              </div> -->
             </div>
           </div>
       </div>
@@ -770,7 +947,7 @@ a:visited {
   align-items: center;
   justify-content: center;
   margin-right: 1rem;
-  position: relative;
+  /* position: relative; */
 }
 .cart > input {
   display: none;
@@ -782,8 +959,8 @@ a:visited {
 }
 .cart > label > .cart_count {
   position: absolute;
-  bottom: -.15rem;
-  right: 0;
+  bottom: 1rem;
+  right: 1.5rem;
   background-color: var(--color-global-text);
   color: var(--color-global-baackground_light);
   width: 1.5rem;
@@ -795,18 +972,22 @@ a:visited {
 }
 .cart > .cart_container {
   /* display: none; */
-  position: fixed;
+  /* position: fixed; */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: var(--color-bg-popup);
   backdrop-filter: blur(2px);
+  /* overflow-y: scroll; */
 }
 .cart > .cart__opened {
   opacity: 1;
   transition: all .3s ease-in;
   z-index: 99;
+  overflow-y: scroll;
+  /* background-color: var(--color-global-baackground_light); */
 }
 .cart > .cart_closed {
   opacity: 0;
@@ -821,11 +1002,12 @@ a:visited {
   /* display: none; */
   width: 70%;
   height: 100vh;
-  background-color: var(--color-global-baackground_light);
+  /* background-color: var(--color-global-baackground_light); */
   position: relative;
+  background-color: var(--color-global-baackground_light);
 }
 .cart_header {
-  background-color: red;
+  /* background-color: red; */
   
 }
 .cart_header > p {
@@ -836,20 +1018,37 @@ a:visited {
 .cart_main {
 
 }
-.cart_footer {
+/* .cart_footer {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     background-color: var(--color-global-text_second);
-}
-@media screen and (max-width: 575px) {
+} */
+@media (max-width: 319px) {
   .header_wrapper {
     padding: 0;
     margin: 0;
   }
   .logo_wrapper {
     display: none;
+  }
+  .cart > label > .cart_count {
+    bottom: .5rem;
+    right: 4rem;
+  }
+}
+@media (min-width: 320px) and (max-width: 574px) {
+  .header_wrapper {
+    padding: 0;
+    margin: 0;
+  }
+  .logo_wrapper {
+    display: none;
+  }
+  .cart > label > .cart_count {
+    bottom: .5rem;
+    right: 4rem;
   }
 }
 @media screen and (max-width: 767px) and (max-height: 540px) {
@@ -877,8 +1076,6 @@ a:visited {
     padding-left: 32px;
   }
 }
-
-
 @media screen and (min-width: 768px) {
   .copyright_wrapper {
     display: none
@@ -888,9 +1085,13 @@ a:visited {
   }
 }
 
-@media screen and (min-width: 576px) and (max-width: 767px) {
+@media screen and (min-width: 575px) and (max-width: 767px) {
   .logo_wrapper {
     display: none;
+  }
+  .cart > label > .cart_count {
+    bottom: .5rem;
+    right: 4rem;
   }
 }
 
@@ -1059,6 +1260,65 @@ a:visited {
     opacity: 1;
     z-index: 99;
   }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .cart_wrapper {
+    /* display: none; */
+    width: 85%;
+    /* height: 100vh; */
+    /* background-color: var(--color-global-baackground_light); */
+    /* position: relative; */
+  }
+  .cart_wrapper .cart_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem;
+    position: relative;
+  }
+  .cart_wrapper .cart_header p{
+    margin-top: 1rem;
+    display: inline-block;
+    background-color: var(--color-urgency-middle);
+  }
+
+  /*  */
+  .cart_wrapper .cart_main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .cart_item {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: var(--color-wallet-fund-invested-wo);
+  }
+  /*  */
+  .cart_wrapper .cart_main .cart_product_item_container {
+    gap: 1rem;
+  }
+  .cart_wrapper .cart_main .cart_product_item_container .cart_product_item_wrapper {
+    background-color: var(--color-global-text_second);
+    border: 1px solid black;
+  }
+  /*  */
+  .cart_wrapper .cart_main .cart_total_container {
+    background-color: var(--color-btn-disabled-bg);
+    position: absolute;
+    right: 0;
+    width: 35%;
+  }
+
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+
+}
+@media (min-width: 1400px) {
+
 }
 
 
@@ -1288,7 +1548,7 @@ label a {
       /* margin-right: 5rem; */
       margin: 0 auto;
       border-radius: 2rem;
-      overflow: hidden;
+      /* overflow: hidden; */
    }
 }
 </style>
