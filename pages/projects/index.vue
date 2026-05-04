@@ -7,6 +7,7 @@ import { DevModePlug } from "@/components/plug_dev_mode";
 import { BreadCrumbs } from "~/components/breadcrumbs";
 import { Button } from "@/components/button";
 import { Search } from "~/components/search";
+import { Chip } from "@/components/chip";
 
 // utils
 import { H3Error } from "h3";
@@ -68,6 +69,45 @@ useHead({
     // stages: null
   });
 
+  // project status
+  const project_status = ref([
+      {
+        id: 1,
+        name: 'waiting',
+        title: 'Ожидание'
+      },
+      {
+        id: 2,
+        name: 'works',
+        title: 'В работе'
+      },
+      {
+        id: 3,
+        name: 'agreement',
+        title: 'Согласование'
+      },
+      {
+        id: 4,
+        name: 'cancelled',
+        title: 'Отменен'
+      },
+      {
+        id: 5,
+        name: 'paused',
+        title: 'Пауза'
+      },
+      {
+        id: 6,
+        name: 'finished',
+        title: 'Завершен'
+      }
+  ])
+  const current_status_to_show = ref({
+    id: 0,
+    name: 'all',
+    translate: 'Все'
+  })
+
   // CONST
   const searchInput = ref("")
   
@@ -76,16 +116,34 @@ useHead({
   const computedProjects = computed(() => {
 
     if(searchInput.value === "") {
-      return project_list.value
+      if(current_status_to_show.value.name === 'all') {
+        return project_list.value
+      } else {
+        return project_list.value?.filter(el => el.status === current_status_to_show.value.name)
+      }
     } else {
-      return project_list.value.filter((item) => 
-        item.name 
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
-      )
+      if(current_status_to_show.value.name === 'all') {
+        return project_list.value?.filter((item) => 
+          item.name 
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(searchInput.value.toLowerCase().replace(/\s+/g, ""))
+        )
+      } else {
+        return project_list.value?.filter((item) => 
+          item.name 
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(searchInput.value.toLowerCase().replace(/\s+/g, "")) && item.status === current_status_to_show.value.name
+        )
+      }
     }
   }) 
+
+  // CHANGED
+  const change_status_to_show = (obj: any) => {
+    current_status_to_show.value = obj
+  }
   
   // ******* DB *******
   //= project_list
@@ -179,6 +237,37 @@ onMounted(async () => {
 const searchInputChanged = (str: string) => {
   searchInput.value = str
 }
+
+//= color status in project item
+const set_status_color = (status_name: string) => {
+  if(status_name === 'waiting') {
+    return 'background-color: var(--color-urgency-middle-10)'
+  }
+  else if (status_name === 'works') {
+    return 'background-color: var(--color-urgency-low-10);'
+  }
+  else if (status_name === 'agreement') {
+    return 'background-color: var(--color-btn-hover-bg)'
+  }
+  else if (status_name === 'canceled') {
+    return ''
+  }
+  else if (status_name === 'paused') {
+    return 'background-color: var(--color-urgency-middle);'
+  }
+  else if (status_name === 'finished') {
+    return 'background-color: var(--color-global-text); color: var(--color-global-baackground_light);'
+  }
+  else {
+    return 'background-color: red'
+  }
+}
+
+//= translate item status
+const translate_item_status = (status: string) => {
+
+  return project_status.value?.find(el => el.name === status)?.title
+} 
 
 // ***************** ON ClICK ***************
 // const projectSymbolOnClick = (symbol) => {
@@ -487,6 +576,16 @@ const addNewProject = () => {
   
       <!--  -->
       <div class="project_container">
+        <!-- status bar -->
+        <Chip
+          id="project_status_chip_block"
+          :tabs="project_status"
+          :default="current_status_to_show"
+          :btn_all_exist="true"
+          @changed="change_status_to_show"
+          style="margin-bottom: 2rem;"
+        />
+        <!-- {{ current_status_to_show }} -->
         <!-- SEARCH SECTION -->
         <div v-if="project_list?.length">
           <Search
@@ -502,29 +601,33 @@ const addNewProject = () => {
             /> -->
           </Search>
         </div>
-        
         <!-- list-->
-        <div class="project-list_wrapper">
+        <div class="project-list_container">
   
           <!-- Если ничего не найдено в поиске-->
-          <div>
-            <div v-if="searchInput && !computedProjects.length">
+          <div class="no-search-item_wrapper" v-if="searchInput && !computedProjects?.length">
+            <p>
               По запросу ничего не найдено
-            </div>
+            </p>
           </div>
-  
+
           <!-- Список проектов -->
-          <div
+          <div 
             v-for="(project, index) in computedProjects"
             :key="index"
-            class="project-item_container"
+            class="project-item_wrapper"
             @click="$router.push(`/projects/${project.id}`)"
           >
-            <!-- {{ project }} -->
-            <div style="padding-left: 3.5rem; display: flex; flex-direction: column;">
-              <p style="margin: 0;">{{ project?.name }}</p>
+              <p style="margin: 0;" class="truncate">{{ project?.name }}</p>
+              <p 
+                class="project-item_status" 
+                v-if="current_status_to_show.name === 'all'"
+                style="margin: 0;"
+                :style="set_status_color(project?.status)"
+              >
+                {{ translate_item_status(project.status) }}
+              </p>
               <div style="display: flex; flex-direction: column;">
-                <!-- <span style="font-size: .8rem; color: var(--color-global-text_second);">Заказчик: {{ translateName(project?.customer?.[0]?.userType, project?.customer?.[0]?.userId)}}</span> -->
 
                 <p class="project-item_customers_wrapper">
                   <span>Заказчик: </span>
@@ -545,43 +648,11 @@ const addNewProject = () => {
                   <span v-else>Нет</span>
                 </p>
               </div>
-            </div>
-          
-            <!-- Symbol -->
-            <div class="project-symbol_wrapper">
-              <div class="project-symbol_content">{{ project?.name[0] }}</div>
-            </div>  
-
-          <!-- WRAPPER FOR LEAD ON PAUSE (absolute) -->
-
-
-
-            <!-- <div class="project-item_left">
-              <div class="project-completion">
-                <span>{{ (project.completion * 100).toFixed(0) }}%</span>
-              </div>
-              <div class="project-header">
-                <h2>{{ project.title }}</h2>
-                <span class="project-address"
-                  >{{ project.address }} | {{ project.workType }}</span
-                >
-              </div>
-            </div> -->
-            <!-- <div class="project-item_right">
-              <span
-                >Куратор:
-                {{ translateCurator(project.curator, project.curatorType) }}</span
-              >
-              <span
-                >Заказчик:
-                {{ translatePartner(project.partnerID, project.partnerType) }}</span
-              >
-            </div> -->
           </div>
   
           <!-- Если вообще не проектов -->
           <!--  -->
-          <div class="no-project_warapper" v-if="searchInput === '' && !computedProjects?.length">
+          <div class="no-project_wrapper" v-if="searchInput === '' && !computedProjects?.length">
             <p>У вас нет проектов...</p>
             <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
           </div>
@@ -597,29 +668,24 @@ const addNewProject = () => {
 /* .projects_container {
   margin-top: 2rem;
 } */
-.project-item_container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* .project-item_container {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  /* margin-top: 1rem; */
-  padding: .5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in;
   position: relative;
-}
-.project-item_container:last-child {
+} */
+/* .project-item_container:last-child {
   border-bottom: none;
-}
-.project-item_container h2 {
+} */
+/* .project-item_container h2 {
   margin: 0;
-}
+} */
 
-.project-item_container:hover {
+/* .project-item_container:hover {
   background-color: rgba(0, 0, 0, 0.05);
-}
+} */
 
-.project-symbol_wrapper {
+/* .project-symbol_wrapper {
   position: absolute;
   left: 0;
   top: 0;
@@ -629,10 +695,10 @@ const addNewProject = () => {
   align-items: center;
   justify-content: center;
   width: 3.5rem
-}
-.project-symbol_content {
+} */
+/* .project-symbol_content {
   color: var(--color-btn-text);
-}
+} */
 
 .project-item_left {
   display: flex;
@@ -663,8 +729,11 @@ const addNewProject = () => {
 .project_container {
   margin-top: 1rem;
 }
-.project-list_wrapper {
+.project-list_container {
   margin-top: 1.5rem;
+}
+.project-item_wrapper:nth-child(even) {
+  background-color: var(--color-global-baackground_light);
 }
 .project-item_executors_wrapper,
 .project-item_customers_wrapper {
@@ -679,29 +748,94 @@ const addNewProject = () => {
 .project-item_customers_list span {
   margin-left: .2rem;
 }
-@media screen and (max-width: 575px) {
-  .no-project_warapper {
+
+@media (max-width: 319px) {
+  .no-project_wrapper {
     margin-left: .5rem;
     margin-right: .5rem;
   }
-}
-@media screen and (min-width: 576px) and (max-width: 767px) {
+  .no-search-item_wrapper {
+    /* margin-left: 1rem;
+    margin-right: 1rem; */
+    text-align: center;
+  }
+  .project-item_wrapper {
+    position: relative;
+    padding: 0 .5rem;
+    margin-top: 1rem;
+  }
+  .project-item_wrapper:first-child {
+    margin-top: unset;
+  }
+  .project-item_status {
+    margin: 0!important;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: .5rem;
+    /* background-color: var(--color-global-text_second); */
+    font-size: .9rem;
+    padding: 0 .25rem;
+  }
+  .truncate {
+    white-space: nowrap;      /* Запрещаем переносы */
+    overflow: hidden;         /* Скрываем всё, что не поместилось */
+    text-overflow: ellipsis;  /* Добавляем многоточие */
+    width: 200px;           /* Фиксированная ширина */
+  }
 
-  .no-project_warapper {
+}
+@media (min-width: 320px) and (max-width: 574px) {
+  .no-project_wrapper {
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+  .no-search-item_wrapper {
+    /* margin-left: 1rem;
+    margin-right: 1rem; */
+    text-align: center;
+  }
+  .project-item_wrapper {
+    position: relative;
+    padding: .25rem 1rem;
+    margin-top: 1rem;
+  }
+  .project-item_wrapper:first-child {
+    margin-top: unset;
+  }
+  .project-item_status {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1rem;
+    background-color: var(--color-global-text_second);
+    font-size: .9rem;
+    padding: 0 .25rem;
+  }
+  .truncate {
+    white-space: nowrap;      /* Запрещаем переносы */
+    overflow: hidden;         /* Скрываем всё, что не поместилось */
+    text-overflow: ellipsis;  /* Добавляем многоточие */
+    width: 250px;           /* Фиксированная ширина */
+  }
+}
+@media screen and (min-width: 575px) and (max-width: 767px) {
+
+  .no-project_wrapper {
     margin-left: 1rem;
     margin-right: 1rem;
   }
-  .partners-list_wrapper {
+  .project-list_container {
     margin-left: 1rem;
     margin-right: 1rem;
   }
 }
 @media screen and (max-width: 767px) {
-  .project-item_container {
+  /* .project-item_container {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-  }
+  } */
   .project-item_right {
     align-items: unset;
   }

@@ -55,15 +55,16 @@ model Lead {
 }
 
 model Project {
-  id            Int      @id @default(autoincrement())
-  name          String   @db.VarChar(60)
-  created_at    DateTime @default(now()) @db.DateTime(0)
+  id            Int           @id @default(autoincrement())
+  name          String        @db.VarChar(60)
+  created_at    DateTime      @default(now()) @db.DateTime(0)
+  status        ProjectStatus @default(waiting)
   sharers       Json?
   bandId        Int
   invested_mesh Json?
   customer      Json?
   executor      Json?
-  band          Band     @relation(fields: [bandId], references: [id])
+  band          Band          @relation(fields: [bandId], references: [id])
   task          Task[]
 
   @@index([bandId], map: "Project_bandId_fkey")
@@ -284,6 +285,15 @@ enum TaskStatus {
   works
   agreement
   canceled
+  paused
+  finished
+}
+
+enum ProjectStatus {
+  waiting
+  works
+  agreement
+  cancelled
   paused
   finished
 }
