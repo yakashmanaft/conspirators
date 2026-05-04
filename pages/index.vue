@@ -175,7 +175,7 @@ const changeColorOnClick = (e) => {
     </div>
 
     <!--  -->
-    <h2 class="sub_title-container">В помощь соучастникам</h2>
+    <h2 class="sub_title-container">Помощь</h2>
     <p class="sub_p-container" style="color: var(--color-global-text_second);">Описали функции и опыт взаимодействия с приложением в одном месте</p>
 
     <div class="section_container">

@@ -274,6 +274,7 @@ const closeBurgerMenu = () => {
   }
 };
 
+
 // display link to modules if has access
 // const userAccesedLink = (moduleName) => {
 //   let userModulesArray = [];
@@ -752,12 +753,12 @@ watch(
               <div class="cart_header">
                 <p>Корзина</p>
                 <div>
-                  <p>Избранное</p>
-                  <p>Закрыть</p>
+                  <!-- <p style="cursor: pointer;">Избранное</p> -->
+                  <p style="cursor: pointer;" @click="cartMenuIsOpened = false">Закрыть</p>
                 </div>
               </div>
 
-              <div class="cart_main">
+              <div class="cart_main no-scrollbar">
                 
                 <div style="background-color: var(--color-wallet-fund-debt); grid-column: span 3">
                   <input type="checkbox">
@@ -769,7 +770,7 @@ watch(
                   <div class="cart_product_item_container">
                     <p>Товары</p>
   
-                    <div style="background-color: var(--color-wallet-fund-debt);">
+                    <div style="background-color: var(--color-urgency-middle);">
                       <input type="radio">
                       Доставка / 
                       <input type="radio">
@@ -780,11 +781,16 @@ watch(
     
                         {{ item }}
                       </li>
+                      <li style="background-color: var(--color-wallet-fund-debt);">
+                        <p>Недоступно для заказа</p>
+                        <ul>
+                          <li class="cart_product_unavailable">
+                            Товар 123
+                          </li>
+                        </ul>
+                      </li>
                     </ul>
   
-                    <div style="background-color: var(--color-wallet-fund-debt);">
-                      Недоступно для заказа
-                    </div>
   
                   </div>
   
@@ -802,9 +808,9 @@ watch(
                     <Button
                       type="original-btn"
                       bg="bg-full"
-                      width="100px"
-                    >123</Button>
-                    <p>Перейти к оформлению</p><br>
+                      width="100%"
+                    >Перейти к оформлению</Button>
+                    <br>
                     <p>Доступные способы и время доставки можно выбрать при оформлении заказа</p>
                   </div>
 
@@ -1460,17 +1466,85 @@ label a {
   text-decoration: none;
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .header-features__list > li {
-    font-size: .9rem;
-    text-align: center;
-  }
-  /* .logo_wrapper {
-    display: none;
-  } */
+@media (max-width: 319px) {
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-bottom: 35rem;
+   }
 }
 
-@media screen and (min-width: 768px) {
+@media (min-width: 320px) and (max-width: 574px) {
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-bottom: 30rem;
+   }
+}
+
+@media (min-width: 575px) and (max-width: 767px) {
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-bottom: 30rem;
+   }
+}
+
+@media (max-width: 767px) {
+  .cart__opened {
+    height: 100vh;
+  }
+  .cart_wrapper {
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+   .cart_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+   }
+   .cart_header p {
+    margin: 0;
+   }
+   .cart_header div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+   }
+   .cart_header div p {
+    margin: 0;
+   }
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 1fr;
+   }
+   .cart_product_unavailable {
+
+   }
+  .cart_wrapper .cart_main .cart_total_container {
+    background-color: var(--color-btn-disabled-bg);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* top: 5.25rem; */
+    right: 2rem;
+    padding: 1rem;
+  }
+}
+
+@media screen and (min-width: 767px) {
   .header-wrapper {
     padding: 1rem;
   }
@@ -1540,28 +1614,172 @@ label a {
   }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+  /*  */
+  .header-features__list > li {
+    font-size: .9rem;
+    text-align: center;
+  }
+  /*  */
+  .cart__opened {
+    height: 100vh;
+  }
+  .cart_wrapper {
+      margin: 0 auto;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+   }
+   .cart_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+   }
+   .cart_header p {
+    margin: 0;
+   }
+   .cart_header div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+   }
+   .cart_header div p {
+    margin: 0;
+   }
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    padding-bottom: 10rem;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+   }
+   .cart_product_unavailable {
+
+   }
+  .cart_wrapper .cart_main .cart_total_container {
+    background-color: var(--color-btn-disabled-bg);
+    position: absolute;
+    right: 0;
+    width: 35%;
+    top: 5.25rem;
+    right: 2rem;
+    padding: 1rem;
+  }
+}
+
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-  /* .logo_wrapper {
-    display: none;
-  } */
+  .cart__opened {
+    height: 100vh;
+  }
+  .cart_wrapper {
+    margin: 0 auto;
+    overflow: hidden;
+    width: 90%;
+    position: relative;
+  }
+   .cart_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+   }
+   .cart_header p {
+    margin: 0;
+   }
+   .cart_header div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+   }
+   .cart_header div p {
+    margin: 0;
+   }
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    /* background-color :red; */
+    padding-bottom: 10rem;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    /* position: relative; */
+   }
+   .cart_product_unavailable {
+
+   }
+  .cart_wrapper .cart_main .cart_total_container {
+    background-color: var(--color-btn-disabled-bg);
+    position: absolute;
+    right: 0;
+    width: 35%;
+    top: 5.25rem;
+    right: 2rem;
+    padding: 1rem;
+  }
 }
 
 @media screen and (min-width: 1200px) {
   /* .logo_wrapper {
     display: none;
   } */
-   .cart_wrapper {
-      /* height: 70%; */
-      /* position: fixed; */
-      /* top: 0; */
-      /* left: 50%; */
-      width: 1200px;
-      height: 80%;
-      margin-top: 5rem!important;
-      /* margin-right: 5rem; */
+  .cart__opened {
+    height: 100vh;
+  }
+  .cart_wrapper {
       margin: 0 auto;
-      border-radius: 2rem;
-      /* overflow: hidden; */
+      overflow: hidden;
+      min-width: 992px;
+      max-width: 1399px;
+      position: relative;
    }
+   .cart_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+   }
+   .cart_header p {
+    margin: 0;
+   }
+   .cart_header div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+   }
+   .cart_header div p {
+    margin: 0;
+   }
+   .cart_main {
+    height: 100%;
+    overflow-y: scroll;
+    padding-bottom: 10rem;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+   }
+   .cart_product_unavailable {
+
+   }
+  .cart_wrapper .cart_main .cart_total_container {
+    background-color: var(--color-btn-disabled-bg);
+    position: absolute;
+    right: 0;
+    width: 35%;
+    top: 5.25rem;
+    right: 2rem;
+    padding: 1rem;
+  }
+}
+
+/* Для Chrome, Safari, Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  /* Для Firefox */
+  scrollbar-width: none;
+
+  /* Для IE и Edge */
+  -ms-overflow-style: none;
 }
 </style>
