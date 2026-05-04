@@ -1003,7 +1003,7 @@ a:visited {
   width: 70%;
   height: 100vh;
   /* background-color: var(--color-global-baackground_light); */
-  position: relative;
+  /* position: relative; */
   background-color: var(--color-global-baackground_light);
 }
 .cart_header {
@@ -1266,6 +1266,7 @@ a:visited {
 
 }
 @media (min-width: 992px) and (max-width: 1199px) {
+
   .cart_wrapper {
     /* display: none; */
     width: 85%;
@@ -1315,10 +1316,22 @@ a:visited {
 
 }
 @media (min-width: 1200px) and (max-width: 1399px) {
-
+  .cart > label > .cart_count {
+    right: 1.75rem;
+  }
 }
 @media (min-width: 1400px) {
-
+  .cart > label {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+  }
+  .cart > label > .cart_count {
+    color: var(--color-global-text);
+    position: unset;
+    background-color: unset;
+    font-size: 1rem;
+  }
 }
 
 

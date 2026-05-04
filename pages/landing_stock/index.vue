@@ -531,7 +531,7 @@
         } */
         .item_wrapper h2 {
             margin-top: .5rem;
-            font-size: 1rem;
+            font-size: 1.25rem;
         }
 
         .item_wrapper p {
@@ -546,28 +546,19 @@
     @media screen and (min-width: 1200px) and (max-width: 1399px) {
         /* 
         */
-            .item_search {
+        .item_search {
             margin-top: 2rem; 
         }
         .item_container {
-            grid-template-columns: repeat(7, 1fr)!important;
+            grid-template-columns: repeat(5, 1fr)!important;
             gap: .75rem;
             margin-top: 2rem;
-            /* display: grid;
- */
         }
         .item_wrapper {
-            /* background-color: var(--color-operation-type-donation); */
-            /* background-color: red; */
-            /* border-radius: 1rem; */
             padding: .5rem;
             width: 100%;
         }
         .item_wrapper div {
-            /* width: 50% */
-
-            /* background-color: var(--color-global-baackground_light); */
-            /* border-radius: .5rem; */
             display: flex;  
             align-items: center; 
             justify-content: center; 
@@ -580,7 +571,7 @@
 
         .item_wrapper h2 {
             margin-top: .5rem;
-            font-size: 1rem;
+            font-size: 1.25rem;
         }
 
         .item_wrapper p {
@@ -603,18 +594,16 @@
             margin-top: 2rem; 
         }
         .item_container {
+            grid-template-columns: repeat(5, 1fr)!important;
+            gap: .75rem;
             margin-top: 2rem;
-            grid-template-columns: repeat(7, 1fr)!important;
-            /* display: grid;
-            gap: 2rem;
-            margin-top: 3rem; */
         }
         .item_wrapper {
             /* background-color: var(--color-operation-type-donation); */
             /* background-color: red; */
             /* border-radius: 1rem; */
-            padding: 1rem;
-            width: 320px;
+            padding: 1rem .25rem;
+            /* width: 320px; */
         }
         .item_wrapper div {
             /* width: 50% */
@@ -633,7 +622,7 @@
 
         .item_wrapper h2 {
             margin-top: .5rem;
-            font-size: 1rem;
+            font-size: 1.25rem;
         }
 
         .item_wrapper p {

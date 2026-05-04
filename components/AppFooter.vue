@@ -59,23 +59,23 @@ const hotBtnList = ref([
 // NO AUTH
 const menuList = ref([
   {
-    title: 'Контакты',
+    title: 'Связаться с нами',
     path: '/about'
   },
+  // {
+  //   title: 'Услуги маркетинга',
+  //   path: '/landing_offer'
+  // },
+  // {
+  //   title: 'Услуги художника',
+  //   path: '/landing_design'
+  // },
+  // {
+  //   title: 'Разработка сайтов / приложений',
+  //   path: '/landing_dev'
+  // },
   {
-    title: 'Услуги маркетинга',
-    path: '/landing_offer'
-  },
-  {
-    title: 'Услуги художника',
-    path: '/landing_design'
-  },
-  {
-    title: 'Разработка сайтов / приложений',
-    path: '/landing_dev'
-  },
-  {
-    title: 'Финансовая грамотность с conspirators.CRM',
+    title: 'Делоуправление',
     path: '/landing_crm'
   },
   // {
@@ -83,11 +83,11 @@ const menuList = ref([
   //   path: 'landing_offer'
   // },
   {
-    title: 'conspirators.Journal',
+    title: 'Новости и блог',
     path: '/journal'
   },
   {
-    title: 'Маркетплейс соучастников',
+    title: 'Каталог',
     path: '/landing_stock'
   },
   {

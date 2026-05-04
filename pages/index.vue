@@ -85,7 +85,11 @@ const changeColorOnClick = (e) => {
 
       <div>
         <!-- <h1>conspirators.su</h1> -->
-        <h1><span style="font-weight: normal">Вместе ту зе мун, </span><br><span @click="changeColorOnClick" id="changeColorSubject">Соучастники</span></h1>
+        <h1>
+          <span style="font-weight: normal">Слоган указаывает на суть</span>
+          <br>
+          <span @click="changeColorOnClick" id="changeColorSubject">Клик меняет цвет</span>
+        </h1>
         <!-- <h2>Соучастники</h2> -->
       </div>
       
@@ -101,9 +105,13 @@ const changeColorOnClick = (e) => {
       @click="$router.push(`/landing_crm`)" 
       class="block_is_link"
       >
-        <h3 style="color: var(--color-global-text);">Контроль финансов и задач</h3>
-        <p style="color: var(--color-global-text);">Фиксируй доходы и расходы,отслеживай динамику развития своего кооператива.</p>
-        <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
+        <h3 style="color: var(--color-global-text);">Делоуправление</h3>
+
+        <div>
+          <p style="color: var(--color-global-text);">Доходы, расходы, задачи
+          </p>
+          <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
+        </div>
 
         <div class="section_btn" >
           <div class="section_icon">
@@ -118,75 +126,18 @@ const changeColorOnClick = (e) => {
           <!-- <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p> -->
         </div>
       </section>
-  
-      <!-- <section 
-        style="background-color: var(--color-btn-hover-bg);" 
-        class="block_is_link" 
-        @click="$router.push(`/landing_offer`)"
-        >
-        <h3 style="color: var(--color-btn-bg); margin-top: 1rem;">Закрой потребность в отделе маркетинга</h3>
-        <p style="color: var(--color-btn-bg)">Поручи разработку и ведение маркетинговой концепции специалистам conspirators</p>
-        <div class="section_btn">
-          <div class="section_icon">
-            <Icon size="48px" name="hugeicons:paragraph-bullets-point-02" color="var(--color-btn-bg)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="48px" name="hugeicons:stop-watch" color="var(--color-btn-bg)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="48px" name="hugeicons:start-up-01" color="var(--color-btn-bg)"/>
-          </div>
-        </div>
-      </section> -->
-  
-      <!-- <section 
-        style="background-color: var(--color-wallet-fund-debt);"
-        class="block_is_link"
-        @click="$router.push(`/landing_design`)"
-      >
-        <h3 style="color: var(--color-wallet-fund-debt-wo);">Задизайним всё что хочешь</h3>
-        <p style="color: var(--color-wallet-fund-debt-wo);">От простой полиграфии до съёмкой корпоративных видео</p>
-        <div class="section_btn">
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:paint-board" color="var(--color-wallet-fund-debt-wo)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:paint-brush-01" color="var(--color-wallet-fund-debt-wo)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:paint-brush-02" color="var(--color-wallet-fund-debt-wo)"/>
-          </div>
-        </div>
-      </section> -->
-
-      <!-- <section 
-        style="background-color: var(--color-operation-type-donation);"
-        class="block_is_link"
-        @click="$router.push(`/landing_dev`)"
-      >
-        <h3>Разработка сайтов и приложений</h3>
-        <p>Делаем сайты и приложения под ключ с дальнейшим сервисным обслуживанием</p>
-        <div class="section_btn">
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:developer" color="var(--color-global-text)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:web-security" color="var(--color-global-text)"/>
-          </div>
-          <div class="section_icon">
-            <Icon size="42px" name="hugeicons:game-controller-03" color="var(--color-global-text)"/>
-          </div>
-        </div>
-      </section> -->
 
       <section 
         @click="$router.push('/landing_stock')" 
         style="border: 1px solid var(--color-urgency-low-10); position: relative;"
         class="block_is_link"
       >
-        <h3 style="color: var(--color-urgency-low);">Маркетплейс соучастников</h3>
-        <p style="color: var(--color-global-text_second)">Торговая площадка для обмена ценностями</p>
-        <p style="position: absolute; right: -2.5rem; bottom: -45px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
+        <h3 style="color: var(--color-urgency-low);">Каталог</h3>
+
+        <div>
+          <p style="color: var(--color-global-text_second)">Интенет магазин товаров и услуг</p>
+          <p class="store_sign" style="position: absolute; right: -2.5rem; bottom: -45px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
+        </div>
         <div class="section_btn">
           <div class="section_icon">
             <Icon size="48px" name="hugeicons:creative-market" color="var(--color-global-text_second)"/>
@@ -202,11 +153,13 @@ const changeColorOnClick = (e) => {
 
       <section 
         @click="$router.push('/journal')" 
-        class="default_list_item-container block_is_link"
+        class="block_is_link"
         style="border: 1px solid var(--color-urgency-low-10); background-color: var(--color-btn-text)"
       >
-        <h3 style="color: var(--color-urgency-low); margin-top: 1rem;">Журнал</h3>
-        <p style="color: var(--color-global-text_second)">Бортовой журнал конспиратора. Делимся опытом.</p>
+        <h3 style="color: var(--color-urgency-low);">Журнал</h3>
+        <div>
+          <p style="color: var(--color-global-text_second)">Люди о своем опыте</p>
+        </div>
         <div class="section_btn">
           <div class="section_icon">
             <Icon size="42px" name="hugeicons:artificial-intelligence-03" color="var(--color-global-text_second)"/>
@@ -223,7 +176,7 @@ const changeColorOnClick = (e) => {
 
     <!--  -->
     <h2 class="sub_title-container">В помощь соучастникам</h2>
-    <p class="sub_title-container" style="color: var(--color-global-text_second);">Описали функции и опыт взаимодействия с приложением в одном месте</p>
+    <p class="sub_p-container" style="color: var(--color-global-text_second);">Описали функции и опыт взаимодействия с приложением в одном месте</p>
 
     <div class="section_container">
 
@@ -236,14 +189,6 @@ const changeColorOnClick = (e) => {
           </ul>
         </div>
 
-      <!-- <section class="default_list_item-container"  style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text); padding-bottom: 2rem;">
-        <h3 style="color: var(--color-gloab-text);">Помощь</h3>
-        <ul style="color: var(--color-global-text_second)">
-          <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
-          <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
-          <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
-        </ul>
-      </section> -->
     </div> 
 
     <!-- НАШИ ЦИФРЫ -->
@@ -251,8 +196,32 @@ const changeColorOnClick = (e) => {
 
     <div class="section_container">
 
-      <section class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
-        <h3>Наберем силы и похвастаемся :)</h3>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -261,8 +230,32 @@ const changeColorOnClick = (e) => {
 
     <div class="section_container">
 
-      <section class="default_list_item-container" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
-        <h3>Формируем...</h3>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -271,6 +264,24 @@ const changeColorOnClick = (e) => {
 
     <div class="section_container" >
 
+      <section class="default_list_item-container block_is_link" @click="$router.push('/whitepaper')" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Whitepaper</h3>
+        <p>О продукте</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:file-01" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+      <section class="default_list_item-container block_is_link" @click="$router.push('/whitepaper')" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Whitepaper</h3>
+        <p>О продукте</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:file-01" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
       <section class="default_list_item-container block_is_link" @click="$router.push('/whitepaper')" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
         <h3>Whitepaper</h3>
         <p>О продукте</p>
@@ -293,26 +304,26 @@ const changeColorOnClick = (e) => {
 
 .section_container {
   display: grid; 
-  gap: 1rem;
-  margin-top: 1rem; 
+  /* gap: 1rem;
+  margin-top: 1rem;  */
 }
 .section_container > section {
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   overflow: hidden;
-  padding-bottom: 5rem;
+  /* padding-bottom: 5rem; */
   position: relative;
 }
 .section_container > section > h3 {
-  height: 100px;
+  /* height: 100px;
   display: flex;
-  align-items: center;
-  font-size: 2rem;
-  padding: 0 1rem;
-  margin: 0;
-  margin-top: 1rem;
+  align-items: center; */
+  /* font-size: 2rem; */
+  /* padding: 0 1rem; */
+  /* margin: 0; */
+  /* margin-top: 1rem; */
 }
 .section_container > section > p {
-  padding: 0 1rem;
+  /* padding: 0 1rem; */
   margin: 0;
 }
 
@@ -334,13 +345,6 @@ const changeColorOnClick = (e) => {
 }
 /* section-btn */
 .section_btn {
-  margin: 1rem;
-  display: flex; 
-  align-items: center; 
-  gap: .5rem; 
-  position: absolute; 
-  bottom: .5rem; 
-  left: 0;
   cursor: pointer;
 }
 .section_btn > .section_icon {
@@ -399,24 +403,159 @@ section:hover {
   /* box-shadow: var(--hover-shadow); */
 }
 
-@media screen and (max-width: 575px) {
+@media(max-width: 319px) {
+  .header_container {
+    height: unset;
+  }
+  .section_container {
+    grid-template-columns: repeat(2, 1fr)!important;
+    margin: .5rem;
+    margin-top: 1.5rem;
+    gap: .5rem;
+  }
+  .section_container section {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-radius: .75rem;
+    padding-bottom: 4rem;
+  }
+  .section_container section h3 {
+    font-size: .9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    margin-top: 1em;
+    /* background-color: gray; */
+    height: 2rem;
+  }
+  .section_container section div p {
+    font-size: .7rem;
+    margin: 0;
+    margin-top: .5rem;
+    padding: 0 .5rem;
+  }
+  .section_container section .section_btn {
+    margin: 0;
+    width: 100%;
+    height: 2rem;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: .5rem; 
+    position: absolute; 
+    bottom: 0;
+    /* left: 0; */
+    /* background-color: red; */
+    padding-bottom: 2rem;  
+  }
+  .section_container section .section_btn .section_icon{
+    border-radius: unset;
+    border-radius: .5rem;
+    /* background-color: blue; */
+    height: 2rem;
+    width: 2rem;
+  } 
+  .section_container section .section_btn .section_icon svg{
+  }
+  .store_sign {
+    display: none;
+  }
+
+  .section_container .help_section-container ul {
+    margin-left: .5rem;
+  }
+  /* 
+   */
+  .sub_title-container {
+    margin-left: 1rem!important;
+    margin-right: 1rem!important;
+    margin-bottom: unset;
+  }
+  .sub_p-container {
+    margin: 0 1rem;
+    /* margin-top: -1.25rem; */
+    margin-top: 1rem;
+  }
+  /* 
+   */
+   .default_list_item-container {
+      /* display: flex;
+      align-items: center;
+      justify-content: center; */
+      padding: unset!important;
+      padding: 1rem!important;
+      padding-bottom: 4rem!important;
+   }
+   .default_list_item-container h3 {
+    margin: 0!important;
+    text-align: center;
+   } 
+   .default_list_item-container p {
+    text-align: center;
+   }
+}
+@media (min-width: 320px) and (max-width: 574px) {
+  .section_container {
+    gap: .5rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+  .section_container section {
+    border-radius: .75rem;
+    padding-bottom: 3rem;
+  }
+  .section_container section h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .section_container section div p {
+      margin-top: 1rem;
+     padding: 0 .5rem;
+  }
+  .section_container section .section_btn {
+    margin: 0;
+    width: 100%;
+    height: 2rem;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: .5rem; 
+    position: absolute; 
+    bottom: 0;
+    /* left: 0; */
+    /* background-color: red; */
+    padding-bottom: 2rem;  
+  }
+  .section_container section .section_btn .section_icon{
+    border-radius: unset;
+    border-radius: .5rem;
+    /* background-color: blue; */
+    height: 2rem;
+    width: 2rem;
+  } 
+  .store_sign {
+    font-size: 4rem!important;
+  }
+   .default_list_item-container p {
+    text-align: center;
+   }
+  .sub_p-container {
+    margin: 0 1rem;
+    /* margin-top: -1.25rem; */
+    margin-top: 1rem;
+  }
+}
+
+@media screen and (max-width: 574px) {
   .buttons-container {
     flex-direction: column;
     gap: 2rem;
   }
-  .section_container {
-    margin: 2rem 1rem;
-    gap: 2rem;
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .section_container > section > h3 {
-    font-size: 1.5rem;
-    margin: 0!important;
-  }
-  .section_container > section > p {
-    margin-top: -1rem;
-    margin-bottom: .5rem;
-  }
+
   .header_container {
     margin-left: 1rem;
     margin-right: 1rem;
@@ -440,8 +579,8 @@ section:hover {
   .sub_title-container {
     margin-top: 1rem;
     /* background-color: var(--color-global-text_second); */
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -454,7 +593,7 @@ section:hover {
     list-style: none;
     margin: 0;
     padding: 0;
-    margin-left: 1rem;
+    margin-left: .5rem;
   }
   .help_section-container ul li {
     padding: 1rem;
@@ -466,7 +605,7 @@ section:hover {
   }
 
 }
-@media screen and (min-width: 576px) and (max-width: 767px){
+@media screen and (min-width: 575px) and (max-width: 767px){
   .buttons-container {
     flex-direction: column;
     gap: 2rem;
@@ -478,17 +617,46 @@ section:hover {
   .section_container {
     margin: 1rem ;
     /* margin-top: 2rem;  */
-    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .section_container section {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-radius: .75rem;
+    padding-bottom: 6rem;
   }
   .section_container > section > h3 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: bold;
-    margin: 0!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    margin-top: 1em;
+    height: 2rem;
   }
-  .section_container > section > p {
-    margin-top: -.5rem;
-    margin-bottom: 1rem;
+  .section_container > section > div > p {
+    font-size: 1rem;
+    margin: 0;
+    margin-top: .5rem;
+    padding: 0 .5rem;
+    text-align: center;
   }
+  .section_container section .section_btn {
+    margin: 0;
+    width: 100%;
+    height: 2rem;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: .5rem; 
+    position: absolute; 
+    bottom: 0;
+    padding-bottom: 3rem;  
+  }
+
+  /*  */
   .header_container div h1 span:first-child {
     text-transform: uppercase;
     padding-left: .5rem; 
@@ -507,12 +675,24 @@ section:hover {
    .sub_title-container {
     margin-top: 2rem;
     /* background-color: var(--color-global-text_second); */
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
     margin-bottom: 2rem;
   }
-  .default_list_item-container {
+  
+  .sub_p-container {
+    margin-top: -1.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  /* .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
+  } */
+  .store_sign {
+    font-size: 3.75rem!important;
+  }
+  .default_list_item-container p {
+  text-align: center;
   }
   /* HELP BLOCK */
   .help_section-container {
@@ -522,7 +702,7 @@ section:hover {
     list-style: none;
     margin: 0;
     padding: 0;
-    margin-left: 1rem;
+    /* margin-left: 1rem; */
   }
   .help_section-container ul li {
     padding: 1rem;
@@ -543,12 +723,25 @@ section:hover {
   }
   .section_container {
     margin-top: 1rem;
-    /* gap: 2rem; */
+    gap: 1rem;
     grid-template-columns: repeat(2, 1fr);
+  }
+  .section_container > section {
+    border-radius: .75rem;
+    padding-left: 2.25rem;
+    padding-bottom: 2.5rem;
+  }
+  .section_container > section > h3 {
+    margin-top: 2rem;
   }
   .section_container > section > p {
     margin-top: .5rem;
     margin-bottom: 1rem;
+  }
+  .section_container section .section_btn {
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start;
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
@@ -571,6 +764,10 @@ section:hover {
     margin-left: 1rem;
     margin-right: 1rem;
     margin-bottom: 2rem;
+  }
+  .sub_p-container {
+    margin: 0 1rem;
+    margin-top: -1.25rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -609,9 +806,23 @@ section:hover {
     gap: 1.5rem;
     grid-template-columns: repeat(2, 1fr);
   }
+  .section_container > section {
+    border-radius: .75rem;
+    padding-left: 2.25rem;
+    padding-bottom: 2.5rem;
+  }
+  .section_container > section > h3 {
+    margin-top: 2rem;
+  }
   .section_container > section > p {
     margin-top: .5rem;
     margin-bottom: 1rem;
+  }
+  .section_container section .section_btn {
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start;
+    margin-top: 2.25rem;
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
@@ -634,6 +845,10 @@ section:hover {
     margin-left: 2rem;
     margin-right: 2rem;
     margin-bottom: 2rem;
+  }
+  .sub_p-container {
+    margin: 0 2rem;
+    margin-top: -1.25rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -658,7 +873,7 @@ section:hover {
     border-left: 1px solid var(--color-urgency-low)
   }
 }
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1199px) {
   .header_container {
     margin-top: -1rem;
     margin-left: 1rem;
@@ -673,6 +888,14 @@ section:hover {
     gap: 1.5rem;
     grid-template-columns: repeat(3, 1fr);
   }
+  .section_container > section {
+    border-radius: 1rem;
+    padding-left: 2.25rem!important;
+    padding-bottom: 2.5rem;
+  }
+  .section_container > section > h3 {
+    margin-top: 2rem;
+  }
   .section_container > section > p {
     margin-top: .5rem;
     margin-bottom: 1rem;
@@ -683,6 +906,12 @@ section:hover {
   }
   .section_container > section > div{
     left: .5rem!important;
+  }
+  .section_container section .section_btn {
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start;
+    margin-top: 2.25rem;
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
@@ -714,6 +943,10 @@ section:hover {
     /* background-color: var(--color-global-text_second); */
     margin: 2rem 2rem
   }
+  .sub_p-container {
+    margin: 0 2rem;
+    margin-top: -1.25rem;
+  }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
     border: 1px solid var(--color-btn-hover-bg);
@@ -737,5 +970,11 @@ section:hover {
   .help_section-container ul li:hover {
     border-left: 1px solid var(--color-urgency-low)
   }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+
+}
+@media (min-width: 1400px) {
+
 }
 </style>
