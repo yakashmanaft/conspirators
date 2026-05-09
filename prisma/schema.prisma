@@ -231,11 +231,16 @@ model Transaction {
 
 model Warehouse {
   id              Int      @id @default(autoincrement())
+  img_src         String   @default("") @db.VarChar(255)
   title           String   @db.VarChar(255)
   type            String   @db.VarChar(255)
   qty             Int      @default(0)
   price           Decimal  @default(0.000000000000000000000000000000)
+  currency        String   @default("RUB") @db.VarChar(60)
+  on_sale         Boolean  @default(false)
   measure         String   @db.VarChar(255)
+  description     String   @default("Нет описания") @db.VarChar(255)
+  features        Json?
   locationId      Int
   position        String   @db.VarChar(255)
   serial          String   @db.VarChar(255)

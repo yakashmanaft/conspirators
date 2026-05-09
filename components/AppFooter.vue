@@ -125,7 +125,18 @@ watch(
   <!-- AUTH -->
   <div class="footer_container" v-if="useAuthStore().loggedIn && route.path !== '/login'">
 
-
+        <ul style="padding: 0; padding-bottom: 5rem; padding-top: 1rem; list-style: none; margin: 0 1rem; border-top: 1px solid red;max-width: 1399px; margin: 0 auto;">
+          <li v-for="el in menuList" style="margin-top: .5rem;">
+            <router-link :to="el.path">{{ el.title }}</router-link>
+          </li>
+          <li style="margin-top: 2rem;">
+            <router-link to="/">© conspirators <span style="font-size: 0.6rem; color: unset;">2024 - 2025</span></router-link>
+            <!--   {
+    title: '© conspirators, 2024 - 2025',
+    path: '/'
+  } -->
+          </li>
+        </ul>
       <!-- wrapper -->
       <div class="footer_wrapper_loggedIn">
         <Icon

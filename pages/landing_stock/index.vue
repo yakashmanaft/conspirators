@@ -11,7 +11,8 @@
         </div>
 
 
-        <!-- lENGTH TRUE -->
+        <!-- computed_landing_list lENGTH TRUE -->
+        <h2>Услуги</h2>
         <!-- SEARCH ITEM -->
         <div class="item_search">
 
@@ -24,7 +25,6 @@
             <div class="item_search_wrong" style="margin-bottom: 20.5rem" v-if="searchInput && !computed_landing_list?.length">
                 По запросу ничего не найдено
             </div>
-
             <div class="item_wrapper" v-for="item in computed_landing_list" @click.stop="$router.push(`/${item.name}`)" :style="set_item_styles('border', item.name)">
                 <div :style="set_item_styles('background', item.name)">
 
@@ -36,7 +36,7 @@
                         color="var(--color-global-baackground_light)"
                     />
                 </div>
-                <h2>{{ item.title }}</h2>
+                <h3>{{ item.title }}</h3>
                 <p style="margin: 0;">{{ item.desc }}</p>
             </div>
 
@@ -44,6 +44,38 @@
             <div class="no-landing_wrapper" style="margin-bottom: 20.5rem" v-if="searchInput === '' && !computed_landing_list?.length">В магазине пусто</div>
         </div>
 
+        <h2>Товары</h2>
+        <!-- data is loading -->
+        <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
+        <p style="margin-top: 1rem">Loading...</p>
+        </div>
+        <div class="item_container">
+            <div 
+                v-for="product in computed_products"
+                @click.stop="$router.push(`/product/${product.id}`);"
+            >
+                <div style="background-color: black; width: 100%; height: 200px; overflow: hidden;">
+                    <img style="  width: 100%;
+                    height: 100%;
+                    object-fit: cover; /* Заполняет контейнер, обрезая края */
+                    /* object-fit: contain; — поместить целиком без обрезки */
+                    object-position: center; /* Позиционирование внутри контейнера */" :src="product.img_src" :alt="product.title">
+                </div>
+                <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
+                <p>{{ product.price }} {{ product.currency }}</p>
+                <p>В наличии: {{ product.qty }} {{ product.measure }}</p>
+                <p>{{ product.description }}</p>
+                <p>Характеристики:</p>
+                <ul>
+                    <li v-for="feature in product.features">
+                        {{ feature }}
+                    </li>
+                </ul>
+                {{ product }}
+            </div>
+        </div> 
+        <!-- 
+        -->
 
 
     </Container>
@@ -229,7 +261,7 @@
         .item_wrapper {
 
         }
-        .item_wrapper h2{
+        .item_wrapper h3{
             font-size: 1.3rem;
         }
         .item_search_wrong {
@@ -321,7 +353,7 @@
         .item_wrapper p {
             margin-top: .5rem!important;
         }
-        .item_wrapper h2 {
+        .item_wrapper h3 {
             margin-top: 1rem;
         }
     }
@@ -375,7 +407,7 @@
         /* .item_wrapper div img {
             width: 100%;
         } */
-        .item_wrapper h2 {
+        .item_wrapper h3 {
             margin-top: 1rem;
         }
 
@@ -465,7 +497,7 @@
         /* .item_wrapper div img {
             width: 100%;
         } */
-        .item_wrapper h2 {
+        .item_wrapper h3 {
             margin-top: .5rem;
             font-size: 1.3rem;
         }
@@ -512,7 +544,7 @@
         /* .item_wrapper div img {
             width: 100%;
         } */
-        .item_wrapper h2 {
+        .item_wrapper h3 {
             margin-top: .5rem;
             font-size: 1.25rem;
         }
@@ -552,7 +584,7 @@
             width: 100%;
         } */
 
-        .item_wrapper h2 {
+        .item_wrapper h3 {
             margin-top: .5rem;
             font-size: 1.25rem;
         }
@@ -577,7 +609,7 @@
             margin-top: 2rem; 
         }
         .item_container {
-            grid-template-columns: repeat(5, 1fr)!important;
+            grid-template-columns: repeat(6, 1fr)!important;
             gap: .75rem;
             margin-top: 2rem;
         }
@@ -590,20 +622,18 @@
         }
         .item_wrapper div {
             /* width: 50% */
-
             /* background-color: var(--color-global-baackground_light); */
             /* border-radius: .5rem; */
             display: flex;  
             align-items: center; 
             justify-content: center; 
             gap: .5rem;
-            height: 250px;
+            height: 200px;
         }
         /* .item_wrapper div img {
             width: 100%;
         } */
-
-        .item_wrapper h2 {
+        .item_wrapper h3 {
             margin-top: .5rem;
             font-size: 1.25rem;
         }
@@ -839,6 +869,19 @@
         //   .replace(/\s+/g, "")
         //   .includes(searchInput.value.toLowerCase().replace(/\s+/g, "")) : []
         //     }))
+        }
+    })
+
+    // Products list
+    //= computed
+    const computed_products = computed(() => {
+        return products_on_sale_list.value
+    })
+    //= db get
+    const { data: products_on_sale_list, pending_product, error_product} = await useFetch("/api/warehouse_onsale/item", {
+        lazy: false,
+        transform: (products: any) => {
+            return products
         }
     })
     

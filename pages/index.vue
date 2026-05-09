@@ -434,6 +434,7 @@ section:hover {
     margin: 0;
     margin-top: .5rem;
     padding: 0 .5rem;
+    text-align: center;
   }
   .section_container section .section_btn {
     margin: 0;
@@ -573,6 +574,12 @@ section:hover {
     font-size: 2.5rem;
     text-transform: uppercase;
   }
+
+  /* 
+   */
+   .section_container section div p {
+    text-align: center;
+   }
 
   /* 
    */

@@ -205,7 +205,7 @@ useHead({
     // DB
     //
     //= current mesh
-    const { data: mesh } = useFetch("/api/mesh/mesh", {
+    const { data: mesh } = await useFetch("/api/mesh/mesh", {
         lazy: false,
         transform: (mesh) => {
             // accessPlug

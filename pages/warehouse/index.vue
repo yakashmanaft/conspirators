@@ -109,6 +109,14 @@ const warehouseCategories = ref([
     type: "clothes",
     name: "Одежда",
   },
+  {
+    type: "Furniture / Bathroom Furniture / Bathroom Toms",
+    name: "Мебель / Мебель для ванной / Тумбы",
+  },
+  {
+    type: "Furniture / Accesories",
+    name: "Furniture / Аксессуары",
+  },
 ]);
 //
 const default_location_list = ref([
