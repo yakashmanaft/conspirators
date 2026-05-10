@@ -9,5 +9,5 @@ export default defineEventHandler(async () => {
             id: 1
         }
     })
-    return result[]
+    return result
   })
