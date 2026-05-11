@@ -51,15 +51,15 @@
         </div>
         <div class="item_container">
             <div 
+                class="product-item_wrapper"
                 v-for="product in computed_products"
                 @click.stop="$router.push(`/product/${product.id}`);"
             >
-                <div style="background-color: black; width: 100%; height: 200px; overflow: hidden;">
-                    <img style="  width: 100%;
-                    height: 100%;
-                    object-fit: cover; /* Заполняет контейнер, обрезая края */
-                    /* object-fit: contain; — поместить целиком без обрезки */
-                    object-position: center; /* Позиционирование внутри контейнера */" :src="product.img_src" :alt="product.title">
+                <div 
+                    class="product-item_img"
+                >
+                    <img :src="product.img_src" :alt="product.title"
+                >
                 </div>
                 <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
                 <p>{{ product.price }} {{ product.currency }}</p>
@@ -71,7 +71,7 @@
                         {{ feature }}
                     </li>
                 </ul>
-                {{ product }}
+               <!-- <p> {{ product }}</p> -->
             </div>
         </div> 
         <!-- 
@@ -642,6 +642,36 @@
             margin-top: .5rem!important;
             font-size: .9rem;
         }
+        /* 
+         */
+         .product-item_wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* max-width: 300px; */
+            background-color: var(--color-global-baackground_light);
+         }
+        .product-item_img {
+            background-color: red; 
+            /* width: 300px;  */
+            width: 100%;
+            height: 200px; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-item_img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            /* Заполняет контейнер, обрезая края */
+            /* object-fit: contain; */
+            /* object-fit: contain; — поместить целиком без обрезки */
+            object-position: center; /* Позиционирование внутри контейнера */
+        }
+        /* 
+         */
         .item_search_wrong {
             position: absolute;
             padding: 0 1rem;
