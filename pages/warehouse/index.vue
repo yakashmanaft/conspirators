@@ -108,15 +108,7 @@ const warehouseCategories = ref([
   {
     type: "clothes",
     name: "Одежда",
-  },
-  {
-    type: "Furniture / Bathroom Furniture / Bathroom Toms",
-    name: "Мебель / Мебель для ванной / Тумбы",
-  },
-  {
-    type: "Furniture / Accesories",
-    name: "Furniture / Аксессуары",
-  },
+  }
 ]);
 //
 const default_location_list = ref([
@@ -2588,12 +2580,13 @@ watch(tempCreateItemOwner, () => {
 
     <div v-if="items" class="filter_container">
       <div class="filter-wrapper">
+
+        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
         <label @click="popup_location_opened = !popup_location_opened" for="filter-by-location-chip-menu">
           <!-- <span v-if="currentCategoryByLocationObj.type === 'all'">Все места</span> -->
           <span>{{ currentCategoryByLocationObj.translate }} <span v-if="currentCategoryByLocationObj.address !== ''">| {{ currentCategoryByLocationObj?.address }}</span></span>
           <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
         </label>
-        <!-- <input type="checkbox" id="filter-by-location-chip-menu"> -->
 
         <!-- МОДАЛКА -->
         <DefaultPopup 
@@ -2725,6 +2718,8 @@ watch(tempCreateItemOwner, () => {
       </div>
 
       <div class="filter-wrapper">
+
+        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
         <label @click="popup_type_opened = !popup_type_opened" for="filter-by-type-chip-menu">
           <span v-if="currentCategoryByType === 'all'">Все типы ТМЦ</span>
           <span v-else>{{translateItemTypes(currentCategoryByType)}}</span>

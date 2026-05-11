@@ -136,7 +136,7 @@ window.addEventListener('click', (e) => {
 
 @media screen and (min-width: 1200px) {
     .popup_wrapper {
-        width: 50%;
+        width: 55%;
     }
 }
 </style>

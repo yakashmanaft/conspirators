@@ -10,7 +10,6 @@
             <p></p> 
         </div>
 
-
         <!-- computed_landing_list lENGTH TRUE -->
         <h2>Услуги</h2>
         <!-- SEARCH ITEM -->
@@ -45,38 +44,151 @@
         </div>
 
         <h2>Товары</h2>
-        <!-- data is loading -->
-        <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
-        <p style="margin-top: 1rem">Loading...</p>
-        </div>
-        <div class="item_container">
-            <div 
-                class="product-item_wrapper"
-                v-for="product in computed_products"
-                @click.stop="$router.push(`/product/${product.id}`);"
-            >
-                <div 
-                    class="product-item_img"
-                >
-                    <img :src="product.img_src" :alt="product.title"
-                >
-                </div>
-                <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
-                <p>{{ product.price }} {{ product.currency }}</p>
-                <p>В наличии: {{ product.qty }} {{ product.measure }}</p>
-                <p>{{ product.description }}</p>
-                <p>Характеристики:</p>
-                <ul>
-                    <li v-for="feature in product.features">
-                        {{ feature }}
-                    </li>
-                </ul>
-               <!-- <p> {{ product }}</p> -->
-            </div>
-        </div> 
-        <!-- 
-        -->
+        <Search/>
 
+        <div class="product-item_filter">
+            <!-- ФИЛЬТР по тегам -->
+            <div class="filter_container">
+                <!-- ТОМ -->
+                <div class="filter-wrapper">
+
+                    <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                    <label for="filter-by-item-category">
+                        <span @click.stop="popup_volume_opened = !popup_volume_opened; current_filter_group = 'Том'">{{ current_volume }}</span>
+                        <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                    </label>
+
+                    <!-- MODAL POPUP -->
+                    <DefaultPopup
+                        v-if="popup_volume_opened"
+                        id="popup_book"
+                        popup_title="Тома, которые мы развиваем"
+                        @emitClosePopup="close_volume_popup"
+                    >
+                    <ul style="list-style: none;">
+                        <li>
+                        <input :checked="current_volume === 'Все тома'" type="radio" id="category-0">
+                        <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="category-0">Все типы</label>
+                        </li>
+                        <li v-for="(el, index) in computed_filter_pocket">
+                            <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
+                            <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`category-${index}`">{{ el }}</label>
+                        </li>
+                        </ul>
+                    </DefaultPopup>
+
+                </div>
+                <!-- КНИГА -->
+                <div class="filter-wrapper">
+
+                    <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                    <label 
+                        for="filter-by-item-category"
+                    >
+                        <span @click.stop="popup_book_opened = !popup_book_opened; current_filter_group = 'Книга'">Книга</span>
+                        <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                    </label>
+
+                    <!-- MODAL POPUP -->
+                    <DefaultPopup
+                        v-if="popup_book_opened"
+                        id="popup_book"
+                        popup_title="Книги, которые мы пишем"
+                        @emitClosePopup="close_book_popup"
+                    >
+                        <ul>
+                            <ul style="">
+                                <li v-for="el in computed_filter_pocket">
+                                    {{ el }}
+                                </li>
+                            </ul>
+                        </ul>
+                    </DefaultPopup>
+                </div>
+                <!-- Часть -->
+                <div class="filter-wrapper">
+                    <label for="filter-by-item-category">
+                        <span>Часть</span>
+                        <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                    </label>
+                </div>
+                <!-- ГЛАВА -->
+                <div class="filter-wrapper">
+                    <label for="filter-by-item-category">
+                        <span>Глава</span>
+                        <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                    </label>
+                </div>
+                <!-- ПАРАГРАФ -->
+                <div class="filter-wrapper">
+                    <label for="filter-by-item-category">
+                        <span>Параграф</span>
+                        <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ФИЛЬТР по наличию -->
+            <div class="filter-radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="opt1" name="options" value="1">
+                    <label for="opt1">Все</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="opt2" name="options" value="2">
+                    <label for="opt2">В наличии</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="opt3" name="options" value="3">
+                    <label for="opt3">Под заказ</label>
+                </div>
+            </div>
+        </div>
+        <div class="product-item_section">
+            <!-- data is loading -->
+            <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
+            <p style="margin-top: 1rem">Loading...</p>
+            </div>
+
+            <div class="item_container product-item_container">
+                <div
+                    class="product-item_wrapper"
+                    v-for="product in computed_products"
+                    @click.stop="$router.push(`/product/${product.id}`);"
+                >
+                    <div 
+                        class="product-item_img"
+                    >
+                        <img :src="product.img_src" :alt="product.title"
+                    >
+                    </div>
+                    <p class="product-item_price">{{ product.price }} {{ product.currency }}</p>
+                    <div class="product-item_remain">
+    
+                        <p v-if="product.qty == 0" style="background-color: var(--color-operation-type-donation)">Доступно для заказа</p>
+                        <p v-else>В наличии: {{ product.qty }} {{ product.measure }}</p>
+                    </div>
+                    <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
+                    <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ product.type }}</p>
+                    <div class="product-item_cart">
+                        <p 
+                            class="cart-add_btn"
+                            @click.stop="add_to_cart_func()"
+                        >В корзину</p>
+                        <p class="cart-change-count_btn" style="width: fit-content;">- 1 +</p>
+                    </div>
+                    <!-- <p>{{ product.description }}</p>
+                    <p>Характеристики:</p>
+                    <ul>
+                        <li v-for="feature in product.features">
+                            {{ feature }}
+                        </li>
+                    </ul> -->
+                   <!-- <p> {{ product }}</p> -->
+                </div>
+            </div> 
+
+        </div>
 
     </Container>
 </template>
@@ -565,7 +677,7 @@
             margin-top: 2rem; 
         }
         .item_container {
-            grid-template-columns: repeat(5, 1fr)!important;
+            grid-template-columns: repeat(6, 1fr)!important;
             gap: .75rem;
             margin-top: 2rem;
         }
@@ -601,11 +713,137 @@
             position: absolute;
             padding: 0 1rem;
         }
+        /* 
+         */
+        .product-item_section {
+
+        }
+        .product-item_filter {
+            /* background-color: green; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* 
+         */
+         .filter_container {
+            display: flex;
+            gap: .5rem;
+            padding: 1rem;
+        }
+        .filter-wrapper label span,
+        .filter-wrapper label svg {
+            transition: all .2s ease-in;
+        }
+        .filter-wrapper label svg{
+            margin-left: .25rem;
+            transform: rotate(180deg)
+        }
+        .filter-wrapper label span:hover {
+            cursor: pointer;
+        }
+        .filter-wrapper label:hover span,
+        .filter-wrapper label:hover svg {
+            color: var(--color-wallet-fund-invested)!important;
+            transform: rotate(180deg) scale(1.5);
+        }
+        .filter-radio-group {
+            display: flex;
+        }
+        .filter-radio-option {
+
+        }
+        .filter-radio-option input {
+
+        }
+        .filter-radio-option label {
+
+        }
+        .product-item_container {
+            grid-template-columns: repeat(6, 1fr)!important;
+            gap: 3rem;
+            margin-top: 3rem
+        }
+        .product-item_wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* background-color: var(--color-global-baackground_light); */
+            cursor: pointer;
+            min-width: 150px;
+            display: relative;
+            margin-top: -2rem;
+        }
+        .product-item_img {
+            background-color: red;
+            width: 100%;
+            height: 12rem; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-item_img img {
+            transition: all .2s ease-in;
+            pointer-events: none;
+            width: 100%;
+            height: auto;
+            object-fit: cover; 
+            /* Заполняет контейнер, обрезая края */
+            /* object-fit: contain; */
+            /* object-fit: contain; — поместить целиком без обрезки */
+            object-position: center; /* Позиционирование внутри контейнера */
+        }
+        .product-item_wrapper:hover .product-item_img img {
+            transform: scale(1.25);
+        }
+        .product-item_wrapper h3 {
+            /* margin-top: .5rem; */
+            margin: 0;
+            font-size: .9rem!important;
+            line-height: 1.5;
+            font-weight: normal;
+        }
+        .product-item_wrapper p {
+            margin: 0;
+        }
+        .product-item_price {
+            /* position: absolute;
+            left: 0;
+            top: 0; */
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        .product-item_remain {
+            background-color: var(--color-status-finished);
+        }
+        .product-item_remain p {
+            font-size: .8rem;
+            padding: 0 .25rem;
+        }
+        .product-item_cart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            background-color: var(--color-item-hover-bg);
+        }
+        .cart-add_btn {
+            background-color: var(--color-urgency-low-wo);
+            width: 100%;
+            text-align: center;
+        }
+        .cart-add_btn:hover {
+            background-color: #fff;
+        }
+        .cart-change-count_btn {
+            background-color: var(--color-wallet-fund-debt);
+        }
     }
     @media screen and (min-width: 1400px) {
         /* 
         */
-            .item_search {
+        .item_search {
             margin-top: 2rem; 
         }
         .item_container {
@@ -655,7 +893,7 @@
             background-color: red; 
             /* width: 300px;  */
             width: 100%;
-            height: 200px; 
+            height: 14rem; 
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -663,7 +901,7 @@
         }
         .product-item_img img {
             width: 100%;
-            height: 100%;
+            height: auto;
             object-fit: cover; 
             /* Заполняет контейнер, обрезая края */
             /* object-fit: contain; */
@@ -685,7 +923,7 @@
 
 <script lang="ts" setup>
     useHead({
-        title: "Каталог | Conspirators",
+        title: "Каталог",
         link: [
             { 
                 rel: 'stylesheet', 
@@ -743,13 +981,125 @@
         }
     ])
 
-    // trigger popup
+    // POPUPs
+    // 
+    //= trigger popup vars
     const popup_opened = ref(false)
+    const popup_volume_opened = ref(false)
+    const current_volume = ref('Все тома')
+    const popup_book_opened = ref(false);
+    
+    // 
+    // 
+    //= close popup func
+    const close_book_popup = () => {
+        popup_book_opened.value = false
+    }
+    const close_volume_popup = () => {
+        popup_volume_opened.value = false
+    }
+    // 1.   book_volume
+    // 1.1. Все
+    // 1.2. Мебель
+    // 1.3. Системы хранения
+    // 1.4. Декор
+    // 1.5  Акксессуары
+    // 1.5. Освещение
+    // Прочее
+
+    // 2.   book
+    // 2.1. Все
+    // 2.2. Ванная 
+    // 2.3. Спальня
+    // 2.4. Гостиная
+    // 2.5. Прихожая
+    // 2.6. Кухня
+    // 2.7. Двор
+    // 2.8. Интерьер
+    // 2.9. Экстерьер
+    // Прочее
+    const filter_book_items = ref([
+        { 
+            id: 1,
+            name: 'Все'
+        },
+        {
+            id: 2,
+            name: 'Интерьер'
+        }
+    ])
+
+    // 3.   part
+    // 3.1. Все
+    // 3.2. Тумбы
+    // 3.3. Зеркала
+    // 3.4. Кашпо
+    // 3.4. Лампы
+    // 3.5. Полки
+    // 3.6. Диспенсеры
+    // 3.7. Мыльницы
+    // 3.7. Стаканы
+    // 3.8. Пепельницы
+    // Прочее
+    
+    // 4.   chapter
+    // 4.1. Камень, металл, дерево
+    // 4.2. Камень 
+    // 4.3. Камень, металл, пластик
+    // 4.4. Дерево, металл
+    // 4.5. Керамика
+    // Прочее
+    
+    // 5.   paragraph
+    // 5.1. Все
+    // 5.2. Расходники
+    // 5.3. Напольный
+    // 5.4. Настольный
+    // 5.5. Подвесной
+    // 5.6. Скрытый монтаж
+    // Прочее
+
+    // {
+            // "book_volume":"Интерьер",
+            // "book": "Ванная",
+            // "part": "Мебель",
+            // "chapter": "Тумбы",
+            // "paragraph": "Основной"
+
+
+// Системы хранения / Ванная  / Полки / Дерево, металл / Скрытый монтаж
+// Декор / Интерьер / Кашпо / Камень, металл, пластик / Напольный           
+// Мебель / Спальня / Тумбы / Камень, металл, дерево / Подвесной
+// Мебель / Спальня / Тумбы / Камень, металл, дерево / Напольный
+// Аксессуары / Ванная / Диспенсеры / Камень / Настольный
+// Аксессуары / Кухня / Диспенсеры / Камень / Настольный
+// Аксессуары / Ванная / Мыльницы / Камень / Настольный
+// Аксессуары / Ванная / Стаканы / Камень / Настольный
+// Аксессуары / Двор / Пепельницы / Камень / Настольный
+// Системы хранения / Ванная  / Полки / Керамика / Скрытый монтаж
+// Мебель / Ванная / Тумбы / Камень, металл, дерево / Подвесной
+    // }
+
+    // pocket of filters
+    const current_filter_group = ref('Все')
+    const computed_filter_pocket = computed(() => {
+
+        if(current_filter_group.value === 'Книга') {
+
+            let list = products_on_sale_list.value.map(el => el.type ? el.type.split(' / ')[1] : el.type)
+            return [... new Set(list)]
+        }
+        else if(current_filter_group.value === 'Том') {
+
+            let list = products_on_sale_list.value.map(el => el.type ? el.type.split(' / ')[0] : el.type)
+            return [... new Set(list)]
+        }
+    })
 
     // shared
     import { Container } from '@/shared/container'
     import { Section } from '@/shared/section'
-    import { InfoPopup } from '~/shared/popup';
+    import { DefaultPopup, InfoPopup } from '@/shared/popup';
 
     // components
     import { Button } from '@/components/button'
@@ -901,6 +1251,7 @@
         //     }))
         }
     })
+    
 
     // Products list
     //= computed
@@ -1144,6 +1495,11 @@
             unitsList[index].classList.add('unit__hovered');
             choosenEl.value = el
         }
+    }
+
+    // onClick cart-add_btn
+    const add_to_cart_func = () => {
+        console.log('Добавлено в корзину')
     }
 
     // HELPERS

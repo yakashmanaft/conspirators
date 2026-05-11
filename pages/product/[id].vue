@@ -217,7 +217,8 @@ useHead({
                     return {
                         id: obj.id,
                         title: obj.title,
-                        img_url: obj.img_src 
+                        img_url: obj.img_src, 
+                        type: obj.type
                     }
                 })[0]
         }
@@ -293,6 +294,7 @@ useHead({
     
                     {{ product?.title }}
                 </h1> 
+                <p>{{ product.type }}</p>
 
                 <!-- <h2 style="margin-top: 1rem;font-size: 0.8rem; font-weight: normal;">
 

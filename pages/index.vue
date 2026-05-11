@@ -105,71 +105,71 @@ const changeColorOnClick = (e) => {
       @click="$router.push(`/landing_crm`)" 
       class="block_is_link"
       >
-        <h3 style="color: var(--color-global-text);">Делоуправление</h3>
-
-        <div>
-          <p style="color: var(--color-global-text);">Доходы, расходы, задачи
-          </p>
-          <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
-        </div>
-
         <div class="section_btn" >
           <div class="section_icon">
             <Icon size="48px" name="hugeicons:wallet-02" color="var(--color-urgency-low)"/>
           </div>
-          <div class="section_icon">
+          <!-- <div class="section_icon">
             <Icon size="48px" name="hugeicons:microsoft" color="var(--color-urgency-low)"/>
-          </div>
-          <div class="section_icon">
+          </div> -->
+          <!-- <div class="section_icon">
             <Icon size="48px" name="hugeicons:chart-line-data-01" color="var(--color-urgency-low)"/>
-          </div>
+          </div> -->
           <!-- <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p> -->
         </div>
+        <h3 style="margin: 0; color: var(--color-global-text);">Дэй бай дилс</h3>
+
+        <div>
+          <p style="margin: 0; color: var(--color-global-text);">Твой финпульс
+          </p>
+          <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
+        </div>
+
       </section>
 
       <section 
         @click="$router.push('/landing_stock')" 
         style="border: 1px solid var(--color-urgency-low-10); position: relative;"
         class="block_is_link"
-      >
-        <h3 style="color: var(--color-urgency-low);">Каталог</h3>
-
-        <div>
-          <p style="color: var(--color-global-text_second)">Интенет магазин товаров и услуг</p>
-          <p class="store_sign" style="position: absolute; right: -2.5rem; bottom: -45px;  width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; font-size: 5rem; text-transform: uppercase;">Магазин</p>
-        </div>
+        >
         <div class="section_btn">
-          <div class="section_icon">
+          <!-- <div class="section_icon">
             <Icon size="48px" name="hugeicons:creative-market" color="var(--color-global-text_second)"/>
-          </div>
+          </div> -->
           <div class="section_icon">
             <Icon size="48px" name="hugeicons:shopping-cart-01" color="var(--color-global-text_second)"/>
           </div>
-          <div class="section_icon">
+          <!-- <div class="section_icon">
             <Icon size="48px" name="hugeicons:add-team" color="var(--color-global-text_second)"/>
-          </div>
+          </div> -->
+        </div>
+        <h3 style="margin: 0;">Каталог</h3>
+
+        <div>
+          <p style="margin: 0; color: var(--color-global-text_second)">Товары и услуги</p>
+          <p class="store_sign" style="position: absolute;   width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; text-transform: uppercase;">Магазин</p>
         </div>
       </section>
 
       <section 
         @click="$router.push('/journal')" 
         class="block_is_link"
-        style="border: 1px solid var(--color-urgency-low-10); background-color: var(--color-btn-text)"
+        style="background-color: var(--color-btn-text)"
       >
-        <h3 style="color: var(--color-urgency-low);">Журнал</h3>
-        <div>
-          <p style="color: var(--color-global-text_second)">Люди о своем опыте</p>
-        </div>
         <div class="section_btn">
           <div class="section_icon">
             <Icon size="42px" name="hugeicons:artificial-intelligence-03" color="var(--color-global-text_second)"/>
           </div>
-          <div class="section_icon">
+          <!-- <div class="section_icon">
             <Icon size="42px" name="hugeicons:notebook" color="var(--color-global-text_second)"/>
-          </div>
-          <div class="section_icon">
+          </div> -->
+          <!-- <div class="section_icon">
             <Icon size="42px" name="hugeicons:maps-editing" color="var(--color-global-text_second)"/>
-          </div>
+          </div> -->
+        </div>
+        <h3 style="margin: 0; color: var(--color-urgency-low);">Журнал</h3>
+        <div>
+          <p style="margin: 0; color: var(--color-global-text_second)">Люди о своем опыте</p>
         </div>
       </section>
     </div>
@@ -230,6 +230,24 @@ const changeColorOnClick = (e) => {
 
     <div class="section_container">
 
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
+      <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
+        <h3>Скоро :)</h3>
+        <p>Формируем...</p>
+        <div class="section_btn">
+          <div class="section_icon">
+            <Icon size="48px" name="hugeicons:mountain" color="var(--color-global-text_second)"/>
+          </div>
+        </div>
+      </section>
       <section class="default_list_item-container block_is_link" style="border: 1px solid var(--color-global-text_second); background-color: var(--color-btn-text);">
         <h3>Скоро :)</h3>
         <p>Формируем...</p>
@@ -731,19 +749,28 @@ section:hover {
   .section_container {
     margin-top: 1rem;
     gap: 1rem;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   .section_container > section {
     border-radius: .75rem;
-    padding-left: 2.25rem;
-    padding-bottom: 2.5rem;
+    border-color: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 1.5rem;
+    padding-top: 1.5rem;
+    padding-right: 0;
+    padding-bottom: 1.5rem;
+    gap: .5rem;
+    /* border: 1px solid var(--color-urgency-low-10); */
+    /* padding-bottom: 2.5rem; */
   }
   .section_container > section > h3 {
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
   }
   .section_container > section > p {
     margin-top: .5rem;
-    margin-bottom: 1rem;
   }
   .section_container section .section_btn {
     display: flex; 
@@ -775,6 +802,9 @@ section:hover {
   .sub_p-container {
     margin: 0 1rem;
     margin-top: -1.25rem;
+  }
+  .store_sign {
+    display: none;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
@@ -919,6 +949,7 @@ section:hover {
     align-items: center; 
     justify-content: flex-start;
     margin-top: 2.25rem;
+    margin-bottom: 1.25rem;
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
@@ -954,6 +985,11 @@ section:hover {
     margin: 0 2rem;
     margin-top: -1.25rem;
   }
+  .store_sign {
+    font-size: 4rem;
+    bottom: -55px;
+    right: -1.75rem;
+  }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
     border: 1px solid var(--color-btn-hover-bg);
@@ -979,6 +1015,9 @@ section:hover {
   }
 }
 @media (min-width: 1200px) and (max-width: 1399px) {
+  .section_container {
+    grid-template-columns: repeat(4,1fr);
+  }
 
 }
 @media (min-width: 1400px) {
