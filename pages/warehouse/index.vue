@@ -774,7 +774,7 @@ const creatLocationLink = (object: any) => {
       router.push(`/projects/${object.locationId}`);
     } else if (object.locationType === "sklad") {
       alert(
-        `Складской адрес: ${object.locationId}. Поидее, следует показывать точный адрес полку, где лежит. Из БД warehouseItems - position`
+        `Складской адрес: id${object.locationId}. В модалке указываем адрес склада Из БД warehouse - address. А где предмет на складе лежит - подскажет БД warehouse - position`
       );
     } else if (object.locationType === "repair") {
       alert(
@@ -967,7 +967,7 @@ const onClickOwner = (ownerID: number, ownerType: string) => {
     if (ownerType === "user") {
       router.push(`/partners/${ownerID}`);
     } else if (ownerType === "conspirator") {
-      router.push(`/organizations/${ownerID}`);
+      router.push(`/band/${ownerID}`);
     }
   }
 };
@@ -2579,6 +2579,8 @@ watch(tempCreateItemOwner, () => {
     <Search v-if="items" @searchInputChanged="onInputFunc"/>
 
     <div v-if="items" class="filter_container">
+
+      <!-- МЕСТА РАЗМЕЩЕНИЯ ТМЦ-->
       <div class="filter-wrapper">
 
         <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
@@ -2611,7 +2613,7 @@ watch(tempCreateItemOwner, () => {
                 }; popup_location_opened = !popup_location_opened" 
                 for="location-all"
               >
-                Все места
+                <span>Все места</span>
               </label>
             </li>
             <!-- COMMON locations -->
@@ -2628,7 +2630,8 @@ watch(tempCreateItemOwner, () => {
                     type: `${location_type}`,
                     id: null
                   }; popup_location_opened = !popup_location_opened" 
-                  >{{ translateCommon(location_type) }}</label>
+                  >
+                <span>{{ translateCommon(location_type) }}</span></label>
               </li>
             </div>
             <!-- USER locations -->
@@ -2717,6 +2720,7 @@ watch(tempCreateItemOwner, () => {
         </DefaultPopup>
       </div>
 
+      <!-- ТИПЫ ТМЦ-->
       <div class="filter-wrapper">
 
         <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
@@ -2744,7 +2748,9 @@ watch(tempCreateItemOwner, () => {
               return obj.type
             }))]" style="margin-top: 1rem;">
               <input :checked="el === currentCategoryByType" type="radio" :id="`category-${index + 1}`">
-              <label style="margin-left: .5rem;" @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">{{ translateItemTypes(el) }}</label>
+              <label style="margin-left: .5rem;" @click="currentCategoryByType = el; popup_type_opened = !popup_type_opened" :for="`category-${index}`">
+                <span>{{ translateItemTypes(el) }}</span>
+              </label>
             </li>
           </ul>
           <!-- warehouseCategories   -->

@@ -44,7 +44,7 @@
         </div>
 
         <h2>Товары</h2>
-        <Search/>
+        <Search style="margin-top: 1rem;" @searchInputChanged="onInputSearchProductFunc"/>
 
         <div class="product-item_filter">
             <!-- ФИЛЬТР по тегам -->
@@ -65,15 +65,19 @@
                         popup_title="Тома, которые мы развиваем"
                         @emitClosePopup="close_volume_popup"
                     >
-                    <ul style="list-style: none;">
-                        <li>
-                        <input :checked="current_volume === 'Все тома'" type="radio" id="category-0">
-                        <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="category-0">Все типы</label>
-                        </li>
-                        <li v-for="(el, index) in computed_filter_pocket">
-                            <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
-                            <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`category-${index}`">{{ el }}</label>
-                        </li>
+                        <ul style="list-style: none;">
+                            <li>
+                                <input :checked="current_volume === 'Все тома'" type="radio" id="category-0">
+                                <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="category-0">
+                                    <span>Все типы</span>
+                                </label>
+                            </li>
+                            <li v-for="(el, index) in computed_filter_pocket">
+                                <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
+                                <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`category-${index}`">
+                                    <span>{{ el }}</span>
+                                </label>
+                            </li>
                         </ul>
                     </DefaultPopup>
 
@@ -129,7 +133,7 @@
             </div>
 
             <!-- ФИЛЬТР по наличию -->
-            <div class="filter-radio-group">
+            <div class="filter_by_available_container filter-radio-group">
                 <div class="radio-option">
                     <input type="radio" id="opt1" name="options" value="1">
                     <label for="opt1">Все</label>
@@ -151,6 +155,13 @@
             </div>
 
             <div class="item_container product-item_container">
+
+                <!-- Поиск ничего не находит -->
+                <div class="item_search_wrong" style="margin-bottom: 20.5rem"   v-if="searchProductInput && !computed_products?.length">
+                    По запросу ничего не найдено
+                </div>
+
+                <!-- Есть товары, показываем -->
                 <div
                     class="product-item_wrapper"
                     v-for="product in computed_products"
@@ -357,6 +368,10 @@
         gap: .5rem;
         height: 250px;
     }
+
+    /* .popup_content ul li label span{
+
+    } */
 
     @media screen and (max-width: 319px) {
         h1 {
@@ -680,6 +695,7 @@
             grid-template-columns: repeat(6, 1fr)!important;
             gap: .75rem;
             margin-top: 2rem;
+            min-height: 350px;
         }
         .item_wrapper {
             padding: .5rem;
@@ -723,6 +739,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+        }
+        .product-item_filter .filter_container {
+            padding: 1rem .5rem;
+        }
+        .product-item_filter .filter_by_available_container {
+            padding: 1rem .5rem;
         }
         /* 
          */
@@ -1121,6 +1143,7 @@
 
     // VARIABLES
     const searchInput = ref("");
+    const searchProductInput = ref("")
 
     // ON MOUNTED
     onMounted(() => {
@@ -1256,7 +1279,16 @@
     // Products list
     //= computed
     const computed_products = computed(() => {
-        return products_on_sale_list.value
+        if(searchProductInput.value === '') {
+            return products_on_sale_list.value
+        } else {
+            return products_on_sale_list.value?.filter((item) => 
+                item.title
+                    .toLowerCase()
+                    .replace(/\s+/g, "")
+                    .includes(searchProductInput.value.toLowerCase().replace(/\s+/g, ""))
+            )
+        }
     })
     //= db get
     const { data: products_on_sale_list, pending_product, error_product} = await useFetch("/api/warehouse_onsale/item", {
@@ -1528,6 +1560,9 @@
     // on search input
     const onInputFunc = (e: any) => {
         searchInput.value = e
+    }
+    const onInputSearchProductFunc = (e: any) => {
+        searchProductInput.value = e
     }
 
     // ******* DB
