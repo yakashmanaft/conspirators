@@ -228,10 +228,26 @@ const closeTypePopup = () => {
   // }
 }
 
+    const elementRef = ref(null);
+    const isFixed = ref(false);
+    let observer = null;
+
 const { data: organizations } = useLazyAsyncData("organizations", () =>
   $fetch("/api/organizations/organizations")
 );
 onMounted(async () => {
+
+        if (!elementRef.value) return;
+        observer = new IntersectionObserver(([entry]) => {
+            // // Инвертируем: фиксируем, когда элемент уходит из зоны видимости
+            isFixed.value = !entry.isIntersecting;
+            // entry.target.classList.toggle('highlighted', !entry.isIntersecting); 
+        }, {
+            rootMargin: '-200px 0px 0px 0px', // Отступ сверху
+            threshold: 0
+        });
+
+        observer.observe(elementRef.value);
   // makes refetching
   await refresh();
 
@@ -2578,7 +2594,12 @@ watch(tempCreateItemOwner, () => {
 
     <Search v-if="items" @searchInputChanged="onInputFunc"/>
 
-    <div v-if="items" class="filter_container">
+    <div 
+      v-if="items" 
+      class="filter_container"
+      ref="elementRef" 
+      :class="{ 'highlighted': isFixed }"
+    >
 
       <!-- МЕСТА РАЗМЕЩЕНИЯ ТМЦ-->
       <div class="filter-wrapper">
@@ -2904,7 +2925,9 @@ watch(tempCreateItemOwner, () => {
       
       <div v-if="items" class="table_container">
         <table class="table">
-          <thead class="item-table_header">
+          <thead 
+            class="item-table_header"       
+          >
             <tr>
               <th scope="col">
                 <div
@@ -4201,6 +4224,18 @@ label #expend-item:checked + .expand-item_icon {
   }
 }
 @media screen and (min-width: 1200px) {
+  /* 
+   */
+  .highlighted {
+      /* position: fixed; */
+      background-color: var(--color-btn-text);
+      position: sticky;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+      top: 4.5rem;
+      /* padding: 0 1rem; */
+  }
   /* 
    */
    .filter_container {

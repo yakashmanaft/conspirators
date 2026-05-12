@@ -46,8 +46,14 @@
         <h2>Товары</h2>
         <!-- SEARCH ITEM -->
         <Search style="margin-top: 1rem;" @searchInputChanged="onInputSearchProductFunc"/>
+
         <!-- FILTER ITEM -->
-        <div class="product-item_filter">
+        <div 
+            ref="elementRef" 
+            :class="{ 'highlighted': isFixed }"
+            class="product-item_filter"
+            id="product_item_features"
+        >
             <!-- ФИЛЬТР по тегам -->
             <div class="filter_container">
                 <!-- ТОМ -->
@@ -108,8 +114,8 @@
                                 </label>
                             </li>
                             <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                <input :checked="el === current_book" type="radio" :id="`book-${index + 1}`">
-                                <label style="margin-left: .5rem;" @click="current_book = el.toString(); popup_book_opened = !popup_book_opened" :for="`book-${index}`">
+                                <input :checked="el === current_book" type="radio" :id="`book-${0 + 1}`">
+                                <label style="margin-left: .5rem;" @click="current_book = el.toString(); popup_book_opened = !popup_book_opened" :for="`book-${0 + 1}`">
                                     <span>{{ el }}</span>
                                 </label>
                             </li>
@@ -139,8 +145,8 @@
                                 </label>
                             </li>
                             <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                <input :checked="el === current_part" type="radio" :id="`part-${index + 1}`">
-                                <label style="margin-left: .5rem;" @click="current_part = el.toString(); popup_part_opened = !popup_part_opened" :for="`part-${index}`">
+                                <input :checked="el === current_part" type="radio" :id="`part-${0 + 1}`">
+                                <label style="margin-left: .5rem;" @click="current_part = el.toString(); popup_part_opened = !popup_part_opened" :for="`part-${0 + 1}`">
                                     <span>{{ el }}</span>
                                 </label>
                             </li>
@@ -172,8 +178,8 @@
                                 </label>
                             </li>
                             <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                <input :checked="el === current_chapter" type="radio" :id="`chapter-${index + 1}`">
-                                <label style="margin-left: .5rem;" @click="current_chapter = el.toString(); popup_chapter_opened = !popup_chapter_opened" :for="`chapter-${index}`">
+                                <input :checked="el === current_chapter" type="radio" :id="`chapter-${0 + 1}`">
+                                <label style="margin-left: .5rem;" @click="current_chapter = el.toString(); popup_chapter_opened = !popup_chapter_opened" :for="`chapter-${0 + 1}`">
                                     <span>{{ el }}</span>
                                 </label>
                             </li>
@@ -205,8 +211,8 @@
                                 </label>
                             </li>
                             <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                <input :checked="el === current_paragraph" type="radio" :id="`paragraph-${index + 1}`">
-                                <label style="margin-left: .5rem;" @click="current_paragraph = el.toString(); popup_paragraph_opened = !popup_paragraph_opened" :for="`paragraph-${index}`">
+                                <input :checked="el === current_paragraph" type="radio" :id="`paragraph-${0 + 1}`">
+                                <label style="margin-left: .5rem;" @click="current_paragraph = el.toString(); popup_paragraph_opened = !popup_paragraph_opened" :for="`paragraph-${0 + 1}`">
                                     <span>{{ el }}</span>
                                 </label>
                             </li>
@@ -232,7 +238,7 @@
             </div>
         </div>
 
-        <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+        <di v style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
             <p style="margin: 0; color: var(--color-global-text_second);">
                 <span style="color: var(--color-global-text_second);">{{ current_volume }}</span> | 
                 <span style="color: var(--color-global-text_second);">{{ current_book }}</span> | 
@@ -241,7 +247,7 @@
                 <span style="color: var(--color-global-text_second);">{{ current_paragraph }}</span>
             </p> 
             <p style="margin: 0; color: var(--color-global-text_second);">{{ filter_by_available }}</p>
-        </div>
+        </di>
         <!-- ITEM GRID -->
         <div class="product-item_section">
             <!-- data is loading -->
@@ -452,7 +458,7 @@
     }
     .item_wrapper:hover {
         cursor: pointer;
-        border-radius: 1rem;
+        border-radius: .5rem;
         /* box-shadow: var(--hover-shadow); */
     }
     .item_wrapper:hover div svg {
@@ -844,7 +850,20 @@
             padding: 1rem .5rem;
         }
         .product-item_filter .filter_by_available_container {
-            padding: 1rem .5rem;
+            padding: 1rem 1rem;
+        }
+        /* 
+        FILTER highlighted
+        */
+        .highlighted {
+            /* position: fixed; */
+            background-color: var(--color-btn-text);
+            position: sticky;
+            top: 4.5rem;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+            /* padding: 0 1rem; */
         }
         /* 
         FILTER by type
@@ -891,7 +910,7 @@
         }
          .filter_by_available_container div label {
             cursor: pointer;
-            border-bottom: 1px solid white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
             transition: all .2s ease-in;
         }
          .filter_by_available_container div label:hover {
@@ -905,6 +924,7 @@
             grid-template-columns: repeat(6, 1fr)!important;
             gap: 1.5rem;
             row-gap: 2rem;
+            padding: 0 1rem;
             /* margin-top: 2rem; */
             /* min-height: 390px; */
         }
@@ -975,7 +995,7 @@
             padding: 5px;
         }
         .cart-add_btn {
-            background-color: rgba(54, 195, 77, 0.7);;
+            background-color: rgba(54, 195, 77, 0.6);;
             width: 100%;
             text-align: center;
             color: white;
@@ -1298,6 +1318,7 @@
     import { Button } from '@/components/button'
     import { BreadCrumbs } from '~/components/breadcrumbs';
     import { Search } from '~/components/search'
+    import { onUnmounted } from 'vue';
 
 
     // PROPS
@@ -1318,8 +1339,99 @@
 
     const filter_by_available = ref('all')
 
+    // Intersection Observer
+    // const targetRef = ref(null)
+    // let observer:any = null
+    // Инициализация Intersection Observer
+    // const initObserver = () => {
+    //     if (!targetRef.value) return
+
+    //     observer = new IntersectionObserver((entries) => {
+    //         entries.forEach(entry => {
+
+    //             if(!entry.isIntersecting) {
+    //                 entry.target.classList.add('highlighted')
+    //                 // Переключаем класс в зависимости от видимости
+    //                 // entry.target.classList.remove('highlighted')
+    //             } 
+    //             console.log(entry)
+    //             // else {
+    //             //     console.log(entry)
+    //             //     entry.target.classList.add('highlighted')
+    //             //     observer.unobserve(entry.target); // Отключаем наблюдение
+    //             // }
+    //         })
+    //     }, {
+    //         threshold: 0.8 // Срабатывает при 20 % видимости
+    //     })
+
+    //     // Начинаем наблюдение
+    //     observer.observe(targetRef.value)
+    // }
+    const elementRef = ref(null);
+    const isFixed = ref(false);
+    let observer = null;
     // ON MOUNTED
     onMounted(() => {
+        // let ticking = false;
+
+        // window.addEventListener('scroll', () => {
+        // if (!ticking) {
+        //     requestAnimationFrame(() => {
+        //     updatePosition();
+        //     ticking = false;
+        //     });
+        //     ticking = true;
+        // }
+        // });
+        if (!elementRef.value) return;
+        observer = new IntersectionObserver(([entry]) => {
+            // // Инвертируем: фиксируем, когда элемент уходит из зоны видимости
+            isFixed.value = !entry.isIntersecting;
+            // entry.target.classList.toggle('highlighted', !entry.isIntersecting); 
+        }, {
+            rootMargin: '-200px 0px 0px 0px', // Отступ сверху
+            threshold: 0
+        });
+
+        observer.observe(elementRef.value);
+        // window.addEventListener('scroll', () => {
+        // const element = document.querySelector('.product-item_filter');
+        // const rect = element?.getBoundingClientRect();
+        // const triggerPoint = 100; // Пиксели от верха
+    
+        // if (rect.top <= triggerPoint) {
+        //     element?.classList.add('highlighted');
+        // } else {
+        //     element?.classList.remove('highlighted');
+        // }
+        // });
+        // // Отслеживавние скролла для плашки product_item_features раздел с фильтрацией товаров 
+        // const element = document.querySelector('.product-item_filter');
+        // const observer = new IntersectionObserver((entries) => {
+        // entries.forEach(entry => {
+        //     // Добавляем класс 'fixed', когда элемент выходит из зоны видимости сверху
+        //     entry.target.classList.toggle('highlighted', !entry.isIntersecting);
+        // });
+        // }, {
+        // // rootMargin: '-100px 0px 0px 0px', // Срабатывает, когда элемент на 100 px выше viewport
+        //     threshold: 0.1,        // Срабатывает при 20 % видимости
+        //     rootMargin: '50px 0px 50px 0px' // Отступы сверху и снизу
+        // });
+        // observer.observe(element);
+        // if (!targetRef.value) return;
+        // // initObserver()
+        // observer = new IntersectionObserver((entries) => {
+        //     entries.forEach(entry => {
+        //         console.log(entry)
+        //         entry.target.classList.toggle('highlighted', entry.isIntersecting);
+        //     });
+        // }, {
+        //     threshold: 0.2 // Оптимальное значение
+        // });
+
+        // observer.observe(targetRef.value);
+        //
         // на всякий случай сбрасываем фиксацию прокрутки страницы при открытой модалке...
         let body = document.getElementsByTagName('body')[0]
         body.style.margin = 'unset'
@@ -1363,7 +1475,16 @@
             })
         })
     })
+    onUnmounted(() => {
+        // // Отключаем observer при уничтожении компонента
+        // if (observer) {
+        //     observer.disconnect()
+        // }
+        // if (observer) observer.disconnect();
+        if (observer) observer.disconnect();
+    })
 
+    // ACTIONs ON BODY
     let body = document.querySelector('body')
 
     // BODY LISTENER CLICK
@@ -1381,6 +1502,9 @@
             }
         }
     })
+
+
+
 
     // ******* COMPUTED
     // landing_list
