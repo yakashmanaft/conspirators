@@ -125,7 +125,7 @@ watch(
   <!-- AUTH -->
   <div class="footer_container" v-if="useAuthStore().loggedIn && route.path !== '/login'">
 
-        <ul style="padding: 0; padding-bottom: 5rem; padding-top: 1rem; list-style: none; margin: 0 1rem; border-top: 1px solid red;max-width: 1399px; margin: 0 auto;">
+        <ul style="padding: 0; padding-bottom: 5rem; padding-top: 1rem; list-style: none; margin: 0 1rem; border-top: 1px solid red; margin: 0 auto;">
           <li v-for="el in menuList" style="margin-top: .5rem;">
             <router-link :to="el.path">{{ el.title }}</router-link>
           </li>
@@ -226,6 +226,20 @@ watch(
   /* NO AUTH */
   .footer-wrapper_wo-auth ul {
     padding: 1rem 2rem
+  }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .footer_container ul {
+    padding: 1rem!important;
+  }
+}
+@media (min-width: 1400px) {
+  .footer_container {
+  }
+  .footer_container ul {
+    max-width: 1399px;
+    padding: 1rem!important;
+    margin: 0 auto;
   }
 }
 </style>
