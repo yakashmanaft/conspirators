@@ -2599,8 +2599,19 @@ watch(tempCreateItemOwner, () => {
       class="filter_container"
       ref="elementRef" 
       :class="{ 'highlighted': isFixed }"
+      style="display: flex; flex-direction: column; align-items: flex-start"
     >
 
+    <!-- FILTERS -->
+    <div style="padding: 0 .5rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem;">
+      <!--  -->
+      <div class="filter-wrapper">
+          <Icon
+            name="ic:baseline-search"
+            size="24px"
+            color="var(--color-global-text_second)"
+          />
+      </div>
       <!-- МЕСТА РАЗМЕЩЕНИЯ ТМЦ-->
       <div class="filter-wrapper">
 
@@ -2779,6 +2790,35 @@ watch(tempCreateItemOwner, () => {
       </div>
     </div>
 
+    <!-- table header -->
+    <div class="table_container">
+      <table class="table">
+        <thead class="iteem-table_header">
+            <tr>
+              <th scope="col">
+                <div
+                  class="convert_btn"
+                  style="display: flex; justify-content: center"
+                  @click="convertListToPDF()"
+                >
+                  <Icon
+                    name="ic:sharp-picture-as-pdf"
+                    size="24px"
+                    color="var(--color-global-text_second)"
+                  />
+                </div>
+              </th>
+              <th scope="col">Наименование</th>
+              <th scope="col">Кол-во</th>
+              <th scope="col">Местонахождение</th>
+              <th scope="col" class="hide-991">Собственник</th>
+              <th scope="col" class="hide-991">Ответственный</th>
+            </tr>
+        </thead>
+      </table>
+    </div>
+    </div>
+
     <!-- <div style="background-color: gray;" v-if="items">
       {{ currentCategoryByLocationObj }}
       <br>
@@ -2925,7 +2965,7 @@ watch(tempCreateItemOwner, () => {
       
       <div v-if="items" class="table_container">
         <table class="table">
-          <thead 
+          <!-- <thead 
             class="item-table_header"       
           >
             <tr>
@@ -2948,7 +2988,7 @@ watch(tempCreateItemOwner, () => {
               <th scope="col" class="hide-991">Собственник</th>
               <th scope="col" class="hide-991">Ответственный</th>
             </tr>
-          </thead>
+          </thead> -->
   
           <tbody id="element-to-print">
             <div v-if="computedItems" style="margin-left: .5rem; margin-right: .5">
@@ -4238,6 +4278,9 @@ label #expend-item:checked + .expand-item_icon {
   }
   /* 
    */
+   .table {
+    margin: 0;
+   }
    .filter_container {
     display: flex;
     gap: 1rem;
@@ -4247,6 +4290,36 @@ label #expend-item:checked + .expand-item_icon {
   }
   .filter-wrapper label:hover{
     cursor: pointer;
+  }
+  .filter_container .table_container {
+    padding: 0 .5rem;
+    /* background-color: green; */
+    width: 100%;
+    border-bottom: 1px solid var(--bs-border-color);
+    padding-bottom: 1rem;
+  }
+  .filter_container .table_container table {
+    background-color: red;
+    margin: 0;
+    /* border: 1px solid green; */
+  }
+  .filter_container .table_container table thead tr {
+    background-color: blue;
+    display: grid; 
+    width: 100%!important;
+    grid-template-columns: 50px 1fr 100px 1fr 200px 200px;
+    padding: 0;
+  }
+  .filter_container .table_container table thead tr th {
+    border: none;
+    font-size: .8rem;
+    /* background-color: orange; */
+    line-height: revert;
+    padding: 0;
+    /* padding-bottom: .5rem; */
+  }
+  .filter_container .table_container table thead tr th .convert_btn {
+    justify-content: flex-start!important;
   }
   /* 
    */
@@ -4297,6 +4370,9 @@ label #expend-item:checked + .expand-item_icon {
     color: var(--color-wallet-fund-invested)!important;
     transform: rotate(180deg) scale(1.5);
   }
+  /* 
+   */
+  
   /* 
   */
   .item-table_header tr,
