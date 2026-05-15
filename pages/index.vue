@@ -61,11 +61,11 @@ const colors = ref([
 ])
 
 // 
-onMounted(async () => {
-  window.addEventListener('click', (e) => {
-    console.log(e.target)
-  })
-});
+// onMounted(async () => {
+//   window.addEventListener('click', (e) => {
+//     console.log(e.target)
+//   })
+// });
 
 const changeColorOnClick = (e) => {
   let el = document.getElementById('changeColorSubject')

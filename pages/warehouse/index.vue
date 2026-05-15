@@ -2592,7 +2592,7 @@ watch(tempCreateItemOwner, () => {
     <!--  -->
     <!-- ********************* ФИЛЬТРЫ ********************** -->
 
-    <Search v-if="items" @searchInputChanged="onInputFunc"/>
+    <!-- <Search v-if="items" @searchInputChanged="onInputFunc"/> -->
 
     <div 
       v-if="items" 
@@ -2603,14 +2603,14 @@ watch(tempCreateItemOwner, () => {
     >
 
     <!-- FILTERS -->
-    <div style="padding: 0 .5rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem;">
       <!--  -->
       <div class="filter-wrapper">
-          <Icon
-            name="ic:baseline-search"
-            size="24px"
-            color="var(--color-global-text_second)"
-          />
+        <Search 
+            style="margin-top: 1rem;" 
+            @searchInputChanged="onInputFunc"
+            type="active_btn"
+        />
       </div>
       <!-- МЕСТА РАЗМЕЩЕНИЯ ТМЦ-->
       <div class="filter-wrapper">
@@ -4050,6 +4050,7 @@ label #expend-item:checked + .expand-item_icon {
     height: 100%;
     width: 2px;
   } */
+  .table_container table tbody{height: 100vh;}
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
