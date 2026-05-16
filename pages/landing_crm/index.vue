@@ -19,9 +19,9 @@
 
             <!-- CONTENT -->
             <div>
-                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem; text-transform: uppercase;">Дэй Бай Дилс</h2>
+                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; text-transform: uppercase;">Дэй Бай Дилс</h2>
                 <!-- <p style="color: var(--color-global-text_second);">Менеджмент дел и управление финансами</p> -->
-                <p style="font-size: 1rem;color: var(--color-global-text_second);">Твой финпульс</p>
+                <p style="color: var(--color-global-text_second);">#Твой финпульс</p>
                 <div>
                     <Button 
                         style="margin-top: 2rem;" 
@@ -35,7 +35,7 @@
                     </Button>
                     <div 
                         v-else @click="$router.push(`/wallet`)" 
-                        style="cursor: pointer; margin-top: 1rem; width: fit-content; border: 1px solid var(--color-global-text); border-radius: .5rem;"
+                        style="cursor: pointer; margin-top: 1rem; width: fit-content;"
                     >
                         <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-global-text)"/>
                     </div>
@@ -91,10 +91,6 @@
             <p v-if="useAuthStore().session.user">{{ useProfileStore().profiles.find(el => el.userId === useAuthStore().session.user.id).subscription }}</p>
             <p>user_features_computed:{{ user_features_computed }}</p>
             <p>features_list_onServer: {{ features_list_onServer }}</p> -->
-
-            <div style="margin-top: -1rem;">
-                <p style="margin: 0;">Подключайте нужную в этом месяце фичу или оформите подписку</p>
-            </div>
 
             <!-- ПОПАП -->
             <DefaultPopup
@@ -248,12 +244,90 @@
             </DefaultPopup>
         </div>
 
+        <!--  -->
+        <div class="value_wrapper">
+            <h3>Польза</h3>
+            <div id="value-block">
+                <!-- Финансовая грамотность -->
+                <div>        
+                    <h4>Финансовая грамотность</h4>
+                    <p class="value_tag">Статья</p>
+                    <p>Помогает увидеть реальное положение дел: потоки текущих и инвестированных средств, вложенные в различные инструменты. Наличие или отсутствие долговых обязательств. Записи помогают видеть траты и доходы по категориям, распределять их по бандам и быть в курсе изменений в фондах.</p>
+                    <ul>
+                        <li>Учимся инвестировать</li>
+                        <li>Магия сложного процента</li>
+                    </ul>
+                    <div class="value_btn" @click="$router.push(`/journal`)">
+                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div>
+                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Читать</p>
+                    </div>
+                </div>
+                <div>
+                    <h4>Самоконтроль</h4>
+                    <p class="value_tag">База знаний</p>
+                    <p>Анализ своих привычек, выявление основных трат. Запись доходов и расходов помогают планировать будущие инвестиции и траты.</p>
+                    <ul>
+                        <li>Контроль еженедельных взносов</li>
+                        <li>Анализ данных</li>
+                    </ul>
+                    <div class="value_btn" @click="$router.push(`/help`)">
+                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div>
+                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Изучать</p>
+                    </div>
+                </div>
+                <div>
+                    <h4>Высвобождение памяти</h4>
+                    <p class="value_tag">Дэй бай Дилс</p>
+                    <p>Фиксация заявок и задач, запись их выполнения - отличный способ высвободить как время от контроля других участников банд, так и памят от постоянных попыток контролировать реализацию проектов</p>
+                    <ul>
+                        <li>Записывай все транзакции</li>
+                        <li>Следи за развитием проектов</li>
+                        <li>Контролируй работу с ресурсами</li>
+                    </ul>
+                    <div v-if="!useAuthStore().user" class="value_btn" @click="$router.push(`/login`)">
+                        <!-- <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div> -->
+                        
+                        <p style="color: var(--color-btn-text); margin: 0;">Войти</p>
+                    </div>
+                    <div v-else class="value_btn" @click="$router.push('/demands')">
+                        <p style="color: var(--color-btn-text); margin: 0;">Доска задач</p>
+                    </div>
+                </div>
+                <div>
+                    <h4>Высвобождение памяти</h4>
+                    <p class="value_tag">Дэй бай Дилс</p>
+                    <p>Фиксация заявок и задач, запись их выполнения - отличный способ высвободить как время от контроля других участников банд, так и памят от постоянных попыток контролировать реализацию проектов</p>
+                    <ul>
+                        <li>Записывай все транзакции</li>
+                        <li>Следи за развитием проектов</li>
+                        <li>Контролируй работу с ресурсами</li>
+                    </ul>
+                    <div v-if="!useAuthStore().user" class="value_btn" @click="$router.push(`/login`)">
+                        <!-- <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
+                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
+                        </div> -->
+                        
+                        <p style="color: var(--color-btn-text); margin: 0;">Войти</p>
+                    </div>
+                    <div v-else class="value_btn" @click="$router.push('/demands')">
+                        <p style="color: var(--color-btn-text); margin: 0;">Доска задач</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- PRICE -->
         <!-- Одиночка -->
         <!-- Банда -->
         <!--  -->
         <div class="articles_container price_wrapper" style="background-color: var(--color-btn-disabled-bg);">
-            <h3 style="color: var(--color-global-text)">Подписка</h3>
+            <h3>Подписка</h3>
             <ul style=" list-style: none; padding: 0; margin-top: 1rem;">
                 <Section
                     fDirection="column"
@@ -325,67 +399,51 @@
                     </div>
                 </li>
             </ul>
+            <p style="margin: 0; margin-left: 1rem;">Актуальный прайс от 16.05.2026</p>
         </div>
 
         <!--  -->
-        <ul style="background-color: var(--color-global-text); margin: 1rem; border-radius: 1rem; padding:0; padding: 1rem; margin-top: 2rem; font-weight: 100;">
-            <p style="color: var(--color-btn-text)">Подключай блоки, расширяй контроль финансового управления</p>
-            <li  style="color: var(--color-btn-text);margin-left: 1rem;" @click="$router.push(`/help`)">Что умеет conspirators.CRM</li>
-            <li style="color: var(--color-btn-text);margin-left: 1rem;" >Что умеет conspirators.CRM</li>
+        <ul class="about-section_container">
+            <li>
+                <p style="color: var(--color-btn-text)">О проекте</p>
+                <ul>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" @click.stop="$router.push(`/help`)">Дэй Бай Дилс Хэлп</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" @click.stop="$router.push('/whitepaper')" >Белая бумага</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" @click.stop="scrollToElement('value-block')">Чем полезен проект</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" @click.stop="$router.push('/journal')">Журнал историй</li>
+                </ul>
+            </li>
+            <li>
+                <p style="color: var(--color-btn-text)">Склад</p>
+                <ul>
+                    <li  style="color: var(--color-btn-text);margin-left: 1rem;" >Учет товаров по локациям</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" @click.stop="$router.push('/landing_stock')">Ставь предметы на продажу</li>
+                </ul>
+            </li>
+            <li>
+                <p style="color: var(--color-btn-text)">Лендинги</p>
+                <ul>
+                    <li  style="color: var(--color-btn-text);margin-left: 1rem;" >Сад с аналитикой лидов</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" @click.stop="$router.push('/landing_stock')">Все лендинги как услуги</li>
+                </ul>
+            </li>
+            <li>
+                <p style="color: var(--color-btn-text)">Доска задач</p>
+                <ul>
+                    <li  style="color: var(--color-btn-text);margin-left: 1rem;" >Список задач к выполнению</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" >Статистика проектов</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" >История задач по проектам</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;">Движение средств по задачам</li>
+                </ul>
+            </li>
+            <li>
+                <p style="color: var(--color-btn-text)">Кошелек</p>
+                <ul>
+                    <li  style="color: var(--color-btn-text);margin-left: 1rem;" >История транзакций</li>
+                    <li style="color: var(--color-btn-text);margin-left: 1rem;" >Работа бандами</li>
+                </ul>
+            </li>
         </ul>
-
-        <!--  -->
-        <div style="margin-top: 1rem;" class="value_wrapper">
-            <h3>Чем полезен conspirator.CRM</h3>
-            <div id="value-block">
-                <div>        
-                    <h4>Финансовая грамотность</h4>
-                    <p class="value_tag">Статья</p>
-                    <p>Помогает увидеть реальное положение дел. Потоки собственных финансов и инввевстиционные средства, вложенные в различные инструменты. Наличие или отсутствие долговых средств. Записи помогают видеть траты и доходы по категориям, распределять их по бандам и быть в курсе изменений в фондах. Давайте вместе погружаться в мир инвестиций</p>
-                    <ul>
-                        <li>Учимся инвестировать</li>
-                        <li>Магия сложного процента</li>
-                    </ul>
-                    <div class="value_btn" @click="$router.push(`/journal`)">
-                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
-                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
-                        </div>
-                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Читать</p>
-                    </div>
-                </div>
-                <div>
-                    <h4>Самоконтроль</h4>
-                    <p class="value_tag">База знаний</p>
-                    <p>Анализ своих привычек, выяввление основных трат. Запись доходов и расходов помогают планировать будущие инвестиции и траты.</p>
-                    <ul>
-                        <li>Контроль еженедельных взносов</li>
-                        <li>Анализ данных</li>
-                    </ul>
-                    <div class="value_btn" @click="$router.push(`/help`)">
-                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
-                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
-                        </div>
-                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Изучать</p>
-                    </div>
-                </div>
-                <div>
-                    <h4>Высвобождение памяти</h4>
-                    <p class="value_tag">conspirator.CRM</p>
-                    <p>Фиксация заявок и задач, запись их выполнения - отличныйы способ высвободить как время от контроля других участников банд, так и памят от постоянных попыток контролировать выполнения и оплаты по проектам</p>
-                    <ul>
-                        <li>Записывай все транзакции</li>
-                        <li>Следи за развитием проектов</li>
-                        <li>Контролируй работу с ресурсами</li>
-                    </ul>
-                    <div class="value_btn" @click="$router.push(`/login`)">
-                        <div style="background-color: var(--color-wallet-fund-debt-wo); width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 100%;">
-                            <Icon size="42px" name="material-symbols-light:arrow-right-alt-rounded" color="var(--color-btn-text)"/>
-                        </div>
-                        <p style="color: var(--color-btn-text); margin: 0; font-size: .8rem;">Войти</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     
     </Container>
 
@@ -477,13 +535,13 @@
         body.style.overflow = 'unset'
 
         //
-        const scrollValueContainer = document.getElementById("value-block");
+        // const scrollValueContainer = document.getElementById("value-block");
         const scrollArticlesContainer = document.getElementById("article-block");
 
-        scrollValueContainer?.addEventListener("wheel", (evt) => {
-            evt.preventDefault();
-            scrollValueContainer.scrollLeft += evt.deltaY;
-        });
+        // scrollValueContainer?.addEventListener("wheel", (evt) => {
+        //     evt.preventDefault();
+        //     scrollValueContainer.scrollLeft += evt.deltaY;
+        // });
 
         scrollArticlesContainer?.addEventListener('wheel', (evt) => {
             evt.preventDefault()
@@ -618,6 +676,18 @@
         feature_in_popup.value = null
         popup_feature_opened.value = false
     }
+
+    //
+    //= scrollToElement
+    const scrollToElement = (elementId) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+        });
+    }
+    };
 
 </script>
 
@@ -758,18 +828,19 @@
             padding-left: 1rem;
             padding-right: 1rem;
             display: flex;
-            overflow-x: scroll;
+            flex-direction: column;
             gap: 1rem;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none; 
+            /* overflow-x: scroll;
+            -ms-overflow-style: none; 
+            scrollbar-width: none;  */
         }
 
-        .value_wrapper > div::-webkit-scrollbar {
+        /* .value_wrapper > div::-webkit-scrollbar {
             display: none;
             -webkit-appearance: none;
             width: 0;
             height: 0;
-        }
+        } */
 
         .value_wrapper > div > div{
             min-width: 300px;
@@ -792,12 +863,6 @@
             padding-left: 1rem
         }
         .value_wrapper > div > div > .value_btn {
-            display: flex; 
-            align-items: center; 
-            gap: .5rem; 
-            position: absolute; 
-            bottom: 1rem; 
-            left: 1rem;
             display: flex; 
             align-items: center; 
             gap: .5rem; 
@@ -1020,20 +1085,42 @@
             right: 3rem!important;
         }
         .header-banner_wrapper div h2 {
-            font-size: 7rem!important
+            font-size: 7rem!important;
+            font-weight: 100!important;
+            background-color: var(--color-status-finished);
+            padding: 0 1rem!important;
         }
         .header-banner_wrapper div p {
             /* margin-top: 1rem; */
             margin: 0;
-            font-size: 2rem;
+            font-size: 1.25rem;
+            font-weight: 100;
+            text-transform: uppercase;
             /* width: 650px; */
         }
+        .header-banner_wrapper div div svg {
+            border: 1px solid var(--color-global-text); 
+            border-radius: .5rem;
+            transition: all .2s ease-in;
+            cursor: pointer;
+        }
+        .header-banner_wrapper div div svg:hover {
+            border: 1px solid var(--color-wallet-fund-available-wo);
+            background-color: var(--color-wallet-fund-available-wo);
+        }
+        .header-banner_wrapper div div svg:hover {
+            color: var(--color-btn-text)!important;
+        } 
         /* 
          */
         .articles_container {
             /* margin-left: 1rem;
             margin-right: 1rem; */
             padding: 1rem;
+        }
+        .articles_container h3 {
+            font-weight: 100;
+            margin-left: 1.5rem;
         }
          .blocks_wrapper {
             width: 135vh;
@@ -1099,8 +1186,14 @@
          .price_wrapper {
             border-radius: var(--bs-border-radius);
             margin: 0 1rem;
+            margin-top: 1rem;
         }
-         .price_wrapper ul{
+        .price_wrapper h3 {
+            margin-left: 1rem;
+            margin-top: 1rem;
+            color: var(--color-global-text);
+        }
+        .price_wrapper ul{
             display: grid;
             grid-template-columns: repeat(3, 1fr)!important;
             gap: 1rem;
@@ -1118,6 +1211,87 @@
             background-color: var(--color-global-baackground_light);
             border-bottom-left-radius: var(--bs-border-radius);
             border-bottom-right-radius: var(--bs-border-radius);
+        }
+
+        /* 
+         */
+        .about-section_container {
+            background-color: var(--color-global-text)!important; 
+            margin: 1rem; 
+            margin-top: 2rem; 
+            border-radius: 1rem; 
+            padding: 1.5rem; 
+            font-weight: 100;
+            display: flex;
+            gap: 1rem;
+        }
+        .about-section_container li ul {
+            padding: 0;
+        }
+        .about-section_container li ul li {
+            cursor: pointer;
+        }
+        /* .about-section_container li ul li:hover {
+            border-bottom: 1px solid red;
+        } */
+
+        /* 
+         */
+        .value_wrapper {
+            padding: 1rem;
+        }
+        .value_wrapper h3 {
+            margin-left: 1.5rem;
+            font-weight: 100;
+        }
+        .value_wrapper > div{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            width: 100%;
+            margin-top: 1rem;
+            gap: 1rem;
+            row-gap: 2rem;
+            /* width: 100vw; */
+            /* margin-left: -1rem; */
+            /* margin-right: -1rem; */
+            /* padding-left: 1rem; */
+            /* padding-right: 1rem; */
+            /* display: flex; */
+            /* gap: 1rem; */
+            /* display: grid; */
+            /* grid-template-columns: repeat(4, 1fr); */
+            /* overflow-x: none;
+            -ms-overflow-style: none;
+            scrollbar-width: unset;  */
+        }
+        .value_wrapper > div > div{
+            /* min-width: 300px; */
+            background-color: var(--color-operation-type-donation);
+            /* border: 1px solid var(--color-btn-wo-bg); */
+            border-radius: var(--bs-border-radius);
+            padding: 1rem;
+            padding-bottom: 5rem;
+            position: relative; 
+            /* padding-bottom: 4rem; */
+        }
+        .value_wrapper > div > div > .value_btn {
+            background-color: var(--color-urgency-low-10);
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-bottom-left-radius: var(--bs-border-radius);
+            border-bottom-right-radius: var(--bs-border-radius);
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .value_wrapper > div > div > .value_btn:hover {
+            background-color: var(--color-wallet-fund-available-wo);
+        }
+        .value_wrapper > div > div > .value_btn > p {
+            text-align: center;
         }
     }
 </style>
