@@ -101,13 +101,19 @@ const onClickRegister = () => {
             gap: 1rem;
           ">
 
-          <router-link class="back-btn_wrapper" to="/">
-            
-            <div class="back-btn_icon">
+          <div class="back-btn_wrapper">
+            <div class="back-btn_icon" style="cursor: pointer;" @click.stop="$router.go(-1)">
               <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
             </div>
+            <router-link to="/">
+
+              <p class="back-btn_text" style="cursor: pointer;">На главную</p>
+            </router-link>
+          </div>
+          <!-- <router-link class="back-btn_wrapper" to="/">
+            
             <p class="back-btn_text">На главную</p>
-          </router-link>
+          </router-link> -->
           <!-- TITLE -->
           <h1 style="margin: 0;">Вход</h1>
     

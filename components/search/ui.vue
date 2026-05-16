@@ -118,7 +118,6 @@ const  emit_inputString = (name) => {
     if(name) {
 
         emit('searchInputChanged', modelValue.value)
-        // console.log(name)
     }
 }
 
