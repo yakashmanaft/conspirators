@@ -19,8 +19,9 @@
 
             <!-- CONTENT -->
             <div>
-                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem;">Органайзер дел и финансов</h2>
-                <p style="color: var(--color-global-text_second);">Будь в курсе актуальных данных с помощью conspirators.CRM</p>
+                <h2 style="font-size: 3rem; font-weight: bold; margin: 0; padding-top: 1rem; text-transform: uppercase;">Дэй Бай Дилс</h2>
+                <!-- <p style="color: var(--color-global-text_second);">Менеджмент дел и управление финансами</p> -->
+                <p style="font-size: 1rem;color: var(--color-global-text_second);">Твой финпульс</p>
                 <div>
                     <Button 
                         style="margin-top: 2rem;" 
@@ -48,7 +49,11 @@
         <div class="articles_container" style="margin-top: 2rem;">
             <h3>Выбирай фичи под себя</h3>
             <ul id="article-block" class="blocks_wrapper">
-                <li v-for="feature in features_list_onServer" :key="feature.id" style="border: none;" :style="user_features_computed?.find(el => el.feature_id === feature.id) ? 'background-color: var(--color-urgency-low-10);': ' '">
+                <li 
+                    v-for="feature in features_list_onServer" 
+                    :key="feature.id" style="border: none;" :style="user_features_computed?.find(el => el.feature_id === feature.id) ? 'background-color: var(--color-urgency-low-10);': ' '"
+                    @click.stop="popup_feature_opened = !popup_feature_opened; feature_in_popup = feature"
+                    >
                     <Icon size="32px" :name="feature.icon"/>
                     <p style="margin: 0; margin-top: .5rem;">{{ feature.name_rus }}</p>
 
@@ -86,13 +91,168 @@
             <p v-if="useAuthStore().session.user">{{ useProfileStore().profiles.find(el => el.userId === useAuthStore().session.user.id).subscription }}</p>
             <p>user_features_computed:{{ user_features_computed }}</p>
             <p>features_list_onServer: {{ features_list_onServer }}</p> -->
+
+            <div style="margin-top: -1rem;">
+                <p style="margin: 0;">Подключайте нужную в этом месяце фичу или оформите подписку</p>
+            </div>
+
+            <!-- ПОПАП -->
+            <DefaultPopup
+                v-if="popup_feature_opened"
+                id="popup_feature"
+                :popup_title="feature_in_popup?.name_rus"
+                @emitClosePopup="close_feature_popup"
+            >
+                <main>
+                    <p>
+                        {{ feature_in_popup }}
+                    </p>
+
+                    <div v-if="!useAuthStore().user">
+                        <div v-if="feature_in_popup?.available">
+                            <p>Приобрести</p>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="background-color: var(--color-wallet-fund-invested-wo)">
+                                    <p>12 месяцев</p>
+                                    <p>Скидка 30% </p>
+                                    <p style="text-decoration: line-through;">{{ feature_in_popup?.price.toFixed(2) }} x 12 = {{ feature_in_popup?.price * 12 }}</p>
+                                    <p>{{ feature_in_popup?.price * 0.7 }} x 12 = {{ (feature_in_popup?.price * 0.7) * 12 }}</p>
+                                </div>
+
+                                <div style="background-color: gray;">
+                                    <p>1 месяц</p>
+                                    <span>{{ feature_in_popup?.price.toFixed(2) }}</span>
+                                    <span v-if="feature_in_popup?.per_month"> руб. / мес.</span>
+                                    <span v-else> руб.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p v-else style="background-color: var(--color-btn-wo-bg)">
+                            <span>О гость, фича находится в разработке... и купить её пока невозможно!</span>
+                        </p>
+                    </div>
+                    <div v-else>
+                        <div v-if="
+                            user_features_computed?.find(el => el.feature_id === feature_in_popup?.id)
+                        ">
+                            <p style="background-color: var(--color-urgency-low);">
+                                <span>В подписке</span>
+                                <span> до:                             {{ user_features_computed.find(el => el.feature_id === feature_in_popup?.id).feature_deadline }}</span>  
+                            </p>
+                            <p>Продлить</p>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="background-color: var(--color-wallet-fund-invested-wo)">
+                                    <p>12 месяцев</p>
+                                    <p>Скидка 50% </p>
+                                    <p style="text-decoration: line-through;">{{ feature_in_popup?.price.toFixed(2) }} x 12 = {{ feature_in_popup?.price * 12 }}</p>
+                                    <p>{{ feature_in_popup?.price * 0.5 }} x 12 = {{ (feature_in_popup?.price * 0.5) * 12 }}</p>
+                                </div>
+                                <div style="background-color: gray;">
+                                    <p>1 месяц</p>
+                                    <p>Скидка 10%</p>
+                                    <span>{{ feature_in_popup?.price * 0.9 }}</span>
+                                    <span v-if="feature_in_popup?.per_month"> руб. / мес.</span>
+                                    <span v-else> руб.</span>
+                                </div>
+                            </div>
+                            <p>Продлить всю подписку со скидкой до 50% сейчас</p>
+                            <!-- <p>Продлить всю действующую подписку</p>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="background-color: var(--color-wallet-fund-invested-wo)">
+                                    <p>12 месяцев</p>
+                                    <p>Скидка 50% </p>
+                                    <p style="text-decoration: line-through;">{{ feature_in_popup?.price.toFixed(2) }} x 12 = {{ feature_in_popup?.price * 12 }}</p>
+                                    <p>{{ feature_in_popup?.price * 0.5 }} x 12 = {{ (feature_in_popup?.price * 0.5) * 12 }}</p>
+                                </div>
+                                <div style="background-color: gray;">
+                                    <p>1 месяц</p>
+                                    <span>{{ feature_in_popup?.price.toFixed(2) }}</span>
+                                    <span v-if="feature_in_popup?.per_month"> руб. / мес.</span>
+                                    <span v-else> руб.</span>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <br> -->
+                        </div>
+                        <div v-else-if="feature_in_popup?.available && !user_features_computed?.find(el => el.feature_id === feature_in_popup?.id)">
+                            <p>Приобрести за</p>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="background-color: var(--color-wallet-fund-invested-wo)">
+                                    <p>12 месяцев</p>
+                                    <p>Скидка 30% </p>
+                                    <p style="text-decoration: line-through;">{{ feature_in_popup?.price.toFixed(2) }} x 12 = {{ feature_in_popup?.price * 12 }}</p>
+                                    <p>{{ feature_in_popup?.price * 0.7 }} x 12 = {{ (feature_in_popup?.price * 0.7) * 12 }}</p>
+                                </div>
+
+                                <div style="background-color: gray;">
+                                    <p>1 месяц</p>
+                                    <span>{{ feature_in_popup?.price.toFixed(2) }}</span>
+                                    <span v-if="feature_in_popup?.per_month"> руб. / мес.</span>
+                                    <span v-else> руб.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p v-else style="background-color: var(--color-btn-wo-bg)">
+                            <span>Фича находится в разработке... и купить её пока невозможно!</span>
+                        </p>
+                    </div>
+
+                </main>
+                <footer style="padding: 1rem;">
+                    <!-- ДЛЯ НЕАВТОРИЗОВАННОГО ЮЗЕРА -->
+                    <div v-if="!useAuthStore().user">
+                        <!-- <p>ДЛЯ НЕАВТОРИЗОВАННОГО ЮЗЕРА</p> -->
+                        <div v-if="feature_in_popup?.available">
+                            <p style="background-color: var(--color-btn-bg); opacity: .8">
+                                <span>{{ feature_in_popup?.price.toFixed(2) }}</span>
+                                <span v-if="feature_in_popup?.per_month"> руб. / мес.</span>
+                                <span v-else> руб.</span>
+                                
+                            </p>
+                            <p>
+                                <span>Добавить в корзину</span>
+                                <span> | </span>
+                                <span>Оплатить сейчас</span>
+                            </p>
+                        </div>
+                        <p v-else style="background-color: var(--color-btn-wo-bg)">
+                            <span>В разработке</span>
+                        </p>
+                    </div>
+                    <!-- ДЛЯ АВТОРИЗОВАННОГО, КОГДА ЕСТЬ СЕССИОННЫЙ ЮЗЕР -->
+                    <div v-else>
+                        <!-- <p>ДЛЯ АВТОРИЗОВАННОГО, КОГДА ЕСТЬ СЕССИОННЫЙ ЮЗЕР</p> -->
+                        <p v-if="
+                            user_features_computed?.find(el => el.feature_id === feature_in_popup?.id)
+                        " style="background-color: var(--color-urgency-low);">
+                            <span>В подписке</span>
+                        </p>
+                        <div v-else-if="feature_in_popup?.available && !user_features_computed?.find(el => el.feature_id === feature_in_popup?.id)">
+                            <p style="background-color: var(--color-btn-bg); opacity: .8">
+                                <span>{{ feature_in_popup?.price.toFixed(2) }}</span>
+                                <span v-if="feature_in_popup?.per_month"> руб. / мес.</span>
+                                <span v-else> руб.</span>
+                            </p>
+                            <p>
+                                <span>Добавить в корзину</span>
+                                <span> | </span>
+                                <span>Оплатить сейчас</span>
+                            </p>
+                        </div>
+                        <p v-else style="background-color: var(--color-btn-wo-bg)">
+                            <span>В разработке</span>
+                        </p>
+                    </div>
+                </footer>
+            </DefaultPopup>
         </div>
 
         <!-- PRICE -->
         <!-- Одиночка -->
         <!-- Банда -->
         <!--  -->
-        <div class="articles_container" style="background-color: var(--color-btn-disabled-bg);">
+        <div class="articles_container price_wrapper" style="background-color: var(--color-btn-disabled-bg);">
             <h3 style="color: var(--color-global-text)">Подписка</h3>
             <ul style=" list-style: none; padding: 0; margin-top: 1rem;">
                 <Section
@@ -100,7 +260,7 @@
                     fAlignItems="flex-start"
                 >
 
-                    <h4>Мне достаточно только одной фичи</h4>
+                    <h4>Один воин - одна фича</h4>
 
                     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid red;">
                         <Icon size="32px" :name="features_list_onServer[2].icon"/>
@@ -116,10 +276,11 @@
                             <span>250.00 х 12 = 3000.00 за год</span>
                         </p>
                     </div>
+                    <p style="font-size: .8rem;">Каждая добавленная фича оплчивается отдельно </p>
                 </Section>
 
                 <li>
-                    <h4>Выбрать 3 и более</h4>
+                    <h4>Банда + 3 фичи</h4>
                     <div style="display: flex; gap: 1rem;">
                         <div>
                             <Icon size="32px" :name="features_list_onServer[2].icon"/>
@@ -137,7 +298,7 @@
                     <p style="margin: 0; color: var(--color-btn-text)">Со скидкой 30% на всё</p>
                 </li>
                 <li>
-                    <h4>Статус ВИП и пользование всеми возможностями</h4>
+                    <h4>Полный доступ</h4>
                     <p style="margin: 0; color: var(--color-btn-text)">799.00 руб. / мес.</p>
 
                     <!-- ТИКЕТ ВАША ПОДПИСКА -->
@@ -291,6 +452,7 @@
     // shared
     import { Container } from '@/shared/container'
     import { Section } from '~/shared/section';
+    import { DefaultPopup } from '@/shared/popup'
 
     // components
     import { Button } from '@/components/button';
@@ -303,6 +465,8 @@
             default: {}
         },
     })
+    const popup_feature_opened = ref(false)
+    
 
     // onMounted
     onMounted(() => {
@@ -402,6 +566,7 @@
             available: true
         }
     ])
+    const feature_in_popup = ref(null)
     // [
     //     {
     //         "feature_id": 3,
@@ -445,6 +610,13 @@
     const translate_feature = (feature_id: number) => {
 
         return features_list_onServer.value.find(el => el. id === feature_id).name_rus
+    }
+
+    // 
+    //= close_feature_popup
+    const close_feature_popup = () => {
+        feature_in_popup.value = null
+        popup_feature_opened.value = false
     }
 
 </script>
@@ -802,6 +974,9 @@
         }
     }
     @media screen and (min-width: 1200px) {
+        .container {
+            padding: 0!important;
+        }
         .main-banner_container {
             height: 400px;
             margin-top: 0rem!important;
@@ -829,26 +1004,120 @@
         /* 
          */
          .title-page-section {
-            margin-left: 2.5rem;
+            /* margin-left: 2.5rem; */
+            display: none;
          }
          .header-banner_wrapper {
             margin-left: 2.5rem;
-            height: 600px; 
+            height: 400px; 
             margin-top: 3rem;
         }
         .header-banner_art {
-            border-radius: 7rem;
-            width: 300px!important;
-            right: 1rem!important;
+            border-radius: 5rem;
+            height: 350px;
+            width: 30%!important;
+            /* width: 350px!important; */
+            right: 3rem!important;
         }
         .header-banner_wrapper div h2 {
             font-size: 7rem!important
         }
         .header-banner_wrapper div p {
+            /* margin-top: 1rem; */
             margin: 0;
-            margin-top: 1rem;
             font-size: 2rem;
             /* width: 650px; */
+        }
+        /* 
+         */
+        .articles_container {
+            /* margin-left: 1rem;
+            margin-right: 1rem; */
+            padding: 1rem;
+        }
+         .blocks_wrapper {
+            width: 135vh;
+            margin-left: -1rem;
+            margin-right: -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            display: flex;
+            overflow-x: scroll;
+            gap: 1rem;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none; 
+            padding-bottom: 1rem;
+         }
+        .blocks_wrapper::-webkit-scrollbar {
+            display: none;
+            -webkit-appearance: none;
+            width: 0;
+            height: 0;
+        }
+        .blocks_wrapper > li {
+            height: 200px;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--bs-border-radius);
+            align-items: center;
+            /* padding: .5rem; */
+            justify-content: center;
+            color: var(--color-btn-bg);
+            background-color: var(--color-btn-hover-bg);
+            position: relative;
+            cursor: pointer;
+            transition: box-shadow .2s ease-in;
+        }
+        .blocks_wrapper > li:hover {
+            box-shadow: var(--hover-shadow);
+        }
+        .blocks_wrapper > li .block_available {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            /* padding: .2rem 0; */
+            /* background-color: var(--color-btn-bg); */
+            width: 100%;
+            margin: 0;
+            text-align: center;
+        }
+        .blocks_wrapper > li .block_available p {
+            margin: 0;
+            padding: .2rem 0;
+        }
+        .blocks_wrapper > li .block_available p span {
+            color: var(--color-btn-text);
+        }
+        .blocks_wrapper > div > p {
+            font-size: .8rem;
+            color: var(--color-btn-bg);
+
+        }
+        /* 
+         */
+         .price_wrapper {
+            border-radius: var(--bs-border-radius);
+            margin: 0 1rem;
+        }
+         .price_wrapper ul{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr)!important;
+            gap: 1rem;
+        }
+        /* 
+         */
+        #popup_feature main {
+            background-color: lightblue;
+        }
+        #popup_feature footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--color-global-baackground_light);
+            border-bottom-left-radius: var(--bs-border-radius);
+            border-bottom-right-radius: var(--bs-border-radius);
         }
     }
 </style>

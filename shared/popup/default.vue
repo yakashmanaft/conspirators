@@ -108,6 +108,7 @@ window.addEventListener('click', (e) => {
 }
 .popup_content { 
     -ms-overflow-style: none; 
+    display: relative;
 }
 
 @media screen and (max-width: 575px){
