@@ -46,7 +46,14 @@
         </div>
 
         <h2>Товары</h2>
-
+        <div style="background-color: red;">
+            <img 
+                :src="fullImageUrl" 
+                alt=""
+                class="displayed-image"
+            />
+        </div>
+        <img src="https://s1251sas.storage.yandex.net/rdisk/" alt="">
         <!-- FILTER ITEM -->
         <div 
             ref="elementRef" 
@@ -282,7 +289,7 @@
                     <div 
                         class="product-item_img"
                     >
-                        <img :src="product.img_src" :alt="product.title"
+                        <img :src="`${product.img_src}`" :alt="product.title"
                     >
                     </div>
                     <p class="product-item_price">{{ product.price }} {{ product.currency }}</p>
@@ -1112,6 +1119,7 @@
 </style>
 
 <script lang="ts" setup>
+    import { useImageDisplay } from '@/utils/useImageDisplay'
     useHead({
         title: "Каталог",
         link: [
@@ -1131,6 +1139,8 @@
             }
         ]
     })
+
+
 
     // VARIABLES
     const router = useRouter()
@@ -1195,6 +1205,8 @@
     const popup_paragraph_opened = ref(false) 
     const current_paragraph = ref("Все параграфы");
     // 
+    // const { fullImageUrl, setImage } = useImageDisplay(props.imageFileName)
+    const { fullImageUrl, setImage } = useImageDisplay('bc449d9a769d039121d99041de2r--dlya-doma-i-interera-prikrovatnaya-tumba-deep-forest-s-radius.jpg')
     // 
     //= close popup func
     const close_volume_popup = () => {
