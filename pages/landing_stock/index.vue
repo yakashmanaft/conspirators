@@ -270,7 +270,7 @@
         <div class="product-item_section">
             <!-- data is loading -->
             <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
-            <p style="margin-top: 1rem">Loading...</p>
+                <p style="margin-top: 1rem">Loading...</p>
             </div>
 
             <div class="product-item_container">
@@ -1865,7 +1865,7 @@
 
     // onClick cart-add_btn
     const add_to_cart_func = () => {
-        console.log('Добавлено в корзину')
+        console.log('функция не добавлена...')
     }
 
     // HELPERS

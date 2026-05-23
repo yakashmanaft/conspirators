@@ -717,30 +717,30 @@
 
     // current_landing_id
     // 
-    const current_landing_id = () => {
+    // const current_landing_id = () => {
 
-        let current_landing_name = route.path.split('/', 2)[1]
+    //     let current_landing_name = route.path.split('/', 2)[1]
 
-        let current_landing_id = landing_list?.value?.filter((item: any) => {
-            if(item.name === current_landing_name) {
-                return item
-            }
-        })
+    //     let current_landing_id = landing_list?.value?.filter((item: any) => {
+    //         if(item.name === current_landing_name) {
+    //             return item
+    //         }
+    //     })
 
-        if(current_landing_id) {
-            return current_landing_id[0].id
-        } else {
+    //     if(current_landing_id) {
+    //         return current_landing_id[0].id
+    //     } else {
 
-            return null
-        }
-    }
+    //         return null
+    //     }
+    // }
 
     // submitForm contact US
     //
     const submitForm = async (mark: string) => {
 
         // 
-        form_obj.value.landing_id = current_landing_id()
+        form_obj.value.landing_id = landing_list.value?.id
         form_obj.value.mark = mark
         // 
         await addLeadToBD(form_obj.value)
@@ -833,7 +833,7 @@
     const { data: landing_list } = useFetch("/api/landing/landing", {
         lazy: false,
         transform: (landing_list) => {
-            return landing_list
+            return landing_list.find(el => el.name === route.path.slice(1))
         }
     })
 </script>

@@ -262,7 +262,7 @@
                 
                 <Form_landing_offer
                     :path="route?.path"
-                    :list="landing_list || []"
+                    :list="landing_list || {}"
                     @emitClosePopup="closePopup"
                 />   
             </DefaultPopup>
@@ -369,7 +369,7 @@
             //         return el
             //     }
             // })
-            return landing_list
+            return landing_list.find(el => el.name === route.path.slice(1))
         }
     })
 

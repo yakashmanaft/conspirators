@@ -59,7 +59,8 @@ const props = defineProps({
     },
     type: {
       type:  String,
-      default: 'primary'
+      default: 'primary' 
+      // primary, active_btn
     }
 })
 

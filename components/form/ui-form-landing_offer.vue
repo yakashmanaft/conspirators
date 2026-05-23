@@ -75,6 +75,7 @@ import { Button } from '@/components/button'
 
 // TYPES
 type FormObj = {
+    id: number,
     name: string,
     email: string,
     mobile: string,
@@ -83,6 +84,7 @@ type FormObj = {
     urgency: string
 }
 const form_obj = ref<FormObj>({
+    id: 0,
     name: '',
     email: '',
     mobile: '+7',
@@ -95,8 +97,8 @@ const form_obj = ref<FormObj>({
 const props = defineProps({
     path: String,
     list: {
-        type: Array,
-        default: []
+        type: Object,
+        default: {}
     }
 })
 
@@ -107,19 +109,19 @@ const emit = defineEmits(['emitClosePopup'])
 const loadSubmit = ref(false)
 
 // set current id of landing page
-const current_landing_id = () => {
+// const current_landing_id = () => {
 
-    let current_landing_name = props?.path?.split('/', 2)[1]
+//     let current_landing_name = props?.path?.split('/', 2)[1]
 
-    console.log(current_landing_name)
-    let current_landing_id = [...props?.list].filter((item: any) => {
-        if(item.name === current_landing_name) {
-            return item
-        }
-    })
-    // console.log(current_landing_id[0])
-    return current_landing_id[0].id
-}
+//     console.log(current_landing_name)
+//     let current_landing_id = [...props?.list].filter((item: any) => {
+//         if(item.name === current_landing_name) {
+//             return item
+//         }
+//     })
+//     // console.log(current_landing_id[0])
+//     return current_landing_id[0].id
+// }
 
 const mail = useMail()
 
@@ -127,7 +129,7 @@ const submitForm = () => {
     
     // landing_offer id === 2
     // lead default status === 'lead'
-    form_obj.value.landingId = current_landing_id()
+    form_obj.value.landingId = form_obj.id
     // form_obj.value.status = 'lead'
     addLeadToBD(form_obj.value)
 }

@@ -13,18 +13,71 @@
         <!-- TITLE PAGE SECTION -->
         <div class="show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
-            <h1 style="margin: 0;">Мебель из камня на заказ и в наличии</h1> 
+            <h1 style="margin: 0;">{{ landing_list?.title }}</h1> 
         </div>
-        <h2>Работаем с камнем аким-то таким-то</h2>
+        <!-- <p>{{ route.path }}</p>  -->
+        <h2>{{ landing_list }}</h2>
         <h3>Изделия на заказ</h3>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p>
 
-        <Button @click.prevent="openPopup" type="original-btn">Обсудить</Button>
+        <Button @click.prevent="openPopup" type="original-btn">
+            Заказать индивидуальный проект
+        </Button>
 
         <h3>Изделия из наличия</h3>
-        <h4>Тумба с раковиной в ванную комнату</h4>
-        <h4 style="margin-top: 1rem;" >Аксессуары</h4>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea eos quae expedita odit. s mollitia voluptate vitae error ex blanditiis quidem, excepturi quas tenetur maiores facere ratione, tempora aut! Pariatur, quisquam? Quos, facere officiis fuga nisi cupiditate, provident nulla facilis id ad, eos vel. Quis ipsum rem minus dignissimos tempore ab optio pariatur natus nisi magni molestias sint asperiores sequi, voluptatibus esse eveniet! Delectus ratione, ducimus earum voluptate officiis iste rerum voluptatum necessitatibus tempore debitis mollitia, molestiae minima id accusamus voluptatibus exercitationem? Neque totam vel quae isi illo repellendus fugiat, id repudiandae temporibus autem neque sint facere repellat provident molestias inventore mpedit. Nesciunt voluptatem praesentium laudantium rerum quibusdam soluta. Recusandae fugit eligendi delectus explicabo error impedit esse iusto, aliquam perferendis non. Dolore, inventore! Ratione nobis architecto expedita iste veniam voluptatem modi sapiente!</p>
+        <!-- filter -->
+
+
+        <div 
+            style="position: relative;"
+            ref="elementRef" 
+            :class="{ 'highlighted': isFixed }"
+            class="product-item_filter"
+            id="product_item_features"
+        >
+            <div style="background-color: blue;">
+                <div class="product-item_search-wrapper">
+                    <!-- SEARCH ITEM -->
+                    <Search 
+                        style="margin-top: 1rem;" 
+                        @searchInputChanged="onInputSearchProductFunc"
+                        type="primary"
+                    />
+                </div>
+            </div>
+            <!-- filter -->
+            <div style="background-color: red;position: absolute; top: 1.5rem; left: 0;">
+                Vertiical Fiilter / Search
+            </div>
+        </div>
+        <!--  -->
+        <div class="product-item_section">
+            <!-- data is loading -->
+            <div v-if="pending_warehouse_onSale">
+                <p>Loading...</p>
+            </div>
+            <!-- data -->
+            <div class="product_item-container">
+                <!-- no search result -->
+                 <div 
+                    class="product_item_search_wrong"
+                    v-if="searchProductInput && !warehouse_onSale?.length"    
+                >
+                    По запросу ничего не найдено
+                 </div>
+    
+                <!-- data -->
+                
+                <ProductCard 
+                    v-for="product_card in warehouse_onSale"
+                    :item_data="product_card"
+                    @click.stop="$router.push(`/product/${product_card.id}`)"
+                >
+                 <div style="background-color: #fff;">Это слот</div>
+                </ProductCard>
+            </div>
+        </div>
+
 
         <!-- POPUP -->
          <div v-if="popup_opened">
@@ -39,7 +92,7 @@
                 
                 <Form_landing_offer
                     :path="route?.path"
-                    :list="landing_list || []"
+                    :list="landing_list || {}"
                     @emitClosePopup="closePopup"
                 />   
             </DefaultPopup>
@@ -49,6 +102,8 @@
 </template>
 
 <script lang="ts" setup>
+
+
     useHead({
         title: "Мебель и аксессуары из камня",
         link: [
@@ -78,6 +133,8 @@
     import { Form_landing_offer } from '@/components/form'
     import { Toast } from '@/components/toast'
     import { BreadCrumbs } from '~/components/breadcrumbs';
+    import { ProductCard } from '~/components/product_card';
+    import { Search } from '~/components/search';
 
     // PROPS
     const props = defineProps({
@@ -95,6 +152,11 @@
 
     // variables
     const popup_opened = ref(false)
+    const current_data = ref({});
+    const elementRef = ref(null);
+    const isFixed = ref(false);
+    let observer = null;
+    const searchProductInput = ref("")
 
     // pop-up
     const openPopup = () => {
@@ -117,6 +179,10 @@
             }
         }, 5000)
     }
+    // search section
+    const onInputSearchProductFunc = (e: any) => {
+        searchProductInput.value = e
+    }
 
     // onMoiunted
     onMounted(() => {
@@ -125,10 +191,23 @@
         body.style.margin = 'unset'
         body.style.height = 'unset'
         body.style.overflow = 'unset'
+
+        // 
+        if (!elementRef.value) return;
+        observer = new IntersectionObserver(([entry]) => {
+            // // Инвертируем: фиксируем, когда элемент уходит из зоны видимости
+            isFixed.value = !entry.isIntersecting;
+            // entry.target.classList.toggle('highlighted', !entry.isIntersecting); 
+        }, {
+            rootMargin: '-200px 0px 0px 0px', // Отступ сверху
+            threshold: 0
+        });
+
+        observer.observe(elementRef.value);
     })
 
     // form data
-    console.log(route.path)
+    // console.log(route.path)  
 
     const { data: landing_list } = useFetch("/api/landing/landing", {
         lazy: false,
@@ -139,7 +218,16 @@
             //         return el
             //     }
             // })
-            return landing_list
+            return landing_list.find(el => el.name === route.path.slice(1))
+        }
+    })
+
+    const { data: warehouse_onSale, pending_warehouse_onSale, error_warehouse_onSale } = useFetch("/api/warehouse_onsale/item", {
+        lazy: false,
+        transform: (warehouse_onSale) => {
+            return warehouse_onSale.filter(el => 
+                el.showToAll === true
+            )
         }
     })
 
@@ -161,4 +249,57 @@
 
 <style scoped>
 
+        @media screen and (max-width: 319px) {
+        }
+
+        @media (min-width: 320px) and (max-width: 575px) {
+        }
+        @media (min-width: 576px) and (max-width: 767px) {
+
+        }
+        @media (min-width: 768px) and (max-width: 991px) {
+
+        }
+        @media (min-width: 992px) and (max-width: 1199px) {
+            
+        }
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            /* .product-item_section {
+                height: 100vh
+            } */
+            .product_item-container {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                /* background-color: gray; */
+                gap: 1rem;
+                margin-left: 11rem;
+            }
+            .product_item_search_wrong {
+
+            }
+            .product_item_wrapper {
+                border: 1px solid red;
+            }
+            .product-item_filter {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            /* 
+            FILTER highlighted
+            */
+            .highlighted {
+                /* position: fixed; */
+                background-color: var(--color-btn-text);
+                position: sticky;
+                top: 4.5rem;
+                left: 0;
+                z-index: 1000;
+                width: 100%;
+                /* padding: 0 1rem; */
+            }
+        }
+        @media (min-width: 1400px) {
+            
+        }
 </style>
