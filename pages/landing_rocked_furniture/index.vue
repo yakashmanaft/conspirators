@@ -11,44 +11,238 @@
     <Container>
 
         <!-- TITLE PAGE SECTION -->
-        <div class="show-max-767" style="margin-bottom: 0.5rem;">
+        <div class="title_page_section show-max-767" style="margin-bottom: 0.5rem;">
             <BreadCrumbs/>
             <h1 style="margin: 0;">{{ landing_list?.title }}</h1> 
         </div>
-        <!-- <p>{{ route.path }}</p>  -->
-        <h2>{{ landing_list }}</h2>
-        <h3>Изделия на заказ</h3>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p>
 
-        <Button @click.prevent="openPopup" type="original-btn">
-            Заказать индивидуальный проект
-        </Button>
+        <div style="height: 40vh;">
 
-        <h3>Изделия из наличия</h3>
+            <!-- <p>{{ route.path }}</p>  -->
+            <!-- <h2 style="color: var(--color-global-baackground_light)">{{ landing_list }}</h2> -->
+            <h2 style="color: var(--color-status-canceled);text-transform: uppercase; font-weight: bold; font-size: 5rem;">{{ landing_list?.title?.slice(0, -20) }}</h2>
+            <h3 style="width: fit-content; background-color: var(--color-operation-type-donation);color: var(--color-global-baackground_light)">
+                Изделия 
+                <span style="background-color: var(--color-operation-type-donation)">в наличии</span> 
+                и 
+                <span style="background-color: var(--color-status-finished)">на заказ</span>
+            </h3>
+            <p>Гранит, мрамор, Кварцит, Оникс, Травертин, Габбро, Базальт</p>
+            <p>Металл, дерево</p>
+            <!-- <p style="color: var(--color-global-baackground_light)">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p> -->
+    
+            <Button 
+                @click.prevent="openPopup" 
+                type="original-btn"
+                bgc="--color-global-text"
+            >
+                Заказать индивидуальный проект
+            </Button>
+        </div>
+
+        <!-- <h3>Изделия из наличия</h3> -->
         <!-- filter -->
 
 
         <div 
-            style="position: relative;"
             ref="elementRef" 
             :class="{ 'highlighted': isFixed }"
             class="product-item_filter"
             id="product_item_features"
         >
-            <div style="background-color: blue;">
+            <div>
+                <!-- SEARCH ITEM -->
                 <div class="product-item_search-wrapper">
-                    <!-- SEARCH ITEM -->
                     <Search 
                         style="margin-top: 1rem;" 
                         @searchInputChanged="onInputSearchProductFunc"
                         type="primary"
                     />
+                    <div class="filter_by_available_container">
+                        <div class="radio-option">
+                            <input v-model=filter_by_available type="radio" id="opt1" name="options" value="all">
+                            <label for="opt1">Все</label>
+                        </div>
+                        <div class="radio-option">
+                            <input v-model=filter_by_available type="radio" id="opt2" name="options" value="available">
+                            <label for="opt2">В наличии</label>
+                        </div>
+                        <div class="radio-option">
+                            <input v-model=filter_by_available type="radio" id="opt3" name="options" value="order">
+                            <label for="opt3">Под заказ</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Filter Type -->
+                <div class="filter_by_tag_container">
+                    <!-- ТОМ -->
+                    <div class="filter_by_tag_wrapper">
+                        <!-- button -->
+                         <label @click.stop="popup_volume_opened = !popup_volume_opened; current_filter_group = 'Том'" for="filter_item_by_tag">
+                            <span >{{ current_volume }}</span>
+                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                         </label>
+                         <!-- label -->
+                        <DefaultPopup
+                            v-if="popup_volume_opened"
+                            id="popup_book"
+                            popup_title="Тома, которые мы развиваем"
+                            @emitClosePopup="close_volume_popup"
+                        >
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: 1rem;">
+                                    <input :checked="current_volume === 'Все тома'" type="radio" id="volume-0">
+                                    <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="volume-0">
+                                        <span>Все тома</span>
+                                    </label>
+                                </li>
+                                <li  style="margin-top: 1rem;"v-for="(el, index) in computed_filter_pocket">
+                                    <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
+                                    <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`volume-${index}`">
+                                        <span>{{ el }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </DefaultPopup>
+                    </div>
+                    <!-- КНИГА -->
+                    <div class="filter_by_tag_wrapper">
+                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                        <label 
+                            @click.stop="popup_book_opened = !popup_book_opened; current_filter_group = 'Книга'"
+                            for="filter-by-item-category"
+                        >
+                            <span >{{current_book}}</span>
+                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                        </label>
+    
+                        <!-- MODAL POPUP -->
+                        <DefaultPopup
+                            v-if="popup_book_opened"
+                            id="popup_book"
+                            popup_title="Книги, которые мы пишем"
+                            @emitClosePopup="close_book_popup"
+                        >
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: 1rem;">
+                                    <input :checked="current_book === 'Все книги'" type="radio" id="book-0">
+                                    <label style="margin-left: .5rem;" @click="current_book = 'Все книги'; popup_book_opened = !popup_book_opened" for="book-0">
+                                        <span>Все книги</span>
+                                    </label>
+                                </li>
+                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                    <input :checked="el === current_book" type="radio" :id="`book-${0 + 1}`">
+                                    <label style="margin-left: .5rem;" @click="current_book = el.toString(); popup_book_opened = !popup_book_opened" :for="`book-${0 + 1}`">
+                                        <span>{{ el }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </DefaultPopup>
+                    </div>
+                    <!-- ЧАСТЬ -->
+                    <div class="filter_by_tag_wrapper">
+                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                        <label for="filter-by-item-category">
+                            <span @click.stop="popup_part_opened = !popup_part_opened; current_filter_group = 'Часть'">{{current_part}}</span>
+                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                        </label>
+    
+                        <!-- MODAL POPUP -->
+                         <DefaultPopup
+                            v-if="popup_part_opened"
+                            id="popup_part"
+                            popup_title="Часть книги - одно целое"
+                            @emitClosePopup="close_part_popup"
+                         >
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: 1rem;">
+                                    <input :checked="current_part === 'Все части'" type="radio" id="part-0">
+                                    <label style="margin-left: .5rem;" @click="current_part = 'Все части'; popup_part_opened = !popup_part_opened" for="part-0">
+                                        <span>Все книги</span>
+                                    </label>
+                                </li>
+                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                    <input :checked="el === current_part" type="radio" :id="`part-${0 + 1}`">
+                                    <label style="margin-left: .5rem;" @click="current_part = el.toString(); popup_part_opened = !popup_part_opened" :for="`part-${0 + 1}`">
+                                        <span>{{ el }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                         </DefaultPopup>
+                    </div>
+                    <!-- ГЛАВА -->
+                    <div class="filter_by_tag_wrapper">
+                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                        <label 
+                            for="filter-by-item-category"
+                        >
+                            <span @click.stop="popup_chapter_opened = !popup_chapter_opened; current_filter_group = 'Глава'">{{current_chapter}}</span>
+                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                        </label>
+    
+                        <!-- MODAL POPUP -->
+                        <DefaultPopup
+                            v-if="popup_chapter_opened"
+                            id="popup_chapter"
+                            popup_title="Главы, которые украшают"
+                            @emitClosePopup="close_chapter_popup"
+                        >
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: 1rem;">
+                                    <input :checked="current_chapter === 'Все главы'" type="radio" id="chapter-0">
+                                    <label style="margin-left: .5rem;" @click="current_chapter = 'Все книги'; popup_chapter_opened = !popup_chapter_opened" for="chapter-0">
+                                        <span>Все главы</span>
+                                    </label>
+                                </li>
+                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                    <input :checked="el === current_chapter" type="radio" :id="`chapter-${0 + 1}`">
+                                    <label style="margin-left: .5rem;" @click="current_chapter = el.toString(); popup_chapter_opened = !popup_chapter_opened" :for="`chapter-${0 + 1}`">
+                                        <span>{{ el }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </DefaultPopup>
+                    </div>
+                    <!-- ПАРАГРАФ -->
+                    <div class="filter_by_tag_wrapper">
+                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                        <label 
+                            for="filter-by-item-category"
+                        >
+                            <span @click.stop="popup_paragraph_opened = !popup_paragraph_opened; current_filter_group = 'Параграф'">{{current_paragraph}}</span>
+                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                        </label>
+    
+                        <!-- MODAL POPUP -->
+                        <DefaultPopup
+                            v-if="popup_paragraph_opened"
+                            id="popup_paragraph"
+                            popup_title="Параграфы - это уже детали"
+                            @emitClosePopup="close_paragraph_popup"
+                        >
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: 1rem;">
+                                    <input :checked="current_paragraph === 'Все параграфы'" type="radio" id="paragraph-0">
+                                    <label style="margin-left: .5rem;" @click="current_paragraph = 'Все параграфы'; popup_paragraph_opened = !popup_paragraph_opened" for="paragraph-0">
+                                        <span>Все параграфы</span>
+                                    </label>
+                                </li>
+                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                    <input :checked="el === current_paragraph" type="radio" :id="`paragraph-${0 + 1}`">
+                                    <label style="margin-left: .5rem;" @click="current_paragraph = el.toString(); popup_paragraph_opened = !popup_paragraph_opened" :for="`paragraph-${0 + 1}`">
+                                        <span>{{ el }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </DefaultPopup>
+                    </div>
+                    <br>
+                    {{ filter_by_available }}
+                    <br>
+                    {{ current_volume }} | {{ current_book }} | {{current_part}} | {{ current_chapter }} | {{ current_paragraph }}
                 </div>
             </div>
             <!-- filter -->
-            <div style="background-color: red;position: absolute; top: 1.5rem; left: 0;">
-                Vertiical Fiilter / Search
-            </div>
         </div>
         <!--  -->
         <div class="product-item_section">
@@ -61,7 +255,7 @@
                 <!-- no search result -->
                  <div 
                     class="product_item_search_wrong"
-                    v-if="searchProductInput && !warehouse_onSale?.length"    
+                    v-if="searchProductInput && !computed_warehouse_onSale?.length"    
                 >
                     По запросу ничего не найдено
                  </div>
@@ -69,7 +263,7 @@
                 <!-- data -->
                 
                 <ProductCard 
-                    v-for="product_card in warehouse_onSale"
+                    v-for="product_card in computed_warehouse_onSale"
                     :item_data="product_card"
                     @click.stop="$router.push(`/product/${product_card.id}`)"
                 >
@@ -157,6 +351,41 @@
     const isFixed = ref(false);
     let observer = null;
     const searchProductInput = ref("")
+    const filter_by_available = ref('all')
+
+    // variables, popup item tag
+    const popup_item_tag_opened = ref(false)
+    const current_filter_group = ref('Все')
+    // volume
+    const popup_volume_opened = ref(false)
+    const current_volume = ref('Все тома')
+    const close_volume_popup = () => {
+        popup_volume_opened.value = false
+    }
+    // book
+    const popup_book_opened = ref(false);
+    const current_book = ref('Все книги')
+    const close_book_popup = () => {
+        popup_book_opened.value = false
+    }
+    // part
+    const popup_part_opened = ref(false)
+    const current_part = ref("Все части")
+    const close_part_popup = () => {
+        popup_part_opened.value = false
+    }
+    // chapter
+    const popup_chapter_opened = ref(false) 
+    const current_chapter = ref("Все главы")
+    const close_chapter_popup = () => {
+        popup_chapter_opened.value = false
+    }
+    // paragraph
+    const popup_paragraph_opened = ref(false) 
+    const current_paragraph = ref("Все параграфы");
+    const close_paragraph_popup = () => {
+        popup_paragraph_opened.value = false
+    }
 
     // pop-up
     const openPopup = () => {
@@ -183,6 +412,51 @@
     const onInputSearchProductFunc = (e: any) => {
         searchProductInput.value = e
     }
+
+    // Computed
+    const computed_warehouse_onSale = computed(() => {
+        if(searchProductInput.value === '') {
+            
+            return warehouse_onSale.value
+        } else {
+
+            return warehouse_onSale.value?.filter((item) => item.title.toLowerCase().replace(/\s+/g, "").includes(searchProductInput.value.toLowerCase().replace(/\s+/g, ""))
+            )
+        }
+    })
+    const computed_filter_pocket = computed(() => {
+        // warehouse_onSale
+        // ТОМ
+        if(current_filter_group.value === 'Том') {
+
+            let list = warehouse_onSale.value?.map(el => el.type ? el.type.split(' / ')[0] : el.type)
+            return [... new Set(list)]
+        }
+       // КНИГА
+        else if(current_filter_group.value === 'Книга') {
+
+            let list = warehouse_onSale.value?.map(el => el.type ? el.type.split(' / ')[1] : el.type)
+            return [... new Set(list)]
+        }
+        // ЧАСТЬ
+        else if(current_filter_group.value === 'Часть') {
+
+            let list = warehouse_onSale.value?.map(el => el.type ? el.type.split(' / ')[2] : el.type)
+            return [... new Set(list)]
+        }
+        // ГЛАВА
+        else if(current_filter_group.value === 'Глава') {
+
+            let list = warehouse_onSale.value?.map(el => el.type ? el.type.split(' / ')[3] : el.type)
+            return [... new Set(list)]
+        }
+        // ПАРАГРАФ
+        else if(current_filter_group.value === 'Параграф') {
+
+            let list = warehouse_onSale.value?.map(el => el.type ? el.type.split(' / ')[4] : el.type)
+            return [... new Set(list)]
+        }
+    })
 
     // onMoiunted
     onMounted(() => {
@@ -264,26 +538,101 @@
             
         }
         @media (min-width: 1200px) and (max-width: 1399px) {
-            /* .product-item_section {
+            .title_page_section {
+                display: none;
+            }
+            .product-item_section {
                 height: 100vh
-            } */
+            }
             .product_item-container {
                 display: grid;
-                grid-template-columns: repeat(7, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 /* background-color: gray; */
                 gap: 1rem;
-                margin-left: 11rem;
+                margin-left: 20rem;
+                margin-top: 1rem;
             }
             .product_item_search_wrong {
-
+                grid-column: 1 / 3
             }
             .product_item_wrapper {
                 border: 1px solid red;
             }
             .product-item_filter {
+                /* display: flex;
+                align-items: center;
+                justify-content: flex-start; */
+                /* width: 100%; */
+                position: relative;
+                margin-top: 1rem;
+            }
+            .product-item_search-wrapper {
+                /* background-color: red; */
                 display: flex;
                 align-items: center;
-                justify-content: flex-start;
+                justify-content: space-between;
+            }
+            .search_wrapper {
+                background-color: red;
+            }
+            .search_wrapper input {
+                background-color: red;
+            }
+            .filter_by_available_container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: .75rem;
+            }
+            .filter_by_available_container div {
+
+            }
+            .filter_by_available_container div input {
+                display: none;
+            }
+            .filter_by_available_container div input:checked + label {
+                border-bottom: 1px solid var(--color-wallet-fund-invested);
+                color: var(--color-wallet-fund-invested);
+            }
+            .filter_by_available_container div label {
+                cursor: pointer;
+                border-bottom: 1px solid rgba(255, 255, 255, 0);
+                transition: all .2s ease-in;
+            }
+            .filter_by_available_container div label:hover {
+                border-bottom: 1px solid var(--color-wallet-fund-invested);
+                color: var(--color-wallet-fund-invested);
+            }
+            .filter_by_tag_container {
+                background-color: var(--color-global-baackground_light); 
+                border-radius: .75rem;
+                width: fit-content;
+                position: absolute;
+                top: 3.3rem;
+                left: 0;
+                width: 310px;
+            }
+            .filter_by_tag_wrapper {
+                display: flex;
+                gap: .5rem;
+                padding: 1rem;
+            }
+            .filter_by_tag_wrapper label span,
+            .filter_by_tag_wrapper label svg {
+                transition: all .2s ease-in;
+            }
+            .filter_by_tag_wrapper label svg{
+                margin-left: .25rem;
+                transform: rotate(180deg)
+            }
+            .filter_by_tag_wrapper label span:hover {
+                cursor: pointer;
+            }
+            .filter_by_tag_wrapper label:hover span,
+            .filter_by_tag_wrapper label:hover svg {
+                color: var(--color-wallet-fund-invested)!important;
+                transform: rotate(180deg) scale(1.5);
+                cursor: pointer;
             }
             /* 
             FILTER highlighted

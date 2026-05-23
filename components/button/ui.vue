@@ -24,8 +24,9 @@
   -->
       <div @click.prevent="counter">
         <!-- original-btn -->
-        <button v-if="props.type === 'original-btn'" :class="props?.bg" :disabled="props?.disabled" style="white-space: nowrap;">
+        <button v-if="props.type === 'original-btn'" :class="props?.bg" :disabled="props?.disabled" style="white-space: nowrap;"  :style="`background-color: var(${props?.bgc})`">
           <slot></slot>
+          
         </button>
 
         <!-- pseudo-btn -->
@@ -44,6 +45,10 @@ const props = defineProps({
   type: String,
   link: String,
   bg: String,
+  bgc: {
+    type: String,
+    default: '--color-btn-bg'
+  },
   width: {
     type: String,
     default: 'unset'

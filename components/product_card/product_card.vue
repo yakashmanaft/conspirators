@@ -19,6 +19,10 @@
             <p v-else>В наличии: {{ item_data.qty }} {{ item_data.measure }}</p>
         </div>
 
+
+        <h3 style="font-size: 1.25rem;">{{ item_data.title }}</h3>
+        <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ item_data.type }}</p>
+
         <!-- CARD ADD TO CART -->
         <div class="card_cart">
             <p 
@@ -31,14 +35,6 @@
                <span @click.stop="add_to_cart_func(item_data)">+</span>
             </p>
         </div>
-
-        <div>
-            <p>В корзине</p>
-        </div>
-
-        <h3 style="font-size: 1.25rem;">{{ item_data.title }}</h3>
-        <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ item_data.type }}</p>
-
             <!-- {{ item_data }} <br> -->
             <!-- {{ item_data.id }} <br>
             <p style="margin: 0; font-size: .8rem;">{{ item_data.type }}</p>
