@@ -16,28 +16,48 @@
             <h1 style="margin: 0;">{{ landing_list?.title }}</h1> 
         </div>
 
-        <div style="height: 40vh;">
+        <div class="banner">
+            <div class="banner_img_container">
+                <img alt="Страница на доработке..." src="@/assets/img/banner_rocked/bc449d9a769d039121d99041de2r--dlya-doma-i-interera-prikrovatnaya-tumba-deep-forest-s-radius.png"/>  
+                <div class="product-of-day" v-if="day_product_exist">
+                    <p>Товар дня</p>
+                    <p>88000 RUB</p>
+                    <h4>Прикроватная тумба "Deep Forest" с радиусными углами</h4>
+                    <p>Мебель / Спальня / Тумбы / Камень, металл, дерево / Напольный</p>
+                    <!-- CARD ADD TO CART -->
+                    <div class="card_cart">
+                        <p 
+                            class="card_cart-add_btn"
+                        >В корзину</p>
+                        <p class="card_cart-change-count_btn">
+                        <span>-</span>
+                        <span>1</span>
+                        <span>+</span>
+                        </p>
+                    </div>
+                    <p>*Цена на товар действительна сутки с момента выставления товара в качестве товара дня</p>
+                </div>
+            </div>
+            <div>
+                <h2 style="text-transform: uppercase; font-weight: bold; font-size: 4rem;">{{ landing_list?.title.slice(0, 15) }}</h2>
 
-            <!-- <p>{{ route.path }}</p>  -->
-            <!-- <h2 style="color: var(--color-global-baackground_light)">{{ landing_list }}</h2> -->
-            <h2 style="color: var(--color-status-canceled);text-transform: uppercase; font-weight: bold; font-size: 5rem;">{{ landing_list?.title?.slice(0, -20) }}</h2>
-            <h3 style="width: fit-content; background-color: var(--color-operation-type-donation);color: var(--color-global-baackground_light)">
-                Изделия 
-                <span style="background-color: var(--color-operation-type-donation)">в наличии</span> 
-                и 
-                <span style="background-color: var(--color-status-finished)">на заказ</span>
-            </h3>
-            <p>Гранит, мрамор, Кварцит, Оникс, Травертин, Габбро, Базальт</p>
-            <p>Металл, дерево</p>
-            <!-- <p style="color: var(--color-global-baackground_light)">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam molestias fugit expedita quasi delectus culpa iste unde consequatur amet aliquam quisquam dolorem ullam odit voluptatem provident deleniti quos, hic sit repellat debitis eum sapiente? Blanditiis, doloribus asperiores. Dignissimos laudantium nobis autem iste voluptatem pariatur ratione, recusandae fuga at debitis? Labore delectus numquam voluptas? Sapiente magni corrupti deleniti, excepturi, dolores, omnis ipsa aut reprehenderit nisi qui perferendis culpa doloremque expedita aliquam beatae ducimus laborum eius saepe. Vel velit fuga rem quod praesentium? Amet illum beatae hic, cupiditate atque excepturi consectetur, cumque voluptates facere officia in? Vitae nihil rerum labore ea tempore!</p> -->
+                <h3 style="width: fit-content; background-color: var(--color-operation-type-donation);color: var(--color-global-baackground_light)">
+                    Изделия 
+                    <span style="background-color: var(--color-operation-type-donation)">в наличии</span> 
+                    и 
+                    <span style="background-color: var(--color-status-finished)">на заказ</span>
+                </h3>
+                <p>Гранит, мрамор, Кварцит, Оникс, Травертин, Габбро, Базальт</p>
+                <p>Металл, дерево</p>
+                <Button 
+                    @click.prevent="openPopup" 
+                    type="original-btn"
+                    bgc="--color-global-text"
+                >
+                    Заказать индивидуальный проект
+                </Button>
+            </div>
     
-            <Button 
-                @click.prevent="openPopup" 
-                type="original-btn"
-                bgc="--color-global-text"
-            >
-                Заказать индивидуальный проект
-            </Button>
         </div>
 
         <!-- <h3>Изделия из наличия</h3> -->
@@ -262,13 +282,13 @@
     
                 <!-- data -->
                 
-                <ProductCard 
+                <Product_card 
                     v-for="product_card in computed_warehouse_onSale"
                     :item_data="product_card"
                     @click.stop="$router.push(`/product/${product_card.id}`)"
                 >
                  <div style="background-color: #fff;">Это слот</div>
-                </ProductCard>
+                </Product_card>
             </div>
         </div>
 
@@ -327,7 +347,7 @@
     import { Form_landing_offer } from '@/components/form'
     import { Toast } from '@/components/toast'
     import { BreadCrumbs } from '~/components/breadcrumbs';
-    import { ProductCard } from '~/components/product_card';
+    import { Product_card } from '~/components/product_card';
     import { Search } from '~/components/search';
 
     // PROPS
@@ -352,6 +372,7 @@
     let observer = null;
     const searchProductInput = ref("")
     const filter_by_available = ref('all')
+    const day_product_exist = ref(true)
 
     // variables, popup item tag
     const popup_item_tag_opened = ref(false)
@@ -541,8 +562,45 @@
             .title_page_section {
                 display: none;
             }
+            .container {
+                margin-top: -1rem!important;
+            }
+            .banner {
+                margin-top: 6rem;
+                height: 620px;
+                background-color: var(--color-bg-popup);
+                /* position: relative; */
+                display: flex;
+                flex-direction: row-reverse;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .banner_img_container {
+                /* position: absolute;
+                top: 0;
+                right: 0; */
+                width: 50%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                position: relative;
+                /* padding: 1rem; */
+            }
+            .banner_img_container img{
+                height: 100%;
+            }
+            .product-of-day {
+                overflow: hidden;
+                width: 50%;
+                position: absolute;
+                bottom: 5   rem;
+                right: 0;
+                background-color: var(--color-operation-type-donation);
+                /* background-color: rgba(142, 47, 47, 0.5); */
+            }
             .product-item_section {
-                height: 100vh
+                /* height: 130vh */
             }
             .product_item-container {
                 display: grid;
@@ -553,7 +611,8 @@
                 margin-top: 1rem;
             }
             .product_item_search_wrong {
-                grid-column: 1 / 3
+                grid-column: 1 / 3;
+                height: 45vh;
             }
             .product_item_wrapper {
                 border: 1px solid red;
@@ -567,7 +626,7 @@
                 margin-top: 1rem;
             }
             .product-item_search-wrapper {
-                /* background-color: red; */
+                /* background-color: var(--color-global-baackground_light); */
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
