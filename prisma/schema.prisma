@@ -58,6 +58,7 @@ model Project {
   id            Int           @id @default(autoincrement())
   name          String        @db.VarChar(60)
   created_at    DateTime      @default(now()) @db.DateTime(0)
+  update_at     DateTime?     @updatedAt
   status        ProjectStatus @default(waiting)
   sharers       Json?
   bandId        Int
@@ -242,6 +243,7 @@ model Warehouse {
   description     String   @default("Нет описания") @db.VarChar(255)
   features        Json?
   locationId      Int
+  projectId       Int      @default(0)
   position        String   @db.VarChar(255)
   serial          String   @db.VarChar(255)
   productionDate  String   @db.VarChar(255)

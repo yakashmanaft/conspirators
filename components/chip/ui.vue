@@ -17,7 +17,6 @@
         <p>Все</p>
       </label>
     </div>
-
     <!-- Tabs Array -->
     <div class="tab" v-for="(tab, j) in tabs">
       <input
@@ -39,35 +38,39 @@
 // PROPS
 const props = defineProps({
   tabs: Array,
-  default: Object,
   btn_all_exist: Boolean,
   no_padding: {
     type: Boolean,
     default: false
+  },
+  // scheme: default, first
+  scheme: {
+    type: String,
+    default: 'default'
   }
 });
-const currentTitle = ref(props?.default);
+// const currentTitle = ref(props?.default);
 //
 const default_data = ref({
-  id: null,
+  id: 0,
   bandID: null,
   name: 'all',
   title: 'Все',
 })
-
+const currentTitle = ref(default_data.value)
 // EMITS
 // = variables
 const emit = defineEmits(["changed"]);
 // = emits
 const emit_object = (obj: any) => {
   if (obj) {
-    if(obj.id === null) {
+    if(obj.id === 0) {
       currentTitle.value = default_data.value
       emit("changed", default_data.value);
     } else {
 
       emit("changed", obj);
-      // console.log(name)
+      // console.log(obj)
     }
   }
 };
@@ -93,7 +96,8 @@ onMounted(() => {
 <style scoped>
 .tab_wrapper {
   display: flex;
-  gap: 1rem;
+  /* gap: 1rem; */
+  gap: v-bind('props.scheme === "first" ? `.25rem`: `1rem`');
   overflow: scroll; 
   max-width: 100vw!important;
   -ms-overflow-style: none;  /* IE and Edge */
@@ -108,7 +112,8 @@ onMounted(() => {
   width: 0;
 }
 .tab label p {
-  border: 1px solid var(--color-global-text);
+  /* border: 1px solid var(--color-global-text); */
+  border: v-bind('props.scheme === "first" ? `none`: `1px solid var(--color-global-text)`');
   padding: 2px 10px;
   border-radius: 2rem;
   color: var(--color-global-text);
@@ -119,6 +124,7 @@ onMounted(() => {
 }
 .tab label p:hover {
   cursor: pointer;
+  color: v-bind('props.scheme === "first" ? `var(--color-wallet-fund-invested)`: `unset`');
 }
 
 /* .tab input[type="radio"]:checked + label h2 {
@@ -126,7 +132,9 @@ onMounted(() => {
 } */
 .tab input[type="radio"]:checked + label p {
   color: var(--bs-body-bg);
-  background-color: var(--color-global-text);
+  /* color: v-bind('props.scheme === "first" ? `var(--color-wallet-fund-invested)`: `var(--bs-body-bg)`'); */
+  /* background-color: var(--color-global-text); */
+  background-color: v-bind('props.scheme === "first" ? `var(--color-wallet-fund-invested)`: `var(--color-global-text)`');
 }
 
 @media screen and (max-width: 575px) {
@@ -152,7 +160,10 @@ onMounted(() => {
 
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+
+}
+@media screen and (min-width: 1400px) {
 
 }
 

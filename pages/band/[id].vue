@@ -1644,8 +1644,8 @@ useHead({
     /* 
      */
      .graph-container {
-        padding-left: .5rem;
-        padding-right: 1rem;
+        /* padding-left: .5rem;
+        padding-right: 1rem; */
         width: 100vw!important;
     }
     .graph_year-wrapper:first-child {
@@ -1678,7 +1678,7 @@ useHead({
     /* 
      */
     .graph-container {
-        width: 100vw!important;
+        width: 96vw;
     }
     .graph_year-wrapper:first-child {
         margin-left: none!important;
@@ -1689,7 +1689,7 @@ useHead({
     */
     .sharers_container {
         margin: 0;
-        margin-right: 1.5rem;
+        /* margin-right: 1.5rem; */
         margin-top: 2rem;
     }
 }
@@ -1719,7 +1719,7 @@ useHead({
     /* 
      */
      .graph-container {
-        width: 100vw!important;
+        width: 96vw!important;
      }
      .graph_year-wrapper:first-child {
         margin-left: none!important;
@@ -1732,9 +1732,11 @@ useHead({
         margin: 0;
         margin-right: 1.5rem;
         margin-top: 2rem;
+        /* width: 100%; */
+        width: 500px;
     }
 }
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
     /* 
      */
      .popup-container > .popup_wrapper,
@@ -1770,6 +1772,47 @@ useHead({
         margin: 0;
         margin-top: 2rem;
         margin-right: 1rem;
+        width: 500px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    /* 
+     */
+     .popup-container > .popup_wrapper,
+     .popup_1-container > .popup_1-wrapper {
+        width: 50%;
+    }
+    /* 
+     */
+     .cap-header_wrapper {
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 0;
+    }
+    .cap-header_wrapper div h2{
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .cap-header_wrapper > p {
+        margin: 0;
+    }
+    /* 
+     */
+     .graph_year-wrapper:first-child {
+        margin-left: none!important;
+        border-left: none!important;
+    }
+    /* 
+    SHARERS
+    */
+    .sharers_container {
+        margin: 0;
+        margin-top: 2rem;
+        margin-right: 1rem;
+        width: 500px;
     }
 }
 </style>

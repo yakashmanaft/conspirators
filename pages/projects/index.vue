@@ -105,11 +105,16 @@ useHead({
   const current_status_to_show = ref({
     id: 0,
     name: 'all',
-    translate: 'Все'
+    translate: 'Все',
+    title: 'Все'
   })
 
   // CONST
   const searchInput = ref("")
+
+  const elementRef = ref(null);
+  const isFixed = ref(false);
+  let observer = null
   
   // COMPUTED
   //= projects
@@ -212,6 +217,16 @@ onMounted(async () => {
   // await loadData();
   await useBandStore().loadBandData()
   await usePartnerStore().loadPartnerData()
+
+  if(!elementRef.value) return; 
+  observer = new IntersectionObserver(([entry]) => {
+    isFixed.value = !entry.isIntersecting;
+  }, {
+    rootMargin: '-200px 0px 0px 0px',
+    threshold: 0
+  });
+
+  observer.observe(elementRef.value);
 });
 
 // CHECK
@@ -573,25 +588,52 @@ const addNewProject = () => {
       </div> -->
   
   
-  
+      <!-- FILTER ITEM -->
+      <div
+        ref="elementRef" 
+        :class="{ 'highlighted': isFixed }"
+        class="item_filter"
+        id="project_fiilter"
+      >
+        <div class="item_filter_search">
+          <!-- SEARCH ITEM -->
+          <Search 
+              style="margin-top: 1rem;" 
+              @searchInputChanged="searchInputChanged"
+              type="active_btn"
+          />
+        </div>
+        <div class="item_filter_chip">
+          <Chip
+            id="project_status_chip_block"
+            :tabs="project_status"
+            :btn_all_exist="true"
+            @changed="change_status_to_show"
+            scheme="first"
+          />
+        </div>
+      </div>
       <!--  -->
       <div class="project_container">
+          
+
+
         <!-- status bar -->
-        <Chip
+        <!-- <Chip
           id="project_status_chip_block"
           :tabs="project_status"
           :default="current_status_to_show"
           :btn_all_exist="true"
           @changed="change_status_to_show"
           style="margin-bottom: 2rem;"
-        />
+        /> -->
         <!-- {{ current_status_to_show }} -->
         <!-- SEARCH SECTION -->
-        <div v-if="project_list?.length">
+        <!-- <div v-if="project_list?.length">
           <Search
             @searchInputChanged="searchInputChanged"
             :string="`${searchInput}`"
-          >
+          > -->
             <!-- <input
               type="text"
               class="form-control"
@@ -599,8 +641,8 @@ const addNewProject = () => {
               v-model="searchInput"
               style="padding-left: 2.2rem"
             /> -->
-          </Search>
-        </div>
+          <!-- </Search> -->
+        <!-- </div> -->
         <!-- list-->
         <div class="project-list_container">
   
@@ -629,6 +671,10 @@ const addNewProject = () => {
               </p>
               <div style="display: flex; flex-direction: column;">
 
+                <p class="project-item_date">
+                  <span>Создан: {{ project.created_at }}</span> <br>
+                  <span>Обновлено: {{ project.update_at }}</span>
+                </p>
                 <p class="project-item_customers_wrapper">
                   <span>Заказчик: </span>
                   <span class="project-item_customers_list" v-if="translateCustomersName(project?.customer).length">
@@ -736,12 +782,14 @@ const addNewProject = () => {
   background-color: var(--color-global-baackground_light);
 }
 .project-item_executors_wrapper,
-.project-item_customers_wrapper {
+.project-item_customers_wrapper,
+.project-item_date {
   font-size: .8rem;
   margin: 0;
 }
 .project-item_executors_wrapper span,
-.project-item_customers_wrapper span {
+.project-item_customers_wrapper span,
+.project-item_date span {
   color: var(--color-global-text_second); 
 }
 .project-item_executors_list span
@@ -847,4 +895,190 @@ const addNewProject = () => {
     display: none;
   }
 }
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  /* 
+  FILTER highlighted
+  */
+  .highlighted {
+      /* position: fixed; */
+      background-color: var(--color-btn-text);
+      position: sticky;
+      top: 4.5rem;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+      /* padding: 0 1rem; */
+  }
+
+  /* 
+    product-item_filter
+  */
+  .item_filter {
+    /* background-color: green; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  .item_filter_search {
+    
+  }
+  .item_filter_chip {
+    margin-left: .5rem;
+  }
+
+  /* 
+    PROJECT LIST
+   */
+  .project_container {
+    margin-top: 0!important;
+  }
+  .project-list_container {
+    min-height: 300px;
+    margin-top: 0!important;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .project-list_container .no-search-item_wrapper {
+
+  }
+  .project-list_container .no-project_wrapper {
+
+  }
+  .project-list_container .project-item_wrapper {
+    height: fit-content;
+    background-color: var(--color-global-baackground_light);
+    transition: all .2s ease-in-out;
+  }
+  .project-list_container .project-item_wrapper:hover {
+    cursor: pointer;
+    box-shadow: var(--hover-shadow);
+  }
+}
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+  /* 
+  FILTER highlighted
+  */
+  .highlighted {
+      /* position: fixed; */
+      background-color: var(--color-btn-text);
+      position: sticky;
+      top: 4.5rem;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+      /* padding: 0 1rem; */
+  }
+  /* 
+    product-item_filter
+  */
+  .item_filter {
+    /* background-color: green; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  .item_filter_search {
+    
+  }
+  .item_filter_chip {
+    margin-left: .5rem;
+  }
+  /* 
+    PROJECT LIST
+   */
+  .project_container {
+    margin-top: 0!important;
+  }
+  .project-list_container {
+    min-height: 400px;
+    margin-top: 0!important;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+  .project-list_container .no-search-item_wrapper {
+
+  }
+  .project-list_container .no-project_wrapper {
+
+  }
+  .project-list_container .project-item_wrapper {
+    height: fit-content;
+    background-color: var(--color-global-baackground_light);
+    transition: all .2s ease-in-out;
+  }
+  .project-list_container .project-item_wrapper:hover {
+    cursor: pointer;
+    box-shadow: var(--hover-shadow);
+  }
+}
+@media screen and (min-width: 1400px) {
+  /* 
+  FILTER highlighted
+  */
+  .highlighted {
+      /* position: fixed; */
+      background-color: var(--color-btn-text);
+      position: sticky;
+      top: 4.5rem;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+      /* padding: 0 1rem; */
+  }
+  /* 
+    product-item_filter
+  */
+  .item_filter {
+    /* background-color: green; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  .item_filter_search {
+    
+  }
+  .item_filter_chip {
+    margin-left: .5rem;
+  }
+  /* 
+    PROJECT LIST
+   */
+  .project_container {
+    margin-top: 0!important;
+  }
+  .project-list_container {
+    min-height: 400px;
+    margin-top: 0!important;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+  .project-list_container .no-search-item_wrapper {
+
+  }
+  .project-list_container .no-project_wrapper {
+
+  }
+  .project-list_container .project-item_wrapper {
+    height: fit-content;
+    background-color: var(--color-global-baackground_light);
+    transition: all .2s ease-in-out;
+  }
+  .project-list_container .project-item_wrapper:hover {
+    cursor: pointer;
+    box-shadow: var(--hover-shadow);
+  }
+}
+
 </style>

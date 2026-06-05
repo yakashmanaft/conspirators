@@ -4,6 +4,7 @@ import { Container } from "@/shared/container";
 import { Section } from "~/shared/section";
 import { SectionColored } from "~/shared/section_colored";
 import { InfoPopup } from "~/shared/popup";
+import { Product_card } from '~/components/product_card'
 
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
@@ -235,6 +236,10 @@ const computedTasks = computed(() => {
       })
     }
 })
+// products
+// const computedProduct = computed(() => {
+//   return items.value
+// })
 
 // accomplishment
 const computedAccomplishments = computed(() => {
@@ -278,7 +283,7 @@ const countPaidedTaskByHours = () => {
 
     if(task.projectId === computedProject?.value?.id) {
       
-      task_list_filtred?.push(...task_ledger?.value?.filter(task_el => task_el.taskId === task.id))
+      task_list_filtred?.push(...task_ledger?.value?.filter(task_el => task_el?.taskId === task.id))
 
       // ENDED SUM
       endedSum = task_list_filtred?.reduce((acc, list_el) => {
@@ -306,6 +311,15 @@ const countPaidedTaskByHours = () => {
 
     return `${paided.toFixed(2)} из ${endedSum.toFixed(2)} (${(paided - endedSum).toFixed(2)})`
   }
+}
+
+//= on click
+const onClickProductCardFunc = (item: any) => {
+  router.push(`/warehouse/${item?.id}`)
+  // if(item.on_sale) {
+  //   router.push(`/product/${item?.id}`)
+  // } else {
+  // }
 }
 
 // ******* DB
@@ -367,14 +381,24 @@ const { data: task_ledger } = useFetch("/api/taskLedgerGuarded/taskElement", {
 //   lazy: false,
 // });
 // DB WAREHOUSE ITEMS
+//
 // const { data: items } = await useFetch("/api/warehouse/item", {
-//   laze: false,
+//   lazy: false,
 //   transform: (items) => {
-//     return items.filter(
-//       (el) => el.location === "project" && el.locationID === +route.params.id
-//     );
+//     // return items.filter(
+//     //   (el) => el.projectId ===  computedProject.value.id
+//     // );
+//     return items
 //   },
 // });
+const {data: items} = useFetch('/api/warehouse/item', {
+  lazy: false,
+  transform: (items) => {
+    return items.filter(
+      (el) => el.projectId === project_list.value?.id
+    )
+  }
+})
 
 // CHECK FUNC
 // const isRelated = (obj) => {
@@ -532,6 +556,11 @@ const projectInfoParagraph = ref([
     id: 2,
     name: 'transaction',
     title: 'Транзакции'
+  },
+  {
+    id: 3,
+    name: 'products',
+    title: 'Товары / Изделия'
   }
 ])
 //= current fund paragraph
@@ -754,7 +783,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
       <div class="general-section_container">
 
         <!-- status -->
-        <p style="margin: 0;padding: 4px 8px; border-radius: 1rem;" :style="setColorByProjectStatus()">{{project_status}}</p>
+        <p style="margin: 0;padding: 4px 8px; border-radius: 1rem; width: fit-content;" :style="setColorByProjectStatus()">{{project_status}}</p>
 
         <!-- paided -->
         <div class="paided-el">
@@ -770,14 +799,15 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
 
       <!-- ABOUT SECTION-->
       <div class="about-section_container">
-        <h3>Статистика</h3>
+        <!-- <h3>Статистика</h3>  -->
         <!-- 1 -->
         <div style="background-color: var(--color-urgency-middle-10);">
-          <h4>Выручка</h4>
+          <h4>Выработка</h4>
           <ul style="list-style: none; padding: 0;">
             <li>Ставка: почасовая (999,999,999.00 RUB / час)</li>
             <li>Закрытые часы 99.99 / 99.99</li>
-            <li>Итого: 999,999,999.00 RUB</li>
+            <li>Продажи 999,999,999.00 RUB</li>
+            <!-- <li>Итого: 999,999,999.00 RUB</li> -->
           </ul>
         </div>
         <!-- 2 -->
@@ -785,8 +815,9 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
           <h4>Затраты</h4>
           <ul style="list-style: none; padding: 0;">
             <li>Налог: (Ставка: 999,99%) RUB</li>
-            <li>Деятельность: 999,999,999.00 RUB</li>
-            <li>Прочее</li>
+            <li>Текущая деятельность: 999,999,999.00 RUB</li>
+            <li>Оплата труда: 999,999,999.00 RUB</li>
+            <li>Прочее 999,999,999.00 RUB</li>
             <li>Итого: 999,999,999.00 RUB</li>
           </ul>
         </div>
@@ -906,7 +937,38 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
       <div 
         class="paragraph_container"
         v-if="currentProjectInfoParagraph.name === 'transaction'">
-        123
+        СПИСОК ТРАНЗАКЦИЙ
+      </div>
+
+      <!-- PRODUCTS -->
+      <div
+         class="paragraph_container"
+         v-if="currentProjectInfoParagraph.name === 'products'""  
+      >
+      СПИСОК ИЗДЕЛИЙ / ТОВАРОВ по данному проекту #{{ project_list?.id }}
+      <ul style="list-style: one; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap :1rem;">
+          <!-- {{ computedProduct }} -->
+
+          <Product_card 
+            v-for="item in items" :key="item.id"
+            :item_data="item"  
+            @click.stop="onClickProductCardFunc(item)"
+          >
+            <!-- {{item}} -->
+             <ul>
+              <li>on sale: {{ item.on_sale }}
+                <span v-if="item.on_sale" @click.stop="router.push(`/product/${item?.id}`)">Баннер</span>
+              </li>
+              <li>show to all: {{ item.showToAll }}</li>
+             </ul>
+
+             <ul>
+              <li>Приход</li>
+              <li>Списание</li>
+              <li>Амортизация</li>
+             </ul>
+          </Product_card>
+        </ul>
       </div>
 
     </div>
@@ -1280,7 +1342,7 @@ ul > .task_ledger_el:last-child {
   display: none;
 }
 .popup-menu_container > .popup-menu_wrapper {
-  transition: all .5s ease-in-out;
+  transition: all .2s ease-in-out;
   position: absolute;
   height: 100%;
   left: -100%;
@@ -1478,10 +1540,72 @@ ul > .task_ledger_el:last-child {
   .count_task {
     margin: 0 0.5rem;
   }
+  /* 
+   */
+  .general-section_container {
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .paided-el {
+    display: flex;
+    gap: 1rem;
+  }
+  .paided-el p {
+    margin: 0;
+  }
+  /* 
+  
+  */
+  .about-section_container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
 
+  .computedTask_container{
+    grid-template-columns: repeat(5, 1fr);
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+  /* .leder_el_header {
+    margin-top: 0.5rem;
+  } */
+  /* 
+   */
+  .general-section_container {
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .paided-el {
+    display: flex;
+    gap: 1rem;
+  }
+  .paided-el p {
+    margin: 0;
+  }
+  .count_task {
+    margin: 0 0.5rem;
+  }
+  /* 
+  
+  */
+  .about-section_container {
+    display: flex!important;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
   .computedTask_container{
     grid-template-columns: repeat(5, 1fr);
     margin-left: .5rem;
@@ -1493,6 +1617,30 @@ ul > .task_ledger_el:last-child {
   .count_task {
     margin: 0 0.5rem;
   }
+  /* 
+   */
+  .general-section_container {
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .paided-el {
+    display: flex;
+    gap: 1rem;
+  }
+  .paided-el p {
+    margin: 0;
+  }
+  /* 
+  
+  */
+  .about-section_container {
+    display: flex!important;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
 }
-
+ 
 </style>

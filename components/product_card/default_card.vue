@@ -71,7 +71,7 @@
                 overflow: hidden;
                 cursor: pointer;
                 background-color: var(--color-global-baackground_light);
-                border-radius: .75rem;
+                /* border-radius: .75rem; */
             }
             .card_wrapper:hover {
                 box-shadow: var(--hover-shadow);

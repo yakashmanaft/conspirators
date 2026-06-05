@@ -856,7 +856,7 @@
         /* 
          */
         .product-item_section {
-            height: 100vh
+            /* height: 100vh */
         }
         .product-item_filter {
             /* background-color: green; */
