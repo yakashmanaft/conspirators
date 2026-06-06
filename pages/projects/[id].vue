@@ -108,6 +108,8 @@ const currentChip = ref({
       title: 'Все',
       id: 'chips_status_1'
 })
+// CURRENT CHOOSEN PRODUCT
+const current_choosen_product = ref(null)
 
 const chips = [
   {
@@ -257,7 +259,6 @@ const computedAccomplishments = computed(() => {
   }
 })
 
-
 // HELPERS
 //= set color by project status
 const setColorByProjectStatus = () => {
@@ -315,7 +316,8 @@ const countPaidedTaskByHours = () => {
 
 //= on click
 const onClickProductCardFunc = (item: any) => {
-  router.push(`/warehouse/${item?.id}`)
+  current_choosen_product.value = item
+  // router.push(`/warehouse/${item?.id}`)
   // if(item.on_sale) {
   //   router.push(`/product/${item?.id}`)
   // } else {
@@ -468,9 +470,12 @@ onMounted(async () => {
     
     const more_project_info_menu = document.getElementById('popup-open_input-1')
     if(e.target?.classList?.contains('popup-menu_container')) {
-      
       more_project_info_menu.checked = false
+    }
 
+    const popup_menu_product_card = document.getElementById('popup-open_input-product_card')
+    if(e.target?.classList?.contains('popup-menu_container')) {
+      popup_menu_product_card.checked = false
     }
 
   })
@@ -594,6 +599,10 @@ const currentProjectInfoParagraph = ref({
 //= add New Task
 const addNewTask = () => {
   alert('В разработке...')
+}
+//= change status on sale
+const changeOnSaleStatus = (productItem: any) => {
+  alert(`Смена статууса для товара id${productItem.id} в разработке. changeOnSaleStatus`)
 }
 
 // HELPERS
@@ -839,7 +848,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
             <div class="popup-menu_container" style="border-radius: unset">
 
               <div class="popup-menu_wrapper" style="border-top-left-radius: unset; border-bottom-left-radius: unset;">
-                <h4>popup menu wrapper</h4>
+                <h4>popup menu wrapper header h4</h4>
                 <div>
                   21312
                 </div>
@@ -945,29 +954,81 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
          class="paragraph_container"
          v-if="currentProjectInfoParagraph.name === 'products'""  
       >
-      СПИСОК ИЗДЕЛИЙ / ТОВАРОВ по данному проекту #{{ project_list?.id }}
+      <!-- СПИСОК ИЗДЕЛИЙ / ТОВАРОВ по данному проекту #{{ project_list?.id }}   -->
       <ul style="list-style: one; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap :1rem;">
           <!-- {{ computedProduct }} -->
 
-          <Product_card 
+          <label 
+            for="popup-open_input-product_card"
             v-for="item in items" :key="item.id"
-            :item_data="item"  
-            @click.stop="onClickProductCardFunc(item)"
-          >
-            <!-- {{item}} -->
-             <ul>
-              <li>on sale: {{ item.on_sale }}
-                <span v-if="item.on_sale" @click.stop="router.push(`/product/${item?.id}`)">Баннер</span>
-              </li>
-              <li>show to all: {{ item.showToAll }}</li>
-             </ul>
+            >
+            <Product_card 
+              :item_data="item"  
+              @click.stop="onClickProductCardFunc(item)"
+              style="position: relative;"
+            >
+              <!-- {{item}} -->
+               <div  
+                style="position: absolute; top: .5rem; left: 0.5rem; padding: 0 .2rem;"
+                :style="item.on_sale ? 'background-color: var(--color-urgency-middle);' : 'background-color: var(--color-global-text_second);'"
+                @click.stop="changeOnSaleStatus(item)"
+              >
+                <p 
+                  style="margin: 0; font-size: .8rem; text-transform: uppercase;"
+                  :style="item.on_sale ? 'color: var(--color-global-baackground_light)' : 'color: var(--color-global-text)'"
+                >
+                  Onsale
+                </p>
+               </div>
+               <ul>
+                <!-- <li>on sale: {{ item.on_sale }}
+                  <span v-if="item.on_sale" @click.stop="router.push(`/product/${item?.id}`)">Баннер</span>
+                </li> -->
+                <li>show to all: {{ item.showToAll }}</li>
+               </ul>
+  
+               <ul>
+                <li>Приход</li>
+                <li>Списание</li>
+                <li>Амортизация</li>
+               </ul>
+  
+               <!-- popup -->
+  
+            </Product_card>
+          </label>
+          <input id="popup-open_input-product_card" type="checkbox">
+          <!-- MENU -->
+          <div class="popup-menu_container" style="border-radius: unset">
 
-             <ul>
-              <li>Приход</li>
-              <li>Списание</li>
-              <li>Амортизация</li>
-             </ul>
-          </Product_card>
+            <div class="popup-menu_wrapper" style="border-top-left-radius: unset; border-bottom-left-radius: unset;">
+              <h4>product actions</h4>
+              <div>
+                <ul>
+                  <li>Приход</li>
+                  <li>Списание</li>
+                  <li>Продажа</li>
+                </ul>
+                <!--  -->
+                <ul>
+                  <!-- <li>
+                    <p style="margin: 0;">show to all: {{ current_choosen_product?.showToAll }}</p>
+                  </li> -->
+                  <li>
+                    <p style="margin: 0;">on sale: {{ current_choosen_product?.on_sale }}</p>
+                  </li>
+                </ul>
+                <!--  -->
+                <ul>
+                  <li>Амортизация</li>
+                </ul>
+              </div>
+              <div>
+                <h5>Предмет</h5>
+                <p>{{current_choosen_product}}</p>
+              </div>
+            </div>
+          </div>
         </ul>
       </div>
 
@@ -1345,6 +1406,7 @@ ul > .task_ledger_el:last-child {
   transition: all .2s ease-in-out;
   position: absolute;
   height: 100%;
+  width: 30%;
   left: -100%;
   background-color: var(--color-btn-text);
   box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.2);
@@ -1353,10 +1415,12 @@ ul > .task_ledger_el:last-child {
   flex-direction: column;
 }
 /* 1 */
-#popup-open_input-1 {
+#popup-open_input-1,
+#popup-open_input-product_card {
   display: none;
 }
-#popup-open_input-1:checked + .popup-menu_container {
+#popup-open_input-1:checked + .popup-menu_container,
+#popup-open_input-product_card:checked + .popup-menu_container {
   display: flex;
   position: fixed;
   opacity: 1;
@@ -1365,6 +1429,7 @@ ul > .task_ledger_el:last-child {
   z-index: 999;
   transition: all .2s ease-in-out;
 }
+#popup-open_input-product_card:checked + .popup-menu_container > .popup-menu_wrapper,
 #popup-open_input-1:checked + .popup-menu_container > .popup-menu_wrapper {
     left: 0;
     top: 0;
@@ -1602,6 +1667,9 @@ ul > .task_ledger_el:last-child {
     display: flex!important;
     gap: 1rem;
     margin-top: 1.5rem;
+  }
+  .paragraph_container {
+    margin-top: 2rem;
   }
 }
 
