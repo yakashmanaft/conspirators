@@ -984,16 +984,8 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
                 <!-- <li>on sale: {{ item.on_sale }}
                   <span v-if="item.on_sale" @click.stop="router.push(`/product/${item?.id}`)">Баннер</span>
                 </li> -->
-                <li>show to all: {{ item.showToAll }}</li>
+                <!-- <li>show to all: {{ item.showToAll }}</li> -->
                </ul>
-  
-               <ul>
-                <li>Приход</li>
-                <li>Списание</li>
-                <li>Амортизация</li>
-               </ul>
-  
-               <!-- popup -->
   
             </Product_card>
           </label>
@@ -1002,25 +994,64 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
           <div class="popup-menu_container" style="border-radius: unset">
 
             <div class="popup-menu_wrapper" style="border-top-left-radius: unset; border-bottom-left-radius: unset;">
-              <h4>product actions</h4>
+              <h4>product #{{ current_choosen_product?.id }} actions</h4>
               <div>
-                <ul>
-                  <li>Приход</li>
-                  <li>Списание</li>
-                  <li>Продажа</li>
+                <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem;">
+                  <li style="border: 1px solid red; display: flex; align-items: center; justify-content: center">Приход</li>
+                  <li style="border: 1px solid red; display: flex; align-items: center; justify-content: center">Списание</li>
+                  <li style="border: 1px solid red; display: flex; align-items: center; justify-content: center">Продажа</li>
                 </ul>
+
                 <!--  -->
-                <ul>
+                <ul style="margin-top: .5rem; list-style: none; padding: 0;">
                   <!-- <li>
                     <p style="margin: 0;">show to all: {{ current_choosen_product?.showToAll }}</p>
                   </li> -->
-                  <li>
+                  <li style="border: 1px solid red; padding: .5rem;">
                     <p style="margin: 0;">on sale: {{ current_choosen_product?.on_sale }}</p>
+                    <p 
+                      v-if="current_choosen_product?.on_sale" 
+                      style="margin: 0; background-color: var(--color-urgency-low-10); cursor: pointer; text-align: center; padding: .5rem;"
+                    >
+                      Перейти на страницу
+                    </p>
                   </li>
                 </ul>
+
                 <!--  -->
-                <ul>
-                  <li>Амортизация</li>
+                <ul style="margin-top: .5rem; list-style: none; padding: 0;">
+                  <!--  -->
+                  <li v-if="current_choosen_product?.qty === 0" style="border: 1px solid red; padding: .5rem;">
+                    <h5 style="margin: 0;">Доступно для заказа</h5>
+                    <p style="margin: 0;">Оставить заявку</p>
+                  </li>
+                  <li v-else style="border: 1px solid red; padding: .5rem;">
+                    <h5 style="display: flex; align-items: center; justify-content: space-between; margin: 0;">
+                      <span>В наличии</span>
+                      <span>{{ current_choosen_product?.qty }} {{ current_choosen_product?.measure }}</span>
+                    </h5>
+                    <p style="display: flex; align-items :center; justify-content: space-between; margin: 0;">
+                      <span>Местонахождение</span>
+                      <span>{{ current_choosen_product?.locationId }} {{ current_choosen_product?.locationType }}</span>  
+                    </p>
+                  </li>
+
+                  <!--  -->
+                  <li style="margin-top: .5rem; border: 1px solid red;">
+                    <h5>Цена</h5>
+                    <p style="display: flex; align-items: center; justify-content: space-between;">
+                      <span>Цена за {{ current_choosen_product?.measure }}</span>
+                      <span>{{ current_choosen_product?.price }} {{ current_choosen_product?.currency }}</span>
+                    </p>
+                    <p style="display: flex; align-items: center; justify-content: space-between;">
+                      <span>Амортизация</span>
+                      <span>20%</span>
+                    </p>
+                    <p style="display: flex; align-items: center; justify-content: space-between;">
+                      <span>Сумма</span>
+                      <span>{{ current_choosen_product?.price * 0.8 }} {{ current_choosen_product?.currency }}</span>
+                    </p>
+                  </li>
                 </ul>
               </div>
               <div>
