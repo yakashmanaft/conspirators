@@ -641,7 +641,36 @@ watch(infoActionBtn, (next, prev) => {
             <li>Процент брака {{  (2 / 21 * 100).toFixed(2) }}%</li>
             <li>Ликвидность {{ (15 / 21).toFixed(2) }}</li>
           </ul>
+          <!-- ДОП инфа -->
+          <ul style="background-color: var(--color-btn-disabled-bg);margin: 0;">
+            <!-- Кол-во -->
+            <p>
+              В наличии:
+              <span style="font-weight: bold"
+                >{{ item.qty }} <span>{{ item.measure }}</span></span
+              >
+            </p>
+  
+            <p>
+              <!-- <span>{{ item }}</span> -->
+              on_sale: {{ item.on_sale }}Перейти на страницу</p>
+            <p>Добавить в корзину</p>
+            <p>- 1 +</p>
+            <p>Дотупно для заказа</p>
+            <p>Оставить заявку</p>
+            <p>Цена за {{ item.measure }} - {{ item?.price }} {{ item?.currency }}</p>
+            <p>
+              <span>Амортизация</span>
+              <span>20%</span>
+            </p>
+            <p>
+              <span>Сумма</span>
+              <span>{{ item?.price * 0.8 }} {{ item?.currency }}</span>
+            </p>
+  
+          </ul>
         </div>
+
       </div>
 
       <!-- charts -->
