@@ -612,7 +612,6 @@
             margin-top: 1rem;
         }
     }
-
     @media screen and (min-width: 576px) and (max-width: 767px) {
         h1 {
             margin: 0 1rem;

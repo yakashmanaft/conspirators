@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, watch } from "vue";
 import { Container } from "@/shared/container";
+//
+import { GraphchartYear } from '@/components/chartgraphyear'
 
 useHead({
   title: `Склад | Соучастники`,
@@ -529,19 +531,37 @@ watch(infoActionBtn, (next, prev) => {
       <!-- ХЭДЕР страницы -->
       <div class="page_header">
         <!-- Заголовок -->
-        <h1>{{ item.title }}</h1>
+        <!-- <h1>{{ item.title }}</h1> -->
 
         <!-- ДОП инфа -->
-        <div style="margin: 0; margin-top: 1rem">
+        <div style="background-color: var(--color-btn-disabled-bg);margin: 0;">
           <!-- Кол-во -->
           <p>
-            Кол-во:
+            В наличии:
             <span style="font-weight: bold"
               >{{ item.qty }} <span>{{ item.measure }}</span></span
             >
           </p>
-          <!-- Местонахождени -->
+
           <p>
+            <!-- <span>{{ item }}</span> -->
+            on_sale: {{ item.on_sale }}Перейти на страницу</p>
+          <p>Добавить в корзину</p>
+          <p>- 1 +</p>
+          <p>Дотупно для заказа</p>
+          <p>Оставить заявку</p>
+          <p>Цена за {{ item.measure }} - {{ item?.price }} {{ item?.currency }}</p>
+          <p>
+            <span>Амортизация</span>
+            <span>20%</span>
+          </p>
+          <p>
+            <span>Сумма</span>
+            <span>{{ item?.price * 0.8 }} {{ item?.currency }}</span>
+          </p>
+
+          <!-- Местонахождени -->
+          <!-- <p>
             Где:
             <span
               class="item-location_mark"
@@ -551,27 +571,110 @@ watch(infoActionBtn, (next, prev) => {
                 translateLocation(item.locationId, item.locationType)
               }}</label>
             </span>
-          </p>
+          </p> -->
           <!-- Собственник -->
-          <p>
+          <!-- <p>
             Собственник:
             <span
               style="font-weight: bold"
               class="link_hover"
               >{{ translateOwner(item.ownerID, item.ownerType) }}</span
               >
-              <!-- @click="routerUsersFunc(item.ownerID, item.ownerType)" -->
-          </p>
+          </p> -->
           <!-- Отвественный -->
-          <p>
+          <!-- <p>
             Ответственный:
             <span
               style="font-weight: bold"
               class="link_hover"
               >{{ translateResponsibles(item.responsibleID, item.responsibleType) }}</span
               >
-              <!-- @click="$router.push(`/partners/${item.responsible}`)" -->
+          </p> -->
+        </div>
+      </div>
+
+      <!-- dashboard -->
+      <div style="display: flex; justify-content: space-between;">
+        <!-- IMG SECTION-->
+        <div class="item_photo_main_container">
+          <div class="item_photo_main_wrapper">
+            <img :src="item?.img_src" :alt="item?.title">
+          </div>
+
+          <div>
+            Приход / расход / списание
+          </div>
+        </div>
+
+        <!-- INFO SECTION -->
+        <div class="item_info_main" style="padding: 1rem; flex: 1 0 auto;">
+          <!-- Местонахождени -->
+          <p style="margin: 0;">
+            <span
+              class="item-location_mark"
+              :class="locationMarkColorized(item.locationType)"
+              @click="routerLocationsFunc(item.locationId, item.locationType)"
+              ><label style="cursor: pointer">{{
+                translateLocation(item.locationId, item.locationType)
+              }}</label>
+            </span>
           </p>
+          <!--  -->
+          <div style="margin-top: .5rem;">
+            В рамках проекта {{ item?.projectId }} в статусе ???
+          </div>
+          <!--  -->
+          <h1 style="margin: 0;">{{ item.title }}</h1>
+          <p>{{ item.type }}</p>
+
+          <p>2026-01-01 2026-06-09</p>
+          <ul>
+            <li>Продажи товара 15 {{ 17800 * 15 }} RUB</li>
+            <li>Поступление товара 21 {{ 3000 * 21 }} RUB</li>
+            <li>Затраты {{ 1500 }} RUB</li>
+            <li>Маржа {{  (17800 * 15)-(3000 * 21)-1500 }} RUB</li>
+            <li>Остаток товара 4</li>
+            <li>Списание товара 2</li>
+          </ul>
+
+          <ul>
+            <li>Процент брака {{  (2 / 21 * 100).toFixed(2) }}%</li>
+            <li>Ликвидность {{ (15 / 21).toFixed(2) }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- charts -->
+      <div class="chart_section">
+
+        <!-- sales chart section -->
+        <div class="chart_wrapper">
+          <h2>Продажи</h2>
+          <p class="chart_info_type_toggle">
+            <span class="chart_info_type_toggle_el">Деньги</span>
+            <span class="chart_info_type_toggle_el">Кол-во</span>
+          </p>
+          <GraphchartYear
+            id="sales-graph" 
+          />
+        </div>
+
+        <!-- margin chart section -->
+        <div class="chart_wrapper">
+          <h2>Прибыль</h2>
+          <p>Распределение прибыли</p>
+          <GraphchartYear
+            id="margin-graph" 
+          />
+        </div>
+
+        <!-- expenses chart section -->
+        <div class="chart_wrapper">
+          <h2>Раcходы</h2>
+          <p>Смотреть по статьям</p>
+          <GraphchartYear
+            id="expenses-graph" 
+          />
         </div>
       </div>
 
@@ -636,6 +739,29 @@ watch(infoActionBtn, (next, prev) => {
           </div>
           <!-- Текст -->
           <p>Это item:{{ item }}</p>
+        </div>
+
+        <!-- Ответственные -->
+        <div style="display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+          <p>
+            Собственник:
+            <span
+              style="font-weight: bold"
+              class="link_hover"
+              >{{ translateOwner(item.ownerID, item.ownerType) }}</span
+              >
+              <!-- @click="routerUsersFunc(item.ownerID, item.ownerType)" -->
+          </p>
+          <!-- Отвественный -->
+          <p>
+            Ответственный:
+            <span
+              style="font-weight: bold"
+              class="link_hover"
+              >{{ translateResponsibles(item.responsibleID, item.responsibleType) }}</span
+              >
+              <!-- @click="$router.push(`/partners/${item.responsible}`)" -->
+          </p>
         </div>
       </div>
 
@@ -1015,6 +1141,8 @@ watch(infoActionBtn, (next, prev) => {
           {{itemLocations}}
         </div>
       </div>
+
+
     </div>
     <br />
     <br />
@@ -1575,118 +1703,6 @@ label #expend-item:checked + .expand-item_icon {
     grid-template-columns: 30px 1fr 1fr;
   } */
 }
-
-/* .link {
-  text-wrap: nowrap;
-}
-.item-locations_block {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-  overflow: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.item-locations_block::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-.item-location_qty {
-  margin-left: 5px;
-  margin-right: -6px;
-  background-color: #fff;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  color: var(--bs-dark);
-} */
-/* .link-location {
-  padding: 4px 10px;
-  border-radius: 16px;
-} */
-/* .link-all_block {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-/* .link-all {
-  padding: 0;
-  padding: 4px 10px;
-  border-radius: 16px;
-  border: 1px solid var(--bs-dark-bg-subtle);
-} */
-/* .link-all_active {
-  color: #fff;
-  background-color: var(--bs-dark);
-}
-.link:hover {
-  cursor: pointer;
-} */
-/* .link_project {
-  color: var(--bs-success);
-  border: 1px solid var(--bs-success-bg-subtle);
-} */
-/* .link_sklad {
-  color: var(--bs-primary-bg-subtle);
-  border: 1px solid var(--bs-primary-bg-subtle);
-} */
-/* .link_office {
-  color: var(--bs-primary-bg-subtle);
-  border: 1px solid var(--bs-primary-bg-subtle);
-}
-.link_repair {
-  color: var(--bs-warning);
-  border: 1px solid var(--bs-warning-bg-subtle);
-}
-.link_archive {
-  color: var(--bs-dark-bg-subtle);
-  border: none;
-}
-.link_deleted {
-  color: var(--bs-danger-bg-subtle);
-  border: none;
-}
-.link_current-route {
-  color: red;
-} */
-/* .link_project.link_current-route {
-  color: #fff;
-  background-color: var(--bs-success);
-  border-color: var(--bs-success);
-}
-.link_sklad.link_current-route {
-  color: #fff;
-  background-color: var(--bs-primary);
-  border: none;
-}
-.link_office.link_current-route {
-  color: #fff;
-  background-color: var(--bs-primary);
-  border: none;
-}
-.link_repair.link_current-route {
-  color: #fff;
-  background-color: var(--bs-warning);
-  border: none;
-} */
-.table {
-}
-.item-table_header {
-}
-.table-row_wrapper {
-  /* background-color: rgba(0, 0, 0, 0.05); */
-}
-.table-row_wrapper td:hover {
-  /* background-color: red; */
-  /* cursor: pointer; */
-  /* background-color: rgba(0, 0, 0, 0.05); */
-}
-/* .hide-991 {
-} */
-
 @media screen and (max-width: 991px) {
   .transaction_path {
     margin-top: 0.5rem;
@@ -1697,5 +1713,59 @@ label #expend-item:checked + .expand-item_icon {
     .paragraph-move_wrapper {
     display: block;
   }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+  /* 
+    item_photo_main section
+  */
+  .item_photo_main_container {
+    width: 40%;
+    background-color: red;
+  }
+  .item_photo_main_wrapper {
+    background-color: gray;
+  }
+  .item_photo_main_wrapper img {
+    width: 100%;
+  }
+  /* 
+    item_info_main section 
+  */
+  .item_info_main {
+    width: 50%; 
+    background-color: var(--color-btn-disabled-bg);
+  }
+
+  /* 
+    grap chart section
+  */
+  .chart_section {
+    /* width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); */
+    /* display: flex; */
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: .5rem;
+  }
+  .chart_wrapper {
+    /* width: 30%; */
+    /* position: relative; */
+  }
+  .chart_info_type_toggle {
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+  }
+  .chart_info_type_toggle .chart_info_type_toggle_el {
+
+  }
+}
+@media screen and (min-width: 1400px){
+
 }
 </style>

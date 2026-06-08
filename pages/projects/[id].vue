@@ -994,12 +994,13 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
           <div class="popup-menu_container" style="border-radius: unset">
 
             <div class="popup-menu_wrapper" style="border-top-left-radius: unset; border-bottom-left-radius: unset;">
-              <h4>product #{{ current_choosen_product?.id }} actions</h4>
-              <div>
-                <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem;">
-                  <li style="border: 1px solid red; display: flex; align-items: center; justify-content: center">Приход</li>
-                  <li style="border: 1px solid red; display: flex; align-items: center; justify-content: center">Списание</li>
-                  <li style="border: 1px solid red; display: flex; align-items: center; justify-content: center">Продажа</li>
+              <h4 style="margin: 0;">product #{{ current_choosen_product?.id }} actions</h4>
+              <p style="margin: 0; font-size: .8rem; color: var(--color-global-text_second)">Обновлено {{ current_choosen_product?.update_at }}</p>
+              <div style="margin-top: .5rem;">
+                <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; height: 5rem;">
+                  <li style="cursor: pointer; border: 1px solid red; display: flex; align-items: center; justify-content: center">Приход</li>
+                  <li v-if="current_choosen_product?.qty > 0" style="cursor: pointer; border: 1px solid red; display: flex; align-items: center; justify-content: center">Списание</li>
+                  <li v-if="current_choosen_product?.qty > 0" style="cursor: pointer; border: 1px solid red; display: flex; align-items: center; justify-content: center">Продажа</li>
                 </ul>
 
                 <!--  -->
@@ -1007,11 +1008,14 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
                   <!-- <li>
                     <p style="margin: 0;">show to all: {{ current_choosen_product?.showToAll }}</p>
                   </li> -->
-                  <li style="border: 1px solid red; padding: .5rem;">
+                  <li 
+                    v-if="current_choosen_product?.on_sale"
+                    style="border: 1px solid red; padding: .5rem;"
+                  >
                     <p style="margin: 0;">on sale: {{ current_choosen_product?.on_sale }}</p>
-                    <p 
-                      v-if="current_choosen_product?.on_sale" 
+                    <p  
                       style="margin: 0; background-color: var(--color-urgency-low-10); cursor: pointer; text-align: center; padding: .5rem;"
+                      @click.stop="$router.push(`/product/${current_choosen_product?.id}`);"
                     >
                       Перейти на страницу
                     </p>
@@ -1021,11 +1025,11 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
                 <!--  -->
                 <ul style="margin-top: .5rem; list-style: none; padding: 0;">
                   <!--  -->
-                  <li v-if="current_choosen_product?.qty === 0" style="border: 1px solid red; padding: .5rem;">
+                  <li style="border: 1px solid red; padding: .5rem;">
                     <h5 style="margin: 0;">Доступно для заказа</h5>
-                    <p style="margin: 0;">Оставить заявку</p>
+                    <p style="margin: 0; margin-top: .5rem; background-color: var(--color-wallet-fund-invested); cursor: pointer; text-align: center; padding: .5rem;">Оставить заявку</p>
                   </li>
-                  <li v-else style="border: 1px solid red; padding: .5rem;">
+                  <li v-if="current_choosen_product?.qty !== 0" style="margin-top: .5rem; border: 1px solid red; padding: .5rem;">
                     <h5 style="display: flex; align-items: center; justify-content: space-between; margin: 0;">
                       <span>В наличии</span>
                       <span>{{ current_choosen_product?.qty }} {{ current_choosen_product?.measure }}</span>
@@ -1034,30 +1038,50 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
                       <span>Местонахождение</span>
                       <span>{{ current_choosen_product?.locationId }} {{ current_choosen_product?.locationType }}</span>  
                     </p>
+                    <div>
+                      <p style="cursor: pointer; margin: 0; background-color: var(--color-btn-wo-bg); padding: .5rem; text-align: center;">Добавить в корзину</p>
+                      <p style="cursor: pointer; margin: 0; background-color: var(--color-global-text_second); padding: .5rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                        <span>-</span>
+                        <span>1</span>
+                        <span>+</span>
+                      </p>
+                    </div>
                   </li>
 
                   <!--  -->
-                  <li style="margin-top: .5rem; border: 1px solid red;">
-                    <h5>Цена</h5>
-                    <p style="display: flex; align-items: center; justify-content: space-between;">
+                  <li style="padding: .5rem; margin-top: .5rem; border: 1px solid red;">
+                    <h5 style="margin: 0;">Цена</h5>
+                    <p style="display: flex; align-items: center; justify-content: space-between; margin: 0;">
                       <span>Цена за {{ current_choosen_product?.measure }}</span>
                       <span>{{ current_choosen_product?.price }} {{ current_choosen_product?.currency }}</span>
                     </p>
-                    <p style="display: flex; align-items: center; justify-content: space-between;">
+                    <p style="display: flex; align-items: center; justify-content: space-between; margin: 0;">
                       <span>Амортизация</span>
                       <span>20%</span>
                     </p>
-                    <p style="display: flex; align-items: center; justify-content: space-between;">
+                    <p style="display: flex; align-items: center; justify-content: space-between; margin: 0;">
                       <span>Сумма</span>
                       <span>{{ current_choosen_product?.price * 0.8 }} {{ current_choosen_product?.currency }}</span>
                     </p>
                   </li>
                 </ul>
               </div>
-              <div>
+
+              <!--  -->
+              <div style="margin-top: .5rem; border: 1px solid red; padding: .5rem;">
+                  <p 
+                    style="margin: 0; background-color: var(--color-global-text); cursor: pointer; text-align: center; padding: .5rem; color: var(--color-global-baackground_light)"
+                    @click.stop="$router.push(`/warehouse/${current_choosen_product?.id}`);"
+                  >
+                    Подробнее о лоте
+                  </p>
+              </div>
+
+              <!--  -->
+              <!-- <div>
                 <h5>Предмет</h5>
                 <p>{{current_choosen_product}}</p>
-              </div>
+              </div> -->
             </div>
           </div>
         </ul>

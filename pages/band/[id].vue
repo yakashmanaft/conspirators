@@ -1775,7 +1775,6 @@ useHead({
         width: 500px;
     }
 }
-
 @media screen and (min-width: 1400px) {
     /* 
      */
