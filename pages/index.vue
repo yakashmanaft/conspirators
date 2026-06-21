@@ -117,7 +117,7 @@ const changeColorOnClick = (e) => {
           </div> -->
           <!-- <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p> -->
         </div>
-        <h3 style="margin: 0; color: var(--color-global-text);">Дэй бай дилс</h3>
+        <h3>Дэй Бай Дилс</h3>
 
         <div>
           <p style="margin: 0; color: var(--color-global-text);">Твой финпульс
@@ -129,7 +129,7 @@ const changeColorOnClick = (e) => {
 
       <section 
         @click="$router.push('/landing_stock')" 
-        style="border: 1px solid var(--color-urgency-low-10); position: relative;"
+        style="border: 1px solid var(--color-wallet-fund-available); position: relative;"
         class="block_is_link"
         >
         <div class="section_btn">
@@ -143,7 +143,7 @@ const changeColorOnClick = (e) => {
             <Icon size="48px" name="hugeicons:add-team" color="var(--color-global-text_second)"/>
           </div> -->
         </div>
-        <h3 style="margin: 0;">Каталог</h3>
+        <h3 >Каталог</h3>
 
         <div>
           <p style="margin: 0; color: var(--color-global-text_second)">Товары и услуги</p>
@@ -167,7 +167,7 @@ const changeColorOnClick = (e) => {
             <Icon size="42px" name="hugeicons:maps-editing" color="var(--color-global-text_second)"/>
           </div> -->
         </div>
-        <h3 style="margin: 0; color: var(--color-urgency-low);">Журнал</h3>
+        <h3 style="color: var(--color-wallet-fund-available);">Журнал</h3>
         <div>
           <p style="margin: 0; color: var(--color-global-text_second)">Люди о своем опыте</p>
         </div>
@@ -339,6 +339,7 @@ const changeColorOnClick = (e) => {
   /* padding: 0 1rem; */
   /* margin: 0; */
   /* margin-top: 1rem; */
+  color: var(--color-global-text);
 }
 .section_container > section > p {
   /* padding: 0 1rem; */
@@ -657,8 +658,7 @@ section:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
-    margin-top: 1em;
+    margin-top: 2rem!important;
     height: 2rem;
   }
   .section_container > section > div > p {
@@ -714,14 +714,17 @@ section:hover {
     background-color: var(--color-btn-disabled-bg);
   } */
   .store_sign {
-    font-size: 3.75rem!important;
+      font-size: 2.5rem!important;
+      bottom: -1rem;
+      left: -1rem;
+      height: fit-content;
   }
   .default_list_item-container p {
   text-align: center;
   }
   /* HELP BLOCK */
   .help_section-container {
-
+    margin-left: 1rem;
   }
   .help_section-container ul {
     list-style: none;

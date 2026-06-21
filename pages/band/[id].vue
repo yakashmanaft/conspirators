@@ -761,6 +761,7 @@ useHead({
                                     <div class="sharers-list_item-el">
                                         <p>Статус: {{ sharer.position }}</p>
                                         <p>Доля: {{ sharer.allocation * 100 }}%</p>
+                                        <p>Доля * (Отчеканенные монеты - Соженные монеты)</p>
                                     </div>
                                 </li>
                             </ul>
@@ -1176,7 +1177,32 @@ useHead({
             </ul>
         </div>
 
+        <!--  -->
+        <div style="background-color: var(--color-operation-type-donation);">
+            <h3>Аллокации</h3>
+            <ul>
+                <li v-for="sharer in band_list_computed?.find(el => el.id === sessionUser.id).sharers">
+                    {{ sharer }}
+                </li>
+                
+            </ul>
 
+            <div style="background-color: orange;">
+                <p>Курс 1 монета = 1 рубль</p>
+                <p>Уставной капитал - 200 000</p>
+                <p>Всего монет/акций - 200 000</p>
+            </div>
+
+            <div>
+                <p>Распределение монет</p>
+                <ul>
+                    <li>allocation type founder - 100 000</li>
+                    <li>allocation type worker - 50 000</li>
+                    <li>allocation type viewer - 30 000</li>
+                    <li>freefloat - 20 000</li>
+                </ul>
+            </div>
+        </div>
     <br>
     <br>
     <br>

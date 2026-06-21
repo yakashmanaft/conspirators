@@ -12,6 +12,7 @@ import { Button } from "@/components/button";
 
 // components
 import { Chip } from "~/components/chip";
+import { session } from "grammy";
 
 //
 const route = useRoute();
@@ -5006,7 +5007,7 @@ const checkCurrencyPair = (pair: any) => {
 
 
       <!-- ГЛАВНАЯ КАРТОЧКА / TOTAL -->
-      <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 2rem 1rem; border-radius: 1rem; padding: 1rem">
+      <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 1rem 1rem; border-radius: 1rem; padding: 1rem">
         <!-- Заголовок группы -->
         <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
 
@@ -5082,6 +5083,28 @@ const checkCurrencyPair = (pair: any) => {
           <p style="margin-top: .25rem;">Обменять</p>
         </div>
         </div>
+      </div>
+
+      <!--  -->
+      <div style="background-color: var(--color-btn-disabled-bg); margin: 2rem 1rem 2rem 1rem; border-radius: 1rem; padding: 1rem;">
+        <h4>Моя Аллокация</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li v-for="band in band_computed?.filter(el => {
+            if (!currentAffiliation.bandID) {
+              return el
+            } else {
+              return el.id === currentAffiliation.bandID
+            }
+          })">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div>{{ band.name }}</div>
+              <div>{{ band.sharers?.find(el => el.userId === sessionUser.id).allocation * 100}}% * Всего монет= 888 888,88монет</div>
+            </div>
+          </li>
+        </ul>
+
+        <ul>
+        </ul>
       </div>
 
       <!-- MESHES CAST -->
@@ -5473,8 +5496,6 @@ const checkCurrencyPair = (pair: any) => {
         <div class="local_list_footer">footer</div>
       </div>
     </div>
-    <!-- transaction history -->
-    <div></div>
 
     <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
     <!--  -->
