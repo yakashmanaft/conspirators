@@ -139,73 +139,82 @@ const featuresListNoAuth = ref([
 ])
 
 // Cart list item
-let cart_product_list_items = ref([
+const cart_product_list_items = ref([
   {
     item_id: 1,
     item_name: 'Тумба с раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 29990.00,
-    item_curerncy: 'RUB'
+    item_price: 29990.00,
+    item_currency: 'RUB',
+    item_promo: '2706Промо2026'
   },
   {
     item_id: 2,
     item_name: 'Тумба со встроенной раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 39990.00,
-    item_curerncy: 'RUB'
+    item_price: 39990.00,
+    item_currency: 'RUB'
   },
   {
     item_id: 3,
     item_name: 'Тумба с раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 29990.00,
-    item_curerncy: 'RUB'
+    item_price: 29990.00,
+    item_currency: 'RUB'
   },
   {
     item_id: 4,
     item_name: 'Тумба со встроенной раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 39990.00,
-    item_curerncy: 'RUB'
+    item_price: 39990.00,
+    item_currency: 'RUB'
   },
   {
     item_id: 5,
     item_name: 'Тумба с раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 29990.00,
-    item_curerncy: 'RUB'
+    item_price: 29990.00,
+    item_currency: 'RUB'
   },
   {
     item_id: 6,
     item_name: 'Тумба со встроенной раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 39990.00,
-    item_curerncy: 'RUB'
+    item_price: 39990.00,
+    item_currency: 'RUB'
   },
   {
     item_id: 7,
     item_name: 'Тумба с раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 29990.00,
-    item_curerncy: 'RUB'
+    item_price: 29990.00,
+    item_currency: 'RUB'
   },
   {
     item_id: 8,
     item_name: 'Тумба со встроенной раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
+    item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
     item_qty: 1,
-    item_pice: 39990.00,
-    item_curerncy: 'RUB'
+    item_price: 39990.00,
+    item_currency: 'RUB'
   }
 ])
-let cart_service_list_items = ref([
+const cart_service_list_items = ref([
   {
     item_id: 1,
     item_name: 'Установка тумбы',
@@ -247,10 +256,21 @@ let cart_service_list_items = ref([
     item_curerncy: 'RUB'
   }
 ])
-
+const conspirator_family_ticket = ref({
+  user_id: useUserSession().user,
+  user_type: 'guest',
+  user_discount: 0.00,
+  conspirators_coin: 0.00
+})
+const item_product_delivery = ref({
+    type: 'самовывоз', //доставка
+    address: ''
+})
+const emit = defineEmits(['checkCartModalStatus'])
 //
 onMounted(async () => {
-
+  // emit('update:emitedCartMenuStatus', cartMenuIsOpened.value)
+emit('checkCartModalStatus', false)
 });
 
 const logout = () => {
@@ -504,7 +524,9 @@ watch(accountMenuIsOpened, () => {
 });
 
 watch(cartMenuIsOpened, () => {
+  emit('checkCartModalStatus', cartMenuIsOpened.value)
   if(cartMenuIsOpened.value) {
+    // emit('update:emitedCartMenuStatus', cartMenuIsOpened.value)
     document.addEventListener("click", (e) => {
       
       if(e.target.classList && e.target.classList.contains('cart__opened')) {
@@ -767,19 +789,43 @@ watch(
 
                 <div class="cart_item">
 
-                  <div class="cart_product_item_container">
+                  <div class="cart_product_section">
                     <p>Товары</p>
-  
-                    <div style="background-color: var(--color-urgency-middle);">
-                      <input type="radio">
-                      Доставка / 
-                      <input type="radio">
-                      Самовывоз
-                    </div>
-                    <ul>
+                    <ul class="cart_product_item_container">
                       <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
-    
-                        {{ item }}
+                        <div class="product-item_img">
+                          <img :src="`${item.item_imgUrl}`" :alt="item.item_name"
+                        >
+                        </div>
+                        <div>
+                          {{ item.item_name }}
+                          <br>
+
+                          <!-- item product price -->
+                          <div style="background-color: gray;">
+
+                            <div>
+                              {{item.item_qty}} * {{ item.item_price }}{{ item.item_currency }}
+                            </div>
+                            <div>
+                              <p>{{ item.item_promo }}</p>
+                            </div>
+                            <div>
+                              <p>
+                                <span v-if="item.item_promo" style="text-decoration: line-through;">
+                                  999.90RUB
+                                </span>
+                                <span style="font-weight: bold;">
+                                  {{ item.item_qty * item.item_price }}{{ item.item_currency }}
+                                </span>
+                              </p>
+                            </div>
+                            <div v-if="!item.item_promo && !conspirator_family_ticket.user_id">
+                              Выгоднее с конспираторами 
+                            </div>
+                          </div>
+                        </div>
+                        <br>
                       </li>
                       <li style="background-color: var(--color-wallet-fund-debt);">
                         <p>Недоступно для заказа</p>
@@ -796,8 +842,8 @@ watch(
   
                   <ul class="cart_service_item_container">
                     <p>Услуги</p>
-                    <li class="cart_service_item" v-for="item in cart_service_list_items" :key="item.item_id">
-                      {{item}}
+                    <li class="cart_service_item" v-for="i in cart_service_list_items" :key="i.item_id">
+                      {{i}}
                     </li>
                   </ul>
   
@@ -805,15 +851,19 @@ watch(
                 <div class="cart_total_container">
                   
                   <div>
-                    <Button
-                      type="original-btn"
-                      bg="bg-full"
-                      width="100%"
-                    >Перейти к оформлению</Button>
+                    {{ conspirator_family_ticket  }}
+                    <br>
+                    <br>
+                    <div style="background-color: var(--color-urgency-middle);">
+                      <input type="radio">
+                      Доставка / 
+                      <input type="radio">
+                      Самовывоз
+                    </div>
+                    {{ item_product_delivery }}
                     <br>
                     <p>Доступные способы и время доставки можно выбрать при оформлении заказа</p>
                   </div>
-
                   <div>
                     <p>Ваша корзина</p>
                     <ul>
@@ -824,7 +874,55 @@ watch(
                       <li>Услуги (2) 1784.90RUB</li>
                       <li>Скидка (Подробнее) - 725.87RUB</li>
                     </ul>
-                    <p>Общая стоимость 999999.99RUB</p>
+
+                    <div style="background-color: var(--color-global-baackground_light);">
+                      <div style="display: flex;"> 
+                        <p style="margin: 0;">Общая стоимость</p>
+                        <p style="margin: 0;">
+                          <span style="font-weight: bold;">9999.99RUB</span>
+                        </p>
+                      </div>
+                      <div>
+                        <p style="margin: 0;">Скидка</p>
+                        <p style="margin: 0;">
+                          <span v-if="conspirator_family_ticket.user_id" style="text-decoration: line-through;">99999.99RUB</span>
+                        </p>
+                      </div>
+                    </div>
+                    <p style="text-align: right; margin: 0;">
+                      <span>-999.99МОНЕТ</span>
+                      <br>
+                      <span>К оплате</span>
+                      <span>9000.00RUB</span>
+                      <br>
+                      <span v-if="conspirator_family_ticket.user_id" >Сохранишь 99999.99RUB</span><br>
+                      <span v-if="conspirator_family_ticket.user_id" >Инвестируй выгоду рублями или МОНЕТой</span><span></span>
+                    </p>
+                    <Button
+                      style="margin-top: 1rem;"
+                      type="original-btn"
+                      bg="bg-full"
+                      width="100%"
+                    >Перейти к оформлению</Button>
+                    <Button
+                      style="margin-top: 1rem;"
+                      type="original-btn"
+                      bg="bg-full"
+                      width="100%"
+                    >К оплате</Button>
+                    <Button
+                      style="margin-top: 1rem;"
+                      type="original-btn"
+                      bg="bg-full"
+                      width="100%"
+                    >Запросить / Выставить счет</Button>
+                    <div class="baner_wrapper" style="margin-top: 1rem;">
+                      <p style="margin: 0;">О конспираторах</p>
+                      <p style="margin: 0;">
+                        <span>0.8645RUB</span><br>
+                        <span>МОНЕТа</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
                 
@@ -979,7 +1077,7 @@ a:visited {
 .cart > .cart_container {
   /* display: none; */
   /* position: fixed; */
-  position: absolute;
+  position: absolute; 
   top: 0;
   left: 0;
   width: 100%;
@@ -992,7 +1090,7 @@ a:visited {
   opacity: 1;
   transition: all .3s ease-in;
   z-index: 99;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   /* background-color: var(--color-global-baackground_light); */
 }
 .cart > .cart_closed {
@@ -1090,7 +1188,6 @@ a:visited {
     margin-left: 1rem;
   }
 }
-
 @media screen and (min-width: 575px) and (max-width: 767px) {
   .logo_wrapper {
     display: none;
@@ -1100,7 +1197,6 @@ a:visited {
     right: 4rem;
   }
 }
-
 @media screen and (max-width: 767px) {
   .account-user_icon {
     display: none;
@@ -1305,10 +1401,10 @@ a:visited {
     background-color: var(--color-wallet-fund-invested-wo);
   }
   /*  */
-  .cart_wrapper .cart_main .cart_product_item_container {
+  .cart_wrapper .cart_main .cart_product_section {
     gap: 1rem;
   }
-  .cart_wrapper .cart_main .cart_product_item_container .cart_product_item_wrapper {
+  .cart_wrapper .cart_main .cart_product_section .cart_product_item_wrapper {
     background-color: var(--color-global-text_second);
     border: 1px solid black;
   }
@@ -1324,6 +1420,45 @@ a:visited {
 @media (min-width: 1200px) and (max-width: 1399px) {
   .cart > label > .cart_count {
     right: 1.75rem;
+  }
+  .cart_product_item_container {
+    list-style: none;
+    padding: 0;
+  }
+  .cart_product_item_wrapper {
+    background-color: red;
+    display: flex;
+    align-items: center;
+  }
+  .product-item_img {
+    /* width: 100%; */
+    width: 150px;
+    /* height: 14rem;  */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; 
+    /* Заполняет контейнер, обрезая края */
+    /* object-fit: contain; */
+    /* object-fit: contain; — поместить целиком без обрезки */
+    object-position: center; /* Позиционирование внутри контейнера */
+  }
+  .cart_total_container {
+    border-radius: 1.75rem;
+  }
+  .cart_total_container .baner_wrapper {
+    /* bottom: 0; */
+    background-color: var(--color-global-baackground_light);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 @media (min-width: 1400px) {
@@ -1727,9 +1862,11 @@ label a {
   }
   .cart_wrapper {
       margin: 0 auto;
-      overflow: hidden;
+      margin-top: 1rem;
+      /* overflow: hidden;s */
       min-width: 992px;
       max-width: 1399px;
+      height: 95vh;
       position: relative;
    }
    .cart_header {
@@ -1750,9 +1887,9 @@ label a {
     margin: 0;
    }
    .cart_main {
-    height: 100%;
-    overflow-y: scroll;
+    height: 90%;
     padding-bottom: 10rem;
+    overflow-y: auto;
     display: grid;
     grid-template-columns: 3fr 2fr;
    }

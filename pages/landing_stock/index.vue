@@ -12,7 +12,7 @@
 
         <!-- computed_landing_list lENGTH TRUE -->
         <h2>Услуги</h2>
-        <!-- SEARCH ITEM -->
+        <!-- SEARCH ITEM -->    
         <div class="item_search">
             <Search 
                 @searchInputChanged="onInputFunc"
@@ -53,7 +53,7 @@
                 class="displayed-image"
             />
         </div>
-        <img src="https://s1251sas.storage.yandex.net/rdisk/" alt="">
+        <!-- <img src="https://s1251sas.storage.yandex.net/rdisk/" alt=""> -->
         <!-- FILTER ITEM -->
         <div 
             ref="elementRef" 
@@ -888,7 +888,7 @@
             position: sticky;
             top: 4.5rem;
             left: 0;
-            z-index: 1000;
+            z-index: 1;
             width: 100%;
             /* padding: 0 1rem; */
         }
@@ -948,10 +948,10 @@
          */
         .product-item_container {
             display: grid;
-            grid-template-columns: repeat(6, 1fr)!important;
+            grid-template-columns: repeat(5, 1fr)!important;
             gap: 1.5rem;
             row-gap: 2rem;
-            padding: 0 1rem;
+            padding: 0 1rem;    
             /* margin-top: 2rem; */
             /* min-height: 390px; */
         }
@@ -978,7 +978,7 @@
             transition: all .2s ease-in;
             pointer-events: none;
             width: 100%;
-            height: auto;
+            height: 100%    ;
             object-fit: cover; 
             /* Заполняет контейнер, обрезая края */
             /* object-fit: contain; */
