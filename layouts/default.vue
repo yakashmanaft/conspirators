@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100vh; display: grid;">
+  <div style="height: 100vh; display: grid; position: relative;">
     <!--  -->
     <AppHeader 
       :auth_user="user"

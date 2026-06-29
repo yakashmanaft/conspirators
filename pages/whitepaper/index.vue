@@ -11,7 +11,29 @@
         </div>
 
         <div>
-            123
+            <h2 style="background-color: royalblue; width: fit-content;">Что</h2>
+            <h2 style="background-color: royalblue; width: fit-content;">Кто</h2>
+            <h2 style="background-color: royalblue; width: fit-content;">Кому</h2>
+            <h2 style="background-color: royalblue; width: fit-content;">Как</h2>
+            <h3>Выгоды</h3>
+            <ul>
+                <li>
+                    <h4>Акции партнеров</h4>
+                    <p>Конспираторы любт радовать своих клиентов бонусами</p>
+                </li>
+                <li>
+                    <h4>Партнерские скидки</h4>
+                    <p>Конспираторы для своих делают скидки, если ты состоишь в конспираторах - обязательно получишь бонус от проектов</p>
+                </li>
+                <li>
+                    <h4>Накопительная система МОНЕТ</h4>
+                    <p>Совершай покупки и получай МОНЕТы</p>
+                </li>
+                <li>
+                    <h4>Инвестируй</h4>
+                    <p>Возможности стэйкинга и инвестиций в проекты конспираторов</p>
+                </li>
+            </ul>
         </div>
 
         <!-- lENGTH TRUE -->

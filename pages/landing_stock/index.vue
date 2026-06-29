@@ -4,322 +4,349 @@
     <!-- Content of the page -->
     <Container>
 
-        <div style="margin-bottom: 0.5rem;">
+        <div style="margin-bottom: 0.5rem;" class="bread-crumbs-group">
             <BreadCrumbs class="show-max-767"/>
             <h1 style="font-weight: bold; font-size: 42px;">Каталог</h1>
             <p></p> 
         </div>
 
-        <!-- computed_landing_list lENGTH TRUE -->
-        <h2>Услуги</h2>
-        <!-- SEARCH ITEM -->    
-        <div class="item_search">
-            <Search 
-                @searchInputChanged="onInputFunc"
-                type="primary"    
-            />
-        </div>
+        
+        <h2>
+            <span
+                @click.stop="current_subtitle = 'products'"
+                style="cursor: pointer;text-transform: uppercase;"
+                :style="
+                current_subtitle === 'products' 
+                ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                : 'color: var(--color-global-text_second); font-weight: normal;'
+            ">
+                Товары
+            </span>
+            <span 
+                @click.stop="current_subtitle = 'services'"
+                style="cursor: pointer; text-transform: uppercase;margin-left: .5rem;"
+                :style="
+                current_subtitle === 'services' 
+                ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                : 'color: var(--color-global-text_second); font-weight: normal;'
+            ">
+                Услуги
+            </span>
+        </h2>
+        <!-- SERVICES SUBTITLE SECTION -->
+        <div v-if="current_subtitle === 'services'">
 
-        <!-- ITEM GRID -->
-        <div class="item_container">
-
-            <div class="item_search_wrong" style="margin-bottom: 20.5rem" v-if="searchInput && !computed_landing_list?.length">
-                По запросу ничего не найдено
-            </div>
-            <div class="item_wrapper" v-for="item in computed_landing_list" @click.stop="$router.push(`/${item?.name}`)" :style="set_item_styles('border', item.name)">
-                <div :style="set_item_styles('background', item.name)">
-
-                    <Icon 
-                        v-for="icon in set_item_icons(item.name)"
-                        style="padding: 0; box-shadow: var(--hover-shadow); padding: .5rem;" 
-                        size="42px"
-                        :name="icon.name"
-                        color="var(--color-global-baackground_light)"
-                    />
-                </div>
-                <h3>{{ item.title }}</h3>
-                <p style="margin: 0;">{{ item.desc }}</p>
-            </div>
-
-            <!-- ELSEs -->
-            <div class="no-landing_wrapper" style="margin-bottom: 20.5rem" v-if="searchInput === '' && !computed_landing_list?.length">В магазине пусто</div>
-        </div>
-
-        <h2>Товары</h2>
-        <div style="background-color: red;">
-            <img 
-                :src="fullImageUrl" 
-                alt=""
-                class="displayed-image"
-            />
-        </div>
-        <!-- <img src="https://s1251sas.storage.yandex.net/rdisk/" alt=""> -->
-        <!-- FILTER ITEM -->
-        <div 
-            ref="elementRef" 
-            :class="{ 'highlighted': isFixed }"
-            class="product-item_filter"
-            id="product_item_features"
-        >
-            <div class="product-item_search-wrapper">
-                <!-- SEARCH ITEM -->
+            <!-- SEARCH ITEM -->    
+            <div class="item_search">
                 <Search 
-                    style="margin-top: 1rem;" 
-                    @searchInputChanged="onInputSearchProductFunc"
-                    type="active_btn"
+                    @searchInputChanged="onInputFunc"
+                    type="primary"    
                 />
             </div>
-            <div class="product-item_filters-wrapper">
-                
-                <!-- ФИЛЬТР по тегам -->
-                <div class="filter_container">
-                    <!-- ТОМ -->
-                    <div class="filter-wrapper">
     
-                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                        <label for="filter-by-item-category">
-                            <span @click.stop="popup_volume_opened = !popup_volume_opened; current_filter_group = 'Том'">{{ current_volume }}</span>
-                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
-                        </label>
+            <!-- ITEM GRID -->
+            <div class="item_container">
     
-                        <!-- MODAL POPUP -->
-                        <DefaultPopup
-                            v-if="popup_volume_opened"
-                            id="popup_book"
-                            popup_title="Тома, которые мы развиваем"
-                            @emitClosePopup="close_volume_popup"
-                        >
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: 1rem;">
-                                    <input :checked="current_volume === 'Все тома'" type="radio" id="volume-0">
-                                    <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="volume-0">
-                                        <span>Все тома</span>
-                                    </label>
-                                </li>
-                                <li  style="margin-top: 1rem;"v-for="(el, index) in computed_filter_pocket">
-                                    <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
-                                    <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`volume-${index}`">
-                                        <span>{{ el }}</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </DefaultPopup>
-    
-                    </div>
-                    <!-- КНИГА -->
-                    <div class="filter-wrapper">
-                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                        <label 
-                            for="filter-by-item-category"
-                        >
-                            <span @click.stop="popup_book_opened = !popup_book_opened; current_filter_group = 'Книга'">{{current_book}}</span>
-                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
-                        </label>
-    
-                        <!-- MODAL POPUP -->
-                        <DefaultPopup
-                            v-if="popup_book_opened"
-                            id="popup_book"
-                            popup_title="Книги, которые мы пишем"
-                            @emitClosePopup="close_book_popup"
-                        >
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: 1rem;">
-                                    <input :checked="current_book === 'Все книги'" type="radio" id="book-0">
-                                    <label style="margin-left: .5rem;" @click="current_book = 'Все книги'; popup_book_opened = !popup_book_opened" for="book-0">
-                                        <span>Все книги</span>
-                                    </label>
-                                </li>
-                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                    <input :checked="el === current_book" type="radio" :id="`book-${0 + 1}`">
-                                    <label style="margin-left: .5rem;" @click="current_book = el.toString(); popup_book_opened = !popup_book_opened" :for="`book-${0 + 1}`">
-                                        <span>{{ el }}</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </DefaultPopup>
-                    </div>
-                    <!-- ЧАСТЬ -->
-                    <div class="filter-wrapper">
-                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                        <label for="filter-by-item-category">
-                            <span @click.stop="popup_part_opened = !popup_part_opened; current_filter_group = 'Часть'">{{current_part}}</span>
-                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
-                        </label>
-    
-                        <!-- MODAL POPUP -->
-                         <DefaultPopup
-                            v-if="popup_part_opened"
-                            id="popup_part"
-                            popup_title="Часть книги - одно целое"
-                            @emitClosePopup="close_part_popup"
-                         >
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: 1rem;">
-                                    <input :checked="current_part === 'Все части'" type="radio" id="part-0">
-                                    <label style="margin-left: .5rem;" @click="current_part = 'Все части'; popup_part_opened = !popup_part_opened" for="part-0">
-                                        <span>Все книги</span>
-                                    </label>
-                                </li>
-                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                    <input :checked="el === current_part" type="radio" :id="`part-${0 + 1}`">
-                                    <label style="margin-left: .5rem;" @click="current_part = el.toString(); popup_part_opened = !popup_part_opened" :for="`part-${0 + 1}`">
-                                        <span>{{ el }}</span>
-                                    </label>
-                                </li>
-                            </ul>
-                         </DefaultPopup>
-                    </div>
-                    <!-- ГЛАВА -->
-                    <div class="filter-wrapper">
-                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                        <label 
-                            for="filter-by-item-category"
-                        >
-                            <span @click.stop="popup_chapter_opened = !popup_chapter_opened; current_filter_group = 'Глава'">{{current_chapter}}</span>
-                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
-                        </label>
-    
-                        <!-- MODAL POPUP -->
-                        <DefaultPopup
-                            v-if="popup_chapter_opened"
-                            id="popup_chapter"
-                            popup_title="Главы, которые украшают"
-                            @emitClosePopup="close_chapter_popup"
-                        >
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: 1rem;">
-                                    <input :checked="current_chapter === 'Все главы'" type="radio" id="chapter-0">
-                                    <label style="margin-left: .5rem;" @click="current_chapter = 'Все книги'; popup_chapter_opened = !popup_chapter_opened" for="chapter-0">
-                                        <span>Все главы</span>
-                                    </label>
-                                </li>
-                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                    <input :checked="el === current_chapter" type="radio" :id="`chapter-${0 + 1}`">
-                                    <label style="margin-left: .5rem;" @click="current_chapter = el.toString(); popup_chapter_opened = !popup_chapter_opened" :for="`chapter-${0 + 1}`">
-                                        <span>{{ el }}</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </DefaultPopup>
-                    </div>
-                    <!-- ПАРАГРАФ -->
-                    <div class="filter-wrapper">
-                        <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                        <label 
-                            for="filter-by-item-category"
-                        >
-                            <span @click.stop="popup_paragraph_opened = !popup_paragraph_opened; current_filter_group = 'Параграф'">{{current_paragraph}}</span>
-                            <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
-                        </label>
-    
-                        <!-- MODAL POPUP -->
-                        <DefaultPopup
-                            v-if="popup_paragraph_opened"
-                            id="popup_paragraph"
-                            popup_title="Параграфы - это уже детали"
-                            @emitClosePopup="close_paragraph_popup"
-                        >
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: 1rem;">
-                                    <input :checked="current_paragraph === 'Все параграфы'" type="radio" id="paragraph-0">
-                                    <label style="margin-left: .5rem;" @click="current_paragraph = 'Все параграфы'; popup_paragraph_opened = !popup_paragraph_opened" for="paragraph-0">
-                                        <span>Все параграфы</span>
-                                    </label>
-                                </li>
-                                <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
-                                    <input :checked="el === current_paragraph" type="radio" :id="`paragraph-${0 + 1}`">
-                                    <label style="margin-left: .5rem;" @click="current_paragraph = el.toString(); popup_paragraph_opened = !popup_paragraph_opened" :for="`paragraph-${0 + 1}`">
-                                        <span>{{ el }}</span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </DefaultPopup>
-                    </div>
-                </div>
-    
-                <!-- ФИЛЬТР по наличию -->
-                <div class="filter_by_available_container">
-                    <div class="radio-option">
-                        <input v-model=filter_by_available type="radio" id="opt1" name="options" value="all">
-                        <label for="opt1">Все</label>
-                    </div>
-                    <div class="radio-option">
-                        <input v-model=filter_by_available type="radio" id="opt2" name="options" value="available">
-                        <label for="opt2">В наличии</label>
-                    </div>
-                    <div class="radio-option">
-                        <input v-model=filter_by_available type="radio" id="opt3" name="options" value="order">
-                        <label for="opt3">Под заказ</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
-            <p style="margin: 0; color: var(--color-global-text_second);">
-                <span style="color: var(--color-global-text_second);">{{ current_volume }}</span> | 
-                <span style="color: var(--color-global-text_second);">{{ current_book }}</span> | 
-                <span style="color: var(--color-global-text_second);">{{ current_part }}</span> |
-                <span style="color: var(--color-global-text_second);">{{ current_chapter }}</span> |
-                <span style="color: var(--color-global-text_second);">{{ current_paragraph }}</span>
-            </p> 
-            <p style="margin: 0; color: var(--color-global-text_second);">{{ filter_by_available }}</p>
-        </div>
-        <!-- ITEM GRID -->
-        <div class="product-item_section">
-            <!-- data is loading -->
-            <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
-                <p style="margin-top: 1rem">Loading...</p>
-            </div>
-
-            <div class="product-item_container">
-
-                <!-- Поиск ничего не находит -->
-                <div class="item_search_wrong" style="margin-bottom: 20.5rem"   v-if="searchProductInput && !computed_products?.length">
+                <div class="item_search_wrong" style="margin-bottom: 20.5rem" v-if="searchInput && !computed_landing_list?.length">
                     По запросу ничего не найдено
                 </div>
-
-                <!-- Есть товары, показываем -->
-                <div
-                    class="product-item_wrapper"
-                    v-for="product in computed_products"
-                    @click.stop="$router.push(`/product/${product.id}`);"
-                >
-                    <div 
-                        class="product-item_img"
-                    >
-                        <img :src="`${product.img_src}`" :alt="product.title"
-                    >
-                    </div>
-                    <p class="product-item_price">{{ product.price }} {{ product.currency }}</p>
-                    <div class="product-item_remain">
+                <div class="item_wrapper" v-for="item in computed_landing_list" @click.stop="$router.push(`/${item?.name}`)" :style="set_item_styles('border', item.name)">
+                    <div :style="set_item_styles('background', item.name)">
     
-                        <p v-if="product.qty == 0" style="background-color: var(--color-operation-type-donation)">Доступно для заказа</p>
-                        <p v-else>В наличии: {{ product.qty }} {{ product.measure }}</p>
+                        <Icon 
+                            v-for="icon in set_item_icons(item.name)"
+                            style="padding: 0; box-shadow: var(--hover-shadow); padding: .5rem;" 
+                            size="42px"
+                            :name="icon.name"
+                            color="var(--color-global-baackground_light)"
+                        />
                     </div>
-                    <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
-                    <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ product.type }}</p>
-
-                    <div class="product-item_cart">
-                        <p 
-                            class="cart-add_btn"
-                            @click.stop="add_to_cart_func()"
-                        >В корзину</p>
-                        <p class="cart-change-count_btn" style="width: fit-content;">- 1 +</p>
-                    </div>
-                    <!-- <p>{{ product.description }}</p>
-                    <p>Характеристики:</p>
-                    <ul>
-                        <li v-for="feature in product.features">
-                            {{ feature }}
-                        </li>
-                    </ul> -->
-                   <!-- <p> {{ product }}</p> -->
+                    <h3>{{ item.title }}</h3>
+                    <p style="margin: 0;">{{ item.desc }}</p>
                 </div>
-            </div> 
-
+    
+                <!-- ELSEs -->
+                <div class="no-landing_wrapper" style="margin-bottom: 20.5rem" v-if="searchInput === '' && !computed_landing_list?.length">В магазине пусто</div>
+            </div>
         </div>
+
+        <!-- PRODUCTS SUBTITLE SECTION -->
+         <div v-else-if="current_subtitle === 'products'" style="margin-top: 2rem;">
+             <!-- <div style="background-color: red;">
+                 <img 
+                     :src="fullImageUrl" 
+                     alt=""
+                     class="displayed-image"
+                 />
+             </div> -->
+             <!-- <img src="https://s1251sas.storage.yandex.net/rdisk/" alt=""> -->
+             <!-- FILTER ITEM -->
+             <div 
+                 ref="elementRef" 
+                 :class="{ 'highlighted': isFixed }"
+                 class="product-item_filter"
+                 id="product_item_features"
+             >
+                 <div class="product-item_search-wrapper">
+                     <!-- SEARCH ITEM -->
+                     <Search 
+                         style="margin-top: 1rem;" 
+                         @searchInputChanged="onInputSearchProductFunc"
+                         type="active_btn"
+                     />
+                 </div>
+                 <div class="product-item_filters-wrapper">
+                     
+                     <!-- ФИЛЬТР по тегам -->
+                     <div class="filter_container">
+                         <!-- ТОМ -->
+                         <div class="filter-wrapper">
+         
+                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                             <label for="filter-by-item-category">
+                                 <span @click.stop="popup_volume_opened = !popup_volume_opened; current_filter_group = 'Том'">{{ current_volume }}</span>
+                                 <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                             </label>
+         
+                             <!-- MODAL POPUP -->
+                             <DefaultPopup
+                                 v-if="popup_volume_opened"
+                                 id="popup_book"
+                                 popup_title="Тома, которые мы развиваем"
+                                 @emitClosePopup="close_volume_popup"
+                             >
+                                 <ul style="list-style: none; padding: 0;">
+                                     <li style="margin-top: 1rem;">
+                                         <input :checked="current_volume === 'Все тома'" type="radio" id="volume-0">
+                                         <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="volume-0">
+                                             <span>Все тома</span>
+                                         </label>
+                                     </li>
+                                     <li  style="margin-top: 1rem;"v-for="(el, index) in computed_filter_pocket">
+                                         <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
+                                         <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`volume-${index}`">
+                                             <span>{{ el }}</span>
+                                         </label>
+                                     </li>
+                                 </ul>
+                             </DefaultPopup>
+         
+                         </div>
+                         <!-- КНИГА -->
+                         <div class="filter-wrapper">
+                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                             <label 
+                                 for="filter-by-item-category"
+                             >
+                                 <span @click.stop="popup_book_opened = !popup_book_opened; current_filter_group = 'Книга'">{{current_book}}</span>
+                                 <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                             </label>
+         
+                             <!-- MODAL POPUP -->
+                             <DefaultPopup
+                                 v-if="popup_book_opened"
+                                 id="popup_book"
+                                 popup_title="Книги, которые мы пишем"
+                                 @emitClosePopup="close_book_popup"
+                             >
+                                 <ul style="list-style: none; padding: 0;">
+                                     <li style="margin-top: 1rem;">
+                                         <input :checked="current_book === 'Все книги'" type="radio" id="book-0">
+                                         <label style="margin-left: .5rem;" @click="current_book = 'Все книги'; popup_book_opened = !popup_book_opened" for="book-0">
+                                             <span>Все книги</span>
+                                         </label>
+                                     </li>
+                                     <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                         <input :checked="el === current_book" type="radio" :id="`book-${0 + 1}`">
+                                         <label style="margin-left: .5rem;" @click="current_book = el.toString(); popup_book_opened = !popup_book_opened" :for="`book-${0 + 1}`">
+                                             <span>{{ el }}</span>
+                                         </label>
+                                     </li>
+                                 </ul>
+                             </DefaultPopup>
+                         </div>
+                         <!-- ЧАСТЬ -->
+                         <div class="filter-wrapper">
+                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                             <label for="filter-by-item-category">
+                                 <span @click.stop="popup_part_opened = !popup_part_opened; current_filter_group = 'Часть'">{{current_part}}</span>
+                                 <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                             </label>
+         
+                             <!-- MODAL POPUP -->
+                              <DefaultPopup
+                                 v-if="popup_part_opened"
+                                 id="popup_part"
+                                 popup_title="Часть книги - одно целое"
+                                 @emitClosePopup="close_part_popup"
+                              >
+                                 <ul style="list-style: none; padding: 0;">
+                                     <li style="margin-top: 1rem;">
+                                         <input :checked="current_part === 'Все части'" type="radio" id="part-0">
+                                         <label style="margin-left: .5rem;" @click="current_part = 'Все части'; popup_part_opened = !popup_part_opened" for="part-0">
+                                             <span>Все книги</span>
+                                         </label>
+                                     </li>
+                                     <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                         <input :checked="el === current_part" type="radio" :id="`part-${0 + 1}`">
+                                         <label style="margin-left: .5rem;" @click="current_part = el.toString(); popup_part_opened = !popup_part_opened" :for="`part-${0 + 1}`">
+                                             <span>{{ el }}</span>
+                                         </label>
+                                     </li>
+                                 </ul>
+                              </DefaultPopup>
+                         </div>
+                         <!-- ГЛАВА -->
+                         <div class="filter-wrapper">
+                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                             <label 
+                                 for="filter-by-item-category"
+                             >
+                                 <span @click.stop="popup_chapter_opened = !popup_chapter_opened; current_filter_group = 'Глава'">{{current_chapter}}</span>
+                                 <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                             </label>
+         
+                             <!-- MODAL POPUP -->
+                             <DefaultPopup
+                                 v-if="popup_chapter_opened"
+                                 id="popup_chapter"
+                                 popup_title="Главы, которые украшают"
+                                 @emitClosePopup="close_chapter_popup"
+                             >
+                                 <ul style="list-style: none; padding: 0;">
+                                     <li style="margin-top: 1rem;">
+                                         <input :checked="current_chapter === 'Все главы'" type="radio" id="chapter-0">
+                                         <label style="margin-left: .5rem;" @click="current_chapter = 'Все книги'; popup_chapter_opened = !popup_chapter_opened" for="chapter-0">
+                                             <span>Все главы</span>
+                                         </label>
+                                     </li>
+                                     <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                         <input :checked="el === current_chapter" type="radio" :id="`chapter-${0 + 1}`">
+                                         <label style="margin-left: .5rem;" @click="current_chapter = el.toString(); popup_chapter_opened = !popup_chapter_opened" :for="`chapter-${0 + 1}`">
+                                             <span>{{ el }}</span>
+                                         </label>
+                                     </li>
+                                 </ul>
+                             </DefaultPopup>
+                         </div>
+                         <!-- ПАРАГРАФ -->
+                         <div class="filter-wrapper">
+                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                             <label 
+                                 for="filter-by-item-category"
+                             >
+                                 <span @click.stop="popup_paragraph_opened = !popup_paragraph_opened; current_filter_group = 'Параграф'">{{current_paragraph}}</span>
+                                 <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
+                             </label>
+         
+                             <!-- MODAL POPUP -->
+                             <DefaultPopup
+                                 v-if="popup_paragraph_opened"
+                                 id="popup_paragraph"
+                                 popup_title="Параграфы - это уже детали"
+                                 @emitClosePopup="close_paragraph_popup"
+                             >
+                                 <ul style="list-style: none; padding: 0;">
+                                     <li style="margin-top: 1rem;">
+                                         <input :checked="current_paragraph === 'Все параграфы'" type="radio" id="paragraph-0">
+                                         <label style="margin-left: .5rem;" @click="current_paragraph = 'Все параграфы'; popup_paragraph_opened = !popup_paragraph_opened" for="paragraph-0">
+                                             <span>Все параграфы</span>
+                                         </label>
+                                     </li>
+                                     <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
+                                         <input :checked="el === current_paragraph" type="radio" :id="`paragraph-${0 + 1}`">
+                                         <label style="margin-left: .5rem;" @click="current_paragraph = el.toString(); popup_paragraph_opened = !popup_paragraph_opened" :for="`paragraph-${0 + 1}`">
+                                             <span>{{ el }}</span>
+                                         </label>
+                                     </li>
+                                 </ul>
+                             </DefaultPopup>
+                         </div>
+                     </div>
+         
+                     <!-- ФИЛЬТР по наличию -->
+                     <div class="filter_by_available_container">
+                         <div class="radio-option">
+                             <input v-model=filter_by_available type="radio" id="opt1" name="options" value="all">
+                             <label for="opt1">Все</label>
+                         </div>
+                         <div class="radio-option">
+                             <input v-model=filter_by_available type="radio" id="opt2" name="options" value="available">
+                             <label for="opt2">В наличии</label>
+                         </div>
+                         <div class="radio-option">
+                             <input v-model=filter_by_available type="radio" id="opt3" name="options" value="order">
+                             <label for="opt3">Под заказ</label>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+     
+             <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+                 <p style="margin: 0; color: var(--color-global-text_second);">
+                     <span style="color: var(--color-global-text_second);">{{ current_volume }}</span> | 
+                     <span style="color: var(--color-global-text_second);">{{ current_book }}</span> | 
+                     <span style="color: var(--color-global-text_second);">{{ current_part }}</span> |
+                     <span style="color: var(--color-global-text_second);">{{ current_chapter }}</span> |
+                     <span style="color: var(--color-global-text_second);">{{ current_paragraph }}</span>
+                 </p> 
+                 <p style="margin: 0; color: var(--color-global-text_second);">{{ filter_by_available }}</p>
+             </div>
+             <!-- ITEM GRID -->
+             <div class="product-item_section">
+                 <!-- data is loading -->
+                 <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
+                     <p style="margin-top: 1rem">Loading...</p>
+                 </div>
+     
+                 <div class="product-item_container">
+     
+                     <!-- Поиск ничего не находит -->
+                     <div class="item_search_wrong" style="margin-bottom: 20.5rem"   v-if="searchProductInput && !computed_products?.length">
+                         По запросу ничего не найдено
+                     </div>
+     
+                     <!-- Есть товары, показываем -->
+                     <div
+                         class="product-item_wrapper"
+                         v-for="product in computed_products"
+                         @click.stop="$router.push(`/product/${product.id}`);"
+                     >
+                         <div 
+                             class="product-item_img"
+                         >
+                             <img :src="`${product.img_src}`" :alt="product.title"
+                         >
+                         </div>
+                         <p class="product-item_price">{{ product.price }} {{ product.currency }}</p>
+                         <div class="product-item_remain">
+         
+                             <p v-if="product.qty == 0" style="background-color: var(--color-operation-type-donation)">Доступно для заказа</p>
+                             <p v-else>В наличии: {{ product.qty }} {{ product.measure }}</p>
+                         </div>
+                         <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
+                         <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ product.type }}</p>
+     
+                         <div class="product-item_cart">
+                             <p 
+                                 class="cart-add_btn"
+                                 @click.stop="add_to_cart_func()"
+                             >В корзину</p>
+                             <p class="cart-change-count_btn" style="width: fit-content;">- 1 +</p>
+                         </div>
+                         <!-- <p>{{ product.description }}</p>
+                         <p>Характеристики:</p>
+                         <ul>
+                             <li v-for="feature in product.features">
+                                 {{ feature }}
+                             </li>
+                         </ul> -->
+                        <!-- <p> {{ product }}</p> -->
+                     </div>
+                 </div> 
+     
+             </div>
+         </div>
 
     </Container>
 </template>
@@ -814,6 +841,23 @@
     }
     @media screen and (min-width: 1200px) and (max-width: 1399px) {
         /* 
+         */
+        .bread-crumbs-group {
+            /* background-color: red; */
+            display: flex;
+            gap: .5rem;
+        }
+        .bread-crumbs-group h1{
+            font-weight: normal!important;
+            font-size: .9rem!important;
+            margin: 0!important;
+            line-height: unset!important;
+            border-bottom: 1px solid var(--color-global-text);
+        }
+        .bread-crumbs-group ul {
+            margin: 0!important;
+        }
+        /* 
         */
         .item_search {
             margin-top: 2rem; 
@@ -1183,6 +1227,11 @@
             color: 'var(--color-global-text_second)'
         }
     ])
+
+    // SUBTITLEs
+    //
+    // current subtitle
+    const current_subtitle = ref('products')
 
     // POPUPs
     // 

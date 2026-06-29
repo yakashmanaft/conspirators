@@ -482,6 +482,15 @@ const translateRoutePath = (path: string) => {
   }
 };
 
+
+// 
+const toggleCartMenu = () => {
+  cartMenuIsOpened.value = !cartMenuIsOpened.value
+}
+//
+const current_cart_subtitle = ref('products')
+
+
 // WATCHERS
 watch(burgerIsOpened, () => {
   // console.log(`burgerIsOpened: ${burgerIsOpened.value}`);
@@ -594,7 +603,7 @@ watch(
       class="links_container"
       :class="burgerIsOpened ? 'opacity-1-767' : 'opacity-0-767'"
       >
-      <div class="links_wrapper" style="position: relative;">
+        <div class="links_wrapper" style="position: relative;">
           <!-- Auth -->
           <ul
             class="header-features__list"
@@ -757,8 +766,8 @@ watch(
       </div>
 
       <!-- CART -->
-      <div class="cart">
-          <input id='cart_menu_btn' type="checkbox" v-model="cartMenuIsOpened" />
+      <div class="cart" @click.stop="toggleCartMenu()">
+          <!-- <input id='cart_menu_btn' type="checkbox" v-model="cartMenuIsOpened" /> -->
           <label for="cart_menu_btn">
             <div class="cart_icon">
               <Icon size="32px" name="hugeicons:shopping-basket-01" color="var(--color-global-text_second)"/>
@@ -768,171 +777,7 @@ watch(
             </div>
           </label>
 
-          <div class="cart_container" :class="cartMenuIsOpened ? 'cart__opened' : 'cart_closed'">
 
-            <div class="cart_wrapper">
-
-              <div class="cart_header">
-                <p>Корзина</p>
-                <div>
-                  <!-- <p style="cursor: pointer;">Избранное</p> -->
-                  <p style="cursor: pointer;" @click="cartMenuIsOpened = false">Закрыть</p>
-                </div>
-              </div>
-
-              <div class="cart_main no-scrollbar">
-                
-                <div style="background-color: var(--color-wallet-fund-debt); grid-column: span 3">
-                  <input type="checkbox">
-                  Выбрать все / Удалить выбранное
-                </div>
-
-                <div class="cart_item">
-
-                  <div class="cart_product_section">
-                    <p>Товары</p>
-                    <ul class="cart_product_item_container">
-                      <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
-                        <div class="product-item_img">
-                          <img :src="`${item.item_imgUrl}`" :alt="item.item_name"
-                        >
-                        </div>
-                        <div>
-                          {{ item.item_name }}
-                          <br>
-
-                          <!-- item product price -->
-                          <div style="background-color: gray;">
-
-                            <div>
-                              {{item.item_qty}} * {{ item.item_price }}{{ item.item_currency }}
-                            </div>
-                            <div>
-                              <p>{{ item.item_promo }}</p>
-                            </div>
-                            <div>
-                              <p>
-                                <span v-if="item.item_promo" style="text-decoration: line-through;">
-                                  999.90RUB
-                                </span>
-                                <span style="font-weight: bold;">
-                                  {{ item.item_qty * item.item_price }}{{ item.item_currency }}
-                                </span>
-                              </p>
-                            </div>
-                            <div v-if="!item.item_promo && !conspirator_family_ticket.user_id">
-                              Выгоднее с конспираторами 
-                            </div>
-                          </div>
-                        </div>
-                        <br>
-                      </li>
-                      <li style="background-color: var(--color-wallet-fund-debt);">
-                        <p>Недоступно для заказа</p>
-                        <ul>
-                          <li class="cart_product_unavailable">
-                            Товар 123
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-  
-  
-                  </div>
-  
-                  <ul class="cart_service_item_container">
-                    <p>Услуги</p>
-                    <li class="cart_service_item" v-for="i in cart_service_list_items" :key="i.item_id">
-                      {{i}}
-                    </li>
-                  </ul>
-  
-                </div>
-                <div class="cart_total_container">
-                  
-                  <div>
-                    {{ conspirator_family_ticket  }}
-                    <br>
-                    <br>
-                    <div style="background-color: var(--color-urgency-middle);">
-                      <input type="radio">
-                      Доставка / 
-                      <input type="radio">
-                      Самовывоз
-                    </div>
-                    {{ item_product_delivery }}
-                    <br>
-                    <p>Доступные способы и время доставки можно выбрать при оформлении заказа</p>
-                  </div>
-                  <div>
-                    <p>Ваша корзина</p>
-                    <ul>
-                      <li>Товары (2) 1784.90RUB</li>
-                      <li>Скидка (Подробнее) - 725.87RUB</li>
-                    </ul>
-                    <ul>
-                      <li>Услуги (2) 1784.90RUB</li>
-                      <li>Скидка (Подробнее) - 725.87RUB</li>
-                    </ul>
-
-                    <div style="background-color: var(--color-global-baackground_light);">
-                      <div style="display: flex;"> 
-                        <p style="margin: 0;">Общая стоимость</p>
-                        <p style="margin: 0;">
-                          <span style="font-weight: bold;">9999.99RUB</span>
-                        </p>
-                      </div>
-                      <div>
-                        <p style="margin: 0;">Скидка</p>
-                        <p style="margin: 0;">
-                          <span v-if="conspirator_family_ticket.user_id" style="text-decoration: line-through;">99999.99RUB</span>
-                        </p>
-                      </div>
-                    </div>
-                    <p style="text-align: right; margin: 0;">
-                      <span>-999.99МОНЕТ</span>
-                      <br>
-                      <span>К оплате</span>
-                      <span>9000.00RUB</span>
-                      <br>
-                      <span v-if="conspirator_family_ticket.user_id" >Сохранишь 99999.99RUB</span><br>
-                      <span v-if="conspirator_family_ticket.user_id" >Инвестируй выгоду рублями или МОНЕТой</span><span></span>
-                    </p>
-                    <Button
-                      style="margin-top: 1rem;"
-                      type="original-btn"
-                      bg="bg-full"
-                      width="100%"
-                    >Перейти к оформлению</Button>
-                    <Button
-                      style="margin-top: 1rem;"
-                      type="original-btn"
-                      bg="bg-full"
-                      width="100%"
-                    >К оплате</Button>
-                    <Button
-                      style="margin-top: 1rem;"
-                      type="original-btn"
-                      bg="bg-full"
-                      width="100%"
-                    >Запросить / Выставить счет</Button>
-                    <div class="baner_wrapper" style="margin-top: 1rem;">
-                      <p style="margin: 0;">О конспираторах</p>
-                      <p style="margin: 0;">
-                        <span>0.8645RUB</span><br>
-                        <span>МОНЕТа</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-
-              <!-- <div class="cart_footer">
-                footer
-              </div> -->
-            </div>
-          </div>
       </div>
 
       <!-- BURGER -->
@@ -944,6 +789,212 @@ watch(
       </label>
     </div>
 
+  </div>
+
+  <!-- CART MODAL -->
+  <div v-if="cartMenuIsOpened" class="cart_container" :class="cartMenuIsOpened ? 'cart__opened' : 'cart_closed'">
+
+    <div class="cart_wrapper">
+
+      <div class="cart_header">
+        <p>Корзина</p>
+        <div>
+          <!-- <p style="cursor: pointer;">Избранное</p> -->
+          <p style="cursor: pointer;" @click.stop="cartMenuIsOpened = false">Закрыть</p>
+        </div>
+      </div>
+
+      <div class="cart_main no-scrollbar">
+        
+        <!-- <div style="background-color: var(--color-wallet-fund-debt); grid-column: span 3">
+          <input type="checkbox">
+          Выбрать все / Удалить выбранное
+        </div> -->
+
+        <div class="cart_item">
+
+          <h2 style="font-size: 1rem; margin: 0; margin-left: 1rem;font-weight: normal;">
+            <span
+                @click.stop="current_cart_subtitle = 'products'"
+                style="cursor: pointer;text-transform: uppercase;"
+                :style="
+                current_cart_subtitle === 'products' 
+                ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                : 'color: var(--color-global-text_second); font-weight: normal;'
+            ">
+              Товары ({{ cart_product_list_items?.length }})
+            </span>
+            <span
+                @click.stop="current_cart_subtitle = 'services'"
+                style="cursor: pointer; text-transform: uppercase;margin-left: .5rem;"
+                :style="
+                current_cart_subtitle === 'services' 
+                ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                : 'color: var(--color-global-text_second); font-weight: normal;'
+            ">
+              Услуги ({{ cart_service_list_items?.length }})
+            </span>
+          </h2>
+          <!-- CART PRODUCTS LIST -->
+          <div v-if="current_cart_subtitle === 'products'" class="cart_product_section">
+            <!-- <p>Товары</p> -->
+            <ul class="cart_product_item_container">
+              <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
+
+                <!-- cart product img -->
+                <div class="product-item_img">
+                  <img :src="`${item.item_imgUrl}`" :alt="item.item_name"
+                >
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
+
+                  <!-- cart product info -->
+                  <div class="cart-product-info_wrapper">
+                    <p class="cart-product-info_title" @click.stop="$router.push(`/product/12`), cartMenuIsOpened = false">{{ item.item_name }}</p>
+                    <p class="cart-product-info_article">Артикул:{{ item.item_id }}</p>
+                    <p class="cart-product-ifo_count">-1+</p>
+                  </div>
+  
+                  <!-- cart product price -->
+                  <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
+  
+                    <!-- <div>
+                      {{item.item_qty}} * {{ item.item_price }}{{ item.item_currency }}
+                    </div> -->
+                    <div>
+                      <p style="margin: 0;">{{ item.item_promo }}</p>
+                    </div>
+                    <div>
+                      <p style="margin: 0;">
+                        <span v-if="item.item_promo" style="text-decoration: line-through;">
+                          999.90RUB
+                        </span>
+                        <span style="font-weight: bold;">
+                          {{ item.item_qty * item.item_price }}{{ item.item_currency }}
+                        </span>
+                      </p>
+                    </div>
+                    <div v-if="!item.item_promo && !conspirator_family_ticket.user_id" class="cart-price-benefits_item">
+                      <p @click.stop="$router.push(`/whitepaper`), cartMenuIsOpened = false" style="margin: 0;">Выгоднее с конспираторами </p>
+                    </div>
+                  </div>
+                </div>
+                <!--  -->
+              </li>
+              <li style="background-color: var(--color-wallet-fund-debt);">
+                <p>Недоступно для заказа</p>
+                <ul>
+                  <li class="cart_product_unavailable">
+                    Товар 123
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+
+          </div>
+
+          <!-- CART SERVICES LIST  -->
+          <div v-else-if="current_cart_subtitle === 'services'" class="cart_service_section">
+            <p style="background-color: red;">Услуги</p>
+            <ul class="cart_service_item_container">
+              <li class="cart_service_item" v-for="i in cart_service_list_items" :key="i.item_id">
+                {{i}}
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="cart_total_container">
+          
+          <div>
+            {{ conspirator_family_ticket  }}
+            <br>
+            <br>
+            <div style="background-color: var(--color-urgency-middle);">
+              <input type="radio">
+              Доставка / 
+              <input type="radio">
+              Самовывоз
+            </div>
+            {{ item_product_delivery }}
+            <br>
+            <p>Доступные способы и время доставки можно выбрать при оформлении заказа</p>
+          </div>
+          <div>
+            <p>Ваша корзина</p>
+            <ul>
+              <li>Товары (2) 1784.90RUB</li>
+              <li>Скидка (Подробнее) - 725.87RUB</li>
+            </ul>
+            <ul>
+              <li>Услуги (2) 1784.90RUB</li>
+              <li>Скидка (Подробнее) - 725.87RUB</li>
+            </ul>
+            <ul>
+              <li>Конспираторов скидка (Подробнее) - 999.99RUB(10%)</li>
+              <li>Конспираторам начислится - 0.01МОНЕТ</li>
+            </ul>
+
+            <!-- Подключение к оплате МОНЕТами -->
+            <div style="margin-top: 1rem; border-radius: 1rem; background: var(--color-global-baackground_light); padding: .5rem 1rem;">
+              <p style="margin: 0; text-align: right;">
+                <span>-999.99МОНЕТ</span> /
+                <span>{{ (0.8645 * -999.99).toFixed(2) }}RUB</span>
+              </p>
+              <p style="margin: 0; font-size: .8rem; text-align: right;">
+                <span style="color: var(--color-global-text_second)">0.8645</span>
+                <span style="color: var(--color-global-text_second)">МОНЕТ/RUB</span>
+              </p>
+            </div>
+
+            <!-- Итого -->
+            <div style="margin-top: 1rem;">
+              <p style="margin: 0; text-align: right;">
+                <span>К оплате:</span> 
+                <span> 9000.00RUB</span>
+              </p>
+              <p style="margin: 0; text-align: right;">
+                <span>В том мчисле ндс: 2222.22RUB</span>
+              </p>
+            </div>
+
+            <!-- Кнопки действий -->
+            <Button
+              style="margin-top: 1rem;"
+              type="original-btn"
+              bg="bg-full"
+              width="100%"
+            >Перейти к оформлению</Button>
+            <Button
+              style="margin-top: 1rem;"
+              type="original-btn"
+              bg="bg-full"
+              width="100%"
+            >К оплате</Button>
+            <Button
+              style="margin-top: 1rem;"
+              type="original-btn"
+              bg="bg-full"
+              width="100%"
+            >Запросить / Выставить счет</Button>
+            <!-- <div class="baner_wrapper" style="margin-top: 1rem;">
+              <p style="margin: 0;">О конспираторах</p>
+              <p style="margin: 0;">
+                <span>0.8645</span><br>
+                <span>МОНЕТ/RUB</span>
+              </p>
+            </div> -->
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- <div class="cart_footer">
+        footer
+      </div> -->
+    </div>
   </div>
 </template>
 
@@ -1074,19 +1125,19 @@ a:visited {
   line-height: 1.5rem;
   border-radius: 1rem;
 }
-.cart > .cart_container {
+.cart_container {
   /* display: none; */
-  /* position: fixed; */
-  position: absolute; 
+
+  position: fixed;
+  z-index: 100!important;
   top: 0;
   left: 0;
   width: 100%;
   /* height: 100vh; */
-  background-color: var(--color-bg-popup);
-  backdrop-filter: blur(2px);
+  
   /* overflow-y: scroll; */
 }
-.cart > .cart__opened {
+.cart__opened {
   opacity: 1;
   transition: all .3s ease-in;
   z-index: 99;
@@ -1421,19 +1472,54 @@ a:visited {
   .cart > label > .cart_count {
     right: 1.75rem;
   }
+  .cart__opened {
+    /* z-index: 1001; */
+    background-color: var(--color-bg-popup);
+    opacity: 1;
+    transition: all .3s ease-in;
+    /* z-index: 100; */
+  }
+  .cart_container {
+    /* display: none; */
+    /* position: absolute;  */
+
+    /* backdrop-filter: blur(2px); */
+  }
+  .cart_total_container {
+    /* background-color: blue!important; */
+    height: 45rem!important;
+    overflow: scroll;
+  }
+  .cart_wrapper .cart_main .cart_total_container {
+    top: 4.25rem!important;
+  }
+  .cart_product_section,
+  .cart_service_section {
+    margin-top: 1.75rem;
+  }
   .cart_product_item_container {
     list-style: none;
     padding: 0;
+    padding-left: 1rem;
   }
   .cart_product_item_wrapper {
-    background-color: red;
     display: flex;
-    align-items: center;
+    gap: 1rem;
+    align-items: center;  
+    margin-top: 1.5rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    /* height: 100%; */
+  }
+  .cart_product_item_wrapper:first-child {
+    margin: 0;
+  }
+  .cart_product_item_wrapper:hover {
+    background-color: var(--color-btn-hover-bg);
+    /* cursor: pointer; */
   }
   .product-item_img {
-    /* width: 100%; */
-    width: 150px;
-    /* height: 14rem;  */
+    max-width: 150px!important;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -1448,18 +1534,56 @@ a:visited {
     /* object-fit: contain; — поместить целиком без обрезки */
     object-position: center; /* Позиционирование внутри контейнера */
   }
+
+  /* 
+   */
+  /* cart product item info */
+  .cart-product-info_wrapper {
+    /* background-color: var(--color-wallet-fund-invested-wo); */
+    /* background-color: red; */
+    /* flex: 1 auto; */
+  }
+  .cart-product-info_wrapper p {
+    margin: 0;
+  }
+  .cart-product-info_title {
+    cursor: pointer;
+  }
+  .cart-product-info_title:hover {
+    text-decoration: underline;
+  }
+  .cart-product-info_article {
+    color: var(--color-global-text_second);
+  }
+  .cart-product-ifo_count {
+    margin-top: 1rem!important;
+    background-color: red;
+    width: fit-content;
+  }
+
+  .cart-price-benefits_item {
+    /* background-color: red; */
+    font-size: .9rem;
+  }
+  .cart-price-benefits_item p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* 
+   */
+   /* cart total */
   .cart_total_container {
     border-radius: 1.75rem;
   }
-  .cart_total_container .baner_wrapper {
-    /* bottom: 0; */
+  /* .cart_total_container .baner_wrapper {
     background-color: var(--color-global-baackground_light);
     border-radius: 1rem;
     padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
+  } */
 }
 @media (min-width: 1400px) {
   .cart > label {

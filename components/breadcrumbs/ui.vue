@@ -3,7 +3,7 @@
   <ul>
     <li>
       <Button type="pseudo-btn" link="/">Главная</Button>
-
+      
     </li>
     <li 
       v-if="pathArr[pathArr.length - 2]"
