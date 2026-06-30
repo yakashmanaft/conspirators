@@ -282,7 +282,7 @@
                  </div>
              </div>
      
-             <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+             <!-- <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
                  <p style="margin: 0; color: var(--color-global-text_second);">
                      <span style="color: var(--color-global-text_second);">{{ current_volume }}</span> | 
                      <span style="color: var(--color-global-text_second);">{{ current_book }}</span> | 
@@ -291,16 +291,15 @@
                      <span style="color: var(--color-global-text_second);">{{ current_paragraph }}</span>
                  </p> 
                  <p style="margin: 0; color: var(--color-global-text_second);">{{ filter_by_available }}</p>
-             </div>
+             </div> -->
              <!-- ITEM GRID -->
              <div class="product-item_section">
                  <!-- data is loading -->
                  <div v-if="pending_product" style="margin-left: 1rem; margin-right: 1rem;">
                      <p style="margin-top: 1rem">Loading...</p>
                  </div>
-     
+
                  <div class="product-item_container">
-     
                      <!-- Поиск ничего не находит -->
                      <div class="item_search_wrong" style="margin-bottom: 20.5rem"   v-if="searchProductInput && !computed_products?.length">
                          По запросу ничего не найдено
@@ -326,11 +325,17 @@
                          </div>
                          <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
                          <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ product.type }}</p>
-     
+                         <!-- <p style="font-size: .8rem; color: var(--color-global-text_second);">Артикул: {{ product.article }}</p> -->
                          <div class="product-item_cart">
                              <p 
+                                v-if="product.qty == 0"
+                                 class="cart-add_btn cart-item_request-btn"
+                                @click.stop=""
+                             >Оставить заявку</p>
+                             <p 
+                                v-else
                                  class="cart-add_btn"
-                                 @click.stop="add_to_cart_func()"
+                                 @click.stop="add_to_cart_func(product)"
                              >В корзину</p>
                              <p class="cart-change-count_btn" style="width: fit-content;">- 1 +</p>
                          </div>
@@ -846,6 +851,7 @@
             /* background-color: red; */
             display: flex;
             gap: .5rem;
+            margin-left: 1rem;
         }
         .bread-crumbs-group h1{
             font-weight: normal!important;
@@ -856,6 +862,9 @@
         }
         .bread-crumbs-group ul {
             margin: 0!important;
+        }
+        h2 {
+            margin-left: 1rem;
         }
         /* 
         */
@@ -911,6 +920,9 @@
             /* background-color: red;  */
             /* margin-left: 1rem; */
 
+        }
+        .product-item_search-wrapper {
+            margin-left: .5rem;
         }
         .product-item_filter .product-item_filters-wrapper {
             display: flex; 
@@ -1065,8 +1077,14 @@
             background-color: var(--color-global-text_second);
             padding: 5px;
         }
+        .cart-item_request-btn {
+            background-color: rgba(114, 166, 245, 0.3)!important;
+        }
+        .cart-item_request-btn:hover {
+            background-color: rgba(89, 151, 245, 0.3)!important;
+        }
         .cart-add_btn {
-            background-color: rgba(54, 195, 77, 0.6);;
+            background-color: rgba(54, 195, 77, 0.6);
             width: 100%;
             text-align: center;
             color: white;
@@ -1400,6 +1418,10 @@
     import { BreadCrumbs } from '~/components/breadcrumbs';
     import { Search } from '~/components/search'
     import { onUnmounted } from 'vue';
+
+    // store
+    import { useCart } from '@/stores/cart'
+
 
 
     // PROPS
@@ -1912,8 +1934,18 @@
     }
 
     // onClick cart-add_btn
-    const add_to_cart_func = () => {
-        console.log('функция не добавлена...')
+    const cart = useCart()
+    const add_to_cart_func = (product: any) => {
+        cart.addToCart({ 
+            id: product.id,
+            title: product.title,
+            qty: product.qty,
+            measure: product.measure,
+            article: product.article,
+            imgUrl: product.img_src,
+            currency: product.currency,
+            price: product.price
+         })
     }
 
     // HELPERS

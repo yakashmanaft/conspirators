@@ -245,7 +245,7 @@ model Warehouse {
   locationId      Int
   projectId       Int      @default(0)
   position        String   @db.VarChar(255)
-  serial          String   @db.VarChar(255)
+  article         String   @default("000000000.0") @db.VarChar(255)
   productionDate  String   @db.VarChar(255)
   ownerID         Int      @default(0)
   ownerType       String   @default("user") @db.VarChar(255)

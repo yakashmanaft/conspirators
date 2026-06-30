@@ -205,9 +205,6 @@ useHead({
     // DB
     //
     // = current product
-    // const { data: product } = await useFetch("/api/warehouse_onsale/item", {
-    //     lazy: false
-    // })
     const { data: product } = await useFetch("/api/warehouse_onsale/item", {
         lazy: false,
         transform: (list) => {
@@ -218,7 +215,14 @@ useHead({
                         id: obj.id,
                         title: obj.title,
                         img_url: obj.img_src, 
-                        type: obj.type
+                        type: obj.type,
+                        qty: obj.qty,
+                        measure: obj.measure,
+                        features: obj.features,
+                        desc: obj.description,
+                        owner_type: obj.ownerType,
+                        owner_id: obj.ownerID,
+                        article: obj.article
                     }
                 })[0]
         }
@@ -310,8 +314,8 @@ useHead({
                         <span style="background-color: var(--color-btn-hover-bg)">{{ mesh.broker_tag }}</span>
                     </p>
                 </h2> -->
-                <div style="width: 250px; height: 250px;">
-                    <img :src="product?.img_url" :alt="product?.title">
+                <div style="width: 250px; height: 250px; ">
+                    <img style='width: 100%; height: 100%; object-fit: cover;' :src="product?.img_url" :alt="product?.title">
                 </div>
                 <!-- <p>{{}}{{ product.currency }}</p> -->
                 <p>В корзину</p>
@@ -322,6 +326,23 @@ useHead({
                         </li>
                     </ul>
                 </p> -->
+            </div>
+
+            <div style="width: fit-content">
+                <p v-if="product.qty <= 0" style="background-color: var(--color-operation-type-donation);">Доступно для заказа</p>
+                <p v-else style="background-color: var(--color-status-finished)">В наличии: {{ product.qty }}{{ product.measure }}</p>
+
+                <p>Описание: {{ product.desc }}</p>
+                <p>Артикул: {{ product.article }}</p>
+
+                <ul>
+                    <p>Характеристики:</p>
+                    <li v-for="el in product?.features">
+                        <p>{{ el }}</p>
+                    </li>
+                </ul>
+
+                <p>Продавец: <span>{{ product.owner_id }} {{ product.owner_type }}</span></p>
             </div>
             {{ product }}
     

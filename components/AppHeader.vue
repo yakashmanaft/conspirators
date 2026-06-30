@@ -6,6 +6,8 @@ import { Container } from "@/shared/container";
 import { Button } from '@/components/button'
 // utils
 import { watch } from "vue";
+// store
+import { useCart } from "@/stores/cart";
 
 // PROPS
 const props = defineProps({
@@ -138,14 +140,20 @@ const featuresListNoAuth = ref([
   // },
 ])
 
+
 // Cart list item
+const cart = useCart()
 const cart_product_list_items = ref([
   {
+    //id
     item_id: 1,
+    //title
     item_name: 'Тумба с раковиной',
     item_text: 'Фасады из натурального камня. Металлический каркас. Крепление к стене в комплекте',
     item_imgUrl: 'https://cs2.livemaster.ru/storage/8d/69/a9072f1f95998b3f40e6555d8av3--dlya-doma-i-interera-rakovina-iz-naturalnogo-kamnya.jpg',
+    //qty
     item_qty: 1,
+    //price
     item_price: 29990.00,
     item_currency: 'RUB',
     item_promo: '2706Промо2026'
@@ -255,6 +263,29 @@ const cart_service_list_items = ref([
     item_pice: 39990.00,
     item_curerncy: 'RUB'
   }
+])
+const cart_task_list_items = ref([
+  {
+    //id
+    id: 1,
+    //title
+    name: 'Запрос заказной позиции',
+    desc: 'Полка для хранения с крючками Тезза Лава',
+    //qty
+    qty: 1,
+    //price
+    price: 29990.00,
+    currency: 'RUB',
+    // item_promo: '2706Промо2026'
+  },
+  {
+    id: 2,
+    name: 'Установка тумбы',
+    desc: 'Проведение монтажных работы',
+    qty: 1,
+    pice: 29990.00,
+    curerncy: 'RUB'
+  },
 ])
 const conspirator_family_ticket = ref({
   user_id: useUserSession().user,
@@ -487,9 +518,8 @@ const translateRoutePath = (path: string) => {
 const toggleCartMenu = () => {
   cartMenuIsOpened.value = !cartMenuIsOpened.value
 }
-//
+// Заголовок подраздела (товары, услуги, заявки) в корзине
 const current_cart_subtitle = ref('products')
-
 
 // WATCHERS
 watch(burgerIsOpened, () => {
@@ -813,55 +843,130 @@ watch(
 
         <div class="cart_item">
 
-          <h2 style="font-size: 1rem; margin: 0; margin-left: 1rem;font-weight: normal;">
-            <span
-                @click.stop="current_cart_subtitle = 'products'"
-                style="cursor: pointer;text-transform: uppercase;"
-                :style="
-                current_cart_subtitle === 'products' 
-                ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
-                : 'color: var(--color-global-text_second); font-weight: normal;'
-            ">
-              Товары ({{ cart_product_list_items?.length }})
-            </span>
-            <span
-                @click.stop="current_cart_subtitle = 'services'"
-                style="cursor: pointer; text-transform: uppercase;margin-left: .5rem;"
-                :style="
-                current_cart_subtitle === 'services' 
-                ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
-                : 'color: var(--color-global-text_second); font-weight: normal;'
-            ">
-              Услуги ({{ cart_service_list_items?.length }})
-            </span>
-          </h2>
+          <div style="display: flex;align-items: center; justify-content: space-between;">
+            <h2 style="line-height: 2rem; font-size: 1rem; margin: 0; margin-left: 1rem;font-weight: normal;">
+              <span
+                  @click.stop="current_cart_subtitle = 'products'"
+                  style="cursor: pointer;text-transform: uppercase;"
+                  :style="
+                  current_cart_subtitle === 'products' 
+                  ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                  : 'color: var(--color-global-text_second); font-weight: normal;'
+              ">
+                Товары ({{ cart.items?.length }})
+              </span>
+              <span
+                  @click.stop="current_cart_subtitle = 'services'"
+                  style="cursor: pointer; text-transform: uppercase;margin-left: .5rem;"
+                  :style="
+                  current_cart_subtitle === 'services' 
+                  ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                  : 'color: var(--color-global-text_second); font-weight: normal;'
+              ">
+                Услуги ({{ cart_service_list_items?.length }})
+              </span>
+              <span
+                  @click.stop="current_cart_subtitle = 'tasks'"
+                  style="cursor: pointer; text-transform: uppercase;margin-left: .5rem;"
+                  :style="
+                  current_cart_subtitle === 'tasks' 
+                  ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
+                  : 'color: var(--color-global-text_second); font-weight: normal;'
+              ">
+                Задачи ({{ cart_task_list_items?.length }})
+              </span>
+            </h2>
+            <p 
+              class="clear-cart_btn"
+              v-if="cart.items.length" 
+              style="margin: 0;"
+              @click.stop="cart.clearCart()"
+            >Очистить корзину</p>
+          </div>
           <!-- CART PRODUCTS LIST -->
+          <div>
+            <!-- {{ useCartStore }} -->
+          </div>
+
+          <!-- PRODUCTS LIST -->
           <div v-if="current_cart_subtitle === 'products'" class="cart_product_section">
             <!-- <p>Товары</p> -->
             <ul class="cart_product_item_container">
-              <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
 
-                <!-- cart product img -->
+              <!-- ТОВАР / ITEM -->
+              <li 
+                class="cart_product_item_wrapper"
+                v-for="item in cart.items"
+              >
+                <!-- img -->
+                <div class="product-item_img">
+                  <img :src="`${item.imgUrl}`" :alt="item.title"
+                >
+                </div>
+
+                <!--  -->
+                <div style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
+                  <div 
+                    class="cart-product-info_wrapper"
+                    @click.stop="$router.push(`/product/${item.id}`), cartMenuIsOpened = false"
+                    >
+                    <p class="cart-product-info_title">
+                      {{ item.title }}
+                    </p>
+                    <p class="cart-product-info_article">Артикул: {{ item.article }}</p>
+                    <p>{{ item.max_qty }}</p>
+                    <div class="cart-product-info_count" style="display: flex; align-items: center; gap: .5rem;">
+                      <div class="count_btn" style="background-color: var(--color-global-text); width: 2rem; height: 2rem;" @click.stop="cart.updateQuantity(item.id, -1)">
+                        -
+                      </div>
+                      <div>{{ item.qty }}</div>
+                      <div 
+                        class="count_btn" 
+                      style="background-color: var(--color-global-text); width: 2rem; height: 2rem;"
+                      @click.stop="cart.updateQuantity(item.id, 1)"
+                      >
+                        +
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
+                    <!-- <div>
+                      <p style="margin: 0;">{{ item.item_promo }}</p>
+                    </div> -->
+                    <div>
+                      <p style="margin: 0;">
+                        <!-- <span v-if="item.item_promo" style="text-decoration: line-through;">
+                          999.90RUB
+                        </span> -->
+                        <span style="font-weight: bold;">
+                          {{ item.qty * item.price }}{{ item.currency }}
+                        </span>
+                      </p>
+                    </div>
+                    <div v-if="!conspirator_family_ticket.user_id" class="cart-price-benefits_item">
+                      <p @click.stop="$router.push(`/whitepaper`), cartMenuIsOpened = false" style="margin: 0;">Выгоднее с конспираторами </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- {{ item }} -->
+              </li>
+
+              <li v-if="!cart.items.length" class="cart_product_item_container_empty"><p>В корзине пусто. <span @click.stop="cartMenuIsOpened = false">Перейти в каталог</span></p></li>
+
+
+              <!-- <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
                 <div class="product-item_img">
                   <img :src="`${item.item_imgUrl}`" :alt="item.item_name"
                 >
                 </div>
-
                 <div style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
-
-                  <!-- cart product info -->
                   <div class="cart-product-info_wrapper">
                     <p class="cart-product-info_title" @click.stop="$router.push(`/product/12`), cartMenuIsOpened = false">{{ item.item_name }}</p>
                     <p class="cart-product-info_article">Артикул:{{ item.item_id }}</p>
-                    <p class="cart-product-ifo_count">-1+</p>
+                    <p class="cart-product-info_count">-1+</p>
                   </div>
-  
-                  <!-- cart product price -->
                   <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
-  
-                    <!-- <div>
-                      {{item.item_qty}} * {{ item.item_price }}{{ item.item_currency }}
-                    </div> -->
                     <div>
                       <p style="margin: 0;">{{ item.item_promo }}</p>
                     </div>
@@ -880,8 +985,7 @@ watch(
                     </div>
                   </div>
                 </div>
-                <!--  -->
-              </li>
+              </li> -->
               <li style="background-color: var(--color-wallet-fund-debt);">
                 <p>Недоступно для заказа</p>
                 <ul>
@@ -905,6 +1009,15 @@ watch(
             </ul>
           </div>
 
+          <!-- CART DEMANDS / TASK LIST -->
+          <div v-else-if="current_cart_subtitle === 'tasks'" class="cart_service_section">
+            <p style="background-color: red;">Заявки</p>
+            <ul class="cart_service_item_container">
+              <li class="cart_service_item" v-for="i in cart_task_list_items" :key="i.id">
+                {{i}}
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="cart_total_container">
           
@@ -1497,19 +1610,27 @@ a:visited {
   .cart_service_section {
     margin-top: 1.75rem;
   }
+  .clear-cart_btn:hover{
+    cursor: pointer;
+    color: var(--color-wallet-fund-invested);
+  }
   .cart_product_item_container {
     list-style: none;
     padding: 0;
     padding-left: 1rem;
+  }
+  .cart_product_item_container_empty p span:hover{
+    cursor: pointer;
+    color: var(--color-wallet-fund-invested);
   }
   .cart_product_item_wrapper {
     display: flex;
     gap: 1rem;
     align-items: center;  
     margin-top: 1.5rem;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     overflow: hidden;
-    /* height: 100%; */
+    height: 150px;
   }
   .cart_product_item_wrapper:first-child {
     margin: 0;
@@ -1555,10 +1676,19 @@ a:visited {
   .cart-product-info_article {
     color: var(--color-global-text_second);
   }
-  .cart-product-ifo_count {
+  .cart-product-info_count {
     margin-top: 1rem!important;
-    background-color: red;
+    /* background-color: red; */
     width: fit-content;
+  }
+  .cart-product-info_count  .count_btn {
+    color: var(--color-global-baackground_light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+   .cart-product-info_count  .count_btn:hover {
+    cursor: pointer;
   }
 
   .cart-price-benefits_item {
