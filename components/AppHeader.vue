@@ -521,6 +521,23 @@ const toggleCartMenu = () => {
 // Заголовок подраздела (товары, услуги, заявки) в корзине
 const current_cart_subtitle = ref('products')
 
+const deacrease_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+  if(item_qty <= 0) {
+
+  } else {
+
+    cart.updateQuantity(item_id, -1)
+  }
+}
+const increase_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+  if(item_qty === item_max_qty) {
+
+  } else {
+
+    cart.updateQuantity(item_id, 1)
+  }
+}
+
 // WATCHERS
 watch(burgerIsOpened, () => {
   // console.log(`burgerIsOpened: ${burgerIsOpened.value}`);
@@ -903,27 +920,48 @@ watch(
                   <img :src="`${item.imgUrl}`" :alt="item.title"
                 >
                 </div>
+                <div
+                  v-if="item.qty === 0"
+                  style="position: absolute; top: 0; right: 0; cursor: pointer;"
+                  @click="cart.removeFromCart(item.id)"
+                >
+                  <Icon 
+                    size="32px"
+                    name="hugeicons:delete-02"
+                    color="var(--color-urgency-high)"
+                  />
+                </div>
 
                 <!--  -->
                 <div style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
                   <div 
-                    class="cart-product-info_wrapper"
-                    @click.stop="$router.push(`/product/${item.id}`), cartMenuIsOpened = false"
-                    >
-                    <p class="cart-product-info_title">
+                  class="cart-product-info_wrapper"
+                  @click.stop="$router.push(`/product/${item.id}`), cartMenuIsOpened = false"
+                  >
+                    <p class="cart-product-info_title" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">
                       {{ item.title }}
                     </p>
-                    <p class="cart-product-info_article">Артикул: {{ item.article }}</p>
-                    <p>{{ item.max_qty }}</p>
+                    <p class="cart-product-info_article" style="font-size: .8rem;" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">Артикул: {{ item.article }}</p>
+                    <p class="cart-product-info_article" style="font-size: .8rem;" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">В наличии: {{ item.max_qty }}</p>
                     <div class="cart-product-info_count" style="display: flex; align-items: center; gap: .5rem;">
-                      <div class="count_btn" style="background-color: var(--color-global-text); width: 2rem; height: 2rem;" @click.stop="cart.updateQuantity(item.id, -1)">
-                        -
+                      <div class="count_btn" style="background-color: var(--color-global-text); width: 2rem; height: 2rem;   user-select: none;" @click.stop="deacrease_cart_item_qty(item.id, item.qty, item.max_qty)" :style="item.qty === 0 ? 'background-color:unset' : ''">
+                        
+                        <span v-if="item.qty === 0" @click="cart.removeFromCart(item.id)">
+                          <Icon
+                            size="32px"
+                            name="hugeicons:delete-02"
+                            color="var(--color-urgency-high)"
+                          />
+                        </span>
+                        <span v-else style="color: var(--color-global-baackground_light)">
+                          -
+                        </span>
                       </div>
-                      <div>{{ item.qty }}</div>
+                      <div class="count_count">{{ item.qty }}</div>
                       <div 
                         class="count_btn" 
-                      style="background-color: var(--color-global-text); width: 2rem; height: 2rem;"
-                      @click.stop="cart.updateQuantity(item.id, 1)"
+                      style="background-color: var(--color-global-text); width: 2rem; height: 2rem; user-select: none;" :style="item.qty === item.max_qty ? 'background-color: var(--color-btn-disabled-bg)' : ''"
+                      @click.stop="increase_cart_item_qty(item.id, item.qty, item.max_qty)"
                       >
                         +
                       </div>
@@ -939,13 +977,13 @@ watch(
                         <!-- <span v-if="item.item_promo" style="text-decoration: line-through;">
                           999.90RUB
                         </span> -->
-                        <span style="font-weight: bold;">
-                          {{ item.qty * item.price }}{{ item.currency }}
+                        <span style="font-weight: bold;" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">
+                          {{ (item.qty * item.price).toFixed(2) }} {{ item.currency }}
                         </span>
                       </p>
                     </div>
                     <div v-if="!conspirator_family_ticket.user_id" class="cart-price-benefits_item">
-                      <p @click.stop="$router.push(`/whitepaper`), cartMenuIsOpened = false" style="margin: 0;">Выгоднее с конспираторами </p>
+                      <p @click.stop="$router.push(`/whitepaper`), cartMenuIsOpened = false" style="margin: 0;" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">Выгоднее с конспираторами </p>
                     </div>
                   </div>
                 </div>
@@ -986,14 +1024,14 @@ watch(
                   </div>
                 </div>
               </li> -->
-              <li style="background-color: var(--color-wallet-fund-debt);">
+              <!-- <li style="background-color: var(--color-wallet-fund-debt);">
                 <p>Недоступно для заказа</p>
                 <ul>
                   <li class="cart_product_unavailable">
                     Товар 123
                   </li>
                 </ul>
-              </li>
+              </li> -->
             </ul>
 
 
@@ -1631,13 +1669,15 @@ a:visited {
     /* border-radius: 1rem; */
     overflow: hidden;
     height: 150px;
+    position: relative;
   }
   .cart_product_item_wrapper:first-child {
     margin: 0;
   }
   .cart_product_item_wrapper:hover {
-    background-color: var(--color-btn-hover-bg);
+    /* background-color: var(--color-btn-hover-bg); */
     /* cursor: pointer; */
+    /* box-shadow: var(--hover-shadow) */
   }
   .product-item_img {
     max-width: 150px!important;
@@ -1660,6 +1700,7 @@ a:visited {
    */
   /* cart product item info */
   .cart-product-info_wrapper {
+    position: relative;
     /* background-color: var(--color-wallet-fund-invested-wo); */
     /* background-color: red; */
     /* flex: 1 auto; */
@@ -1689,6 +1730,12 @@ a:visited {
   }
    .cart-product-info_count  .count_btn:hover {
     cursor: pointer;
+  }
+  .cart-product-info_count .count_count {
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .cart-price-benefits_item {
