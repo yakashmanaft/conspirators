@@ -890,7 +890,7 @@ watch(
                   ? 'border-bottom: 1px solid var(--color-global-text); padding-bottom: .25rem;'
                   : 'color: var(--color-global-text_second); font-weight: normal;'
               ">
-                Задачи ({{ cart_task_list_items?.length }})
+                Заявки ({{ cart_task_list_items?.length }})
               </span>
             </h2>
             <p 
@@ -923,7 +923,7 @@ watch(
                 <div
                   v-if="item.qty === 0"
                   style="position: absolute; top: 0; right: 0; cursor: pointer;"
-                  @click="cart.removeFromCart(item.id)"
+                  @click.stop="cart.removeFromCart(item.id)"
                 >
                   <Icon 
                     size="32px"

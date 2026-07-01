@@ -321,24 +321,40 @@
                          <div class="product-item_remain">
          
                              <p v-if="product.qty == 0" style="background-color: var(--color-operation-type-donation)">Доступно для заказа</p>
-                             <p v-else>В наличии: {{ product.qty }} {{ product.measure }}</p>
+                             <p v-else style="background-color: var(--color-status-finished);">В наличии: {{ product.qty }} {{ product.measure }}</p>
                          </div>
                          <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
                          <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ product.type }}</p>
                          <!-- <p style="font-size: .8rem; color: var(--color-global-text_second);">Артикул: {{ product.article }}</p> -->
                          <div class="product-item_cart">
+                            <!-- QTY == 0 -->
                              <p 
                                 v-if="product.qty == 0"
                                  class="cart-add_btn cart-item_request-btn"
                                 @click.stop=""
                              >Оставить заявку</p>
-                             <p 
-                                v-else
-                                 class="cart-add_btn"
-                                 @click.stop="add_to_cart_func(product)"
-                             >В корзину</p>
-                             <p class="cart-change-count_btn" style="width: fit-content;">- 1 +</p>
-                         </div>
+                             
+                             <!--  -->
+                             <div 
+                             v-else-if="cart.items.find(el => el.id === product.id) && cart.items.find(el => el.id === product.id).qty > 0"
+                             class="cart-change-count_btn" style="width: fit-content;">
+                                <div 
+                                    class="count_btn"
+                                    @click.stop="deacrease_cart_item_qty(cart.items.find(el => el.id === product.id)?.id, cart.items.find(el => el.id === product.id)?.qty, cart.items.find(el => el.id === product.id)?.max_qty);"
+                                >-</div>
+                                <div class="count_count">{{ cart.items.find(el => el.id === product.id).qty }}</div>
+                                <div 
+                                    class="count_btn"
+                                    :style="cart.items.find(el => el.id === product.id).qty === cart.items.find(el => el.id === product.id).max_qty ? 'background-color: var(--color-btn-disabled-bg)' : ''"
+                                    @click.stop="increase_cart_item_qty(cart.items.find(el => el.id === product.id)?.id, cart.items.find(el => el.id === product.id)?.qty, cart.items.find(el => el.id === product.id)?.max_qty)"
+                                    >+</div>
+                            </div>
+                            <p 
+                               v-else
+                                class="cart-add_btn"
+                                @click.stop="add_to_cart_func(product)"
+                            >В корзину</p>
+                        </div>
                          <!-- <p>{{ product.description }}</p>
                          <p>Характеристики:</p>
                          <ul>
@@ -1014,7 +1030,7 @@
         .product-item_wrapper {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: flex-end;
             background-color: var(--color-item-hover-bg);
             cursor: pointer;
             min-width: 150px;
@@ -1045,14 +1061,16 @@
             transform: scale(1.25);
         }
         .product-item_wrapper h3 {
-            /* margin-top: .5rem; */
+            margin-top: .5rem!important;
             margin: 0;
             font-size: .9rem!important;
             line-height: 1.5;
             font-weight: normal;
+            padding: 0 .5rem;
         }
         .product-item_wrapper p {
             margin: 0;
+            padding: 0 .5rem;
         }
         .product-item_price {
             /* position: absolute;
@@ -1060,22 +1078,27 @@
             top: 0; */
             font-size: 1.2rem;
             margin: 0;
+            margin-top: .5rem!important;
+            /* flex: 1 auto; */
         }
         .product-item_remain {
-            background-color: var(--color-status-finished);
+            /* background-color: var(--color-status-finished); */
+            padding: 0 .5rem;
         }
         .product-item_remain p {
             font-size: .8rem;
             padding: 0 .25rem;
         }
         .product-item_cart {
-            margin-top: auto;
+            margin-top: 1rem;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            align-items: flex-end;
+            flex: 1 auto;
             width: 100%;
-            background-color: var(--color-global-text_second);
-            padding: 5px;
+            justify-content: flex-end;
+            user-select: none;
+            /* background-color: var(--color-global-text_second); */
+            /* padding: 5px; */
         }
         .cart-item_request-btn {
             background-color: rgba(114, 166, 245, 0.3)!important;
@@ -1088,14 +1111,33 @@
             width: 100%;
             text-align: center;
             color: white;
-            padding: .25rem;
+            padding: .5rem .25rem!important;
             font-size: .8rem;
+            /* height: 100%; */
         }
         .cart-add_btn:hover {
             background-color: rgba(54, 195, 77, 0.8);
         }
         .cart-change-count_btn {
-            background-color: var(--color-wallet-fund-debt);
+            /* height: 100%; */
+            /* background-color: var(--color-wallet-fund-debt); */
+            display: flex;
+            align-items: center;
+        }
+        .cart-change-count_btn .count_btn {
+            color: var(--color-global-baackground_light);
+            background-color: var(--color-global-text);
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-change-count_btn .count_count {
+            width: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
     @media screen and (min-width: 1400px) {
@@ -1474,6 +1516,26 @@
     const elementRef = ref(null);
     const isFixed = ref(false);
     let observer = null;
+
+    // Helpers product cart card item qty counts
+    const deacrease_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+    if(item_qty <= 0) {
+        cart.removeFromCart(item_id)
+    } else {
+
+        cart.updateQuantity(item_id, -1)
+    }
+    }
+    const increase_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+    if(item_qty === item_max_qty) {
+
+    } else {
+
+        cart.updateQuantity(item_id, 1)
+    }
+    }
+
+
     // ON MOUNTED
     onMounted(() => {
         // let ticking = false;

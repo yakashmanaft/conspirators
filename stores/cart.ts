@@ -102,8 +102,8 @@ export const useCart = defineStore('cart', {
         },
 
         removeFromCart(id: number) {
-        this.items = this.items.filter((i) => i.id !== id)
-        this.save()
+            this.items = this.items.filter((i) => i.id !== id)
+            this.save()
         },
 
         clearCart() {
