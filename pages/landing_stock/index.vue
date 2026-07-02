@@ -264,6 +264,8 @@
                          </div>
                      </div>
          
+                     
+                     
                      <!-- ФИЛЬТР по наличию -->
                      <div class="filter_by_available_container">
                          <div class="radio-option">
@@ -281,6 +283,8 @@
                      </div>
                  </div>
              </div>
+             {{ filter_by_available }}
+             <!-- {{ products_on_sale_list }} -->
      
              <!-- <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
                  <p style="margin: 0; color: var(--color-global-text_second);">
@@ -1743,7 +1747,16 @@
     const computed_products = computed(() => {
         if(searchProductInput.value === '') {
             return products_on_sale_list.value
-        } else {
+        } 
+        // else if(filter_by_available.value === 'all') {
+        //     return products_on_sale_list.value
+        // }
+        // if(filter_by_available.value === 'order') {
+        //     return products_on_sale_list.value?.filter((item) => 
+        //         item.qty <= 0
+        //     )
+        // }
+        else {
             return products_on_sale_list.value?.filter((item) => 
                 item.title
                     .toLowerCase()
@@ -1751,6 +1764,7 @@
                     .includes(searchProductInput.value.toLowerCase().replace(/\s+/g, ""))
             )
         }
+
     })
     //= db get
     const { data: products_on_sale_list, pending_product, error_product} = await useFetch("/api/warehouse_onsale/item", {
@@ -2091,6 +2105,24 @@
             body.style.margin = 'unset'
             body.style.height = 'unset'
             body.style.overflow = 'unset'
+        }
+    })
+
+    //= filter_by_available
+    watch(filter_by_available, () => {
+        console.log(filter_by_available.value)
+
+        if(filter_by_available.value === 'order') {
+            //computed_products
+            console.log(products_on_sale_list.value.filter(el => el.qty <= 0))
+        }
+        else if(filter_by_available.value === 'available') {
+            //computed_products
+            console.log(products_on_sale_list.value.filter(el => el.qty > 0))
+        }
+        else {
+            //computed_products
+            console.log(products_on_sale_list.value)
         }
     })
     

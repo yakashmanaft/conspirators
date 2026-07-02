@@ -4954,30 +4954,22 @@ const checkCurrencyPair = (pair: any) => {
   <Container>
 
     <!-- PAGE TITLE -->
-    <div class="show-max-767" >
+    <div class="show-max-767 bread-crumbs-group" >
       <BreadCrumbs/>
       <!-- TITLE -->
-      <h1 style="font-weight: bold; font-size: 42px;">Мой кошелек</h1>
+      <h1 style="font-weight: bold; font-size: 42px;">Кошелек</h1>
+      <div>Обновлено 16.03.2026</div>
     </div>
+    <!-- КНОПКА ОБНОВИТЬ ДАННЫЕ (пока в режиме информации только...) -->
+    <!-- <div style=" width: 100%; display: flex; align-items: center; justify-content: center;" >
+      <p style="margin-top: 1rem; background-color: var(--color-global-text_second); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-btn-text)">Обновлено 16.03.2026</p>
+    </div> -->
 
     <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p> -->
 
     <div class="meshes_local_section">
-      
-      <!-- КНОПКА ОБНОВИТЬ ДАННЫЕ (пока в режиме информации только...) -->
-      <div style="width: 100%; display: flex; align-items: center; justify-content: center;" >
-        <p style="margin-top: 1rem; background-color: var(--color-global-text_second); padding: .5rem 1rem; border-radius: 1rem; font-size: .8rem; color: var(--color-btn-text)">Обновлено 16.03.2026</p>
-      </div>
 
-      <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
-      <Chip
-        id="affiliation-chip-block"
-        :tabs="affiliation_computed"
-        :default="currentAffiliation"
-        :btn_all_exist="true"
-        @changed="changeChipAffiliation"
-        style="margin-top: 1em; padding: 0 1rem;"
-      />
+
 
       <!-- 
       1.     Денег на счетах
@@ -5006,87 +4998,101 @@ const checkCurrencyPair = (pair: any) => {
       -->
 
 
-      <!-- ГЛАВНАЯ КАРТОЧКА / TOTAL -->
-      <div style="background-color: var(--color-operation-type-donation); margin: 2rem 1rem 1rem 1rem; border-radius: 1rem; padding: 1rem">
-        <!-- Заголовок группы -->
-        <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+      <!-- NAV -->
+      <div style="grid-area: nav; margin-top: 2rem;">
+        <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
+        <Chip
+          id="affiliation-chip-block"
+          :tabs="affiliation_computed"
+          :default="currentAffiliation"
+          :btn_all_exist="true"
+          @changed="changeChipAffiliation"
+          style="padding: 0 1rem;"
+        />
+      </div>
+      <!-- MAIN -->
+      <div style="grid-area: main; margin-top: 2rem;">
+        <!-- ГЛАВНАЯ КАРТОЧКА / TOTAL -->
+        <div style="background-color: var(--color-operation-type-donation); padding: 1rem">
+          <!-- Заголовок группы -->
+          <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
 
-        <!-- Наименование банка -->
-        <h2 
-          style="font-size: 1rem; margin: 0; opacity: .7;"
-          @click="set_owner_route"  
-        >
-          {{ currentAffiliation.title }}
-        </h2>
-        <!-- Кнопки действий (faq/ история / статистика) -->
-        <div style="display: flex; gap: 1rem;">
-          <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
-            <Icon
-              class="link"
-              name="mdi:help-circle-outline"
-              size="32px"
-              color="var(--color-global-text)"
-            />
-          </div>
-          <div class="meshes_local_filter_button">
-            <Icon
-              class="link"
-              name="mdi:clock-outline"
-              size="32px"
-              color="var(--color-global-text)"
-            />
-          </div>
-          <div class="meshes_local_filter_button">
-            <Icon
-              class="link"
-              name="mdi:google-analytics"
-              size="32px"
-              color="var(--color-global-text)"
-            />
-          </div>
+          <!-- Наименование банка -->
+          <h2 
+            style="font-size: 1rem; margin: 0; opacity: .7;"
+            @click="set_owner_route"  
+          >
+            {{ currentAffiliation.title }}
+          </h2>
+          <!-- Кнопки действий (faq/ история / статистика) -->
+          <div style="display: flex; gap: 1rem;">
+            <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
+              <Icon
+                class="link"
+                name="mdi:help-circle-outline"
+                size="32px"
+                color="var(--color-global-text)"
+              />
+            </div>
+            <div class="meshes_local_filter_button">
+              <Icon
+                class="link"
+                name="mdi:clock-outline"
+                size="32px"
+                color="var(--color-global-text)"
+              />
+            </div>
+            <div class="meshes_local_filter_button">
+              <Icon
+                class="link"
+                name="mdi:google-analytics"
+                size="32px"
+                color="var(--color-global-text)"
+              />
+            </div>
 
-        </div>
-        </div>
-        <!-- total amount value -->
-        <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
-        </p>
-        <!-- КНОПКИ КОШЕЛЬКА -->
-        <div style="display: flex; gap: 1rem; justify-content: center;">
-        <!-- Принять -->
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <Icon
-            class="link"
-            name="mdi:plus"
-            size="32px"
-            style="opacity: .6"
-          />
-          <p style="margin-top: .25rem;">Принять</p>
-        </div>
-        <!-- Отправить -->
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <Icon
-            class="link"
-            name="mdi:send"
-            size="32px"
-            style="opacity: .6"
-          />
-          <p style="margin-top: .25rem;">Отправить</p>
-        </div>
-        <!-- Обменять -->
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <Icon
-            class="link"
-            name="mdi:swap-horizontal"
-            size="32px"
-            style="opacity: .6"
-          />
-          <p style="margin-top: .25rem;">Обменять</p>
-        </div>
+          </div>
+          </div>
+          <!-- total amount value -->
+          <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
+          </p>
+          <!-- КНОПКИ КОШЕЛЬКА -->
+          <div style="display: flex; gap: 1rem; justify-content: center;">
+          <!-- Принять -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <Icon
+              class="link"
+              name="mdi:plus"
+              size="32px"
+              style="opacity: .6"
+            />
+            <p style="margin-top: .25rem;">Принять</p>
+          </div>
+          <!-- Отправить -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <Icon
+              class="link"
+              name="mdi:send"
+              size="32px"
+              style="opacity: .6"
+            />
+            <p style="margin-top: .25rem;">Отправить</p>
+          </div>
+          <!-- Обменять -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <Icon
+              class="link"
+              name="mdi:swap-horizontal"
+              size="32px"
+              style="opacity: .6"
+            />
+            <p style="margin-top: .25rem;">Обменять</p>
+          </div>
+          </div>
         </div>
       </div>
-
-      <!--  -->
-      <div style="background-color: var(--color-btn-disabled-bg); margin: 2rem 1rem 2rem 1rem; border-radius: 1rem; padding: 1rem;">
+      <!-- ALLOCATION -->
+      <div style="grid-area: allocation; background-color: var(--color-btn-disabled-bg); padding: 1rem;">
         <h4>Моя Аллокация</h4>
         <ul style="list-style: none; padding: 0;">
           <li v-for="band in band_computed?.filter(el => {
@@ -5108,7 +5114,7 @@ const checkCurrencyPair = (pair: any) => {
       </div>
 
       <!-- MESHES CAST -->
-      <ul style="list-style: none; padding: 0;">
+      <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 2rem;">
 
         <!-- Деньги на счетах / Свободные деньги -->
         <li>
@@ -5269,7 +5275,7 @@ const checkCurrencyPair = (pair: any) => {
 
       <!-- currency pair -->
       <!-- ВАЛЮТНЫЕ ПАРЫ -->
-      <ul class="wallet-section_container" style="list-style: none; margin: 0; padding-left: 0; padding-right: 0; padding-bottom:1.5rem;">
+      <ul class="wallet-section_container" style="grid-area: currency; list-style: none; margin: 0; padding-left: 0; padding-right: 0; padding-bottom:1.5rem;">
         <li 
           v-for="pair in currecy_pair" 
           style="display: flex; gap: .5rem; align-items: center; justify-content: center;"
@@ -5282,32 +5288,35 @@ const checkCurrencyPair = (pair: any) => {
 
 
       <!-- СТАТ-СВОДКА ПО ПОРТФЕЛЮ -->
-      <div class="wallet-stat_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0; margin-top: 1rem;">
-        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
-          <p style="color: var(--color-global-text);" >450506,13</p>
-          <p style="color: var(--color-btn-wo-bg); margin: 0;">Потенциал***</p>
-        </div>
-        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">
-          <p style="color: var(--color-global-text);" >306862,13</p>
-          <p style="color: var(--color-btn-wo-bg); margin: 0;">Факт****</p>
-        </div>
-        <div style="border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem; background: var(--color-urgency-low-10);">
-          <p style="color: var(--color-global-text); font-weight: bold;" >0.35* / 2.14**</p>
-          <p style="color: var(--color-global-text); margin: 0;">Рейтинг</p>
-        </div>
+      <div style="grid-area: stat;display: flex;">
 
-      </div>
-      <div style="margin: 0 1rem; padding-bottom: 1rem; margin-top: 1rem;">
-        <p>
-          * Отношение положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) к сумме займов (выданные кредиты, инвеситции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства.</p>
-        <p>
-          ** Отношение суммы положительных средств на счеах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб), инвестиций (фондовый рынок, вклады, крипто-дебет) к сумме займов (выданные кредитов, инвестиции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства (свободные средства + инвестиции).</p>
-        <p>
-          *** Сумма положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб), инвестиций (фондовый рынок, вклады, крипто-дебет) и займов (выданные кредиты, инвеситции в проекты) 
-        </p>
-        <p>
-          **** Сумма положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) и инвестиций (фондовый рынок, вклады, крипто-дебет)
-        </p>
+        <div class="wallet-stat_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0;">
+          <div style="height: fit-content; border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
+            <p style="color: var(--color-global-text);" >450506,13</p>
+            <p style="color: var(--color-btn-wo-bg); margin: 0;">Потенциал***</p>
+          </div>
+          <div style="height: fit-content; border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">
+            <p style="color: var(--color-global-text);" >306862,13</p>
+            <p style="color: var(--color-btn-wo-bg); margin: 0;">Факт****</p>
+          </div>
+          <div style="height: fit-content; border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem; background: var(--color-urgency-low-10);">
+            <p style="white-space: nowrap; color: var(--color-global-text); font-weight: bold;" >0.35* / 2.14**</p>
+            <p style="color: var(--color-global-text); margin: 0;">Рейтинг</p>
+          </div>
+  
+        </div>
+        <div style="margin: 0 1rem; padding-bottom: 1rem;">
+          <p>
+            * Отношение положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) к сумме займов (выданные кредиты, инвеситции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства.</p>
+          <p>
+            ** Отношение суммы положительных средств на счеах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб), инвестиций (фондовый рынок, вклады, крипто-дебет) к сумме займов (выданные кредитов, инвестиции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства (свободные средства + инвестиции).</p>
+          <p>
+            *** Сумма положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб), инвестиций (фондовый рынок, вклады, крипто-дебет) и займов (выданные кредиты, инвеситции в проекты) 
+          </p>
+          <p>
+            **** Сумма положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) и инвестиций (фондовый рынок, вклады, крипто-дебет)
+          </p>
+        </div>
       </div>
 
     </div>
@@ -7146,6 +7155,64 @@ const checkCurrencyPair = (pair: any) => {
   }
 }
 @media screen and (min-width: 1200px) {
+  /* 
+    */
+  .bread-crumbs-group {
+      /* background-color: red; */
+      display: flex;
+      gap: .5rem;
+      margin-left: 1rem;
+  }
+  .bread-crumbs-group h1{
+      font-weight: normal!important;
+      font-size: .9rem!important;
+      margin: 0!important;
+      line-height: unset!important;
+      border-bottom: 1px solid var(--color-global-text);
+  }
+  .bread-crumbs-group div {
+    /* flex: 1 auto; */
+    /* align-self: center; */
+    margin: 0;
+    text-align: right;
+    font-size: .8rem;
+  }
+  .bread-crumbs-group div:hover {
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-global-text);
+  }
+  .bread-crumbs-group ul {
+      margin: 0!important;
+  }
+  .meshes_local_section {
+    display: grid;
+    grid-template-areas: 
+      "nav nav"
+      "main list"
+      "allocation list"
+      "currency list"
+      "stat stat"
+    ;
+  }
+  .wallet-stat_container {
+    flex: 1 auto;
+  }
+  .meshes_local_group_wrapper {
+    position: relative;
+    /* border-radius: 1rem;
+    margin: 0 1rem; */
+  }
+  .group_wrapper_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background: #3498db; */
+    background-color: var(--color-urgency-low);
+    opacity: 0.3;
+    /* border-radius: 1rem; */
+  }
   .total-cap_container {
     margin-top: 3rem;
     justify-content: space-between;
