@@ -654,11 +654,12 @@ const addNewProject = () => {
           </div>
 
           <!-- Список проектов -->
+           
           <div 
             v-for="(project, index) in computedProjects"
-            :key="index"
+            :key="project.id"
             class="project-item_wrapper"
-            @click="$router.push(`/projects/${project.id}`)"
+            @click.stop="$router.push(`/projects/${project.id}`)"
           >
               <p style="margin: 0;" class="truncate">{{ project?.name }}</p>
               <p 

@@ -6044,15 +6044,7 @@ const checkCurrencyPair = (pair: any) => {
       </div>
      </section>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>    
-    <br>
-    <br>
-    <br>
+
   </Container>
 </template>
 

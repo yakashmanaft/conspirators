@@ -64,6 +64,7 @@
         <!-- filter -->
 
 
+        <!-- ФИЛЬТРЫ ДЛЯ ТОВАРОВ -->
         <div 
             ref="elementRef" 
             :class="{ 'highlighted': isFixed }"
@@ -282,16 +283,15 @@
     
                 <!-- data -->
                 
-                <Product_card 
-                    v-for="product_card in computed_warehouse_onSale"
-                    :item_data="product_card"
-                    @click.stop="$router.push(`/product/${product_card.id}`)"
+                <ProductCard 
+                    v-for="item in computed_warehouse_onSale"
+                    :item_data="item"
+                    @click.stop="$router.push(`/product/${item.id}`)"
                 >
-                 <div style="background-color: #fff;">Это слот</div>
-                </Product_card>
+                 <!-- <div style="background-color: #fff;">Это слот</div> -->
+                </ProductCard>
             </div>
         </div>
-
 
         <!-- POPUP -->
          <div v-if="popup_opened">
@@ -347,7 +347,7 @@
     import { Form_landing_offer } from '@/components/form'
     import { Toast } from '@/components/toast'
     import { BreadCrumbs } from '~/components/breadcrumbs';
-    import { Product_card } from '~/components/product_card';
+    import { ProductCard } from '~/components/product_card';
     import { Search } from '~/components/search';
 
     // PROPS

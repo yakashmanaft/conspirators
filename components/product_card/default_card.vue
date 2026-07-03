@@ -3,12 +3,14 @@
     <!-- .card_wrapper h3 -->
     <!-- .card_wrapper p -->
     <div class="card_wrapper">
+
         <!-- CARD IMG -->
         <div class="card_img">
             <img 
                 :src="item_data.img_src" 
                 alt="">
         </div>
+
         <!-- CARD PRICE -->
         <p class="card_price">{{ item_data.price }} {{ item_data.currency }}</p>
 
@@ -16,15 +18,45 @@
         <div class="card_remain">
 
             <p v-if="item_data.qty == 0" style="background-color: var(--color-operation-type-donation)">Доступно для заказа</p>
-            <p v-else>В наличии: {{ item_data.qty }} {{ item_data.measure }}</p>
+            <p v-else style="background-color: var(--color-status-finished);">В наличии: {{ item_data.qty }} {{ item_data.measure }}</p>
         </div>
-
 
         <h3 style="font-size: 1.25rem;">{{ item_data.title }}</h3>
         <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ item_data.type }}</p>
 
+        <div class="action_btn_group">
+
+            <!-- QTY === 0 -->
+            <p 
+            v-if="item_data.qty == 0"
+                class="cart-add_btn cart-item_request-btn"
+            @click.stop=""
+            >Оставить заявку</p>  
+
+            <!--  -->
+            <div v-else-if="cart.items.find(el => el.id === item_data.id) && cart.items.find(el => el.id === item_data.id).qty > 0" class="cart-change-count_btn" style="width: fit-content;">
+                <div 
+                    class="count_btn"
+                    @click.stop="deacrease_cart_item_qty(cart.items.find(el => el.id === item_data.id)?.id, cart.items.find(el => el.id === item_data.id)?.qty, cart.items.find(el => el.id === item_data.id)?.max_qty);"
+                >-</div>
+                <div class="count_count">{{ cart.items.find(el => el.id === item_data.id).qty }}</div>
+                <div 
+                class="count_btn"
+                :style="cart.items.find(el => el.id === item_data.id).qty === cart.items.find(el => el.id === item_data.id).max_qty ? 'background-color: var(--color-btn-disabled-bg)' : ''"
+                @click.stop="increase_cart_item_qty(cart.items.find(el => el.id === item_data.id)?.id, cart.items.find(el => el.id === item_data.id)?.qty, cart.items.find(el => el.id === item_data.id)?.max_qty)"
+                >+</div>
+            </div>
+
+            <!-- OTHER -->
+            <p 
+                v-else
+                class="cart-add_btn"
+                @click.stop="add_to_cart_func(item_data)"
+            >В корзину</p>
+        </div>
+
         <!-- CARD ADD TO CART -->
-        <div class="card_cart">
+        <!-- <div class="card_cart">
             <p 
                 class="card_cart-add_btn"
                 @click.stop="add_to_cart_func(item_data)"
@@ -34,7 +66,7 @@
                <span>1</span>
                <span @click.stop="add_to_cart_func(item_data)">+</span>
             </p>
-        </div>
+        </div> -->
             <!-- {{ item_data }} <br> -->
             <!-- {{ item_data.id }} <br>
             <p style="margin: 0; font-size: .8rem;">{{ item_data.type }}</p>
@@ -68,18 +100,23 @@
         }
         @media (min-width: 1200px) and (max-width: 1399px) {
             .card_wrapper {
-                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                background-color: var(--color-item-hover-bg);
+                /* background-color: var(--color-btn-hover-bg); */
                 cursor: pointer;
-                background-color: var(--color-global-baackground_light);
-                /* border-radius: .75rem; */
+                min-width: 150px;
+                display: relative;
+                /* margin-top: -2rem; */
             }
-            .card_wrapper:hover {
+            /* .card_wrapper:hover {
                 box-shadow: var(--hover-shadow);
-            }
+            } */
             .card_img {
                 background-color: red;
                 width: 100%;
-                height: 10rem; 
+                height: 13rem; 
                 overflow: hidden;
                 display: flex;
                 align-items: center;
@@ -89,7 +126,7 @@
                 transition: all .2s ease-in;
                 pointer-events: none;
                 width: 100%;
-                height: auto;
+                height: 100%;
                 object-fit: cover; 
                 /* Заполняет контейнер, обрезая края */
                 /* object-fit: contain; */
@@ -154,6 +191,54 @@
                 width: 1rem;
                 text-align: center;
             }
+            .action_btn_group {
+                margin-top: 1rem;
+                display: flex;
+                align-items: flex-end;
+                flex: 1 auto;
+                width: 100%;
+                justify-content: flex-end;
+                user-select: none;
+            }
+        .cart-item_request-btn {
+            background-color: rgba(114, 166, 245, 0.3)!important;
+        }
+        .cart-item_request-btn:hover {
+            background-color: rgba(89, 151, 245, 0.3)!important;
+        }
+        .cart-add_btn {
+            background-color: rgba(54, 195, 77, 0.6);
+            width: 100%;
+            text-align: center;
+            color: white;
+            padding: .5rem .25rem!important;
+            font-size: .8rem;
+            /* height: 100%; */
+        }
+        .cart-add_btn:hover {
+            background-color: rgba(54, 195, 77, 0.8);
+        }
+        .cart-change-count_btn {
+            /* height: 100%; */
+            /* background-color: var(--color-wallet-fund-debt); */
+            display: flex;
+            align-items: center;
+        }
+        .cart-change-count_btn .count_btn {
+            color: var(--color-global-baackground_light);
+            background-color: var(--color-global-text);
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-change-count_btn .count_count {
+            width: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         }
         @media (min-width: 1400px) {
             
@@ -161,6 +246,7 @@
   </style>
   
 <script lang="ts" setup>
+    import { useCart } from '@/stores/cart'
 
     //props
     const props = defineProps({
@@ -176,8 +262,35 @@
 
 
     // onClick cart-add_btn
-    const add_to_cart_func = (item: any) => {
-        console.log(item)
+    const cart = useCart()
+    const add_to_cart_func = (product: any) => {
+        cart.addToCart({ 
+            id: product.id,
+            title: product.title,
+            qty: product.qty,
+            measure: product.measure,
+            article: product.article,
+            imgUrl: product.img_src,
+            currency: product.currency,
+            price: product.price
+         })
+    }
+    // Helpers product cart card item qty counts
+    const deacrease_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+    if(item_qty <= 0) {
+        cart.removeFromCart(item_id)
+    } else {
+
+        cart.updateQuantity(item_id, -1)
+    }
+    }
+    const increase_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+    if(item_qty === item_max_qty) {
+
+    } else {
+
+        cart.updateQuantity(item_id, 1)
+    }
     }
 
 </script>

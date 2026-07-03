@@ -309,8 +309,16 @@
                          По запросу ничего не найдено
                      </div>
      
-                     <!-- Есть товары, показываем -->
-                     <div
+                    <ProductCard
+                        v-for="item in computed_products"
+                        :key="item.id"
+                        :item_data="item" 
+                        @click.stop="$router.push(`/product/${item.id}`)"
+                    >
+                        <!-- SLOT -->
+                     </ProductCard>
+
+                     <!-- <div
                          class="product-item_wrapper"
                          v-for="product in computed_products"
                          @click.stop="$router.push(`/product/${product.id}`);"
@@ -327,18 +335,15 @@
                              <p v-if="product.qty == 0" style="background-color: var(--color-operation-type-donation)">Доступно для заказа</p>
                              <p v-else style="background-color: var(--color-status-finished);">В наличии: {{ product.qty }} {{ product.measure }}</p>
                          </div>
+
                          <h3 style="font-size: 1.25rem;">{{ product.title }}</h3>
                          <p style="margin: 0; font-size: .8rem;color: var(--color-global-text_second);">{{ product.type }}</p>
-                         <!-- <p style="font-size: .8rem; color: var(--color-global-text_second);">Артикул: {{ product.article }}</p> -->
                          <div class="product-item_cart">
-                            <!-- QTY == 0 -->
                              <p 
                                 v-if="product.qty == 0"
                                  class="cart-add_btn cart-item_request-btn"
                                 @click.stop=""
                              >Оставить заявку</p>
-                             
-                             <!--  -->
                              <div 
                              v-else-if="cart.items.find(el => el.id === product.id) && cart.items.find(el => el.id === product.id).qty > 0"
                              class="cart-change-count_btn" style="width: fit-content;">
@@ -359,15 +364,7 @@
                                 @click.stop="add_to_cart_func(product)"
                             >В корзину</p>
                         </div>
-                         <!-- <p>{{ product.description }}</p>
-                         <p>Характеристики:</p>
-                         <ul>
-                             <li v-for="feature in product.features">
-                                 {{ feature }}
-                             </li>
-                         </ul> -->
-                        <!-- <p> {{ product }}</p> -->
-                     </div>
+                     </div> -->
                  </div> 
      
              </div>
@@ -1028,10 +1025,8 @@
             gap: 1.5rem;
             row-gap: 2rem;
             padding: 0 1rem;    
-            /* margin-top: 2rem; */
-            /* min-height: 390px; */
         }
-        .product-item_wrapper {
+        /* .product-item_wrapper {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -1039,9 +1034,8 @@
             cursor: pointer;
             min-width: 150px;
             display: relative;
-            /* margin-top: -2rem; */
-        }
-        .product-item_img {
+        } */
+        /* .product-item_img {
             background-color: red;
             width: 100%;
             height: 13rem; 
@@ -1049,51 +1043,43 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .product-item_img img {
+        } */
+        /* .product-item_img img {
             transition: all .2s ease-in;
             pointer-events: none;
             width: 100%;
             height: 100%    ;
             object-fit: cover; 
-            /* Заполняет контейнер, обрезая края */
-            /* object-fit: contain; */
-            /* object-fit: contain; — поместить целиком без обрезки */
-            object-position: center; /* Позиционирование внутри контейнера */
-        }
-        .product-item_wrapper:hover .product-item_img img {
+            object-position: center;
+        } */
+        /* .product-item_wrapper:hover .product-item_img img {
             transform: scale(1.25);
-        }
-        .product-item_wrapper h3 {
+        } */
+        /* .product-item_wrapper h3 {
             margin-top: .5rem!important;
             margin: 0;
             font-size: .9rem!important;
             line-height: 1.5;
             font-weight: normal;
             padding: 0 .5rem;
-        }
-        .product-item_wrapper p {
+        } */
+        /* .product-item_wrapper p {
             margin: 0;
             padding: 0 .5rem;
-        }
-        .product-item_price {
-            /* position: absolute;
-            left: 0;
-            top: 0; */
+        } */
+        /* .product-item_price {
             font-size: 1.2rem;
             margin: 0;
             margin-top: .5rem!important;
-            /* flex: 1 auto; */
-        }
-        .product-item_remain {
-            /* background-color: var(--color-status-finished); */
+        } */
+        /* .product-item_remain {
             padding: 0 .5rem;
-        }
-        .product-item_remain p {
+        } */
+        /* .product-item_remain p {
             font-size: .8rem;
             padding: 0 .25rem;
-        }
-        .product-item_cart {
+        } */
+        /* .product-item_cart {
             margin-top: 1rem;
             display: flex;
             align-items: flex-end;
@@ -1101,9 +1087,8 @@
             width: 100%;
             justify-content: flex-end;
             user-select: none;
-            /* background-color: var(--color-global-text_second); */
-            /* padding: 5px; */
-        }
+
+        } */
         .cart-item_request-btn {
             background-color: rgba(114, 166, 245, 0.3)!important;
         }
@@ -1186,32 +1171,27 @@
         }
         /* 
          */
-         .product-item_wrapper {
+         /* .product-item_wrapper {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            /* max-width: 300px; */
             background-color: var(--color-global-baackground_light);
-         }
-        .product-item_img {
+         } */
+        /* .product-item_img {
             background-color: red; 
-            /* width: 300px;  */
             width: 100%;
             height: 14rem; 
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .product-item_img img {
+        } */
+        /* .product-item_img img {
             width: 100%;
             height: auto;
             object-fit: cover; 
-            /* Заполняет контейнер, обрезая края */
-            /* object-fit: contain; */
-            /* object-fit: contain; — поместить целиком без обрезки */
-            object-position: center; /* Позиционирование внутри контейнера */
-        }
+            object-position: center;
+        } */
         /* 
          */
         .item_search_wrong {
@@ -1226,7 +1206,13 @@
 </style>
 
 <script lang="ts" setup>
+    
+    //
     import { useImageDisplay } from '@/utils/useImageDisplay'
+
+    //
+    import { VerticalCard } from '@/components/card'
+
     useHead({
         title: "Каталог",
         link: [
@@ -1454,6 +1440,9 @@
         }
     })
 
+
+    import { onUnmounted } from 'vue';
+
     // shared
     import { Container } from '@/shared/container'
     import { Section } from '@/shared/section'
@@ -1463,10 +1452,10 @@
     import { Button } from '@/components/button'
     import { BreadCrumbs } from '~/components/breadcrumbs';
     import { Search } from '~/components/search'
-    import { onUnmounted } from 'vue';
+    import { ProductCard } from '@/components/product_card'
 
     // store
-    import { useCart } from '@/stores/cart'
+    // import { useCart } from '@/stores/cart'
 
 
 
@@ -1522,22 +1511,22 @@
     let observer = null;
 
     // Helpers product cart card item qty counts
-    const deacrease_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
-    if(item_qty <= 0) {
-        cart.removeFromCart(item_id)
-    } else {
+    // const deacrease_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+    // if(item_qty <= 0) {
+    //     cart.removeFromCart(item_id)
+    // } else {
 
-        cart.updateQuantity(item_id, -1)
-    }
-    }
-    const increase_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
-    if(item_qty === item_max_qty) {
+    //     cart.updateQuantity(item_id, -1)
+    // }
+    // }
+    // const increase_cart_item_qty = (item_id: number, item_qty:number, item_max_qty:number) => {
+    // if(item_qty === item_max_qty) {
 
-    } else {
+    // } else {
 
-        cart.updateQuantity(item_id, 1)
-    }
-    }
+    //     cart.updateQuantity(item_id, 1)
+    // }
+    // }
 
 
     // ON MOUNTED
@@ -1987,64 +1976,64 @@
     }
 
     // onClick in desc section item 
-    const chooseCurrentLanding = (el: any, index: number) => {
-        choosenEl.value = el
-        if(!popup_opened.value) {
+    // const chooseCurrentLanding = (el: any, index: number) => {
+    //     choosenEl.value = el
+    //     if(!popup_opened.value) {
 
-            popup_opened.value = true
-        }
-        const unitsList = document.querySelectorAll('.unit');
-        // Очищаем все элементы от класса 
-        unitsList.forEach(item => item.classList.remove('unit__hovered'))
-        // Действуем
-        if(unitsList[index].classList.contains('unit__hovered')) {
-            unitsList[index].classList?.remove('unit__hovered');
-            choosenEl.value = null
-            if(popup_opened.value) {
-                popup_opened.value = false
-            }
-        } else if(!unitsList[index].classList.contains('unit__hovered')){
-            unitsList[index].classList.add('unit__hovered');
-            choosenEl.value = el
-        }
-    }
+    //         popup_opened.value = true
+    //     }
+    //     const unitsList = document.querySelectorAll('.unit');
+    //     // Очищаем все элементы от класса 
+    //     unitsList.forEach(item => item.classList.remove('unit__hovered'))
+    //     // Действуем
+    //     if(unitsList[index].classList.contains('unit__hovered')) {
+    //         unitsList[index].classList?.remove('unit__hovered');
+    //         choosenEl.value = null
+    //         if(popup_opened.value) {
+    //             popup_opened.value = false
+    //         }
+    //     } else if(!unitsList[index].classList.contains('unit__hovered')){
+    //         unitsList[index].classList.add('unit__hovered');
+    //         choosenEl.value = el
+    //     }
+    // }
 
     // onClick cart-add_btn
-    const cart = useCart()
-    const add_to_cart_func = (product: any) => {
-        cart.addToCart({ 
-            id: product.id,
-            title: product.title,
-            qty: product.qty,
-            measure: product.measure,
-            article: product.article,
-            imgUrl: product.img_src,
-            currency: product.currency,
-            price: product.price
-         })
-    }
+    // const cart = useCart()
+    // const add_to_cart_func = (product: any) => {
+    //     cart.addToCart({ 
+    //         id: product.id,
+    //         title: product.title,
+    //         qty: product.qty,
+    //         measure: product.measure,
+    //         article: product.article,
+    //         imgUrl: product.img_src,
+    //         currency: product.currency,
+    //         price: product.price
+    //      })
+    // }
 
     // HELPERS
     // reverse array
-    const reversedArray = (arr: []) => {
-        let tempArray = [...arr]
-        return tempArray?.reverse()
-    }
+    // const reversedArray = (arr: []) => {
+    //     let tempArray = [...arr]
+    //     return tempArray?.reverse()
+    // }
     // landing links
-    const generateLandingLink = (name: string) => {
-        return `/${name}`
-    }
+    // const generateLandingLink = (name: string) => {
+    //     return `/${name}`
+    // }
     // change direction of diagram section
     //= landing diagram section
-    const setFlexDirection = () => {
-        const screenWidth = window.screen.width
-        if(screenWidth <= 767) {
+    // const setFlexDirection = () => {
+    //     const screenWidth = window.screen.width
+    //     if(screenWidth <= 767) {
 
-            return `column`
-        } else {
-            return `row`
-        }
-    }
+    //         return `column`
+    //     } else {
+    //         return `row`
+    //     }
+    // }
 
     // WATHERS
     // on search input
@@ -2080,11 +2069,11 @@
     // })
 
     // POPUP FUNCs
-    const closePopup = () => {
+    // const closePopup = () => {
 
-        //
-        popup_opened.value = false
-    }
+    //     //
+    //     popup_opened.value = false
+    // }
 
     // WATHERS
     //= landing_list

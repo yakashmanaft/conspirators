@@ -4,7 +4,7 @@ import { Container } from "@/shared/container";
 import { Section } from "~/shared/section";
 import { SectionColored } from "~/shared/section_colored";
 import { InfoPopup } from "~/shared/popup";
-import { Product_card } from '~/components/product_card'
+import { ProductCard } from '~/components/product_card'
 
 //components
 import { BreadCrumbs } from "~/components/breadcrumbs";
@@ -962,7 +962,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
             for="popup-open_input-product_card"
             v-for="item in items" :key="item.id"
             >
-            <Product_card 
+            <ProductCard 
               :item_data="item"  
               @click.stop="onClickProductCardFunc(item)"
               style="position: relative;"
@@ -987,7 +987,7 @@ const setTaskAccomplishmentLabel = (finished: any, sum: any) => {
                 <!-- <li>show to all: {{ item.showToAll }}</li> -->
                </ul>
   
-            </Product_card>
+            </ProductCard>
           </label>
           <input id="popup-open_input-product_card" type="checkbox">
           <!-- MENU -->
