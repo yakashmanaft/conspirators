@@ -815,7 +815,7 @@ watch(
       <!-- CART -->
       <div class="cart" @click.stop="toggleCartMenu()">
           <!-- <input id='cart_menu_btn' type="checkbox" v-model="cartMenuIsOpened" /> -->
-          <label for="cart_menu_btn">
+          <label>
             <div class="cart_icon">
               <Icon size="32px" name="hugeicons:shopping-basket-01" color="var(--color-global-text_second)"/>
             </div>
@@ -946,7 +946,7 @@ watch(
                     <div class="cart-product-info_count" style="display: flex; align-items: center; gap: .5rem;">
                       <div class="count_btn" style="background-color: var(--color-global-text); width: 2rem; height: 2rem;   user-select: none;" @click.stop="deacrease_cart_item_qty(item.id, item.qty, item.max_qty)" :style="item.qty === 0 ? 'background-color:unset' : ''">
                         
-                        <span v-if="item.qty === 0" @click="cart.removeFromCart(item.id)">
+                        <span v-if="item.qty === 0" @click.stop="cart.removeFromCart(item.id)">
                           <Icon
                             size="32px"
                             name="hugeicons:delete-02"
@@ -1624,20 +1624,14 @@ a:visited {
     right: 1.75rem;
   }
   .cart__opened {
-    /* z-index: 1001; */
     background-color: var(--color-bg-popup);
     opacity: 1;
     transition: all .3s ease-in;
-    /* z-index: 100; */
   }
   .cart_container {
     /* display: none; */
-    /* position: absolute;  */
-
-    /* backdrop-filter: blur(2px); */
   }
   .cart_total_container {
-    /* background-color: blue!important; */
     height: 45rem!important;
     overflow: scroll;
   }
@@ -1666,7 +1660,6 @@ a:visited {
     gap: 1rem;
     align-items: center;  
     margin-top: 1.5rem;
-    /* border-radius: 1rem; */
     overflow: hidden;
     height: 150px;
     position: relative;
@@ -1701,9 +1694,6 @@ a:visited {
   /* cart product item info */
   .cart-product-info_wrapper {
     position: relative;
-    /* background-color: var(--color-wallet-fund-invested-wo); */
-    /* background-color: red; */
-    /* flex: 1 auto; */
   }
   .cart-product-info_wrapper p {
     margin: 0;
@@ -1753,30 +1743,135 @@ a:visited {
   .cart_total_container {
     border-radius: 1.75rem;
   }
-  /* .cart_total_container .baner_wrapper {
-    background-color: var(--color-global-baackground_light);
-    border-radius: 1rem;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  } */
 }
 @media (min-width: 1400px) {
+  .cart__opened {
+    background-color: var(--color-bg-popup);
+    opacity: 1;
+    transition: all .3s ease-in;
+  }
   .cart > label {
     display: flex;
     align-items: center;
     gap: .25rem;
+    
+  }
+  .cart > label {
+    position: relative;
   }
   .cart > label > .cart_count {
     color: var(--color-global-text);
-    position: unset;
-    background-color: unset;
+    position: absolute;
+    background-color: var(--color-global-text);
+    bottom: -.75rem;
     font-size: 1rem;
+    right: -.75rem;
+    color: var(--color-global-baackground_light);
+    font-size: .6rem;
+  }
+  /*  */
+  .cart_total_container {
+    height: 45rem!important;
+    overflow: scroll;
+  }
+  .cart_wrapper .cart_main .cart_total_container {
+    top: 4.25rem!important;
+  }
+  .cart_product_section,
+  .cart_service_section {
+    margin-top: 1.75rem;
+  }
+  .clear-cart_btn:hover{
+    cursor: pointer;
+    color: var(--color-wallet-fund-invested);
+  }
+  .cart_product_item_container {
+    list-style: none;
+    padding: 0;
+    padding-left: 1rem;
+  }
+  .cart_product_item_container_empty p span:hover{
+    cursor: pointer;
+    color: var(--color-wallet-fund-invested);
+  }
+  .cart_product_item_wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;  
+    margin-top: 1.5rem;
+    overflow: hidden;
+    height: 150px;
+    position: relative;
+  }
+  .cart_product_item_wrapper:first-child {
+    margin: 0;
+  }
+  .product-item_img {
+    max-width: 150px!important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; 
+    /* Заполняет контейнер, обрезая края */
+    /* object-fit: contain; */
+    /* object-fit: contain; — поместить целиком без обрезки */
+    object-position: center; /* Позиционирование внутри контейнера */
+  }
+
+  /* cart product item info */
+  .cart-product-info_wrapper {
+    position: relative;
+  }
+  .cart-product-info_wrapper p {
+    margin: 0;
+  }
+  .cart-product-info_title {
+    cursor: pointer;
+  }
+  .cart-product-info_title:hover {
+    text-decoration: underline;
+  }
+  .cart-product-info_article {
+    color: var(--color-global-text_second);
+  }
+  .cart-product-info_count {
+    margin-top: 1rem!important;
+    width: fit-content;
+  }
+  .cart-product-info_count  .count_btn {
+    color: var(--color-global-baackground_light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+   .cart-product-info_count  .count_btn:hover {
+    cursor: pointer;
+  }
+  .cart-product-info_count .count_count {
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cart-price-benefits_item {
+    font-size: .9rem;
+  }
+  .cart-price-benefits_item p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+   /* cart total */
+  .cart_total_container {
+    border-radius: 1.75rem;
   }
 }
 
-
+/*  */
 .user-login__container {
   display: flex;
   align-items: center;

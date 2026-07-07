@@ -118,7 +118,15 @@
         }
 
         @media screen and (min-width: 1400px) {
-
+            .item_wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                background-color: var(--color-item-hover-bg);
+                cursor: pointer;
+                min-width: 150px;
+                display: relative;
+            }
         }
   </style>
   

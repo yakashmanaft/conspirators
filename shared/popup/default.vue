@@ -46,7 +46,7 @@ window.addEventListener('click', (e) => {
 
 <style scoped>
 .popup_container {
-    z-index: 101; 
+    z-index: 1001; 
     height: 100vh; 
     width: 100%; 
     background-color: var(--color-bg-popup); 

@@ -285,17 +285,7 @@
              </div>
              {{ filter_by_available }}
              <!-- {{ products_on_sale_list }} -->
-     
-             <!-- <div style="padding: 0 .5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
-                 <p style="margin: 0; color: var(--color-global-text_second);">
-                     <span style="color: var(--color-global-text_second);">{{ current_volume }}</span> | 
-                     <span style="color: var(--color-global-text_second);">{{ current_book }}</span> | 
-                     <span style="color: var(--color-global-text_second);">{{ current_part }}</span> |
-                     <span style="color: var(--color-global-text_second);">{{ current_chapter }}</span> |
-                     <span style="color: var(--color-global-text_second);">{{ current_paragraph }}</span>
-                 </p> 
-                 <p style="margin: 0; color: var(--color-global-text_second);">{{ filter_by_available }}</p>
-             </div> -->
+    
              <!-- ITEM GRID -->
              <div class="product-item_section">
                  <!-- data is loading -->
@@ -865,7 +855,6 @@
         /* 
          */
         .bread-crumbs-group {
-            /* background-color: red; */
             display: flex;
             gap: .5rem;
             margin-left: 1rem;
@@ -939,7 +928,7 @@
 
         }
         .product-item_search-wrapper {
-            margin-left: .5rem;
+            margin-left: .75rem;
         }
         .product-item_filter .product-item_filters-wrapper {
             display: flex; 
@@ -996,9 +985,6 @@
             justify-content: center;
             gap: .75rem;
         }
-        /* .filter_by_available_container div {
-
-        } */
          .filter_by_available_container div input {
             display: none;
         }
@@ -1024,32 +1010,6 @@
             row-gap: 2rem;
             padding: 0 1rem;    
         }
-        /* .product-item_wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            background-color: var(--color-item-hover-bg);
-            cursor: pointer;
-            min-width: 150px;
-            display: relative;
-        } */
-        /* .product-item_img {
-            background-color: red;
-            width: 100%;
-            height: 13rem; 
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        } */
-        /* .product-item_img img {
-            transition: all .2s ease-in;
-            pointer-events: none;
-            width: 100%;
-            height: 100%    ;
-            object-fit: cover; 
-            object-position: center;
-        } */
         /* .product-item_wrapper:hover .product-item_img img {
             transform: scale(1.25);
         } */
@@ -1129,6 +1089,26 @@
     }
     @media screen and (min-width: 1400px) {
         /* 
+         */
+        .bread-crumbs-group {
+            display: flex;
+            gap: .5rem;
+            /* margin-left: 1rem; */
+        }
+        .bread-crumbs-group h1{
+            font-weight: normal!important;
+            font-size: .9rem!important;
+            margin: 0!important;
+            line-height: unset!important;
+            border-bottom: 1px solid var(--color-global-text);
+        }
+        .bread-crumbs-group ul {
+            margin: 0!important;
+        }
+        h2 {
+            /* margin-left: 1rem; */
+        }
+        /* 
         */
         .item_search {
             margin-top: 2rem; 
@@ -1157,29 +1137,7 @@
             margin-top: .5rem!important;
             font-size: .9rem;
         }
-        /* 
-         */
-         /* .product-item_wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            background-color: var(--color-global-baackground_light);
-         } */
-        /* .product-item_img {
-            background-color: red; 
-            width: 100%;
-            height: 14rem; 
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        } */
-        /* .product-item_img img {
-            width: 100%;
-            height: auto;
-            object-fit: cover; 
-            object-position: center;
-        } */
+
         /* 
          */
         .item_search_wrong {
@@ -1262,6 +1220,55 @@
         .filter_by_available_container div label:hover {
             border-bottom: 1px solid var(--color-wallet-fund-invested);
             color: var(--color-wallet-fund-invested);
+        }
+
+        /*  */
+        .product-item_container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr)!important;
+            gap: 1.5rem;
+            row-gap: 2rem;
+            /* padding: 0 1rem;     */
+        }
+
+        /* CART */
+        .cart-item_request-btn {
+            background-color: rgba(114, 166, 245, 0.3)!important;
+        }
+        .cart-item_request-btn:hover {
+            background-color: rgba(89, 151, 245, 0.3)!important;
+        }
+        .cart-add_btn {
+            background-color: rgba(54, 195, 77, 0.6);
+            width: 100%;
+            text-align: center;
+            color: white;
+            padding: .5rem .25rem!important;
+            font-size: .8rem;
+        }
+        .cart-add_btn:hover {
+            background-color: rgba(54, 195, 77, 0.8);
+        }
+        .cart-change-count_btn {
+            /* height: 100%; */
+            /* background-color: var(--color-wallet-fund-debt); */
+            display: flex;
+            align-items: center;
+        }
+        .cart-change-count_btn .count_btn {
+            color: var(--color-global-baackground_light);
+            background-color: var(--color-global-text);
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-change-count_btn .count_count {
+            width: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 </style>
