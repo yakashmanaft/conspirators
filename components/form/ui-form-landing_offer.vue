@@ -146,7 +146,7 @@ const testSend = async (item: FormObj) => {
         // config: 'main',
         from: '<ya.kashmanaft@gmail.com>', //Всегда такой будет
         to: '<palmers@yandex.ru>',
-        // to: "bar@example.com, baz@example.com", dont work at me
+        // to: "bar@example.com, baz@example.com", dont work for me
         subject: 'Конспиратор, тебе заявка!',
         // text: `
         //     From: John@mail.ru
