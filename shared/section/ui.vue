@@ -1,6 +1,15 @@
 <template>
     <div class="section_wrapper">
-        <div class="section shadow rounded" :class="[props.padding ? 'py-4 px-4' : '', props.bg ? 'backgroundUrgencyColor' : '']" >
+        <div 
+          class="section shadow" 
+          :class="[
+            props.padding ? 'py-4 px-4' : '', 
+            props.bg ? 'backgroundUrgencyColor' : '',
+            props.wHover ? 'hover' : '',
+            props.bRounded ? 'rounded' : ''
+          ]" 
+
+        >
 
             <slot></slot>
 
@@ -36,6 +45,14 @@
     fAlignItems: {
       type: String,
       default: 'center'
+    },
+    wHover: {
+      type: Boolean,
+      default: false
+    },
+    bRounded: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -76,6 +93,12 @@
         box-shadow: unset!important; */
     }
     
+}
+@media screen and (min-width: 1200px) {
+  .hover:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
 }
   </style>
   

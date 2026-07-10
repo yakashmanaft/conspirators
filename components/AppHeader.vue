@@ -969,14 +969,8 @@ watch(
                   </div>
 
                   <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
-                    <!-- <div>
-                      <p style="margin: 0;">{{ item.item_promo }}</p>
-                    </div> -->
                     <div>
                       <p style="margin: 0;">
-                        <!-- <span v-if="item.item_promo" style="text-decoration: line-through;">
-                          999.90RUB
-                        </span> -->
                         <span style="font-weight: bold;" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">
                           {{ (item.qty * item.price).toFixed(2) }} {{ item.currency }}
                         </span>
@@ -993,45 +987,6 @@ watch(
               <li v-if="!cart.items.length" class="cart_product_item_container_empty"><p>В корзине пусто. <span @click.stop="cartMenuIsOpened = false">Перейти в каталог</span></p></li>
 
 
-              <!-- <li class="cart_product_item_wrapper" v-for="item in cart_product_list_items" :key="item.item_id">
-                <div class="product-item_img">
-                  <img :src="`${item.item_imgUrl}`" :alt="item.item_name"
-                >
-                </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
-                  <div class="cart-product-info_wrapper">
-                    <p class="cart-product-info_title" @click.stop="$router.push(`/product/12`), cartMenuIsOpened = false">{{ item.item_name }}</p>
-                    <p class="cart-product-info_article">Артикул:{{ item.item_id }}</p>
-                    <p class="cart-product-info_count">-1+</p>
-                  </div>
-                  <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
-                    <div>
-                      <p style="margin: 0;">{{ item.item_promo }}</p>
-                    </div>
-                    <div>
-                      <p style="margin: 0;">
-                        <span v-if="item.item_promo" style="text-decoration: line-through;">
-                          999.90RUB
-                        </span>
-                        <span style="font-weight: bold;">
-                          {{ item.item_qty * item.item_price }}{{ item.item_currency }}
-                        </span>
-                      </p>
-                    </div>
-                    <div v-if="!item.item_promo && !conspirator_family_ticket.user_id" class="cart-price-benefits_item">
-                      <p @click.stop="$router.push(`/whitepaper`), cartMenuIsOpened = false" style="margin: 0;">Выгоднее с конспираторами </p>
-                    </div>
-                  </div>
-                </div>
-              </li> -->
-              <!-- <li style="background-color: var(--color-wallet-fund-debt);">
-                <p>Недоступно для заказа</p>
-                <ul>
-                  <li class="cart_product_unavailable">
-                    Товар 123
-                  </li>
-                </ul>
-              </li> -->
             </ul>
 
 

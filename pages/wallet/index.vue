@@ -14,6 +14,9 @@ import { Button } from "@/components/button";
 import { Chip } from "~/components/chip";
 import { session } from "grammy";
 
+// helpers
+import { fixedBackgroundScroll } from '@/helpers/fixed_bgc_scroll'
+
 //
 const route = useRoute();
 const router = useRouter();
@@ -2673,34 +2676,6 @@ const local_list_show = ( (tag_1: string, tag_2: string) => {
   }
 })
 
-// const sum_local_list_el_amount = () => {
-//   let sum = 0;
-
-//   if(meshes_computed.value.filter(item => item.tag === choosenChip_section.value).length) {
-
-  
-//     for(let i = 0; i < local_list_filtered.value.length; i++){
-//       if(local_list_filtered.value[i].currency === 'RUB') {
-  
-//         sum += local_list_filtered.value[i].amount
-//       } else {
-//         let pair = currecy_pair.value.find(j => j.name === `${local_list_filtered.value[i].currency} / RUB`)
-//         sum += local_list_filtered.value[i].amount * pair?.price
-//         // if(local_list_filtered.value[i].currency === 'EUR') {
-//         // }
-//       }
-//     }
-  
-//   }
-
-//   if(sum) {
-//     return `${sum.toFixed(2)} RUB`
-//   } else {
-//     return 'Ничего нет'
-//   }
-// }
-
-
 //= transaction popup
 const transaction_popup_isOpened = ref(false)
 const transaction_el = ref({})
@@ -4241,6 +4216,7 @@ useHead({
 });
 
 onMounted(() => {
+  fixedBackgroundScroll(localGroupList_isOpened.value)
   const scrollContainer = document.getElementById("fund-block");
   const scrollAffiliationContainer = document.getElementById("affiliation-chip-block")
 
@@ -4930,15 +4906,30 @@ const { data: bank } = useFetch("/api/banks/bank", {
 
 
 watch(localGroupList_isOpened, () => {
+
+  fixedBackgroundScroll(localGroupList_isOpened.value)
+  // Если модалка открыта
   if(localGroupList_isOpened.value) {
+
+    // Если кликаем 
     document.addEventListener("click", (e) => {
       
       if(e.target.classList && e.target.classList.contains('local_list__opened')) {
         localGroupList_isOpened.value = false
       }
 
+      else if (e.target.classList && e.target.classList.contains('local_list_main')) {
+        localGroupList_isOpened.value = false
+      }
+
+      // else if () {
+      //   // Еще надо добаввить условия, дабы закрыввалоась можалка еще и по клике просто вне мешка...
+      // }
+
     })
   }
+
+  // 
 })
 
 // HELPERS...
@@ -4951,13 +4942,21 @@ const checkCurrencyPair = (pair: any) => {
 </script>
 
 <template>
+
+  <!-- #1. -->
   <Container>
 
     <!-- PAGE TITLE -->
+    <!-- #1.1. -->
     <div class="show-max-767 bread-crumbs-group" >
+
+      <!-- #1.1.1. -->
       <BreadCrumbs/>
+
       <!-- TITLE -->
+       <!-- #1.1.2. -->
       <h1 style="font-weight: bold; font-size: 42px;">Кошелек</h1>
+      <!-- #1.1.3. -->
       <div>Обновлено 16.03.2026</div>
     </div>
     <!-- КНОПКА ОБНОВИТЬ ДАННЫЕ (пока в режиме информации только...) -->
@@ -4967,6 +4966,7 @@ const checkCurrencyPair = (pair: any) => {
 
     <!-- <p style="margin: 0; margin-left: 1rem;">session: {{ sessionUser }}</p> -->
 
+    <!-- #1.2. -->
     <div class="meshes_local_section">
 
 
@@ -4999,6 +4999,7 @@ const checkCurrencyPair = (pair: any) => {
 
 
       <!-- NAV -->
+      <!-- #1.2.1. -->
       <div style="grid-area: nav; margin-top: 2rem;">
         <!-- ПЕРЕКЛЮЧАТЕЛЬ ФОНДОВ (ЛИЧНЫЕ / БАНДЫ, где session id состоит)-->
         <Chip
@@ -5007,15 +5008,15 @@ const checkCurrencyPair = (pair: any) => {
           :default="currentAffiliation"
           :btn_all_exist="true"
           @changed="changeChipAffiliation"
-          style="padding: 0 1rem;"
         />
       </div>
-      <!-- MAIN -->
-      <div style="grid-area: main; margin-top: 2rem;">
-        <!-- ГЛАВНАЯ КАРТОЧКА / TOTAL -->
-        <div style="background-color: var(--color-operation-type-donation); padding: 1rem">
-          <!-- Заголовок группы -->
-          <div style="margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+      <!-- #. MAIN -->
+      <div style="grid-area: main; margin-top: 1rem;">
+        <!-- #.1 ГЛАВНАЯ КАРТОЧКА / TOTAL -->
+        <div style="background-color: var(--color-operation-type-donation); padding: 1rem; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-around;">
+
+          <!-- #.1.1. Заголовок группы -->
+          <div style=" width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-around; gap: 1rem;">
 
           <!-- Наименование банка -->
           <h2 
@@ -5053,10 +5054,11 @@ const checkCurrencyPair = (pair: any) => {
 
           </div>
           </div>
-          <!-- total amount value -->
+
+          <!-- #.1.2.  total amount value -->
           <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
           </p>
-          <!-- КНОПКИ КОШЕЛЬКА -->
+          <!-- #.1.3. КНОПКИ КОШЕЛЬКА -->
           <div style="display: flex; gap: 1rem; justify-content: center;">
           <!-- Принять -->
           <div style="display: flex; flex-direction: column; align-items: center;">
@@ -5114,7 +5116,7 @@ const checkCurrencyPair = (pair: any) => {
       </div>
 
       <!-- MESHES CAST -->
-      <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 2rem;">
+      <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 1rem; margin-bottom: -1rem;">
 
         <!-- Деньги на счетах / Свободные деньги -->
         <li>
@@ -5132,6 +5134,7 @@ const checkCurrencyPair = (pair: any) => {
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
+                :wHover="true"
                 @click="local_list_show('Деньги на счетах', 'RUB')"
               >
                 <p style="color: var(--color-global-text);" >48722,85</p>
@@ -5143,6 +5146,7 @@ const checkCurrencyPair = (pair: any) => {
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
                 @click="local_list_show('Деньги на счетах', '!RUB')"
+                :wHover="true"
               >
                 <p style="color: var(--color-global-text);" >1349,12</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Иностранная валюта</p>
@@ -5217,6 +5221,8 @@ const checkCurrencyPair = (pair: any) => {
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
                 @click="local_list_show('Вексель', 'Займы')"
+                :wHover="true",
+                :bRounded="true"
               >
                 <p style="color: var(--color-global-text);" >141629,14</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Кредиты</p>
@@ -5275,7 +5281,7 @@ const checkCurrencyPair = (pair: any) => {
 
       <!-- currency pair -->
       <!-- ВАЛЮТНЫЕ ПАРЫ -->
-      <ul class="wallet-section_container" style="grid-area: currency; list-style: none; margin: 0; padding-left: 0; padding-right: 0; padding-bottom:1.5rem;">
+      <ul class="wallet-section_container currency-price-stock_wrapper" style="grid-area: currency; list-style: none; margin: 0; padding-left: 0; padding-right: 0; padding-bottom:1.5rem;">
         <li 
           v-for="pair in currecy_pair" 
           style="display: flex; gap: .5rem; align-items: center; justify-content: center;"
@@ -5354,27 +5360,37 @@ const checkCurrencyPair = (pair: any) => {
         </div>
       </div>
     </div>
+
+    <!-- MESHES GROUP MODAL -->
     <!-- subgroup of meshes -->
     <div v-if='localGroupList_isOpened' 
       class="localGroupList_container" 
       :class="localGroupList_isOpened ? 'local_list__opened' : 'local_list__closed'" 
     >
       <div class="local_list_wrapper">
+
+        <!-- header -->
         <div class="local_list_header" :style="set_popup_header_line_color(choosenChip_section)">
-          <p>{{ filter_title }}</p>
+          <p> 
+            <span>Раздел:</span>
+            <span>{{ filter_title }}</span>
+          </p>
           <div @click="localGroupList_isOpened = false"></div>
         </div>
-        <div class="local_list_main" style="padding: 0 .5rem;">
+
+        <!-- main -->
+        <div class="local_list_main no-scrollbar" style="padding: 0 .5rem;">
 
           <!-- ЕСЛИ НИЧЕГО НЕТ -->
           <div 
             v-if="![...meshes_computed.filter((item: any) => item.tag === choosenChip_section)].length"
             style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;"
+            class="local_list_no-meshes"
           >
             <div style="font-weight: bold;">Ничего нет</div>
           </div>
-          <!-- {{currentAffiliation}} -->
 
+          <!-- ЕсТЬ МЕШКИ -->
           <section 
             v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
               return obj.type
@@ -5390,7 +5406,7 @@ const checkCurrencyPair = (pair: any) => {
                 <!-- МЕШОК -->
                 <li 
                   class="mesh_wrapper"
-                  style="cursor: pointer; position: relative;"
+                  style="cursor: pointer; position: relative; border-radius: unset;"
                   v-for="item in meshes_computed.filter(el => el.type === type && el.tag == choosenChip_section).reverse()"
                   @click="set_mesh_link_by_tag(item.type, item.id, item.tag)"
                 > 
@@ -5484,11 +5500,6 @@ const checkCurrencyPair = (pair: any) => {
                   </div>
                   <p style="font-size: .8rem; margin: 0;">
                     {{ item }}
-                    <!-- <span v-if="currentAffiliation.name === 'all'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">{{ translateOwnerName(item)}}</span>
-                    <span v-else-if="item.tag !== 'available'" style=" color: var(--color-global-text_second); width: fit-content; text-transform: uppercase;">
-                      {{ item?.broker_tag ? item.broker_tag : set_attr_data(item) }}
-                    </span>
-                    <span v-if="item.tag === 'invested_project'" style="color: var(--color-wallet-fund-invested); border-radius: 5px">{{ item.desc }}</span> -->
                     <span style="background-color: var(--color-urgency-low-10);">{{item.ownerType}}{{ item.ownerID }}</span>
                     <span style="background-color: var(--color-urgency-middle-10);">{{item.loanerType}}{{ item.loanerID }}</span>
                     <span style="background-color: var(--color-wallet-fund-invested-wo);">{{ item.broker_tag }}</span>
@@ -5505,58 +5516,6 @@ const checkCurrencyPair = (pair: any) => {
         <div class="local_list_footer">footer</div>
       </div>
     </div>
-
-    <!-- СЕКЦИИ (ГРУППЫ МЕШКОВ) В КОНКРЕТНОМ ФОНДЕ -->
-    <!--  -->
-    <!-- <div v-if="mesh_list" id="fund-block" class="wallet-section_container">
-
-      <Section 
-        v-for="el in mesh_tag_computed"
-        :fDirection="`column`"
-        :fAlignItems="`flex-start`"
-        :fJustifyContent="`space-between`"
-        :fGap="`2rem`"
-        :bg="setChoosenWalletSectionColor(el)"
-        @click="choosenChip_section = el"
-        style="cursor: pointer;"
-      >
-        <p style="width: 160px; height: 3rem; margin: 0; ">{{ translateMeshesGroupName(el) }}</p>
-
-
-          <p style="white-space: nowrap; margin: 0; font-weight: bold; font-size: 1.6rem;">{{ calcSectionAmount(el) }} {{ currency_to_show.ticket }}</p>
-
-
-
-          <p 
-            v-if="el === 'invested_project'"
-            style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
-            >
-            {{ calcSectionInvested_project(el) }}
-          </p>
-
-          <p
-            v-else-if="el === 'invested_crypto'"
-            style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
-          >
-            {{ calcSectionInvested_crypto(el) }}
-          </p>
-
-
-          <p
-            v-else-if="el === 'invested_loan'"
-            style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;"
-          >
-            {{ calcSectionInvested_loan(el) }}
-          </p>
-
-
-          <p v-else-if="el === 'invested_stock'" style="text-wrap: nowrap; margin: 0; margin-top: -2rem; font-size: .8rem;">
-            {{ calcSectionInvested_stock(el) }}
-          </p>
-      </Section>
-    </div>  -->
-    <!-- {{ choosenChip_section }} -->
-
 
     <!-- CHIP -->
     <!-- ПЕРЕКЛЮЧАТЕЛЬ MESH && TRANSACTION  -->
@@ -5702,7 +5661,7 @@ const checkCurrencyPair = (pair: any) => {
 
       <!-- MESHES -->
       <div v-if="currentFundParagraph === 'meshes'" class="current-fund_wrapper">
-        <!-- LENGTH -->
+
         <div v-if="meshes_computed?.length">
           <div style="margin-top: 2rem; cursor: pointer;">
             
@@ -5740,12 +5699,12 @@ const checkCurrencyPair = (pair: any) => {
                     {{ item.broker_tag?.[0] }}
                   </div>
                   <div class="mesh_content">
-                    <!-- {{ item }} -->
+
                       
                     <p class="mesh_content-el">{{ item.id }} | {{ item.name }}</p>
                     <p class="mesh_content-el" style="">
 
-                      <!-- invested)loan or debt_loan -->
+
                       <span v-if="item.tag === 'debt_loan' || item.tag === 'invested_loan'">
                         <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - ((item.amount * item.bid) + item.amount) >= 0" style="color: var(--color-global-text_second); text-transform: uppercase;">Завершен</span>
                         <span v-else>
@@ -5759,26 +5718,19 @@ const checkCurrencyPair = (pair: any) => {
                           </span>
                         </span>
                       </span>
-                      <!-- invested crypto -->
                       <span v-else-if="item.tag === 'invested_crypto'" style="display: flex; flex-direction: column; align-items: flex-end">
                       {{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid)).toFixed(2) }} {{ currency_to_show.ticket }}
                       </span>
-                      <!-- invested stock -->
                       <span v-else-if="item.tag === 'invested_stock'" style="display: flex; flex-direction: column; align-items: flex-end">
                         Инвестировано: {{ calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) }}
                       </span>
                       
                       
                       <span>
-                        <!-- debt_loan -->
                         <span v-if="item.tag === 'debt_loan'">
 
-                          <!-- <span v-if="calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) === 0" style="color: var(--color-urgency-low);">
-                            +1 к карме
-                          </span> -->
                           <span v-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) > 0" style="color: var(--color-urgency-low);">
                             +1 к щедрости 
-                            <!-- ({{ (calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))).toFixed(2)}} {{ currency_to_show.ticket }}) -->
                           </span>
                           <span v-else-if="(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid) - (item.amount + (item.amount * item.bid))) === 0" style="color: var(--color-urgency-low);">
                             +1 к карме
@@ -5798,7 +5750,6 @@ const checkCurrencyPair = (pair: any) => {
                             <span style="padding: 1px 3px; color: var(--color-global-baackground_light);border-radius: 5px; background-color: var(--color-wallet-fund-invested);">{{(item.amount * item.bid).toFixed(2)}} + {{ item.amount.toFixed(2) }}</span> {{ currency_to_show.ticket }}
                           </span>
                         </span>
-                        <!-- invested project -->
                         <span v-else-if="item.tag === 'invested_project'" style="display: flex; flex-direction: column; align-items: flex-end">
                           <span>
                             {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}} {{ currency_to_show.ticket }}
@@ -5807,14 +5758,11 @@ const checkCurrencyPair = (pair: any) => {
                             {{ calc_mesh_invested_project_amount_actual(item.id) }}
                           </span>
                         </span>
-                        <!-- invested crypto -->
                         <span v-else-if="item.tag === 'invested_crypto'" style="color: var(--color-global-text_second);">{{ calc_mesh_invested_crypto_actual(item.id) }}
                         </span>
-                        <!-- invested stock -->
                         <span v-else-if="item.tag === 'invested_stock'" style="color: var(--color-global-text_second);">
                           {{ calc_mesh_invested_stock_actual(item.id) }}
                         </span>
-                        <!-- else -->
                         <span v-else>
                           {{(calcMeshAmount(item.id, item.type, item.tag, item.name, item?.bid).toFixed(2))}}
                           {{ currency_to_show.ticket }}
@@ -7185,6 +7133,7 @@ const checkCurrencyPair = (pair: any) => {
       "currency list"
       "stat stat"
     ;
+    gap: 1rem;
   }
   .wallet-stat_container {
     flex: 1 auto;
@@ -7193,6 +7142,7 @@ const checkCurrencyPair = (pair: any) => {
     position: relative;
     /* border-radius: 1rem;
     margin: 0 1rem; */
+    padding: 1rem;
   }
   .group_wrapper_background {
     position: absolute;
@@ -7289,12 +7239,39 @@ const checkCurrencyPair = (pair: any) => {
 
   /* WALLET SECTION */
   .wallet-section_container {
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-left: -1rem;
     padding-left: 1rem;
-    padding-right: 1rem;
+    /* padding-right: 1rem; */
     padding-bottom: 2rem;
   }
+  .currency-price-stock_wrapper {
+    background-color: var(--color-btn-hover-bg);
+    padding: 1rem!important;
+  }
+
+  /*  */
+  .localGroupList_container {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--color-bg-popup);
+  }
+  .local_list__opened {
+    opacity: 1;
+    transition: all .3s ease-in;
+    z-index: 101;
+  }
+  .local_list__closed {
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: -1;
+    display: none;
+  }
+
+  /*  */
   .fund_list {
     gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
@@ -7315,18 +7292,23 @@ const checkCurrencyPair = (pair: any) => {
     margin-right: .5rem; */
   }
 
+  .group_wrapper_content p {
+    margin: 0;
+  }
+
   /* MESH */
   .mesh_container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
   .mesh_wrapper {
     border-radius: 1rem;
     border: 1px solid var(--color-btn-hover-bg);
     padding: 1rem;
     transition: all .2s ease-in;
+    background-color: var(--color-global-baackground_light);
   }
   .mesh_wrapper  > p {
     margin: 0;
@@ -7372,14 +7354,65 @@ const checkCurrencyPair = (pair: any) => {
 
   /*  */
   .local_list_wrapper {
-      width: 1200px;
-      height: 80%;
+      /* width: 1399px; */
+      width: 95vw;
+      max-width: 1400px;
+      height: 90%;
       margin-top: 5rem!important;
       /* margin-right: 5rem; */
       margin: 0 auto;
-      border-radius: 2rem;
+      /* border-radius: 2rem; */
       overflow: hidden;
   }
+  .local_list_header {
+    background-color: var(--color-btn-disabled-bg);
+    /* width: fit-content; */
+    height: 3rem; 
+  }
+  .local_list_header p {
+    background-color: red;
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .local_list_main {
+    overflow: scroll!important;
+    height: 100%;
+    padding: 0!important;
+  }
 
+  .mesh_group_container {
+    margin: 0!important;
+  }
+  .mesh_group_container header h4{
+    background-color: var(--color-btn-disabled-bg);
+    width: fit-content;
+    margin-top: 1rem;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .section_wrapper:hover{
+    /* background-color: red!important; */
+    /* cursor: pointer; */
+  }
+  .local_list_no-meshes {
+    background-color: red;
+  }
+
+}
+
+/* Для Chrome, Safari, Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  /* Для Firefox */
+  scrollbar-width: none;
+
+  /* Для IE и Edge */
+  -ms-overflow-style: none;
 }
 </style>
