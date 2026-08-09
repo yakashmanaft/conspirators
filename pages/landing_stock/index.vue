@@ -4,6 +4,7 @@
     <!-- Content of the page -->
     <Container>
 
+        <!-- bread-crumbs-group -->
         <div style="margin-bottom: 0.5rem;" class="bread-crumbs-group">
             <BreadCrumbs class="show-max-767"/>
             <h1 style="font-weight: bold; font-size: 42px;">Каталог</h1>
@@ -11,6 +12,7 @@
         </div>
 
         
+        <!-- SUBHEADER (ТОВАРЫ / УСЛУГИ)-->
         <h2>
             <span
                 @click.stop="current_subtitle = 'products'"
@@ -33,6 +35,7 @@
                 Услуги
             </span>
         </h2>
+
         <!-- SERVICES SUBTITLE SECTION -->
         <div v-if="current_subtitle === 'services'">
 
@@ -768,6 +771,26 @@
             grid-template-columns: 3rem 1fr 1fr 1fr
         }
         /* 
+         */
+        .bread-crumbs-group {
+            display: flex;
+            gap: .5rem;
+            margin-left: .5rem;
+        }
+        .bread-crumbs-group h1{
+            font-weight: normal!important;
+            font-size: .9rem!important;
+            margin: 0!important;
+            line-height: unset!important;
+            border-bottom: 1px solid var(--color-global-text);
+        }
+        .bread-crumbs-group ul {
+            margin: 0!important;
+        }
+        h2 {
+            margin-left: .5rem;
+        }
+        /* 
         */
         .item_search {
             /* margin-top: 2rem;  */
@@ -803,8 +826,126 @@
             position: absolute;
             padding: 0 1rem;
         }
+        /* 
+         */
+        .product-item_filter {
+            /* background-color: green; */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .product-item_filter .product-item_filters-wrapper {
+            display: flex; 
+            justify-content: space-between; 
+            width: 100%;
+        }
+        .product-item_filter .filter_container {
+            padding: 1rem .5rem;
+        }
+        .product-item_filter .filter_by_available_container {
+            padding: 1rem 1rem;
+        }
+        /* 
+        FILTER highlighted
+        */
+        .highlighted {
+            background-color: var(--color-btn-text);
+            position: sticky;
+            top: 4.5rem;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+        }
+        /* 
+        FILTER by type
+         */
+         .filter_container {
+            display: flex;
+            gap: .5rem;
+            padding: 1rem;
+        }
+         .filter_container {
+            display: flex;
+            gap: .5rem;
+            padding: 1rem;
+        }
+        .filter-wrapper label span {
+            font-size: .9rem!important;
+        }
+        .filter-wrapper label span,
+        .filter-wrapper label svg {
+            transition: all .2s ease-in;
+        }
+        .filter-wrapper label svg{
+            margin-left: .25rem;
+            transform: rotate(180deg)
+        }
+        .filter-wrapper label span:hover {
+            cursor: pointer;
+        }
+        .filter-wrapper label:hover span,
+        .filter-wrapper label:hover svg {
+            color: var(--color-wallet-fund-invested)!important;
+            transform: rotate(180deg) scale(1.5);
+        }
+        /* 
+        FILTER by available
+         */
+        .filter_by_available_container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+        }
+         .filter_by_available_container div input {
+            display: none;
+        }
+        .filter_by_available_container div input:checked + label {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+         .filter_by_available_container div label {
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            transition: all .2s ease-in;
+            font-size: .9rem;
+            text-align: center;
+        }
+         .filter_by_available_container div label:hover {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+        /* 
+         */
+        .product-item_container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr)!important;
+            gap: 1.5rem;
+            row-gap: 2rem;
+            padding: 0 1rem;    
+        }
     }
     @media screen and (min-width: 992px) and (max-width: 1199px) {
+        /* 
+         */
+        .bread-crumbs-group {
+            display: flex;
+            gap: .5rem;
+            margin-left: .5rem;
+        }
+        .bread-crumbs-group h1{
+            font-weight: normal!important;
+            font-size: .9rem!important;
+            margin: 0!important;
+            line-height: unset!important;
+            border-bottom: 1px solid var(--color-global-text);
+        }
+        .bread-crumbs-group ul {
+            margin: 0!important;
+        }
+        h2 {
+            margin-left: .5rem;
+        }
         /* 
         */
         .item_search {
@@ -814,20 +955,11 @@
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr!important;
             gap: .7rem;
             margin-top: 1.5rem;
-            /* display: grid;
-            margin-top: 1.5rem; */
         }
         .item_wrapper {
-            /* background-color: var(--color-operation-type-donation); */
-            /* background-color: red; */
-            /* border-radius: 1rem; */
             padding: .5rem;
         }
         .item_wrapper div {
-            /* width: 50% */
-
-            /* background-color: var(--color-global-baackground_light); */
-            /* border-radius: .5rem; */
             display: flex;  
             align-items: center; 
             justify-content: center; 
@@ -849,6 +981,102 @@
         .item_search_wrong {
             position: absolute;
             padding: 0 1rem;
+        }
+        /* 
+         */
+        .product-item_filter {
+            /* background-color: green; */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .product-item_search-wrapper {
+            /* margin-left: .75rem; */
+        }
+        .product-item_filter .product-item_filters-wrapper {
+            display: flex; 
+            justify-content: space-between; 
+            width: 100%;
+        }
+        .product-item_filter .filter_container {
+            padding: 1rem .5rem;
+        }
+        .product-item_filter .filter_by_available_container {
+            padding: 1rem 1rem;
+        }
+        /* 
+        FILTER highlighted
+        */
+        .highlighted {
+            background-color: var(--color-btn-text);
+            position: sticky;
+            top: 4.5rem;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+        }
+        /* 
+        FILTER by type
+         */
+         .filter_container {
+            display: flex;
+            gap: .5rem;
+            padding: 1rem;
+        }
+         .filter_container {
+            display: flex;
+            gap: .5rem;
+            padding: 1rem;
+        }
+        .filter-wrapper label span,
+        .filter-wrapper label svg {
+            transition: all .2s ease-in;
+        }
+        .filter-wrapper label svg{
+            margin-left: .25rem;
+            transform: rotate(180deg)
+        }
+        .filter-wrapper label span:hover {
+            cursor: pointer;
+        }
+        .filter-wrapper label:hover span,
+        .filter-wrapper label:hover svg {
+            color: var(--color-wallet-fund-invested)!important;
+            transform: rotate(180deg) scale(1.5);
+        }
+        /* 
+        FILTER by available
+         */
+        .filter_by_available_container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+        }
+         .filter_by_available_container div input {
+            display: none;
+        }
+        .filter_by_available_container div input:checked + label {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+         .filter_by_available_container div label {
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            transition: all .2s ease-in;
+        }
+         .filter_by_available_container div label:hover {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+        /* 
+         */
+        .product-item_container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr)!important;
+            gap: 1.5rem;
+            row-gap: 2rem;
+            padding: 0 1rem;    
         }
     }
     @media screen and (min-width: 1200px) and (max-width: 1399px) {

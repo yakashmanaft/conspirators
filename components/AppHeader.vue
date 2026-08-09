@@ -920,6 +920,8 @@ watch(
                   <img :src="`${item.imgUrl}`" :alt="item.title"
                 >
                 </div>
+
+                <!-- Если qty === 0 "Кнопка Удалить" -->
                 <div
                   v-if="item.qty === 0"
                   style="position: absolute; top: 0; right: 0; cursor: pointer;"
@@ -932,8 +934,10 @@ watch(
                   />
                 </div>
 
-                <!--  -->
-                <div style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
+                <!-- cart item content -->
+                <div class="cart-item_content" style="display: flex; align-items: center; justify-content: space-between; flex: 1 auto;">
+
+                  <!-- cart-product-info -->
                   <div 
                   class="cart-product-info_wrapper"
                   @click.stop="$router.push(`/product/${item.id}`), cartMenuIsOpened = false"
@@ -968,6 +972,7 @@ watch(
                     </div>
                   </div>
 
+                  <!-- conspirator_family_ticket -->
                   <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
                     <div>
                       <p style="margin: 0;">
@@ -1014,20 +1019,24 @@ watch(
         </div>
         <div class="cart_total_container">
           
-          <div>
+          <div class="cft-coin-group">
             {{ conspirator_family_ticket  }}
-            <br>
-            <br>
-            <div style="background-color: var(--color-urgency-middle);">
+
+          </div>
+          <!-- delivery-info-group -->
+          <div class="delivery-info-group">
+
+            <div>
               <input type="radio">
               Доставка / 
               <input type="radio">
               Самовывоз
             </div>
             {{ item_product_delivery }}
-            <br>
             <p>Доступные способы и время доставки можно выбрать при оформлении заказа</p>
           </div>
+
+          <!--  -->
           <div>
             <p>Ваша корзина</p>
             <ul>
@@ -1298,6 +1307,23 @@ a:visited {
     bottom: .5rem;
     right: 4rem;
   }
+  .cart_wrapper .cart_main .cart_total_container {
+    position: relative!important;
+  }
+  .cart_product_section ul{
+    padding-left: 0!important;
+  }
+  /* 
+   */
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    -o-object-fit: cover;
+    object-fit: cover;
+    /* object-fit: contain; */
+    -o-object-position: center;
+    object-position: center;
+  }
 }
 @media (min-width: 320px) and (max-width: 574px) {
   .header_wrapper {
@@ -1310,6 +1336,58 @@ a:visited {
   .cart > label > .cart_count {
     bottom: .5rem;
     right: 4rem;
+  }
+  .cart_wrapper .cart_main .cart_total_container {
+    position: relative!important;
+  }
+  /* 
+   */
+  .cart_item div h2,
+  .clear-cart_btn {
+    font-size: .9rem!important;
+  }
+  .cart_item div h2 {
+    display: flex;
+  }
+  .cart_product_section ul{
+    margin-top: 1.5rem;
+    padding-left: 0!important;
+  }
+  .clear-cart_btn {
+    margin-right: 1rem!important;
+    text-align: right;
+  }
+  .cart_product_item_wrapper {
+    /* display: flex; */
+    overflow: hidden;
+
+  }
+  .cart-item_content {
+    /* flex-direction: column-reverse; */
+    /* padding: 0 1rem; */
+    /* justify-content: center!important; */
+  }
+  .product-item_img {
+    /* height: 410px; */
+    /* scale: .95; */
+    /* max-width: 150px!important; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    /* height: 15rem; */
+    -o-object-fit: cover;
+    object-fit: cover;
+    /* object-fit: contain; */
+    -o-object-position: center;
+    object-position: center;
+  }
+  .cart-item_content {
+    
   }
 }
 @media screen and (max-width: 767px) and (max-height: 540px) {
@@ -1353,6 +1431,35 @@ a:visited {
     bottom: .5rem;
     right: 4rem;
   }
+  .cart_wrapper .cart_main .cart_total_container {
+    position: relative!important;
+  }
+  /* 
+   */
+  .cart_product_section ul{
+    margin-top: 1.5rem;
+    padding-left: 0!important;
+  }
+  .clear-cart_btn {
+    margin-right: 1rem!important;
+    text-align: right;
+  }
+  .cart_product_item_wrapper {
+    display: flex;
+    height: 250px;
+  }
+  .product-item_img {
+    max-width: 250px;
+  }
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    -o-object-fit: cover;
+    object-fit: cover;
+    /* object-fit: contain; */
+    -o-object-position: center;
+    object-position: center;
+  }
 }
 @media screen and (max-width: 767px) {
   .account-user_icon {
@@ -1373,21 +1480,8 @@ a:visited {
     position: relative;
     margin: 0;
     font-size: 1rem;
-    /* font-weight: normal; */
-    /* margin-left: 0.3rem; */
     flex: 1;
-    /* text-align: center; */
   }
-  /* .current-route_container:before {
-    content: "";
-    position: absolute;
-    top: 55%;
-    transform: translateY(-50%);
-    left: -0.4rem;
-    width: 1px;
-    height: 80%;
-    background-color: var(--bs-primary);
-  } */
   .links_container {
     position: absolute;
     right: 0;
@@ -1406,10 +1500,6 @@ a:visited {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    /* overflow: scroll; */
-    /* padding-top: 5rem; */
-    /* gap: 10rem; */
-    /* margin-left: 30%; */
   }
   .links_container .header-features__list,
   .links_container .login_wrapper .account-container {
@@ -1427,12 +1517,9 @@ a:visited {
   } */
 
   .router-link-exact-active {
-    /* color: #fff!important; */
-    /* background-color: green; */
     position: relative;
     padding-left: 1rem;
     margin-left: -1rem;
-    /* padding: 0.3rem!important; */
   }
 
   .account-menu {
@@ -1448,11 +1535,8 @@ a:visited {
   }
 
   .login_wrapper {
-    /* position: absolute; */
-    /* order: -1; */
     top: 10rem;
     left: 0;
-    /* transform: translateX(-50%); */
     position: unset;
     order: -1;
   }
@@ -1477,7 +1561,6 @@ a:visited {
     margin-left: 1rem;
   }
   .header-features__list li {
-    /* margin-top: 1rem; */
     padding-left: 1.5rem;
   }
   .header-features__list {
@@ -1522,10 +1605,33 @@ a:visited {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-
+  /* 
+   */
+   .cart_product_item_wrapper {
+    display: flex;
+  }
+  .cft-coin-group {
+    background-color: var(--color-urgency-low);
+  }
+  .delivery-info-group {
+     background-color: var(--color-urgency-middle);
+   }
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    -o-object-fit: cover;
+    object-fit: cover;
+    /* object-fit: contain; */
+    -o-object-position: center;
+    object-position: center;
+  }
 }
 @media (min-width: 992px) and (max-width: 1199px) {
-
+  .cart__opened {
+    background-color: var(--color-bg-popup);
+    opacity: 1;
+    transition: all .3s ease-in;
+  }
   .cart_wrapper {
     /* display: none; */
     width: 85%;
@@ -1552,6 +1658,7 @@ a:visited {
     grid-template-columns: 2fr 1fr;
   }
 
+
   .cart_item {
     display: grid;
     grid-template-columns: 1fr;
@@ -1572,7 +1679,23 @@ a:visited {
     right: 0;
     width: 35%;
   }
-
+  /* 
+   */
+   .cart_product_item_wrapper {
+    display: flex;
+   }
+   .product-item_img {
+    max-width: 250px;
+   }
+  .product-item_img img {
+    width: 100%;
+    height: auto;
+    -o-object-fit: cover;
+    object-fit: cover;
+    /* object-fit: contain; */
+    -o-object-position: center;
+    object-position: center;
+  }
 }
 @media (min-width: 1200px) and (max-width: 1399px) {
   .cart > label > .cart_count {
