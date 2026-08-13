@@ -283,10 +283,44 @@
                              <input v-model=filter_by_available type="radio" id="opt3" name="options" value="order">
                              <label for="opt3">Под заказ</label>
                          </div>
+
+                         <!-- availableorder -->
+                         <div class="filter-wrapper availableorder">
+         
+                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                             <label for="filter-by-item-category" style="white-space: nowrap; color:  var(--color-wallet-fund-invested); border-bottom: 1px solid var(--color-wallet-fund-invested);"
+                                    @click.stop="popup_available_order_opened = !popup_available_order_opened;">
+                                {{ translated_filter_by_available(filter_by_available) }}
+                             </label>
+         
+                             <!-- MODAL POPUP -->
+                             <DefaultPopup
+                                 v-if="popup_available_order_opened"
+                                 id="popup_available_order"
+                                 popup_title="Фильтр по наличию"
+                                 @emitClosePopup="close_available_order_popup"
+                             >
+                                 <ul style="list-style: none; padding: 0;">
+                                     <li style="margin-top: 1rem;">
+                                         <input :checked="current_volume === 'Все тома'" type="radio" id="volume-0">
+                                         <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="volume-0">
+                                             <span>Все тома</span>
+                                         </label>
+                                     </li>
+                                     <li  style="margin-top: 1rem;"v-for="(el, index) in computed_filter_pocket">
+                                         <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
+                                         <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`volume-${index}`">
+                                             <span>{{ el }}</span>
+                                         </label>
+                                     </li>
+                                 </ul>
+                             </DefaultPopup>
+         
+                         </div>
                      </div>
                  </div>
              </div>
-             {{ filter_by_available }}
+             <!-- {{ filter_by_available }} -->
              <!-- {{ products_on_sale_list }} -->
     
              <!-- ITEM GRID -->
@@ -917,6 +951,12 @@
         }
         /* 
          */
+        .availableorder {
+            display: block;
+            background-color: red;
+        }
+        /* 
+         */
         .product-item_container {
             display: grid;
             grid-template-columns: repeat(4, 1fr)!important;
@@ -1068,6 +1108,11 @@
          .filter_by_available_container div label:hover {
             border-bottom: 1px solid var(--color-wallet-fund-invested);
             color: var(--color-wallet-fund-invested);
+        }
+        /* 
+         */
+        .availableorder {
+            display: none;
         }
         /* 
          */
@@ -1598,6 +1643,9 @@
     // PARAGRAPH
     const popup_paragraph_opened = ref(false) 
     const current_paragraph = ref("Все параграфы");
+    // AVAILABLEORDER
+    const popup_available_order_opened = ref(false);
+    const current_available_order = ref("Все товары");
     // 
     // const { fullImageUrl, setImage } = useImageDisplay(props.imageFileName)
     const { fullImageUrl, setImage } = useImageDisplay('bc449d9a769d039121d99041de2r--dlya-doma-i-interera-prikrovatnaya-tumba-deep-forest-s-radius.jpg')
@@ -1617,6 +1665,9 @@
     }
     const close_paragraph_popup = () => {
         popup_paragraph_opened.value = false
+    }
+    const close_available_order_popup = () => {
+        popup_available_order_opened.value = false
     }
     // 1.   book_volume
     // 1.1. Все
@@ -1957,7 +2008,23 @@
         }
     })
 
-
+    // helpers
+    //=
+    //= translate
+    const translated_filter_by_available = (filter_name: string) => {
+        if(filter_name === 'all') {
+            return 'Все товары'
+        }
+        else if(filter_name === 'available') {
+            return 'В наличии'
+        }
+        else if(filter_name === 'order') {
+            return 'Под заказ'
+        }
+        else {
+            return filter_name
+        }
+    }
 
 
     // ******* COMPUTED
