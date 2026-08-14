@@ -74,7 +74,7 @@
         </div>
 
         <!-- PRODUCTS SUBTITLE SECTION -->
-         <div v-else-if="current_subtitle === 'products'" style="margin-top: 2rem;">
+         <div v-else-if="current_subtitle === 'products'" style="margin-top: 1.5rem;">
              <!-- <div style="background-color: red;">
                  <img 
                      :src="fullImageUrl" 
@@ -101,13 +101,16 @@
                  <div class="product-item_filters-wrapper">
                      
                      <!-- ФИЛЬТР по тегам -->
-                     <div class="filter_container">
+                     <div class="filter_container filter_by_type">
                          <!-- ТОМ -->
                          <div class="filter-wrapper">
          
                              <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                             <label for="filter-by-item-category">
-                                 <span @click.stop="popup_volume_opened = !popup_volume_opened; current_filter_group = 'Том'">{{ current_volume }}</span>
+                             <label 
+                                for="filter-by-item-category" style="text-align: center;"
+                                @click.stop="popup_volume_opened = !popup_volume_opened; current_filter_group = 'Том'"
+                            >
+                                 <span>{{ current_volume }}</span>
                                  <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
                              </label>
          
@@ -140,8 +143,9 @@
                              <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
                              <label 
                                  for="filter-by-item-category"
+                                @click.stop="popup_book_opened = !popup_book_opened; current_filter_group = 'Книга'"
                              >
-                                 <span @click.stop="popup_book_opened = !popup_book_opened; current_filter_group = 'Книга'">{{current_book}}</span>
+                                 <span>{{current_book}}</span>
                                  <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
                              </label>
          
@@ -171,8 +175,11 @@
                          <!-- ЧАСТЬ -->
                          <div class="filter-wrapper">
                              <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                             <label for="filter-by-item-category">
-                                 <span @click.stop="popup_part_opened = !popup_part_opened; current_filter_group = 'Часть'">{{current_part}}</span>
+                             <label 
+                                for="filter-by-item-category"
+                                @click.stop="popup_part_opened = !popup_part_opened; current_filter_group = 'Часть'"
+                            >
+                                 <span>{{current_part}}</span>
                                  <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
                              </label>
          
@@ -187,7 +194,7 @@
                                      <li style="margin-top: 1rem;">
                                          <input :checked="current_part === 'Все части'" type="radio" id="part-0">
                                          <label style="margin-left: .5rem;" @click="current_part = 'Все части'; popup_part_opened = !popup_part_opened" for="part-0">
-                                             <span>Все книги</span>
+                                             <span>Все части</span>
                                          </label>
                                      </li>
                                      <li style="margin-top: 1rem;" v-for="el in computed_filter_pocket">
@@ -203,9 +210,10 @@
                          <div class="filter-wrapper">
                              <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
                              <label 
-                                 for="filter-by-item-category"
+                                for="filter-by-item-category"
+                                @click.stop="popup_chapter_opened = !popup_chapter_opened; current_filter_group = 'Глава'"
                              >
-                                 <span @click.stop="popup_chapter_opened = !popup_chapter_opened; current_filter_group = 'Глава'">{{current_chapter}}</span>
+                                 <span>{{current_chapter}}</span>
                                  <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
                              </label>
          
@@ -236,9 +244,10 @@
                          <div class="filter-wrapper">
                              <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
                              <label 
-                                 for="filter-by-item-category"
+                                for="filter-by-item-category"
+                                @click.stop="popup_paragraph_opened = !popup_paragraph_opened; current_filter_group = 'Параграф'"
                              >
-                                 <span @click.stop="popup_paragraph_opened = !popup_paragraph_opened; current_filter_group = 'Параграф'">{{current_paragraph}}</span>
+                                 <span>{{current_paragraph}}</span>
                                  <Icon name="material-symbols-light:arrow-back-rounded" size="25px" color="var(--color-global-text)"/>
                              </label>
          
@@ -269,55 +278,65 @@
          
                      
                      
-                     <!-- ФИЛЬТР по наличию -->
-                     <div class="filter_by_available_container">
-                         <div class="radio-option">
-                             <input v-model=filter_by_available type="radio" id="opt1" name="options" value="all">
-                             <label for="opt1">Все</label>
-                         </div>
-                         <div class="radio-option">
-                             <input v-model=filter_by_available type="radio" id="opt2" name="options" value="available">
-                             <label for="opt2">В наличии</label>
-                         </div>
-                         <div class="radio-option">
-                             <input v-model=filter_by_available type="radio" id="opt3" name="options" value="order">
-                             <label for="opt3">Под заказ</label>
-                         </div>
+                    <!-- ФИЛЬТР по наличию -->
+                    <!-- desktop /  -->
+                    <div class="filter_by_available_container availableorder_desktop">
+                        <div class="radio-option">
+                            <input v-model=filter_by_available type="radio" id="opt1" name="options" value="all">
+                            <label for="opt1">Все</label>
+                        </div>
+                        <div class="radio-option">
+                            <input v-model=filter_by_available type="radio" id="opt2" name="options" value="available">
+                            <label for="opt2">В наличии</label>
+                        </div>
+                        <div class="radio-option">
+                            <input v-model=filter_by_available type="radio" id="opt3" name="options" value="order">
+                            <label for="opt3">Под заказ</label>
+                        </div>
 
-                         <!-- availableorder -->
-                         <div class="filter-wrapper availableorder">
-         
-                             <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
-                             <label for="filter-by-item-category" style="white-space: nowrap; color:  var(--color-wallet-fund-invested); border-bottom: 1px solid var(--color-wallet-fund-invested);"
-                                    @click.stop="popup_available_order_opened = !popup_available_order_opened;">
+                    </div>
+
+                    <!-- mobile / availableorder_mobile -->
+                    <div class="filter_by_available_container availableorder_mobile">
+                        <div class="filter-wrapper">
+    
+                            <!-- КНОПКА открывет модалку и показывает текущий ввыбранный -->
+                            <label for="filter-by-item-category"
+                                    @click.stop="popup_available_order_opened = !popup_available_order_opened;" style="">
                                 {{ translated_filter_by_available(filter_by_available) }}
-                             </label>
-         
-                             <!-- MODAL POPUP -->
-                             <DefaultPopup
-                                 v-if="popup_available_order_opened"
-                                 id="popup_available_order"
-                                 popup_title="Фильтр по наличию"
-                                 @emitClosePopup="close_available_order_popup"
-                             >
-                                 <ul style="list-style: none; padding: 0;">
-                                     <li style="margin-top: 1rem;">
-                                         <input :checked="current_volume === 'Все тома'" type="radio" id="volume-0">
-                                         <label style="margin-left: .5rem;" @click="current_volume = 'Все тома'; popup_volume_opened = !popup_volume_opened" for="volume-0">
-                                             <span>Все тома</span>
-                                         </label>
-                                     </li>
-                                     <li  style="margin-top: 1rem;"v-for="(el, index) in computed_filter_pocket">
-                                         <input :checked="el === current_volume" type="radio" :id="`volume-${index + 1}`">
-                                         <label style="margin-left: .5rem;" @click="current_volume = el.toString(); popup_volume_opened = !popup_volume_opened" :for="`volume-${index}`">
-                                             <span>{{ el }}</span>
-                                         </label>
-                                     </li>
-                                 </ul>
-                             </DefaultPopup>
-         
-                         </div>
-                     </div>
+                            </label>
+        
+                            <!-- MODAL POPUP -->
+                            <DefaultPopup
+                                v-if="popup_available_order_opened"
+                                id="popup_available_order"
+                                popup_title="Фильтр по наличию"
+                                @emitClosePopup="close_available_order_popup"
+                            >
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="margin-top: 1rem;">
+                                        <input :checked="filter_by_available === 'all'" type="radio" id="available_order-0">
+                                        <label style="margin-left: .5rem;" @click="filter_by_available = 'all'; popup_available_order_opened = !popup_available_order_opened" for="available_order-0">
+                                            <span>Все товары</span>
+                                        </label>
+                                    </li>
+                                    <li style="margin-top: 1rem;">
+                                        <input :checked="filter_by_available === 'available'" type="radio" id="available_order-1">
+                                        <label style="margin-left: .5rem;" @click="filter_by_available = 'available'; popup_available_order_opened = !popup_available_order_opened" for="available_order-1">
+                                            <span>В наличии</span>
+                                        </label>
+                                    </li>
+                                    <li style="margin-top: 1rem;">
+                                        <input :checked="filter_by_available === 'order'" type="radio" id="available_order-2">
+                                        <label style="margin-left: .5rem;" @click="filter_by_available = 'order'; popup_available_order_opened = !popup_available_order_opened" for="available_order-2">
+                                            <span>Под заказ</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </DefaultPopup>
+    
+                        </div>
+                    </div>
                  </div>
              </div>
              <!-- {{ filter_by_available }} -->
@@ -689,9 +708,17 @@
         }
     }
     @media screen and (min-width: 576px) and (max-width: 767px) {
-        h1 {
-            margin: 0 1rem;
+        /* 
+         */
+        .bread-crumbs-group {
+            display: none;
         }
+        h2 {
+            padding: 0 1.5rem;
+        }
+
+        /* 
+         */
         .chip_container {
             margin-left: 1rem;
             margin-right: 1rem;
@@ -747,6 +774,22 @@
         .item_search_wrong {
             position: absolute;
             padding: 0 1rem;
+        }
+
+        /* 
+         */
+        .availableorder_desktop {
+            display: none;
+        }
+
+        /* 
+         */
+        .product-item_container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr)!important;
+            gap: 1.5rem;
+            row-gap: 2rem;
+            padding: 0 1rem;    
         }
     }
     @media screen and (max-width: 767px) {
@@ -809,7 +852,7 @@
         .bread-crumbs-group {
             display: flex;
             gap: .5rem;
-            margin-left: .5rem;
+            margin-left: 1rem;
         }
         .bread-crumbs-group h1{
             font-weight: normal!important;
@@ -818,12 +861,14 @@
             line-height: unset!important;
             border-bottom: 1px solid var(--color-global-text);
         }
+        
         .bread-crumbs-group ul {
             margin: 0!important;
         }
         h2 {
-            margin-left: .5rem;
+            margin-left: 1rem;
         }
+        
         /* 
         */
         .item_search {
@@ -867,6 +912,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
+            padding: 0 .5rem;
         }
         .product-item_filter .product-item_filters-wrapper {
             display: flex; 
@@ -914,7 +960,7 @@
             margin-left: .25rem;
             transform: rotate(180deg)
         }
-        .filter-wrapper label span:hover {
+        .filter-wrapper label:hover {
             cursor: pointer;
         }
         .filter-wrapper label:hover span,
@@ -922,6 +968,20 @@
             color: var(--color-wallet-fund-invested)!important;
             transform: rotate(180deg) scale(1.5);
         }
+        /* 
+        FILTER by type
+        */
+        .filter_by_type div input {
+            display: none;
+        }
+        .filter_by_type div input:checked + label {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+        .filter_by_type div label {
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+        }
+
         /* 
         FILTER by available
          */
@@ -946,14 +1006,22 @@
             text-align: center;
         }
          .filter_by_available_container div label:hover {
-            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            /* border-bottom: 1px solid var(--color-wallet-fund-invested); */
             color: var(--color-wallet-fund-invested);
         }
         /* 
          */
-        .availableorder {
-            display: block;
-            background-color: red;
+        .availableorder_desktop {
+            display: none;
+        }
+        .availableorder_mobile {
+            /* padding: 1rem; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .availableorder_mobile .filter-wrapper label {
+            white-space: nowrap;
         }
         /* 
          */
@@ -971,7 +1039,7 @@
         .bread-crumbs-group {
             display: flex;
             gap: .5rem;
-            margin-left: .5rem;
+            margin-left: 1rem;
         }
         .bread-crumbs-group h1{
             font-weight: normal!important;
@@ -984,7 +1052,7 @@
             margin: 0!important;
         }
         h2 {
-            margin-left: .5rem;
+            margin-left: 1rem;
         }
         /* 
         */
@@ -1006,9 +1074,6 @@
             gap: .5rem;
             height: 12em;
         }
-        /* .item_wrapper div img {
-            width: 100%;
-        } */
         .item_wrapper h3 {
             margin-top: .5rem;
             font-size: 1.25rem;
@@ -1025,10 +1090,10 @@
         /* 
          */
         .product-item_filter {
-            /* background-color: green; */
             display: flex;
             align-items: center;
             justify-content: flex-start;
+            padding: 0 .5rem;
         }
         .product-item_search-wrapper {
             /* margin-left: .75rem; */
@@ -1085,6 +1150,19 @@
             transform: rotate(180deg) scale(1.5);
         }
         /* 
+        FILTER by type
+        */
+        .filter_by_type div input {
+            display: none;
+        }
+        .filter_by_type div input:checked + label {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+        .filter_by_type div label {
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+        }
+        /* 
         FILTER by available
          */
         .filter_by_available_container {
@@ -1111,8 +1189,20 @@
         }
         /* 
          */
-        .availableorder {
+        .availableorder_desktop {
             display: none;
+        }
+        .availableorder_mobile {
+            color: var(--color-global-text)!important;
+            /* background-color: var(--color-btn-disabled-text); */
+            /* padding: 1rem; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .availableorder_mobile .filter-wrapper label {
+            color:  var(--color-global-text);
+            white-space: nowrap;
         }
         /* 
          */
@@ -1250,6 +1340,20 @@
             transform: rotate(180deg) scale(1.5);
         }
         /* 
+        FILTER by type
+        */
+        .filter_by_type div input {
+            display: none;
+        }
+        .filter_by_type div input:checked + label {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+        .filter_by_type div label {
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            margin-left: 0;
+        }
+        /* 
         FILTER by available
          */
         .filter_by_available_container {
@@ -1273,6 +1377,9 @@
          .filter_by_available_container div label:hover {
             border-bottom: 1px solid var(--color-wallet-fund-invested);
             color: var(--color-wallet-fund-invested);
+        }
+        .availableorder_mobile {
+            display: none;
         }
         /* 
          */
@@ -1366,7 +1473,6 @@
         .bread-crumbs-group {
             display: flex;
             gap: .5rem;
-            /* margin-left: 1rem; */
         }
         .bread-crumbs-group h1{
             font-weight: normal!important;
@@ -1471,6 +1577,20 @@
             color: var(--color-wallet-fund-invested)!important;
             transform: rotate(180deg) scale(1.5);
         }
+        /* 
+        FILTER by type
+        */
+        .filter_by_type div input {
+            display: none;
+        }
+        .filter_by_type div input:checked + label {
+            border-bottom: 1px solid var(--color-wallet-fund-invested);
+            color: var(--color-wallet-fund-invested);
+        }
+        .filter_by_type div label {
+            border-bottom: 1px solid rgba(255, 255, 255, 0);
+            margin-left: 0;
+        }
         /* by available */
         .filter_by_available_container {
             display: flex;
@@ -1493,6 +1613,9 @@
         .filter_by_available_container div label:hover {
             border-bottom: 1px solid var(--color-wallet-fund-invested);
             color: var(--color-wallet-fund-invested);
+        }
+        .availableorder_mobile {
+            display: none;
         }
 
         /*  */
@@ -1643,9 +1766,9 @@
     // PARAGRAPH
     const popup_paragraph_opened = ref(false) 
     const current_paragraph = ref("Все параграфы");
-    // AVAILABLEORDER
+    // availableorder_mobile
     const popup_available_order_opened = ref(false);
-    const current_available_order = ref("Все товары");
+    // const current_available_order = ref("Все товары");
     // 
     // const { fullImageUrl, setImage } = useImageDisplay(props.imageFileName)
     const { fullImageUrl, setImage } = useImageDisplay('bc449d9a769d039121d99041de2r--dlya-doma-i-interera-prikrovatnaya-tumba-deep-forest-s-radius.jpg')
