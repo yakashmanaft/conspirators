@@ -190,6 +190,7 @@ useHead({
                         <p style="margin: 0;">Статус: <span style="text-decoration: underline; text-decoration-style: dotted;" @click="changeCurrentLeadStatus()">{{  current_lead.status  }}</span></p>
                     </div>
                     <div>
+                        <Button type="original-btn">Создать задачу</Button>
                         <!-- if status LEAD -->
                         <Button style="margin: 0;" @click="connectToProject()" v-if="current_lead.status === 'lead'" type="original-btn">Прикрепить к проекту</Button>
                         <!-- if status PROJECT -->

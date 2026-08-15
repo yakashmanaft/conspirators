@@ -507,6 +507,10 @@ const translateRoutePath = (path: string) => {
   else if (path === '/whitepaper') {
     return 'Whitepaper'
   }
+  //= LANDING STOCK (Catalog)
+  else if (path === '/landing_stock') {
+    return 'Каталог'
+  }
   // ELSE
   else {
     return path;
@@ -973,7 +977,7 @@ watch(
                   </div>
 
                   <!-- conspirator_family_ticket -->
-                  <div style="width: fit-content; display: flex; flex-direction: column; align-items: center; text-align: center; width: 200px;">
+                  <div style="width: fit-content; display: flex; flex-direction: column; align-items: flex-end; text-align: center; width: 200px;">
                     <div>
                       <p style="margin: 0;">
                         <span style="font-weight: bold;" :style="item.qty === 0 ? 'color: var(--color-btn-disabled-bg)' : ''">

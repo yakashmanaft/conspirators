@@ -96,10 +96,18 @@ const changeColorOnClick = (e) => {
       <!-- <Search/> -->
     </div>
 
+    <!--  -->
+    <div class="search_container">
+      <section>
+        <img src="" alt="">
+      </section>
+    </div>
+
     <div class="section_container">
 
       <!-- <Search style="margin: 0;"/> -->
 
+      <!-- DAY BY DEALS -->
       <section 
       style="background-color: var(--color-wallet-fund-available);" 
       @click="$router.push(`/landing_crm`)" 
@@ -127,6 +135,7 @@ const changeColorOnClick = (e) => {
 
       </section>
 
+      <!-- CATALOG -->
       <section 
         @click="$router.push('/landing_stock')" 
         style="border: 1px solid var(--color-wallet-fund-available); position: relative;"
@@ -151,6 +160,7 @@ const changeColorOnClick = (e) => {
         </div>
       </section>
 
+      <!-- JOURNAL -->
       <section 
         @click="$router.push('/journal')" 
         class="block_is_link"
@@ -322,27 +332,15 @@ const changeColorOnClick = (e) => {
 
 .section_container {
   display: grid; 
-  /* gap: 1rem;
-  margin-top: 1rem;  */
 }
 .section_container > section {
-  /* border-radius: 1rem; */
   overflow: hidden;
-  /* padding-bottom: 5rem; */
   position: relative;
 }
 .section_container > section > h3 {
-  /* height: 100px;
-  display: flex;
-  align-items: center; */
-  /* font-size: 2rem; */
-  /* padding: 0 1rem; */
-  /* margin: 0; */
-  /* margin-top: 1rem; */
   color: var(--color-global-text);
 }
 .section_container > section > p {
-  /* padding: 0 1rem; */
   margin: 0;
 }
 
@@ -379,7 +377,6 @@ const changeColorOnClick = (e) => {
   font-size: .8rem;
 }
 .header_container {
-  /* background-color: var(--color-global-text); */
   height: 300px;
   display: flex;
   flex-direction: column;
@@ -396,21 +393,16 @@ const changeColorOnClick = (e) => {
   color: var(--color-global-text_second)!important;
 }
 .header_container div h1 span:nth-child(2){
-  /* color: var(--color-btn-text); */
   color: var(--color-wallet-fund-invested);
   font-size: 3rem;
-  /* text-align: center; */
   font-weight: bold;
 }
 .header_container div h1 span:hover:nth-child(2) {
-  /* color: var(--color-urgency-low-wo)!important; */
   cursor: pointer;
 }
 .header_container div h2 {
-  /* color: var(--color-btn-text); */
   font-size: .8rem;
   font-weight: normal;
-  /* text-align: center; */
 }
 
 /* SECTION HOVER */

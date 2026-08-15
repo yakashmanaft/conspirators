@@ -802,8 +802,20 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
           </h3>
         </div>
   
+
+          <!--  -->
+        <ul v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
+
+          <li v-for="item in computedLead.filter(item => item.status === currentChipLead.name)" >
+            {{ item }}
+          </li>
+        </ul>
         <!-- LEAD LIST -->
         <div id="lead-block" class="computedLead_container" v-if="computedLead?.filter(item => item.status === currentChipLead.name).length">
+
+        
+          
+
           <!-- :bg="'var(--color-urgency-low)'" -->
           <Section 
             :padding="true" 
@@ -901,13 +913,14 @@ const { data: accomplishment_list } = useFetch("/api/taskLedgerGuarded/taskEleme
             </div>
           </div>
   
+          <ul>
+            <li v-for="el in computedTask">
+              <p><span>{{ el?.urgency }}</span>{{ el?.task_name }}</p>
+              {{ el }}
+            </li>
+          </ul>
           <!--  -->
           <div class="computedTask_container">
-            <!-- <ul>
-              <li v-for="el in computedTask">
-                {{ el }}
-              </li>
-            </ul> -->
             <SectionColored
               v-for="item in computedTask" 
               :current_task="item"

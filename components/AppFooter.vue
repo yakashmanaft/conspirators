@@ -217,8 +217,16 @@ watch(
   .footer-wrapper_wo-auth ul{
     grid-template-columns: 1fr;
   }
+  .footer_container ul{
+    padding-left: 1rem!important;
+    padding-right: 1rem!important;
+  }
 }
 @media screen and (min-width: 768px) {
+  .footer_container ul {
+    padding-left: 1rem!important;
+    padding-right: 1rem!important;
+  }
   /* With AUTH */
   .footer_wrapper_loggedIn {
     display: none;
@@ -227,6 +235,7 @@ watch(
   .footer-wrapper_wo-auth ul {
     padding: 1rem 2rem
   }
+
 }
 @media (min-width: 1200px) and (max-width: 1399px) {
   .footer_container ul {
