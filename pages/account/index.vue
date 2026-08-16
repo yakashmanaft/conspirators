@@ -259,7 +259,7 @@
       >
         <!-- Header -->
          <div style="display: flex; align-items: center; justify-content: space-between;">
-          <h2>Подписка</h2>
+          <h2 style="flex: 1">Подписка</h2>
           <!--  -->
           <div>
   
@@ -271,12 +271,15 @@
               data-bs-toggle="modal"
               data-bs-target="#manageSubscribeModal"
             >
+            popup
+            </button>
+          </div>
+          <div style="margin-left: .5rem;cursor: pointer;" @click="$router.push(`/subscribe`)">
               <Icon
                 size="36px"
                 name="material-symbols:settings-outline-rounded"
                 color="var(--color-global-text)"
               />
-            </button>
           </div>
          </div>
          <div style="display: grid; gap: 1rem; grid-template-columns: repeat(2, 100px); align-items: flex-start; justify-content: flex-start;">

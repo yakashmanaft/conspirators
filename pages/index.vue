@@ -96,12 +96,66 @@ const changeColorOnClick = (e) => {
       <!-- <Search/> -->
     </div>
 
-    <!--  -->
-    <div class="search_container">
-      <section>
-        <img src="" alt="">
+    <!-- ТРИЕДИНСТВО DBD, CATALOG, JOURNAL -->
+    <div class="el_container">
+
+      <!-- 0 -->
+      <section class="el_wrapper el_wrapper-0" @click="$router.push(`/landing_crm`)" >
+        <div class="el_img_wrapper">
+
+          <img src="assets/icons/dbd-icon.svg" alt="day-by-deals">
+        </div>
+
+        <h2 style="font-weight: bold; font-size: 1.5rem; color: rgb(143, 111, 234)">Дэйбайдилс</h2>
+        <!-- <span>Твой финпульс</span>
+        -->
+        <span class="el_price">Финпульс от 399 руб./ мес.</span> 
+      </section>
+
+      <!-- 1 -->
+      <section class="el_wrapper el_wrapper-1" @click="$router.push('/landing_stock')" > 
+        <div class="el_img_wrapper">
+
+          <img src="assets/icons/catalog-icon.svg" alt="conspirators catalog">
+        </div>
+
+        <h2 style="font-weight: bold; font-size: 1.5rem;">Каталог</h2>
+        <span style="text-align: center;">Соучастников дела</span>
+        <!-- 
+        <span>Покупай местное :)</span> -->
+      </section>
+
+      <!-- 2 -->
+      <section class="el_wrapper el_wrapper-2" @click="$router.push('/journal')"  >
+        <div class="el_img_wrapper">
+
+          <img src="assets/icons/journal-icon.svg" alt="conspirators journal">
+        </div>
+
+        <h2 style="font-weight: bold; font-size: 1.5rem;">Журнал</h2>
+        <span>Люди о своем опыте</span>
+        <span class="el_price">от 99 руб./ мес.</span>
       </section>
     </div>
+
+    <!-- BANNER SUBSCRIBE PRICE -->
+    <div style="margin-top: 10rem; padding: 3rem 2rem; padding-bottom: 1rem; background-color: var(--color-global-text) ">
+      <h3 style="text-align: center; color: var(--color-global-baackground_light); font-size: 3rem;">Доступ к возможностям DBD <span style="color: var(--color-global-baackground_light); font-size: 4rem; background-color: var(--color-global-text_second); padding: .5rem 1rem;">от 99 руб. / мес.</span></h3>
+      <h4 style="text-align: center; font-weight: normal; font-size: 1rem; margin-top: 2rem; color: var(--color-global-baackground_light);">Выбирай помощников в делах, плати только за то, чем пользуешься. <span style="cursor: pointer; color: var(--color-global-text_second); width: fit-content; " @click="$router.push(`/subscribe`)">Смотреть условия и тарифы</span> </h4>
+
+      <div style="margin-top: 3rem;">
+        <div style="margin: 0 auto; background-color: #fff; width: fit-content; padding: .5rem 1rem;">
+          <h5 style="margin: 0;">Попробовать бесплатно</h5>
+          <p style="margin: 0; color: var(--color-global-text_second); text-align: center;">30 дней *</p>
+        </div>
+        <p style="text-align: center;margin-top: 3rem; font-size: .8rem; color: var(--color-global-text_second)">*Далее, на 31-ый день пользования спишется сумма, согласно расценкам месячной подписки на модули, действующим в момент подключения услуги и, если не выбран иной способ оплаты.</p>
+      </div>
+    </div>
+
+    <!--  -->
+    <!-- <div>
+      123
+    </div> -->
 
     <div class="section_container">
 
@@ -182,6 +236,32 @@ const changeColorOnClick = (e) => {
           <p style="margin: 0; color: var(--color-global-text_second)">Люди о своем опыте</p>
         </div>
       </section>
+    </div>
+
+    <div>
+      <p>DBD: твой финпульс</p>
+      <ul>
+        <li></li>
+        <li @click="$router.push(`/subscribe`)">Подробнее о тарифах</li>
+      </ul>
+    </div>
+    <div>
+      <p>Каталог: товары и услуги</p>
+      <ul>
+        <li>Доступ к интернет-рынку товаров и услуг конспираторов ..... Бесплатно</li>
+        <li>Своя интернет лавка товаров на площадке конспираторов ..... 1 200.00 руб. / мес.</li>
+        <li>Размещение на интернет-рынке конспираторов своих товаров (до 12шт)..... 800.00 руб. / мес.</li>
+        <li @click="$router.push(`/subscribe`)">Подробнее о тарифах</li>
+      </ul>
+    </div>
+    <div>
+      <p>Конспираторов журнал: люди о свем опыте</p>
+      <ul>
+        <li>Доступ к онлайн-изданию "Конспираторов журнал" ..... Бесплатно</li>
+        <li>Доступ к разделу "Платное" онлайн-издания "Конспираторов журнал" ..... 99.00 руб. / мес. </li>
+        <li>Публикации своих статей в онлайн-издании "Конспираторов журнал" ..... 399.00 руб. / мес.</li>
+        <li @click="$router.push(`/subscribe`)">Подробнее о тарифах</li>
+      </ul>
     </div>
 
     <!--  -->
@@ -561,7 +641,6 @@ section:hover {
     margin-top: 1rem;
   }
 }
-
 @media screen and (max-width: 574px) {
   .buttons-container {
     flex-direction: column;
@@ -908,8 +987,8 @@ section:hover {
 @media screen and (min-width: 1199px) {
   .header_container {
     margin-top: -1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    /* margin-left: 1rem;
+    margin-right: 1rem; */
     height: 400px;
     border-radius: 1rem;
   }
@@ -948,7 +1027,7 @@ section:hover {
   }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
-    padding-left: .5rem; 
+    padding-left: .25rem; 
     font-size: 1rem;
   }
   .header_container div h1 span:last-child {
@@ -988,6 +1067,96 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
     border: 1px solid var(--color-btn-hover-bg);
+  }
+
+  /* 
+  
+  */
+  .el_container {
+    /* display: grid; 
+    grid-template-columns: repeat(3, 1fr); */
+    display: flex;
+    gap: 2rem;
+  }
+  .el_wrapper {
+    box-shadow: var(--hover-shadow);  
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 390px;
+    width: 250px; 
+    padding: 2rem .5rem;
+    padding-bottom: 3rem;
+  }
+  .el_wrapper:hover {
+    cursor: pointer;
+  }
+  .el_wrapper-0,
+  .el_wrapper-1,
+  .el_wrapper-2 {
+    transition: all .5s ease-in;
+    position: relative;
+  }
+  h2 {
+    transition: all .5s ease-in;
+    margin-top: 2rem;
+    text-transform: uppercase;
+  }
+  .el_wrapper-0 .el_price {
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    font-size: .9rem;
+    background-color: var(--color-wallet-fund-available);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0 .5rem;
+  }
+  .el_wrapper-2 .el_price {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  .el_wrapper-0:hover {
+    background-color: var(--color-wallet-fund-invested); 
+  }
+  .el_wrapper-1:hover {
+    background-color: var(--color-urgency-middle-10); 
+  }
+  .el_wrapper-2:hover {
+    background-color: var(--color-urgency-low-10); 
+  }
+  .el_price {
+    transition: all .5s ease-in;
+  }
+  .el_wrapper-0:hover h2 {
+    color: var(--color-global-baackground_light)!important;
+  }
+  .el_wrapper-0:hover .el_price {
+    background-color: var(--color-global-baackground_light);
+  }
+  .el_img_wrapper {
+    max-width: 250px;
+    margin-top: 2rem; 
+  }
+  .el_wrapper-0 img {
+    width: 100%;
+    border-radius: 3rem;
+    box-shadow: 2px 4px 32px 0px rgba(143, 111, 234, 0.5);
+  }
+  .el_wrapper-1 img {
+    width: 100%;
+    border-radius: 1rem;
+    box-shadow: 2px 4px 32px 0px rgba(242, 130, 66, 0.5);
+  }
+
+  .el_wrapper-2 img {
+    width: 100%;
+    border-radius: 3rem;
+    box-shadow: 2px 4px 32px 0px rgba(128, 191, 138, 0.5)
   }
 
   /* HELP BLOCK */

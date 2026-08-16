@@ -130,7 +130,7 @@ watch(
             <router-link :to="el.path">{{ el.title }}</router-link>
           </li>
           <li style="margin-top: 2rem;">
-            <router-link to="/">© conspirators <span style="font-size: 0.6rem; color: unset;">2024 - 2025</span></router-link>
+            <router-link to="/">© conspirators <span style="font-size: 0.6rem; color: unset;">2024 - 2026</span></router-link>
             <!--   {
     title: '© conspirators, 2024 - 2025',
     path: '/'
@@ -164,7 +164,7 @@ watch(
             <router-link :to="el.path">{{ el.title }}</router-link>
           </li>
           <li style="margin-top: 2rem;">
-            <router-link to="/">© conspirators <span style="font-size: 0.6rem; color: unset;">2024 - 2025</span></router-link>
+            <router-link to="/">© conspirators <span style="font-size: 0.6rem; color: unset;">2024 - 2026</span></router-link>
             <!--   {
     title: '© conspirators, 2024 - 2025',
     path: '/'
