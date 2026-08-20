@@ -139,29 +139,21 @@ const changeColorOnClick = (e) => {
     </div>
 
     <!-- BANNER SUBSCRIBE PRICE -->
-    <div style="margin-top: 10rem; padding: 3rem 2rem; padding-bottom: 1rem; background-color: var(--color-global-text) ">
-      <h3 style="text-align: center; color: var(--color-global-baackground_light); font-size: 3rem;">Доступ к возможностям DBD <span style="color: var(--color-global-baackground_light); font-size: 4rem; background-color: var(--color-global-text_second); padding: .5rem 1rem;">от 99 руб. / мес.</span></h3>
-      <h4 style="text-align: center; font-weight: normal; font-size: 1rem; margin-top: 2rem; color: var(--color-global-baackground_light);">Выбирай помощников в делах, плати только за то, чем пользуешься. <span style="cursor: pointer; color: var(--color-global-text_second); width: fit-content; " @click="$router.push(`/subscribe`)">Смотреть условия и тарифы</span> </h4>
+    <div class="banner-subscribe-price_wrapper">
+      <h3>Доступ к возможностям DBD <span style="">от 99 руб. / мес.</span></h3>
+      <h4>Выбирай помощников в делах, плати только за то, чем пользуешься. <span @click="$router.push(`/subscribe`)">Смотреть условия и тарифы</span> </h4>
 
-      <div style="margin-top: 3rem;">
-        <div style="margin: 0 auto; background-color: #fff; width: fit-content; padding: .5rem 1rem;">
-          <h5 style="margin: 0;">Попробовать бесплатно</h5>
-          <p style="margin: 0; color: var(--color-global-text_second); text-align: center;">30 дней *</p>
+      <div>
+        <div>
+          <h5>Попробовать бесплатно</h5>
+          <p>30 дней *</p>
         </div>
-        <p style="text-align: center;margin-top: 3rem; font-size: .8rem; color: var(--color-global-text_second)">*Далее, на 31-ый день пользования спишется сумма, согласно расценкам месячной подписки на модули, действующим в момент подключения услуги и, если не выбран иной способ оплаты.</p>
+        <p>*Далее, на 31-ый день пользования спишется сумма, согласно расценкам месячной подписки на модули, действующим в момент подключения услуги и, если не выбран иной способ оплаты.</p>
       </div>
     </div>
 
-    <!--  -->
-    <!-- <div>
-      123
-    </div> -->
+    <!-- <div class="section_container">
 
-    <div class="section_container">
-
-      <!-- <Search style="margin: 0;"/> -->
-
-      <!-- DAY BY DEALS -->
       <section 
       style="background-color: var(--color-wallet-fund-available);" 
       @click="$router.push(`/landing_crm`)" 
@@ -171,40 +163,24 @@ const changeColorOnClick = (e) => {
           <div class="section_icon">
             <Icon size="48px" name="hugeicons:wallet-02" color="var(--color-urgency-low)"/>
           </div>
-          <!-- <div class="section_icon">
-            <Icon size="48px" name="hugeicons:microsoft" color="var(--color-urgency-low)"/>
-          </div> -->
-          <!-- <div class="section_icon">
-            <Icon size="48px" name="hugeicons:chart-line-data-01" color="var(--color-urgency-low)"/>
-          </div> -->
-          <!-- <p style="font-size: 1rem;color: var(--color-urgency-low);">Приступить</p> -->
         </div>
         <h3>Дэй Бай Дилс</h3>
 
         <div>
           <p style="margin: 0; color: var(--color-global-text);">Твой финпульс
           </p>
-          <!-- <p style="color: var(--color-global-text)">Фиксируй доходы и расходы в одном приложении, отслеживай динамику развития своего кооператива. От процесса фиксации заявок до учета свободных средств, инвестиций и задолженностей. Ничего не пройдет мимо тебя!</p> -->
         </div>
 
       </section>
-
-      <!-- CATALOG -->
       <section 
         @click="$router.push('/landing_stock')" 
         style="border: 1px solid var(--color-wallet-fund-available); position: relative;"
         class="block_is_link"
         >
         <div class="section_btn">
-          <!-- <div class="section_icon">
-            <Icon size="48px" name="hugeicons:creative-market" color="var(--color-global-text_second)"/>
-          </div> -->
           <div class="section_icon">
             <Icon size="48px" name="hugeicons:shopping-cart-01" color="var(--color-global-text_second)"/>
           </div>
-          <!-- <div class="section_icon">
-            <Icon size="48px" name="hugeicons:add-team" color="var(--color-global-text_second)"/>
-          </div> -->
         </div>
         <h3 >Каталог</h3>
 
@@ -213,8 +189,6 @@ const changeColorOnClick = (e) => {
           <p class="store_sign" style="position: absolute;   width: fit-content; color: var(--color-global-baackground_light); font-weight: bold; text-transform: uppercase;">Магазин</p>
         </div>
       </section>
-
-      <!-- JOURNAL -->
       <section 
         @click="$router.push('/journal')" 
         class="block_is_link"
@@ -224,19 +198,13 @@ const changeColorOnClick = (e) => {
           <div class="section_icon">
             <Icon size="42px" name="hugeicons:artificial-intelligence-03" color="var(--color-global-text_second)"/>
           </div>
-          <!-- <div class="section_icon">
-            <Icon size="42px" name="hugeicons:notebook" color="var(--color-global-text_second)"/>
-          </div> -->
-          <!-- <div class="section_icon">
-            <Icon size="42px" name="hugeicons:maps-editing" color="var(--color-global-text_second)"/>
-          </div> -->
         </div>
         <h3 style="color: var(--color-wallet-fund-available);">Журнал</h3>
         <div>
           <p style="margin: 0; color: var(--color-global-text_second)">Люди о своем опыте</p>
         </div>
       </section>
-    </div>
+    </div> -->
 
     <div>
       <p>DBD: твой финпульс</p>
@@ -1073,8 +1041,6 @@ section:hover {
   
   */
   .el_container {
-    /* display: grid; 
-    grid-template-columns: repeat(3, 1fr); */
     display: flex;
     gap: 2rem;
   }
@@ -1159,7 +1125,65 @@ section:hover {
     box-shadow: 2px 4px 32px 0px rgba(128, 191, 138, 0.5)
   }
 
-  /* HELP BLOCK */
+  /* 
+    BANNER SUBSCRIBE PRICE
+   */
+  .banner-subscribe-price_wrapper {
+    margin-top: 1rem;
+    padding: 3rem 2rem;
+    padding-bottom: 1rem;
+    background-color: var(--color-global-text);
+  }
+  .banner-subscribe-price_wrapper h3 {
+    text-align: center;
+     color: var(--color-global-baackground_light);
+     font-size: 3rem;
+  }
+  .banner-subscribe-price_wrapper h3 span {
+    color: var(--color-global-baackground_light); 
+    font-size: 4rem; 
+    background-color: var(--color-global-text_second); 
+    padding: .5rem 1rem;
+  }
+  .banner-subscribe-price_wrapper h4 {
+    text-align: center; 
+    font-weight: normal; 
+    font-size: 1rem; 
+    margin-top: 2rem; 
+    color: var(--color-global-baackground_light);
+  }
+  .banner-subscribe-price_wrapper h4 span {
+    cursor: pointer;  
+    color: var(--color-global-text_second); 
+    width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper div {
+    margin-top: 3rem;
+  }
+  .banner-subscribe-price_wrapper div div {
+    margin: 0 auto; 
+    background-color: #fff; 
+    width: fit-content; 
+    padding: .5rem 1rem;
+  }
+  .banner-subscribe-price_wrapper div div h5 {
+    margin: 0; 
+  }
+  .banner-subscribe-price_wrapper div div p {
+    margin: 0; 
+    color: var(--color-global-text_second); 
+    text-align: center;
+  }
+  .banner-subscribe-price_wrapper div p {
+    text-align: center;
+    margin-top: 3rem; 
+    font-size: .8rem; 
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+    HELP BLOCK 
+  */
   .help_section-container {
 
   }
@@ -1179,6 +1203,9 @@ section:hover {
   }
 }
 @media (min-width: 1200px) and (max-width: 1399px) {
+  /* 
+  
+  */
   .section_container {
     grid-template-columns: repeat(4,1fr);
   }
