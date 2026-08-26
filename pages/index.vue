@@ -77,6 +77,10 @@ const changeColorOnClick = (e) => {
   el.style.color = `var(${colors.value[index].name})`
 }
 
+const onClickBtn = () => {
+  alert("Кнопка попробовать в разработке...")
+}
+
 </script>
 <template>
   <Container>
@@ -109,7 +113,7 @@ const changeColorOnClick = (e) => {
         <h2 style="font-weight: bold; font-size: 1.5rem; color: rgb(143, 111, 234)">Дэйбайдилс</h2>
         <!-- <span>Твой финпульс</span>
         -->
-        <span class="el_price">Финпульс от 399 руб./ мес.</span> 
+        <p class="el_price">Финпульс от 399 руб./ мес.</p> 
       </section>
 
       <!-- 1 -->
@@ -120,7 +124,7 @@ const changeColorOnClick = (e) => {
         </div>
 
         <h2 style="font-weight: bold; font-size: 1.5rem;">Каталог</h2>
-        <span style="text-align: center;">Соучастников дела</span>
+        <p style="text-align: center;">Соучастников дела</p>
         <!-- 
         <span>Покупай местное :)</span> -->
       </section>
@@ -133,18 +137,18 @@ const changeColorOnClick = (e) => {
         </div>
 
         <h2 style="font-weight: bold; font-size: 1.5rem;">Журнал</h2>
-        <span>Люди о своем опыте</span>
-        <span class="el_price">от 99 руб./ мес.</span>
+        <p>Люди о своем опыте</p>
+        <p class="el_price">от 99 руб./ мес.</p>
       </section>
     </div>
 
     <!-- BANNER SUBSCRIBE PRICE -->
     <div class="banner-subscribe-price_wrapper">
       <h3>Доступ к возможностям DBD <span style="">от 99 руб. / мес.</span></h3>
-      <h4>Выбирай помощников в делах, плати только за то, чем пользуешься. <span @click="$router.push(`/subscribe`)">Смотреть условия и тарифы</span> </h4>
+      <p>Выбирай помощников в делах, плати только за то, чем пользуешься. <span @click="$router.push(`/subscribe`)">Смотреть условия и тарифы</span> </p>
 
       <div>
-        <div>
+        <div @click.stop="onClickBtn()">
           <h5>Попробовать бесплатно</h5>
           <p>30 дней *</p>
         </div>
@@ -206,49 +210,6 @@ const changeColorOnClick = (e) => {
       </section>
     </div> -->
 
-    <div>
-      <p>DBD: твой финпульс</p>
-      <ul>
-        <li></li>
-        <li @click="$router.push(`/subscribe`)">Подробнее о тарифах</li>
-      </ul>
-    </div>
-    <div>
-      <p>Каталог: товары и услуги</p>
-      <ul>
-        <li>Доступ к интернет-рынку товаров и услуг конспираторов ..... Бесплатно</li>
-        <li>Своя интернет лавка товаров на площадке конспираторов ..... 1 200.00 руб. / мес.</li>
-        <li>Размещение на интернет-рынке конспираторов своих товаров (до 12шт)..... 800.00 руб. / мес.</li>
-        <li @click="$router.push(`/subscribe`)">Подробнее о тарифах</li>
-      </ul>
-    </div>
-    <div>
-      <p>Конспираторов журнал: люди о свем опыте</p>
-      <ul>
-        <li>Доступ к онлайн-изданию "Конспираторов журнал" ..... Бесплатно</li>
-        <li>Доступ к разделу "Платное" онлайн-издания "Конспираторов журнал" ..... 99.00 руб. / мес. </li>
-        <li>Публикации своих статей в онлайн-издании "Конспираторов журнал" ..... 399.00 руб. / мес.</li>
-        <li @click="$router.push(`/subscribe`)">Подробнее о тарифах</li>
-      </ul>
-    </div>
-
-    <!--  -->
-    <h2 class="sub_title-container">Помощь</h2>
-    <p class="sub_p-container" style="color: var(--color-global-text_second);">Описали функции и опыт взаимодействия с приложением в одном месте</p>
-
-    <div class="section_container">
-
-        <div class="help_section-container">
-
-          <ul style="color: var(--color-global-text_second)">
-            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
-            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
-            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
-          </ul>
-        </div>
-
-    </div> 
-
     <!-- НАШИ ЦИФРЫ -->
     <h2 class="sub_title-container">Наши цифры</h2>
 
@@ -282,6 +243,24 @@ const changeColorOnClick = (e) => {
         </div>
       </section>
     </div>
+
+    <!--  -->
+    <h2 class="sub_title-container">Помощь</h2>
+    <p class="sub_p-container" style="color: var(--color-global-text_second);">Описали функции и опыт взаимодействия с приложением в одном месте</p>
+
+    <div class="section_container">
+
+        <div class="help_section-container">
+
+          <ul style="color: var(--color-global-text_second)">
+            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">FAQ</li>
+            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">База знаний</li>
+            <li class="li_is_link" style="width: fit-content;" @click="$router.push('/help')">Написать в чат</li>
+          </ul>
+        </div>
+
+    </div> 
+
 
     <!-- Отчеты и документы -->
     <h2 class="sub_title-container">Отчеты и документы</h2>
@@ -485,7 +464,6 @@ section:hover {
     align-items: center;
     margin: 0;
     margin-top: 1em;
-    /* background-color: gray; */
     height: 2rem;
   }
   .section_container section div p {
@@ -505,14 +483,11 @@ section:hover {
     gap: .5rem; 
     position: absolute; 
     bottom: 0;
-    /* left: 0; */
-    /* background-color: red; */
     padding-bottom: 2rem;  
   }
   .section_container section .section_btn .section_icon{
     border-radius: unset;
     border-radius: .5rem;
-    /* background-color: blue; */
     height: 2rem;
     width: 2rem;
   } 
@@ -534,15 +509,12 @@ section:hover {
   }
   .sub_p-container {
     margin: 0 1rem;
-    /* margin-top: -1.25rem; */
     margin-top: 1rem;
   }
+
   /* 
    */
    .default_list_item-container {
-      /* display: flex;
-      align-items: center;
-      justify-content: center; */
       padding: unset!important;
       padding: 1rem!important;
       padding-bottom: 4rem!important;
@@ -554,6 +526,125 @@ section:hover {
    .default_list_item-container p {
     text-align: center;
    }
+  /* 
+    header
+   */
+  .header_container {
+    margin: 0!important;
+  }
+  .header_container div {
+    margin: 0 auto;
+  }
+  .header_container div h1 {
+    text-align: center;
+  }
+  .header_container div h1 span:first-child {
+    font-size: .8rem!important;
+  }
+
+  /* 
+    main block
+  */
+  .el_container {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .el_wrapper:not(:first-child) {
+    margin-top: 2rem;
+  }
+  .el_wrapper:hover {
+    cursor: pointer;
+  }
+  .el_img_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .el_img_wrapper img {
+    width: 50vw;
+  }
+  .el_wrapper h2 {
+    margin-top: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .el_wrapper p {
+    text-align: center;
+    margin: 0;
+  }
+  .el_wrapper-0 .el_price {
+    background-color: var(--color-wallet-fund-invested);
+    color: var(--color-global-baackground_light);
+  }
+  /* 
+    BANNER SUBSCRIBE PRICE
+   */
+  .banner-subscribe-price_wrapper {
+    margin-top: 2rem;
+    padding: 3rem 1rem;
+    padding-bottom: 1rem;
+    background-color: var(--color-global-text);
+  }
+  .banner-subscribe-price_wrapper h3 {
+    text-align: center;
+     color: var(--color-global-baackground_light);
+     font-size: 2rem;
+     line-height: 3.5rem;
+  }
+  .banner-subscribe-price_wrapper h3 span {
+    color: var(--color-global-baackground_light); 
+    font-size: 1.5rem; 
+    background-color: var(--color-global-text_second); 
+    padding: .5rem 1rem;
+    white-space: nowrap;
+  }
+  .banner-subscribe-price_wrapper p {
+    text-align: center; 
+    font-weight: normal; 
+    font-size: .8rem; 
+    margin-top: 2rem; 
+    color: var(--color-global-baackground_light);
+  }
+  .banner-subscribe-price_wrapper p span {
+    color: var(--color-global-text_second); 
+    width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper p span:hover {
+    cursor: pointer;  
+    border-bottom: 1px solid var(--color-global-text_second);
+  }
+  .banner-subscribe-price_wrapper div {
+    margin-top: 3rem;
+  }
+  .banner-subscribe-price_wrapper div div {
+    margin: 0 auto; 
+    background-color: var(--color-global-baackground_light); 
+    width: fit-content; 
+    padding: .5rem 1rem;
+    transition: all .2s ease-in;
+  }
+  .banner-subscribe-price_wrapper div div:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .banner-subscribe-price_wrapper div div h5 {
+    margin: 0; 
+    text-align :center;
+  }
+  .banner-subscribe-price_wrapper div div p {
+    margin: 0; 
+    color: var(--color-global-text_second); 
+    text-align: center;
+  }
+  .banner-subscribe-price_wrapper div p {
+    text-align: center;
+    margin-top: 3rem; 
+    color: var(--color-global-text_second);
+  }
 }
 @media (min-width: 320px) and (max-width: 574px) {
   .section_container {
@@ -586,14 +677,11 @@ section:hover {
     gap: .5rem; 
     position: absolute; 
     bottom: 0;
-    /* left: 0; */
-    /* background-color: red; */
     padding-bottom: 2rem;  
   }
   .section_container section .section_btn .section_icon{
     border-radius: unset;
     border-radius: .5rem;
-    /* background-color: blue; */
     height: 2rem;
     width: 2rem;
   } 
@@ -605,8 +693,124 @@ section:hover {
    }
   .sub_p-container {
     margin: 0 1rem;
-    /* margin-top: -1.25rem; */
     margin-top: 1rem;
+  }
+
+  /* 
+    header
+   */
+  .header_container {
+    margin: 0!important;
+  }
+  .header_container div {
+    margin: 0 auto;
+   }
+  .header_container div h1 {
+    text-align: center;
+  }
+
+  /* 
+    main block
+  */
+  .el_container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .el_wrapper:not(:first-child) {
+    margin-top: 2rem;
+  }
+  .el_wrapper:hover {
+    cursor: pointer;
+  }
+  .el_img_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .el_img_wrapper img {
+    width: 40vw;
+  }
+  .el_wrapper h2 {
+    margin-top: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .el_wrapper p {
+    text-align: center;
+    margin: 0;
+  }
+  .el_wrapper-0 .el_price {
+    background-color: var(--color-wallet-fund-invested);
+    color: var(--color-global-baackground_light);
+  }
+
+  /* 
+    BANNER SUBSCRIBE PRICE
+   */
+  .banner-subscribe-price_wrapper {
+    margin-top: 5rem;
+    padding: 3rem 1rem;
+    padding-bottom: 1rem;
+    background-color: var(--color-global-text);
+  }
+  .banner-subscribe-price_wrapper h3 {
+    text-align: center;
+     color: var(--color-global-baackground_light);
+     font-size: 2rem;
+     line-height: 3.5rem;
+  }
+  .banner-subscribe-price_wrapper h3 span {
+    color: var(--color-global-baackground_light); 
+    font-size: 1.5rem; 
+    background-color: var(--color-global-text_second); 
+    padding: .5rem 1rem;
+    white-space: nowrap;
+  }
+  .banner-subscribe-price_wrapper p {
+    text-align: center; 
+    font-weight: normal; 
+    font-size: .8rem; 
+    margin-top: 2rem; 
+    color: var(--color-global-baackground_light);
+  }
+  .banner-subscribe-price_wrapper p span {
+    color: var(--color-global-text_second); 
+    width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper p span:hover {
+    cursor: pointer;  
+    border-bottom: 1px solid var(--color-global-text_second);
+  }
+  .banner-subscribe-price_wrapper div {
+    margin-top: 3rem;
+  }
+  .banner-subscribe-price_wrapper div div {
+    margin: 0 auto; 
+    background-color: var(--color-global-baackground_light); 
+    width: fit-content; 
+    padding: .5rem 1rem;
+    transition: all .2s ease-in;
+  }
+  .banner-subscribe-price_wrapper div div:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .banner-subscribe-price_wrapper div div h5 {
+    margin: 0; 
+  }
+  .banner-subscribe-price_wrapper div div p {
+    margin: 0; 
+    color: var(--color-global-text_second); 
+    text-align: center;
+  }
+  .banner-subscribe-price_wrapper div p {
+    text-align: center;
+    margin-top: 3rem; 
+    /* font-size: .8rem;  */
+    color: var(--color-global-text_second);
   }
 }
 @media screen and (max-width: 574px) {
@@ -650,7 +854,10 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
   }
-  /* HELP BLOCK */
+
+  /* 
+    HELP BLOCK 
+  */
   .help_section-container {
 
   }
@@ -681,7 +888,6 @@ section:hover {
   }
   .section_container {
     margin: 1rem ;
-    /* margin-top: 2rem;  */
     gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
   }
@@ -720,14 +926,21 @@ section:hover {
     padding-bottom: 3rem;  
   }
 
-  /*  */
+  /* 
+
+   */
+  .header_container div {
+    margin: 0 auto;
+  }
+  .header_container div h1 {
+    text-align: center;
+  }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
-    padding-left: .5rem; 
     font-size: 1rem;
   }
   .header_container div h1 span:last-child {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: bold;
     text-transform: uppercase;
   }
@@ -738,7 +951,6 @@ section:hover {
    */
    .sub_title-container {
     margin-top: 2rem;
-    /* background-color: var(--color-global-text_second); */
     margin-left: 1rem;
     margin-right: 1rem;
     margin-bottom: 2rem;
@@ -761,7 +973,153 @@ section:hover {
   .default_list_item-container p {
   text-align: center;
   }
-  /* HELP BLOCK */
+
+  /* 
+    main block
+  */
+  .el_container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .el_wrapper {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 320px;
+    width: 180px; 
+    padding: 2rem .5rem;
+    padding-bottom: 3rem;
+  }
+  .el_wrapper:hover {
+    cursor: pointer;
+  }
+  .el_wrapper-0,
+  .el_wrapper-1,
+  .el_wrapper-2 {
+    position: relative;
+  }
+  h2 {
+    transition: all .5s ease-in;
+    margin-top: 2rem;
+    text-transform: uppercase;
+  }
+  .el_wrapper-0 .el_price {
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    font-size: .9rem;
+    background-color: var(--color-wallet-fund-invested);
+    color: var(--color-global-baackground_light);
+    transform: translateX(-50%);
+    white-space: wrap;
+    padding: 0 .5rem;
+    width: 120px;
+    text-align: center;
+  }
+  .el_wrapper-2 .el_price {
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  .el_img_wrapper {
+    transition: all .3s ease-in;
+  }
+  .el_wrapper .el_img_wrapper {
+    box-shadow: var(--hover-shadow);  
+    border-radius: 2.5rem;
+  }
+  .el_wrapper-0:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-wallet-fund-invested);
+  }
+  .el_wrapper-1:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-urgency-middle-10);
+  }
+  .el_wrapper-2:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-urgency-low-10);
+  }
+  .el_wrapper-1 .el_img_wrapper {
+    border-radius: 1rem!important;
+  }
+  .el_wrapper img {
+    width: 100%;
+  }
+
+  /* 
+    BANNER SUBSCRIBE PRICE
+   */
+  .banner-subscribe-price_wrapper {
+    margin: 0 -1rem;
+    margin-top: 7rem;
+    padding: 3rem 2rem;
+    padding-bottom: 1rem;
+    background-color: var(--color-global-text);
+  }
+  .banner-subscribe-price_wrapper h3 {
+    text-align: center;
+     color: var(--color-global-baackground_light);
+     font-size: 2rem;
+     line-height: 6rem;
+  }
+  .banner-subscribe-price_wrapper h3 span {
+    color: var(--color-global-baackground_light); 
+    font-size: 3rem; 
+    background-color: var(--color-global-text_second); 
+    padding: .5rem 1rem;
+    white-space: nowrap;
+  }
+  .banner-subscribe-price_wrapper p {
+    text-align: center; 
+    font-weight: normal; 
+    font-size: .8rem; 
+    margin: 0 auto;
+    margin-top: 2rem; 
+    color: var(--color-global-baackground_light);
+    width: 80vw;
+  }
+  .banner-subscribe-price_wrapper p span {
+    color: var(--color-global-text_second); 
+    width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper p span:hover {
+    cursor: pointer;  
+    border-bottom: 1px solid var(--color-global-text_second);
+  }
+  .banner-subscribe-price_wrapper div {
+    margin-top: 3rem;
+  }
+  .banner-subscribe-price_wrapper div div {
+    margin: 0 auto; 
+    background-color: var(--color-global-baackground_light); 
+    width: fit-content; 
+    padding: .5rem 1rem;
+    transition: all .2s ease-in;
+  }
+  .banner-subscribe-price_wrapper div div:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .banner-subscribe-price_wrapper div div h5 {
+    margin: 0; 
+  }
+  .banner-subscribe-price_wrapper div div p {
+    margin: 0; 
+    color: var(--color-global-text_second); 
+    text-align: center;
+  }
+  .banner-subscribe-price_wrapper div p {
+    text-align: center;
+    margin-top: 3rem; 
+    font-size: .8rem; 
+    color: var(--color-global-text_second);
+  }
+  
+  /* 
+    HELP BLOCK
+  */
   .help_section-container {
     margin-left: 1rem;
   }
@@ -783,8 +1141,6 @@ section:hover {
 @media screen and (min-width: 768px) and (max-width: 991px)  {
   .header_container {
     margin-top: -1.5rem;
-    /* margin-left: -1rem;
-    margin-right: -1rem; */
     border-radius: 1rem;
     height: 400px;
   }
@@ -805,11 +1161,6 @@ section:hover {
     padding-right: 0;
     padding-bottom: 1.5rem;
     gap: .5rem;
-    /* border: 1px solid var(--color-urgency-low-10); */
-    /* padding-bottom: 2.5rem; */
-  }
-  .section_container > section > h3 {
-    /* margin-top: 2rem; */
   }
   .section_container > section > p {
     margin-top: .5rem;
@@ -819,13 +1170,19 @@ section:hover {
     align-items: center; 
     justify-content: flex-start;
   }
+  .header_container div {
+    margin: 0 auto;
+  }
+  .header_container div h1 {
+    text-align: center;
+  }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
-    padding-left: .5rem; 
+    /* padding-left: .5rem;  */
     font-size: 1rem;
   }
   .header_container div h1 span:last-child {
-    font-size: 5rem;
+    font-size: 3rem;
     font-weight: bold;
     text-transform: uppercase;
   }
@@ -836,7 +1193,6 @@ section:hover {
    */
    .sub_title-container {
     margin-top: 2rem;
-    /* background-color: var(--color-global-text_second); */
     margin-left: 1rem;
     margin-right: 1rem;
     margin-bottom: 2rem;
@@ -851,6 +1207,146 @@ section:hover {
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
   }
+
+  /* 
+    main block
+  */
+  .el_container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+  }
+  .el_wrapper {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 330px;
+    width: 200px; 
+    padding: 2rem .5rem;
+    padding-bottom: 3rem;
+  }
+  .el_wrapper:hover {
+    cursor: pointer;
+  }
+  .el_wrapper-0,
+  .el_wrapper-1,
+  .el_wrapper-2 {
+    position: relative;
+  }
+  h2 {
+    transition: all .5s ease-in;
+    margin-top: 2rem;
+    text-transform: uppercase;
+  }
+  .el_wrapper-0 .el_price {
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    font-size: .9rem;
+    background-color: var(--color-wallet-fund-invested);
+    color: var(--color-global-baackground_light);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0 .5rem;
+  }
+  .el_wrapper-2 .el_price {
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  .el_img_wrapper {
+    transition: all .3s ease-in;
+  }
+  .el_wrapper .el_img_wrapper {
+    box-shadow: var(--hover-shadow);  
+    border-radius: 3rem;
+  }
+  .el_wrapper-0:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-wallet-fund-invested);
+  }
+  .el_wrapper-1:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-urgency-middle-10);
+  }
+  .el_wrapper-2:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-urgency-low-10);
+  }
+  .el_wrapper-1 .el_img_wrapper {
+    border-radius: 1rem!important;
+  }
+  .el_wrapper img {
+    width: 100%;
+  }
+
+  /* 
+    BANNER SUBSCRIBE PRICE
+   */
+  .banner-subscribe-price_wrapper {
+    margin: 0 -1rem;
+    margin-top: 7rem;
+    padding: 3rem 2rem;
+    padding-bottom: 1rem;
+    background-color: var(--color-global-text);
+  }
+  .banner-subscribe-price_wrapper h3 {
+    text-align: center;
+     color: var(--color-global-baackground_light);
+     font-size: 3rem;
+     line-height: 6rem;
+  }
+  .banner-subscribe-price_wrapper h3 span {
+    color: var(--color-global-baackground_light); 
+    font-size: 4rem; 
+    background-color: var(--color-global-text_second); 
+    padding: .5rem 1rem;
+    white-space: nowrap;
+  }
+  .banner-subscribe-price_wrapper p {
+    text-align: center; 
+    font-weight: normal; 
+    font-size: .8rem; 
+    margin-top: 2rem; 
+    color: var(--color-global-baackground_light);
+  }
+  .banner-subscribe-price_wrapper p span {
+    color: var(--color-global-text_second); 
+    width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper p span:hover {
+    cursor: pointer;  
+    border-bottom: 1px solid var(--color-global-text_second);
+  }
+  .banner-subscribe-price_wrapper div {
+    margin-top: 3rem;
+  }
+  .banner-subscribe-price_wrapper div div {
+    margin: 0 auto; 
+    background-color: var(--color-global-baackground_light); 
+    width: fit-content; 
+    padding: .5rem 1rem;
+    transition: all .2s ease-in;
+  }
+  .banner-subscribe-price_wrapper div div:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .banner-subscribe-price_wrapper div div h5 {
+    margin: 0; 
+  }
+  .banner-subscribe-price_wrapper div div p {
+    margin: 0; 
+    color: var(--color-global-text_second); 
+    text-align: center;
+  }
+  .banner-subscribe-price_wrapper div p {
+    text-align: center;
+    margin-top: 3rem; 
+    font-size: .8rem; 
+    color: var(--color-global-text_second);
+  }
+
   /* HELP BLOCK */
   .help_section-container {
 
@@ -876,14 +1372,22 @@ section:hover {
     margin-left: 1rem;
     margin-right: 1rem;
     height: 400px;
-    border-radius: 1rem;
+  }
+  .header_container div {
+    margin: 0 auto;
+  }
+  .header_container div h1 {
+    text-align: center;
+  }
+  .header_container div h1 span:first-child {
+    padding-left: 0!important;
   }
   .section_container {
     margin-top: 1.5rem;
     margin-left: 1rem;
     margin-right: 1rem;
     gap: 1.5rem;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
   .section_container > section {
     border-radius: .75rem;
@@ -933,6 +1437,144 @@ section:hover {
     background-color: var(--color-btn-disabled-bg);
     border: 1px solid var(--color-btn-hover-bg);
   }
+
+  /* 
+    main block
+  */
+  .el_container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+  }
+  .el_wrapper {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 390px;
+    width: 250px; 
+    padding: 2rem .5rem;
+    padding-bottom: 3rem;
+  }
+  .el_wrapper:hover {
+    cursor: pointer;
+  }
+  .el_wrapper-0,
+  .el_wrapper-1,
+  .el_wrapper-2 {
+    position: relative;
+  }
+  h2 {
+    transition: all .5s ease-in;
+    margin-top: 2rem;
+    text-transform: uppercase;
+  }
+  .el_wrapper-0 .el_price {
+    position: absolute;
+    top: 0rem;
+    left: 50%;
+    font-size: .9rem;
+    background-color: var(--color-wallet-fund-invested);
+    color: var(--color-global-baackground_light);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0 .5rem;
+  }
+  .el_wrapper-2 .el_price {
+    position: absolute;
+    top: 0rem;
+    left: 50%;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  .el_img_wrapper {
+    transition: all .3s ease-in;
+  }
+  .el_wrapper .el_img_wrapper {
+    box-shadow: var(--hover-shadow);  
+    border-radius: 3rem;
+  }
+  .el_wrapper-0:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-wallet-fund-invested);
+  }
+  .el_wrapper-1:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-urgency-middle-10);
+  }
+  .el_wrapper-2:hover .el_img_wrapper {
+    box-shadow: 2px 4px 8px 0px var(--color-urgency-low-10);
+  }
+  .el_wrapper-1 .el_img_wrapper {
+    border-radius: 1rem!important;
+  }
+
+
+  /* 
+    BANNER SUBSCRIBE PRICE
+   */
+  .banner-subscribe-price_wrapper {
+    margin: 0 -1rem;
+    margin-top: 7rem;
+    padding: 3rem 2rem;
+    padding-bottom: 1rem;
+    background-color: var(--color-global-text);
+  }
+  .banner-subscribe-price_wrapper h3 {
+    text-align: center;
+     color: var(--color-global-baackground_light);
+     font-size: 3rem;
+     line-height: 6rem;
+  }
+  .banner-subscribe-price_wrapper h3 span {
+    color: var(--color-global-baackground_light); 
+    font-size: 4rem; 
+    background-color: var(--color-global-text_second); 
+    padding: .5rem 1rem;
+    white-space: nowrap;
+  }
+  .banner-subscribe-price_wrapper p {
+    text-align: center; 
+    font-weight: normal; 
+    font-size: .8rem; 
+    margin-top: 2rem; 
+    color: var(--color-global-baackground_light);
+  }
+  .banner-subscribe-price_wrapper p span {
+    color: var(--color-global-text_second); 
+    width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper p span:hover {
+    cursor: pointer;  
+    border-bottom: 1px solid var(--color-global-text_second);
+  }
+  .banner-subscribe-price_wrapper div {
+    margin-top: 3rem;
+  }
+  .banner-subscribe-price_wrapper div div {
+    margin: 0 auto; 
+    background-color: var(--color-global-baackground_light); 
+    width: fit-content; 
+    padding: .5rem 1rem;
+    transition: all .2s ease-in;
+  }
+  .banner-subscribe-price_wrapper div div:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .banner-subscribe-price_wrapper div div h5 {
+    margin: 0; 
+  }
+  .banner-subscribe-price_wrapper div div p {
+    margin: 0; 
+    color: var(--color-global-text_second); 
+    text-align: center;
+  }
+  .banner-subscribe-price_wrapper div p {
+    text-align: center;
+    margin-top: 3rem; 
+    font-size: .8rem; 
+    color: var(--color-global-text_second);
+  }
+
   /* HELP BLOCK */
   .help_section-container {
 
@@ -955,8 +1597,6 @@ section:hover {
 @media screen and (min-width: 1199px) {
   .header_container {
     margin-top: -1rem;
-    /* margin-left: 1rem;
-    margin-right: 1rem; */
     height: 400px;
     border-radius: 1rem;
   }
@@ -965,7 +1605,7 @@ section:hover {
     margin-left: 1rem;
     margin-right: 1rem;
     gap: 1.5rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   .section_container > section {
     border-radius: 1rem;
@@ -993,6 +1633,9 @@ section:hover {
     margin-top: 2.25rem;
     margin-bottom: 1.25rem;
   }
+  .header_container div {
+    margin: 0 auto;
+  }
   .header_container div h1 span:first-child {
     text-transform: uppercase;
     padding-left: .25rem; 
@@ -1010,17 +1653,16 @@ section:hover {
    */
    .sub_title-container {
     margin-top: 1rem;
-    /* background-color: var(--color-global-text_second); */
     margin-left: 1rem;
     margin-right: 1rem;
   }
   .default_list_item-container {
     background-color: var(--color-btn-disabled-bg);
-  }  /* 
+  }  
+  
+  /* 
    */
   .sub_title-container {
-    /* margin-top: 1rem; */
-    /* background-color: var(--color-global-text_second); */
     margin: 2rem 2rem
   }
   .sub_p-container {
@@ -1042,7 +1684,8 @@ section:hover {
   */
   .el_container {
     display: flex;
-    gap: 2rem;
+    justify-content: center;
+    gap: 3rem;
   }
   .el_wrapper {
     box-shadow: var(--hover-shadow);  
@@ -1061,7 +1704,7 @@ section:hover {
   .el_wrapper-0,
   .el_wrapper-1,
   .el_wrapper-2 {
-    transition: all .5s ease-in;
+    transition: all .3s ease-in;
     position: relative;
   }
   h2 {
@@ -1074,14 +1717,15 @@ section:hover {
     top: 1.25rem;
     left: 50%;
     font-size: .9rem;
-    background-color: var(--color-wallet-fund-available);
+    background-color: var(--color-wallet-fund-invested);
+    color: var(--color-global-baackground_light);
     transform: translateX(-50%);
     white-space: nowrap;
     padding: 0 .5rem;
   }
   .el_wrapper-2 .el_price {
     position: absolute;
-    top: 1rem;
+    top: .5rem;
     left: 50%;
     white-space: nowrap;
     transform: translateX(-50%);
@@ -1129,7 +1773,7 @@ section:hover {
     BANNER SUBSCRIBE PRICE
    */
   .banner-subscribe-price_wrapper {
-    margin-top: 1rem;
+    margin-top: 7rem;
     padding: 3rem 2rem;
     padding-bottom: 1rem;
     background-color: var(--color-global-text);
@@ -1138,33 +1782,43 @@ section:hover {
     text-align: center;
      color: var(--color-global-baackground_light);
      font-size: 3rem;
+     line-height: 6rem;
   }
   .banner-subscribe-price_wrapper h3 span {
     color: var(--color-global-baackground_light); 
     font-size: 4rem; 
     background-color: var(--color-global-text_second); 
     padding: .5rem 1rem;
+    white-space: nowrap;
   }
-  .banner-subscribe-price_wrapper h4 {
+  .banner-subscribe-price_wrapper p {
     text-align: center; 
     font-weight: normal; 
     font-size: 1rem; 
     margin-top: 2rem; 
     color: var(--color-global-baackground_light);
   }
-  .banner-subscribe-price_wrapper h4 span {
-    cursor: pointer;  
+  .banner-subscribe-price_wrapper p span {
     color: var(--color-global-text_second); 
     width: fit-content; 
+  }
+  .banner-subscribe-price_wrapper p span:hover {
+    cursor: pointer;  
+    border-bottom: 1px solid var(--color-global-text_second);
   }
   .banner-subscribe-price_wrapper div {
     margin-top: 3rem;
   }
   .banner-subscribe-price_wrapper div div {
     margin: 0 auto; 
-    background-color: #fff; 
+    background-color: var(--color-global-baackground_light); 
     width: fit-content; 
     padding: .5rem 1rem;
+    transition: all .2s ease-in;
+  }
+  .banner-subscribe-price_wrapper div div:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
   }
   .banner-subscribe-price_wrapper div div h5 {
     margin: 0; 
@@ -1208,6 +1862,14 @@ section:hover {
   */
   .section_container {
     grid-template-columns: repeat(4,1fr);
+  }
+
+  /* 
+  
+  */
+  .banner-subscribe-price_wrapper {
+    margin: 0 -1rem;
+    margin-top: 7rem;
   }
 
 }
