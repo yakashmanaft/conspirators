@@ -5031,91 +5031,94 @@ const checkCurrencyPair = (pair: any) => {
           @changed="changeChipAffiliation"
         />
       </div>
+
       <!-- #. MAIN -->
-      <div style="grid-area: main; margin-top: 1rem;">
+      <div class="main-total_section" style="grid-area: main;">
+
         <!-- #.1 ГЛАВНАЯ КАРТОЧКА / TOTAL -->
-        <div style="background-color: var(--color-operation-type-donation); padding: 1rem; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-around;">
+        <div class="main-total_wrapper">
 
-          <!-- #.1.1. Заголовок группы -->
-          <div style=" width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-around; gap: 1rem;">
+          <!-- #.1.0 helper / more -->
+          <div class="main-total_more-wrapper">
+            <Icon
+              @click="info_total_popup_isOpened = true"
+              class="link"
+              name="mdi:help-circle-outline"
+              size="24px"
+              color="var(--color-global-text)"
+              style="cursor: pointer;"
+            />
+            <Icon
+              @click="info_total_popup_isOpened = true"
+              class="link"
+              name="hugeicons:more-03"
+              size="24px"
+              color="var(--color-global-text)"
+              style="cursor: pointer;"
+            />
+          </div>
 
-          <!-- Наименование банка -->
-          <h2 
-            style="font-size: 1rem; margin: 0; opacity: .7;"
-            @click="set_owner_route"  
-          >
-            {{ currentAffiliation.title }}
-          </h2>
-          <!-- Кнопки действий (faq/ история / статистика) -->
-          <div style="display: flex; gap: 1rem;">
-            <div class="meshes_local_filter_button" @click="info_total_popup_isOpened = true">
+          <!-- #.1.1.  total amount value -->
+          <p class="main-total_amount-value_wrapper">888 888 974.55 {{ currency_to_show.ticket }}
+          </p>
+
+          <!-- #.1.2. КНОПКИ КОШЕЛЬКА -->
+          <div class="main-total_btns_wrapper">
+            <!-- Принять -->
+            <div class="main-total_btn-el">
               <Icon
                 class="link"
-                name="mdi:help-circle-outline"
+                name="mdi:plus"
                 size="32px"
-                color="var(--color-global-text)"
+                style="opacity: .6"
               />
+              <!-- <p>Принять</p> -->
             </div>
-            <div class="meshes_local_filter_button">
+            <!-- Отправить -->
+            <div class="main-total_btn-el">
+              <Icon
+                class="link"
+                name="mdi:send"
+                size="32px"
+                style="opacity: .6"
+              />
+              <!-- <p style="margin-top: .25rem;">Отправить</p> -->
+            </div>
+            <!-- Обменять -->
+            <div class="main-total_btn-el">
+              <Icon
+                class="link"
+                name="mdi:swap-horizontal"
+                size="32px"
+                style="opacity: .6"
+              />
+              <!-- <p style="margin-top: .25rem;">Обменять</p> -->
+            </div>
+            <!-- История -->
+            <div class="main-total_btn-el">
               <Icon
                 class="link"
                 name="mdi:clock-outline"
                 size="32px"
                 color="var(--color-global-text)"
+                style="opacity: .6"
               />
             </div>
-            <div class="meshes_local_filter_button">
+            <!-- Аналитика -->
+            <div class="main-total_btn-el">
               <Icon
                 class="link"
                 name="mdi:google-analytics"
                 size="32px"
                 color="var(--color-global-text)"
+                style="opacity: .6"
               />
             </div>
-
-          </div>
-          </div>
-
-          <!-- #.1.2.  total amount value -->
-          <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">888 888 974.55
-          </p>
-          <!-- #.1.3. КНОПКИ КОШЕЛЬКА -->
-          <div style="display: flex; gap: 1rem; justify-content: center;">
-          <!-- Принять -->
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <Icon
-              class="link"
-              name="mdi:plus"
-              size="32px"
-              style="opacity: .6"
-            />
-            <p style="margin-top: .25rem;">Принять</p>
-          </div>
-          <!-- Отправить -->
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <Icon
-              class="link"
-              name="mdi:send"
-              size="32px"
-              style="opacity: .6"
-            />
-            <p style="margin-top: .25rem;">Отправить</p>
-          </div>
-          <!-- Обменять -->
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <Icon
-              class="link"
-              name="mdi:swap-horizontal"
-              size="32px"
-              style="opacity: .6"
-            />
-            <p style="margin-top: .25rem;">Обменять</p>
-          </div>
           </div>
         </div>
       </div>
 
-      <!-- ALLOCATION -->
+      <!-- #. ALLOCATION -->
       <div class="allocation-block_wrapper">
         <h4>Моя Аллокация</h4>
 
@@ -5131,8 +5134,12 @@ const checkCurrencyPair = (pair: any) => {
               return el.id === currentAffiliation.bandID
             }
           })">
-          
-            {{band.name}} <br> Доля {{ band.sharers?.find(el => el.userId === sessionUser.id).allocation * 100}}%
+            <div class="allocation-block_el-name">
+              {{band.name}}
+            </div>
+            <div class="allocation-block_el-allocation">
+              Доля: {{ band.sharers?.find(el => el.userId === sessionUser.id).allocation * 100}}%
+            </div>
           </li>
         </ul>
 
@@ -5140,7 +5147,12 @@ const checkCurrencyPair = (pair: any) => {
         </ul>
       </div>
 
-      <!-- MESHES CAST -->
+      <!-- #. МОНЕТЫ -->
+      <div>
+        123
+      </div>
+
+      <!-- #. MESHES CAST -->
       <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 1rem; margin-bottom: -1rem;">
 
         <!-- Деньги на счетах / Свободные деньги -->
@@ -5150,11 +5162,12 @@ const checkCurrencyPair = (pair: any) => {
             <div class="group_wrapper_background"></div>
             <div class="group_wrapper_content">
               <p>Деньги на счетах</p>
-              <p>50071,21</p>
+              <p>50071.21 {{ currency_to_show.ticket }}</p>
             </div>
           </div>
           <!-- local group list -->
           <ul class="wallet-section_container" style="list-style: none;">
+
             <li>
               <Section 
                 :fDirection="`column`"
@@ -5162,10 +5175,11 @@ const checkCurrencyPair = (pair: any) => {
                 :wHover="true"
                 @click="local_list_show('Деньги на счетах', 'RUB')"
               >
-                <p style="color: var(--color-global-text);" >48722,85</p>
+                <p style="color: var(--color-global-text);" >48722.85 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">RUB</p>
               </Section>
             </li>
+
             <li>
               <Section
                 :fDirection="`column`"
@@ -5173,7 +5187,7 @@ const checkCurrencyPair = (pair: any) => {
                 @click="local_list_show('Деньги на счетах', '!RUB')"
                 :wHover="true"
               >
-                <p style="color: var(--color-global-text);" >1349,12</p>
+                <p style="color: var(--color-global-text);" >1349.12 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Иностранная валюта</p>
               </Section>
             </li>
@@ -5187,18 +5201,20 @@ const checkCurrencyPair = (pair: any) => {
             <div class="group_wrapper_background" style="background-color: var(--color-wallet-fund-invested-wo)"></div>
             <div class="group_wrapper_content">
               <p>Инвестиции</p>
-              <p>256755,14</p>
+              <p>256 755.14 {{ currency_to_show.ticket }}</p>
             </div>
           </div>
           <!-- local group list -->
           <ul class="wallet-section_container" style="list-style: none;">
+
             <li>
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
+                :wHover="true"
                 @click="local_list_show('Инвестиции', 'Фондовый рынок')"
               >
-                <p style="color: var(--color-global-text);" >221689,11</p>
+                <p style="color: var(--color-global-text);" >221689.11 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Фондовый рынок</p>
               </Section>
             </li>
@@ -5207,9 +5223,10 @@ const checkCurrencyPair = (pair: any) => {
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
+                :wHover="true"
                 @click="local_list_show('Инвестиции', 'Вклады')"
               >
-                <p style="color: var(--color-global-text);" >5000,00</p>
+                <p style="color: var(--color-global-text);" >5000.00 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Вклады</p>
               </Section>
             </li>
@@ -5218,9 +5235,10 @@ const checkCurrencyPair = (pair: any) => {
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
+                :wHover="true"
                 @click="local_list_show('Инвестиции', 'Крипто-дебет')"
               >
-                <p style="color: var(--color-global-text);" >25066,33</p>
+                <p style="color: var(--color-global-text);" >25066.33 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Крипто-дебет</p>
               </Section>
             </li>
@@ -5229,37 +5247,39 @@ const checkCurrencyPair = (pair: any) => {
         </li>
 
         <!--  -->
-        <!-- Займы/ Вексель -->
+        <!-- Займы / Вексель -->
         <li>
           <!-- local group -->
           <div class="meshes_local_group_wrapper">
             <div class="group_wrapper_background" style="background-color: var(--color-urgency-middle);"></div>
             <div class="group_wrapper_content">
               <p>Вексель</p>
-              <p>-143679,14</p>
+              <p>-143679.14 {{currency_to_show.ticket}}</p>
             </div>
           </div>
           <!-- local group list -->
           <ul class="wallet-section_container" style="list-style: none;">
+
             <li>
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
                 @click="local_list_show('Вексель', 'Займы')"
-                :wHover="true",
-                :bRounded="true"
+                :wHover="true"
               >
-                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-global-text);" >141629.14 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Кредиты</p>
               </Section>
             </li>
+
             <li>
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
                 @click="local_list_show('Вексель', 'Проекты')"
+                :wHover="true"
               >
-                <p style="color: var(--color-global-text);" >2050,00</p>
+                <p style="color: var(--color-global-text);" >2050.00 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Проекты</p>
               </Section>
             </li>
@@ -5274,29 +5294,33 @@ const checkCurrencyPair = (pair: any) => {
             <div class="group_wrapper_background" style="background-color: var(--color-urgency-high);"></div>
             <div class="group_wrapper_content">
               <p>Долговые обязательства</p>
-              <p>-156987,21</p>
+              <p>-156987.21 {{ currency_to_show.ticket }}</p>
             </div>
           </div>
 
           <!-- local group list -->
           <ul class="wallet-section_container" style="list-style: none;">
+
             <li>
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
+                :wHover="true"
                 @click="local_list_show('Долговые обязательства', 'Долг к соучастникам')"
               >
-                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-global-text);" >141629.14 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Долг к соучастникам</p>
               </Section>
             </li>
+
             <li>
               <Section 
                 :fDirection="`column`"
                 :fAlignItems="`flex-start`"
+                :wHover="true"
                 @click="local_list_show('Долговые обязательства', 'Внешний долг')"
               >
-                <p style="color: var(--color-global-text);" >141629,14</p>
+                <p style="color: var(--color-global-text);" >141629.14 {{currency_to_show.ticket}}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Внешняя задолженность</p>
               </Section>
             </li>
@@ -5304,7 +5328,7 @@ const checkCurrencyPair = (pair: any) => {
         </li>
       </ul>
 
-      <!-- currency pair -->
+      <!-- #. currency pair -->
       <!-- ВАЛЮТНЫЕ ПАРЫ -->
       <ul class="currency-price-stock_wrapper no-scrollbar">
         <li 
@@ -5318,10 +5342,10 @@ const checkCurrencyPair = (pair: any) => {
       </ul>
 
 
-      <!-- СТАТ-СВОДКА ПО ПОРТФЕЛЮ -->
-      <div style="grid-area: stat;display: flex;">
+      <!-- #. СТАТ-СВОДКА ПО ПОРТФЕЛЮ -->
+      <div class="wallet-stat_section" style="grid-area: stat;">
 
-        <div class="wallet-stat_container" style="justify-content: space-between; flex-wrap: wrap; margin: 0;">
+        <div class="wallet-stat_container">
           <div style="height: fit-content; border: 1px solid var(--color-urgency-low); border-radius: 1rem; padding: 1rem;">          
             <p style="color: var(--color-global-text);" >450506,13</p>
             <p style="color: var(--color-btn-wo-bg); margin: 0;">Потенциал***</p>
@@ -5336,7 +5360,8 @@ const checkCurrencyPair = (pair: any) => {
           </div>
   
         </div>
-        <div style="margin: 0 1rem; padding-bottom: 1rem;">
+
+        <div class="wallet-stat_desc">
           <p>
             * Отношение положительных средств на счетах (в валюте цб или в любой другой иностранной валюте, имеющей возможность свободной конвертации в валюту цб) к сумме займов (выданные кредиты, инвеситции в проекты) + Долги (долговая нагрузка). То есть, сколько раз можно покрыть суммму долга за имеющиеся средства.</p>
           <p>
@@ -5415,7 +5440,7 @@ const checkCurrencyPair = (pair: any) => {
             <div style="font-weight: bold;">Ничего нет</div>
           </div>
 
-          <!-- ЕсТЬ МЕШКИ -->
+          <!-- ЕCТЬ МЕШКИ -->
           <section 
             v-for="type in [...new Set([...meshes_computed.filter((item: any) => item.tag === choosenChip_section).map(obj => {
               return obj.type
@@ -6095,12 +6120,9 @@ const checkCurrencyPair = (pair: any) => {
   max-width: 100vw!important;
   gap: 1rem;
 }
-.wallet-stat_container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0 1rem;
-  gap: 1rem;
-}
+/* .wallet-stat_container {
+
+} */
 
 .wallet-section_container::-webkit-scrollbar {
   display: none;
@@ -6508,8 +6530,8 @@ const checkCurrencyPair = (pair: any) => {
   }
   .meshes_local_filter_button {
       /* background-color: var(--color-global-text); */
-      opacity: .7;
-      border-radius: .3rem;
+      /* opacity: .7; */
+      /* border-radius: .3rem; */
   }
 
   /*  */
@@ -7157,9 +7179,85 @@ const checkCurrencyPair = (pair: any) => {
     ;
     gap: 2rem;
   }
+
+  /* 
+    MAIN (TOTAL SECTION)
+  */
+  .main-total_section {
+    margin-top: 1rem;
+  }
+  .main-total_wrapper {
+    background-color: var(--color-operation-type-donation); padding: 1rem; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between;
+  }
+
+  .main-total_more-wrapper {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: .5rem;
+  }
+
+  .main-total_amount-value_wrapper {
+    margin-top: 1.5rem;
+    text-align: center; 
+    font-size: 3rem; 
+    font-weight: bold;
+  }
+
+  .main-total_btns_wrapper {
+    display: flex; 
+    gap: 1rem; 
+    justify-content: center;
+    background-color: var(--color-global-baackground_light);
+    width: fit-content;
+    padding: .5rem;
+    margin-bottom: 3rem;
+  }
+  .main-total_btn-el {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    cursor: pointer;
+  }
+  /* .main-total_btn-el p {
+    margin: 0;
+    font-size: .8rem;
+  } */
+
+  /* 
+    WALLET STAT
+  */
+  .wallet-stat_section {
+    display: flex;
+    gap: 2rem;
+  }
   .wallet-stat_container {
     flex: 1 auto;
+    display: grid;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    margin: 0;
+    grid-template-columns: repeat(3, 1fr);
+    /* padding: 0 1rem; */
+    gap: 1rem;
   }
+  .wallet-stat_desc {
+    /* margin: 0 1rem;  */
+    padding-bottom: 1rem;
+  }
+  .wallet-stat_desc p {
+    font-size: .8rem;
+    text-align: justify;
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+   */
   .meshes_local_group_wrapper {
     position: relative;
     padding: 1rem;
@@ -7280,13 +7378,20 @@ const checkCurrencyPair = (pair: any) => {
   }
   .allocation-block_el {
     border: 1px solid var(--color-btn-disabled-bg);
-    padding: .5rem;
+    padding: .5rem 1rem;
     transition: all .1s ease-in;
   }
   .allocation-block_el:hover {
     cursor: pointer;
-    box-shadow: var(--hover-shadow);
+    /* box-shadow: var(--hover-shadow); */
     background-color: var(--color-btn-hover-bg);
+  }
+  .allocation-block_el-name {
+
+  }
+  .allocation-block_el-allocation {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
   }
 
   /* 
