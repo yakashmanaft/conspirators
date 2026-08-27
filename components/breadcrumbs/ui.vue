@@ -1,7 +1,8 @@
 <template>
 
   <ul>
-    <li>
+    <!-- Главная -->
+    <li class="breadcrumbs-main">
       <Button type="pseudo-btn" link="/">Главная</Button>
     </li>
     <li 
@@ -213,5 +214,7 @@ ul li:hover:not(:last-child) {
 
 @media screen and (max-width: 767px) {
 
+}
+@media (min-width: 1200px) {
 }
 </style>

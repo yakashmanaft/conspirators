@@ -2118,6 +2118,22 @@ const currecy_pair = ref([
     name: 'CNY / RUB',
     price: 11.65
   },
+  {
+    name: 'EUR / RUB',
+    price: 91.98
+  },
+  {
+    name: 'USD / RUB',
+    price: 77.17
+  },
+  {
+    name: 'VND / RUB',
+    price: 0.0032
+  },
+  {
+    name: 'CNY / RUB',
+    price: 11.65
+  },
 ])
 
 const localGroupList_isOpened = ref(false);
@@ -4796,6 +4812,11 @@ const sumSectionAmount = (groupType: string) => {
   // return result
 }
 
+//= Обновить данные
+const update_data = () => {
+  alert('Обновление данных в разработке...')
+}
+
 // WATCH
 //= choosenChip_section
 watch(choosenChip_section, () => {
@@ -4957,7 +4978,7 @@ const checkCurrencyPair = (pair: any) => {
        <!-- #1.1.2. -->
       <h1 style="font-weight: bold; font-size: 42px;">Кошелек</h1>
       <!-- #1.1.3. -->
-      <div>Обновлено 16.03.2026</div>
+      <div @click.stop="update_data()">Обновлено 16.03.2026</div>
     </div>
     <!-- КНОПКА ОБНОВИТЬ ДАННЫЕ (пока в режиме информации только...) -->
     <!-- <div style=" width: 100%; display: flex; align-items: center; justify-content: center;" >
@@ -5056,7 +5077,7 @@ const checkCurrencyPair = (pair: any) => {
           </div>
 
           <!-- #.1.2.  total amount value -->
-          <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">197974,55
+          <p style="margin-top: 1.5rem;text-align: center; font-size: 3rem; font-weight: bold;">888 888 974.55
           </p>
           <!-- #.1.3. КНОПКИ КОШЕЛЬКА -->
           <div style="display: flex; gap: 1rem; justify-content: center;">
@@ -5093,21 +5114,25 @@ const checkCurrencyPair = (pair: any) => {
           </div>
         </div>
       </div>
+
       <!-- ALLOCATION -->
-      <div style="grid-area: allocation; background-color: var(--color-btn-disabled-bg); padding: 1rem;">
+      <div class="allocation-block_wrapper">
         <h4>Моя Аллокация</h4>
-        <ul style="list-style: none; padding: 0;">
-          <li v-for="band in band_computed?.filter(el => {
+
+        <!-- ALLOCATION EL -->
+        <ul class="allocation-block_list">
+          <li 
+            @click.stop="router.push(`band/${band.id}`)"
+            class="allocation-block_el"
+            v-for="band in band_computed?.filter(el => {
             if (!currentAffiliation.bandID) {
               return el
             } else {
               return el.id === currentAffiliation.bandID
             }
           })">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <div>{{ band.name }}</div>
-              <div>{{ band.sharers?.find(el => el.userId === sessionUser.id).allocation * 100}}% * Всего монет= 888 888,88монет</div>
-            </div>
+          
+            {{band.name}} <br> Доля {{ band.sharers?.find(el => el.userId === sessionUser.id).allocation * 100}}%
           </li>
         </ul>
 
@@ -5281,7 +5306,7 @@ const checkCurrencyPair = (pair: any) => {
 
       <!-- currency pair -->
       <!-- ВАЛЮТНЫЕ ПАРЫ -->
-      <ul class="wallet-section_container currency-price-stock_wrapper" style="grid-area: currency; list-style: none; margin: 0; padding-left: 0; padding-right: 0; padding-bottom:1.5rem;">
+      <ul class="currency-price-stock_wrapper no-scrollbar">
         <li 
           v-for="pair in currecy_pair" 
           style="display: flex; gap: .5rem; align-items: center; justify-content: center;"
@@ -5372,7 +5397,7 @@ const checkCurrencyPair = (pair: any) => {
         <!-- header -->
         <div class="local_list_header" :style="set_popup_header_line_color(choosenChip_section)">
           <p> 
-            <span>Раздел:</span>
+            <!-- <span>Раздел:</span> -->
             <span>{{ filter_title }}</span>
           </p>
           <div @click="localGroupList_isOpened = false"></div>
@@ -7098,7 +7123,6 @@ const checkCurrencyPair = (pair: any) => {
   /* 
     */
   .bread-crumbs-group {
-      /* background-color: red; */
       display: flex;
       gap: .5rem;
       margin-left: 1rem;
@@ -7111,8 +7135,6 @@ const checkCurrencyPair = (pair: any) => {
       border-bottom: 1px solid var(--color-global-text);
   }
   .bread-crumbs-group div {
-    /* flex: 1 auto; */
-    /* align-self: center; */
     margin: 0;
     text-align: right;
     font-size: .8rem;
@@ -7133,15 +7155,13 @@ const checkCurrencyPair = (pair: any) => {
       "currency list"
       "stat stat"
     ;
-    gap: 1rem;
+    gap: 2rem;
   }
   .wallet-stat_container {
     flex: 1 auto;
   }
   .meshes_local_group_wrapper {
     position: relative;
-    /* border-radius: 1rem;
-    margin: 0 1rem; */
     padding: 1rem;
   }
   .group_wrapper_background {
@@ -7150,10 +7170,8 @@ const checkCurrencyPair = (pair: any) => {
     left: 0;
     right: 0;
     bottom: 0;
-    /* background: #3498db; */
     background-color: var(--color-urgency-low);
     opacity: 0.3;
-    /* border-radius: 1rem; */
   }
   .total-cap_container {
     margin-top: 3rem;
@@ -7166,8 +7184,6 @@ const checkCurrencyPair = (pair: any) => {
   .total-cap_wrapper {
     border-radius: 1rem;
     width: 100%;
-    /* background-color: blue; */
-    /* padding: 1rem; */
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -7178,7 +7194,6 @@ const checkCurrencyPair = (pair: any) => {
     margin: 0!important;
   }
   .total-cap_avatar {
-    /* margin: 0 auto; */
     background-color: var(--color-global-text);
     width: 15rem;
     height: 15rem;
@@ -7213,8 +7228,6 @@ const checkCurrencyPair = (pair: any) => {
     color: var(--color-global-text_second);
     text-transform: uppercase;
     font-weight: bold;
-    /* font-size: 1rem; */
-    /* text-align: center; */
   }
   .total-cap_count {
     font-size: 1.5rem;
@@ -7245,9 +7258,56 @@ const checkCurrencyPair = (pair: any) => {
     /* padding-right: 1rem; */
     padding-bottom: 2rem;
   }
-  .currency-price-stock_wrapper {
+  .wallet-section_container li {
+
+  }
+
+  /* 
+    Allocation block 
+  */
+  .allocation-block_wrapper {
+    grid-area: allocation; 
+    background-color: var(--color-global-baackground_light);
+    padding: 1rem;
+  }
+  .allocation-block_list {
+    list-style: none; 
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .allocation-block_el {
+    border: 1px solid var(--color-btn-disabled-bg);
+    padding: .5rem;
+    transition: all .1s ease-in;
+  }
+  .allocation-block_el:hover {
+    cursor: pointer;
+    box-shadow: var(--hover-shadow);
     background-color: var(--color-btn-hover-bg);
-    padding: 1rem!important;
+  }
+
+  /* 
+    currency pairs
+  */
+  .currency-price-stock_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-btn-hover-bg);
+    grid-area: currency;  
+    list-style: none; 
+    margin: 0; 
+    padding: 0 1rem;
+    width: 100%;
+    overflow-x: scroll;
+    margin-bottom: 1rem;
+  }
+  .currency-price-stock_wrapper {
+    text-wrap: nowrap;
   }
 
   /*  */
@@ -7358,23 +7418,28 @@ const checkCurrencyPair = (pair: any) => {
       width: 95vw;
       max-width: 1400px;
       height: 90%;
-      margin-top: 5rem!important;
-      /* margin-right: 5rem; */
+      margin-top: 3rem!important;
       margin: 0 auto;
-      /* border-radius: 2rem; */
       overflow: hidden;
+      background-color: var(--color-global-baackground_light);
   }
   .local_list_header {
     background-color: var(--color-btn-disabled-bg);
     /* width: fit-content; */
     height: 3rem; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .local_list_header p {
     background-color: red;
     width: fit-content;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    margin: 0;
+  }
+  .local_list_header > div {
+    width: 2rem;
+    height: 2rem;
+    background-color: green;
   }
   .local_list_main {
     overflow: scroll!important;

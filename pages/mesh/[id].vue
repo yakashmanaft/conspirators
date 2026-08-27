@@ -78,6 +78,12 @@ useHead({
         currentChip.value = obj
     }
 
+    // 
+    onMounted(() => {
+        // На всякий случай отменяем fixed body
+        document.body.style.position = 'unset';
+    })
+
     // COMPUTED
     //= current lead
     const current_task = computed(() => {

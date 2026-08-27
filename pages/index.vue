@@ -8,7 +8,7 @@ import { Button } from '@/components/button'
 import { Container } from "@/shared/container";
 
 useHead({
-  title: "conspirators | Ваш crm отдел маркетинга ",
+  title: "Сonspirators | Сервис больших амбиций ",
   link: [
     {
       rel: "stylesheet",
@@ -1747,6 +1747,7 @@ section:hover {
   }
   .el_wrapper-0:hover .el_price {
     background-color: var(--color-global-baackground_light);
+    color: var(--color-global-text_second);
   }
   .el_img_wrapper {
     max-width: 250px;

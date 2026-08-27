@@ -236,7 +236,10 @@ const { data: organizations } = useLazyAsyncData("organizations", () =>
   $fetch("/api/organizations/organizations")
 );
 onMounted(async () => {
+        // На всякий случай отменяем fixed body
+        document.body.style.position = 'unset';
 
+        // 
         if (!elementRef.value) return;
         observer = new IntersectionObserver(([entry]) => {
             // // Инвертируем: фиксируем, когда элемент уходит из зоны видимости

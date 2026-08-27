@@ -6,9 +6,9 @@ const route = useRoute();
 const { loggedIn, user, session, clear, fetch } = useUserSession();
 
 
-const checkLocalStorage = () => {
-  console.log("App is ready");
-};
+// const checkLocalStorage = () => {
+//   console.log("App is ready");
+// };
 
 onMounted(() => {
   // checkLocalStorage()
