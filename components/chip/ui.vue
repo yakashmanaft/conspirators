@@ -154,10 +154,17 @@ onMounted(() => {
 
 }
 @media screen and (min-width: 768px) and (max-width: 991px){
+  .tab_wrapper {
+    width: 98vw!important;
+    padding-right: 15rem!important;
+  }
 }
 
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-
+  .tab_wrapper {
+    width: 98vw!important;
+    padding-right: 15rem!important;
+  }
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1399px) {

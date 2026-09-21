@@ -5153,7 +5153,7 @@ const checkCurrencyPair = (pair: any) => {
       </div>
 
       <!-- #. MESHES CAST -->
-      <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 1rem; margin-bottom: -1rem;">
+      <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 1rem; margin-bottom: -1rem; ">
 
         <!-- Деньги на счетах / Свободные деньги -->
         <li>
@@ -5175,8 +5175,8 @@ const checkCurrencyPair = (pair: any) => {
                 :wHover="true"
                 @click="local_list_show('Деньги на счетах', 'RUB')"
               >
-                <p style="color: var(--color-global-text);" >48722.85 {{ currency_to_show.ticket }}</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">RUB</p>
+                <p style="white-space: nowrap;color: var(--color-global-text);" >48722.85 {{ currency_to_show.ticket }}</p>
+                <p style="white-space: nowrap;color: var(--color-btn-wo-bg); margin: 0;">RUB</p>
               </Section>
             </li>
 
@@ -5187,8 +5187,8 @@ const checkCurrencyPair = (pair: any) => {
                 @click="local_list_show('Деньги на счетах', '!RUB')"
                 :wHover="true"
               >
-                <p style="color: var(--color-global-text);" >1349.12 {{ currency_to_show.ticket }}</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Иностранная валюта</p>
+                <p style="white-space: nowrap;color: var(--color-global-text);" >1349.12 {{ currency_to_show.ticket }}</p>
+                <p style="white-space: nowrap;color: var(--color-btn-wo-bg); margin: 0;">Иностранная валюта</p>
               </Section>
             </li>
           </ul>
@@ -5214,8 +5214,8 @@ const checkCurrencyPair = (pair: any) => {
                 :wHover="true"
                 @click="local_list_show('Инвестиции', 'Фондовый рынок')"
               >
-                <p style="color: var(--color-global-text);" >221689.11 {{ currency_to_show.ticket }}</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Фондовый рынок</p>
+                <p style="white-space: nowrap; color: var(--color-global-text);" >221689.11 {{ currency_to_show.ticket }}</p>
+                <p style="white-space: nowrap;color: var(--color-btn-wo-bg); margin: 0;">Фондовый рынок</p>
               </Section>
             </li>
             
@@ -5226,7 +5226,7 @@ const checkCurrencyPair = (pair: any) => {
                 :wHover="true"
                 @click="local_list_show('Инвестиции', 'Вклады')"
               >
-                <p style="color: var(--color-global-text);" >5000.00 {{ currency_to_show.ticket }}</p>
+                <p style="white-space: nowrap; color: var(--color-global-text);" >5000.00 {{ currency_to_show.ticket }}</p>
                 <p style="color: var(--color-btn-wo-bg); margin: 0;">Вклады</p>
               </Section>
             </li>
@@ -5238,10 +5238,22 @@ const checkCurrencyPair = (pair: any) => {
                 :wHover="true"
                 @click="local_list_show('Инвестиции', 'Крипто-дебет')"
               >
-                <p style="color: var(--color-global-text);" >25066.33 {{ currency_to_show.ticket }}</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Крипто-дебет</p>
+                <p style="white-space: nowrap;color: var(--color-global-text);" >25066.33 {{ currency_to_show.ticket }}</p>
+                <p style="white-space: nowrap;color: var(--color-btn-wo-bg); margin: 0;">Крипто-дебет</p>
               </Section>
             </li>
+
+            <li>
+              <Section 
+                :fDirection="`column`"
+                :fAlignItems="`flex-start`"
+                :wHover="true"
+                @click="local_list_show('Инвестиции', 'Крипто-дебет')"
+              >
+                <p style="white-space: nowrap;color: var(--color-global-text);" >25066.33 {{ currency_to_show.ticket }}</p>
+                <p style="white-space: nowrap;color: var(--color-btn-wo-bg); margin: 0;">Крипто-дебет</p>
+              </Section>
+            </li> 
           </ul>
 
         </li>
@@ -5309,7 +5321,7 @@ const checkCurrencyPair = (pair: any) => {
                 @click="local_list_show('Долговые обязательства', 'Долг к соучастникам')"
               >
                 <p style="color: var(--color-global-text);" >141629.14 {{ currency_to_show.ticket }}</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Долг к соучастникам</p>
+                <p style="color: var(--color-btn-wo-bg); white-space: nowrap; margin: 0;">Долг к соучастникам</p>
               </Section>
             </li>
 
@@ -5321,7 +5333,7 @@ const checkCurrencyPair = (pair: any) => {
                 @click="local_list_show('Долговые обязательства', 'Внешний долг')"
               >
                 <p style="color: var(--color-global-text);" >141629.14 {{currency_to_show.ticket}}</p>
-                <p style="color: var(--color-btn-wo-bg); margin: 0;">Внешняя задолженность</p>
+                <p style="white-space: nowrap;color: var(--color-btn-wo-bg); margin: 0;">Внешняя задолженность</p>
               </Section>
             </li>
           </ul>
@@ -6497,10 +6509,114 @@ const checkCurrencyPair = (pair: any) => {
 
   /* meshes local */
   .meshes_local_section {
-    /* background-color: var(--color-status-finished); */
-    /* background-color: var(--color-bg-popup); */
-    /* padding: 1.5rem;   */
+    display: grid;
+    grid-template-areas: 
+      "nav nav"
+      "main main"
+      "allocation allocation"
+      "list list"
+      "currency currency"
+      "stat stat"
+    ;
+    /* gap: .5rem; */
   }
+
+  /* total amount in choose chip of banks */
+  /* 
+    MAIN (TOTAL SECTION)
+  */
+  .main-total_section {
+    margin-top: 2rem;
+  }
+  .main-total_wrapper {
+    background-color: var(--color-operation-type-donation); 
+    padding: 1rem; 
+    height: 100%; 
+    display: flex; 
+    flex-wrap: wrap;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between;
+    /* width: fit-content; */
+    border-radius: 1rem;
+    margin: 0 1rem;
+  }
+  .main-total_more-wrapper {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: .5rem;
+  }
+  .main-total_amount-value_wrapper {
+    margin-top: 2rem;
+    text-align: center; 
+    font-size: 1.85rem; 
+    font-weight: normal;
+  }
+  .main-total_btns_wrapper {
+    display: flex; 
+    flex-wrap: wrap;
+    gap: 2rem; 
+    justify-content: space-between;
+    /* background-color: var(--color-global-baackground_light); */
+    width: fit-content;
+    /* width: 100%; */
+    padding: .5rem;
+    margin-bottom: 2rem;
+  }
+  .main-total_btn-el {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    /* justify-content: space-between; */
+    cursor: pointer;
+    background-color: var(--color-global-baackground_light);
+    padding: .5rem;
+    border-radius: .5rem;
+  }
+
+  /* users allocation in diff bands */
+  /* 
+    Allocation block 
+  */
+  .allocation-block_wrapper {
+    /* margin-top: 2rem; */
+    margin: 1rem 1rem 0 1rem;
+    grid-area: allocation; 
+    background-color: var(--color-global-baackground_light);
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  .allocation-block_list {
+    list-style: none; 
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .allocation-block_el {
+    border: 1px solid var(--color-btn-disabled-bg);
+    padding: .5rem 1rem;
+    transition: all .1s ease-in;
+  }
+  .allocation-block_el:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .allocation-block_el-name {
+
+  }
+  .allocation-block_el-allocation {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+
+
+  /* groups of meshes */
+  /* 
+    meshes group header 
+    */
   .meshes_local_group_wrapper {
     position: relative;
     border-radius: 1rem;
@@ -6522,11 +6638,16 @@ const checkCurrencyPair = (pair: any) => {
     z-index: 1;
     padding: 20px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
   }
   .group_wrapper_content p {
     margin: 0;
+    white-space: nowrap;
+  }
+  .group_wrapper_content p:last-child {
+    /* margin-top: .5rem!important; */
   }
   .meshes_local_filter_button {
       /* background-color: var(--color-global-text); */
@@ -6536,7 +6657,65 @@ const checkCurrencyPair = (pair: any) => {
 
   /*  */
   .wallet-section_container li {
-    min-width: 180px;
+    /* min-width: 180px; */
+  }
+
+  /* currency block */
+  /* 
+    currency pairs
+  */
+  .currency-price-stock_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--color-btn-hover-bg);
+    grid-area: currency;  
+    list-style: none; 
+    margin: 0; 
+    padding: 0 1rem;
+    width: 100vw;
+    height: 5rem;
+    overflow-x: scroll;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  .currency-price-stock_wrapper {
+    text-wrap: nowrap;
+  }
+
+  /* block of a bank statistic data */
+  /* 
+    WALLET STAT
+  */
+  .wallet-stat_section {
+    /* display: flex;
+    gap: 2rem; */
+  }
+  .wallet-stat_container {
+    width: 100%;
+    /* flex: 1 auto; */
+    display: flex;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    /* margin: 0 .5rem; */
+    margin-top: 1rem;
+    /* grid-template-columns: repeat(3, 1fr); */
+    gap: 1rem;
+    padding: 0 .5rem;
+  }
+  .wallet-stat_container div {
+    border-radius: unset!important;
+    width: 100%;
+  }
+  .wallet-stat_desc {
+    margin: 1rem 1rem 0 1rem;
+    padding-bottom: 1rem;
+  }
+  .wallet-stat_desc p {
+    font-size: .8rem;
+    text-align: justify;
+    color: var(--color-global-text_second);
   }
 
   /*  */
@@ -6739,7 +6918,336 @@ const checkCurrencyPair = (pair: any) => {
     margin-right: 1rem;
   }
 
-  /* MESH */
+
+
+  /* TRANSACTION */
+  .transaction_container {
+
+  }
+
+  /*  */
+  /*  */
+  /*  */
+  /* there is no breadcrumbs */
+
+  /*  */
+  /* grid of this page */
+  .meshes_local_section {
+    display: grid;
+    grid-template-areas: 
+      "nav nav"
+      "main main"
+      "allocation allocation"
+      "list list"
+      "currency currency"
+      "stat stat"
+    ;
+    /* gap: .5rem; */
+  }
+
+  /* total amount in choose chip of banks */
+  /* 
+    MAIN (TOTAL SECTION)
+  */
+  .main-total_section {
+    margin-top: 2rem;
+  }
+  .main-total_wrapper {
+    background-color: var(--color-operation-type-donation); 
+    padding: 1rem; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between;
+    width: fit-content;
+    border-radius: 1rem;
+    margin-left: 1rem;
+  }
+  .main-total_more-wrapper {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: .5rem;
+  }
+  .main-total_amount-value_wrapper {
+    margin-top: 2rem;
+    text-align: center; 
+    font-size: 1.85rem; 
+    font-weight: normal;
+  }
+  .main-total_btns_wrapper {
+    display: flex; 
+    gap: 1.5rem; 
+    justify-content: space-between;
+    /* background-color: var(--color-global-baackground_light); */
+    /* width: fit-content; */
+    width: 100%;
+    padding: .5rem;
+    margin-bottom: 1rem;
+  }
+  .main-total_btn-el {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    /* justify-content: space-between; */
+    cursor: pointer;
+    background-color: var(--color-global-baackground_light);
+    padding: .5rem;
+    border-radius: .5rem;
+  }
+
+  /* users allocation in diff bands */
+  /* 
+    Allocation block 
+  */
+  .allocation-block_wrapper {
+    /* margin-top: 2rem; */
+    margin: 2rem 1rem 0 1rem;
+    grid-area: allocation; 
+    background-color: var(--color-global-baackground_light);
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  .allocation-block_list {
+    list-style: none; 
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .allocation-block_el {
+    border: 1px solid var(--color-btn-disabled-bg);
+    padding: .5rem 1rem;
+    transition: all .1s ease-in;
+  }
+  .allocation-block_el:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .allocation-block_el-name {
+
+  }
+  .allocation-block_el-allocation {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+
+
+  /* groups of meshes */
+  /* 
+  meshes group header 
+  */
+  .meshes_local_group_wrapper {
+    position: relative;
+    border-radius: 1rem;
+    margin: 0 1rem;
+  }
+  .group_wrapper_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background: #3498db; */
+    background-color: var(--color-urgency-low);
+    opacity: 0.3;
+    border-radius: 1rem;
+  }
+  .group_wrapper_content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .group_wrapper_content p {
+    margin: 0;
+    white-space: nowrap;
+  }
+  /* 
+  meshes section
+   */
+   
+  .section_wrapper {
+    cursor: pointer;
+  }
+  .section_wrapper div p {
+    white-space: nowrap;
+  }
+  
+
+  /* currency block */
+  /* 
+    currency pairs
+  */
+  .currency-price-stock_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--color-btn-hover-bg);
+    grid-area: currency;  
+    list-style: none; 
+    margin: 0; 
+    padding: 0 1rem;
+    width: 100vw;
+    height: 5rem;
+    overflow-x: scroll;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  .currency-price-stock_wrapper {
+    text-wrap: nowrap;
+  }
+
+  /* block of a bank statistic data */
+  /* 
+    WALLET STAT
+  */
+  .wallet-stat_section {
+    /* display: flex;
+    gap: 2rem; */
+  }
+  .wallet-stat_container {
+    flex: 1 auto;
+    display: grid;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    margin: 0 .5rem;
+    margin-top: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 0 .5rem;
+  }
+  .wallet-stat_container div {
+    border-radius: unset!important;
+  }
+  .wallet-stat_desc {
+    margin: 1rem 1rem 0 1rem;
+    padding-bottom: 1rem;
+  }
+  .wallet-stat_desc p {
+    font-size: .8rem;
+    text-align: justify;
+    color: var(--color-global-text_second);
+  }
+
+  /* in popup by choosen mesh group */
+  /* 
+  POPUP CONTAINER
+  */
+  .localGroupList_container {
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-bg-popup);
+    backdrop-filter: blur(2px);
+  }
+  .local_list__opened {
+    opacity: 1;
+    transition: all .3s ease-in;
+    z-index: 999;
+  }
+  .local_list__closed {
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: -1;
+    display: none;
+  }
+  .local_list__closed > .local_list_wrapper {
+    display: none
+  }
+  .local_list_wrapper {
+    /* display: none; */
+    width: 100%;
+    height: 90vh;
+    background-color: var(--color-global-baackground_light);
+    position: relative;
+    top: 55%;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+  }
+  .local_list_header {
+    /* background-color: red; */
+    position: relative;
+    /* border-bottom: 1px solid var(--color-global-text); */
+    border-bottom: 1px solid var(--color-wallet-fund-invested);
+  }
+  .local_list_header > p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0 1rem;
+  }
+  .local_list_header div{
+    width: 32px;
+    height: 2px;
+    background: var(--color-global-text);
+    /* background: var(--bs-danger); */
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%) rotate(45deg)
+  }
+  .local_list_header div:after {
+    /* -webkit-transition: 0.5s ease-in-out; */
+    /* transition: 0.5s ease-in-out; */
+    content: '';
+    /* background: var(--bs-danger); */
+    background: var(--color-global-text);
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+  }
+  .local_list_main {
+    height: 90%;
+    overflow-y: scroll!important;
+    padding: 0 1rem!important;
+    padding-top: 1.5rem!important
+  }
+  .local_list_footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 48px;
+      background-color: var(--color-global-text_second);
+      padding: .5rem 0;
+  }
+  /* 
+  mesh group list
+  */
+  .mesh_group_container {
+    margin: 0!important;
+  }
+  .mesh_group_container header h4{
+    background-color: var(--color-btn-disabled-bg);
+    width: fit-content;
+    margin-top: 1rem;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+  }
+  .local_list_no-meshes {
+    background-color: red;
+  }
+
+  /* 
+  MESH
+   */
   .mesh_container {
     margin-top: 2rem;
   }
@@ -6801,12 +7309,90 @@ const checkCurrencyPair = (pair: any) => {
     align-items: center;
   }
 
-  /* TRANSACTION */
-  .transaction_container {
-
-  }
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
+  /* 
+    BEADCRUMBS
+    */
+  .bread-crumbs-group {
+      display: flex;
+      gap: .5rem;
+      margin-left: 1rem;
+  }
+  .bread-crumbs-group h1{
+    font-weight: normal!important;
+    font-size: .9rem!important;
+    margin: 0!important;
+    line-height: unset!important;
+    border-bottom: 1px solid var(--color-global-text);
+  }
+  .bread-crumbs-group div {
+    margin: 0;
+    text-align: right;
+    font-size: .8rem;
+  }
+  .bread-crumbs-group div:hover {
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-global-text);
+  }
+  .bread-crumbs-group ul {
+      margin: 0!important;
+  }
+
+  /* 
+  nav main list allocation currey stat
+  */
+  .meshes_local_section {
+    display: grid;
+    grid-template-areas: 
+      "nav nav"
+      "main list"
+      "allocation list"
+      "currency list"
+      "stat stat"
+    ;
+    gap: .5rem;
+  }
+  .section_wrapper {
+    cursor: pointer;
+  }
+  .section_wrapper div p {
+    white-space: nowrap;
+  }
+
+  /* 
+    WALLET STAT
+  */
+  .wallet-stat_section {
+    /* display: flex;
+    gap: 2rem; */
+  }
+  .wallet-stat_container {
+    flex: 1 auto;
+    display: grid;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    margin: 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .wallet-stat_container div {
+    border-radius: unset!important;
+  }
+  .wallet-stat_desc {
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .wallet-stat_desc p {
+    font-size: .8rem;
+    text-align: justify;
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+    TOTAL
+    CAP
+  */
   .total-cap_container {
     margin-top: 2rem;
     position: relative;
@@ -6816,8 +7402,6 @@ const checkCurrencyPair = (pair: any) => {
   .total-cap_wrapper {
     border-radius: 1rem;
     width: 100%;
-    /* background-color: blue; */
-    /* padding: 1rem; */
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -6886,7 +7470,83 @@ const checkCurrencyPair = (pair: any) => {
     font-weight: lighter;
   }
 
-  /* WALLET SECTION */
+  /* 
+    MAIN (TOTAL SECTION)
+  */
+  .main-total_section {
+    margin-top: 1rem;
+  }
+  .main-total_wrapper {
+    background-color: var(--color-operation-type-donation); 
+    padding: 1rem; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between;
+  }
+  .main-total_more-wrapper {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: .5rem;
+  }
+  .main-total_amount-value_wrapper {
+    margin-top: 2rem;
+    text-align: center; 
+    font-size: 1.85rem; 
+    font-weight: normal;
+  }
+  .main-total_btns_wrapper {
+    display: flex; 
+    gap: 1rem; 
+    justify-content: center;
+    /* background-color: var(--color-global-baackground_light); */
+    width: fit-content;
+    padding: .5rem;
+    margin-bottom: 3rem;
+  }
+  .main-total_btn-el {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    cursor: pointer;
+    background-color: var(--color-global-baackground_light);
+    padding: .5rem;
+    border-radius: .5rem;
+  }
+  .main-total_btn-el:hover {
+    background-color: var(--color-global-baackground_light);
+    scale: 1.25;
+    border-radius: .25rem;
+  }
+ /* 
+    meshes_local_group
+   */
+  .meshes_local_group_wrapper {
+    position: relative;
+    padding: 1rem;
+  }
+  .group_wrapper_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-urgency-low);
+    opacity: 0.3;
+  }
+  .group_wrapper_content p {
+    margin: 0;
+    white-space: nowrap;
+  }
+  .group_wrapper_content p:last-child {
+    margin-top: .5rem;
+  }
+
+  /* 
+    WALLET SECTION
+   */
 
   .wallet-section_container {
     margin-top: 2rem;
@@ -6895,6 +7555,8 @@ const checkCurrencyPair = (pair: any) => {
     margin-right: -.5rem;
     padding-right: .5rem;
     padding-bottom: 2rem;
+    flex-wrap: wrap;
+    width: 55vw;
   }
   .fund_list {
     gap: 1rem;
@@ -6903,6 +7565,127 @@ const checkCurrencyPair = (pair: any) => {
   }
   .el_logo {
     justify-content: center;
+  }
+
+  /* 
+    Allocation block 
+  */
+  .allocation-block_wrapper {
+    grid-area: allocation; 
+    background-color: var(--color-global-baackground_light);
+    padding: 1rem;
+  }
+  .allocation-block_list {
+    list-style: none; 
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .allocation-block_el {
+    border: 1px solid var(--color-btn-disabled-bg);
+    padding: .5rem 1rem;
+    transition: all .1s ease-in;
+  }
+  .allocation-block_el:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .allocation-block_el-name {
+
+  }
+  .allocation-block_el-allocation {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+    currency pairs
+  */
+  .currency-price-stock_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-btn-hover-bg);
+    grid-area: currency;  
+    list-style: none; 
+    margin: 0; 
+    padding: 0 1rem;
+    width: 100%;
+    overflow-x: scroll;
+    margin-bottom: 1rem;
+  }
+  .currency-price-stock_wrapper {
+    text-wrap: nowrap;
+  }
+
+  /* popup local meshes group */
+  .localGroupList_container {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--color-bg-popup);
+  }
+  .local_list__opened {
+    opacity: 1;
+    transition: all .3s ease-in;
+    z-index: 101;
+  }
+  .local_list__closed {
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: -1;
+    display: none;
+  }
+  .local_list_wrapper {
+      /* width: 1399px; */
+      width: 97vw;
+      max-width: 1400px;
+      height: 90%;
+      margin-top: 3rem!important;
+      margin: 0 auto;
+      overflow: hidden;
+      background-color: var(--color-global-baackground_light);
+  }
+  .local_list_header {
+    background-color: var(--color-btn-disabled-bg);
+    /* width: fit-content; */
+    height: 3rem; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .local_list_header p {
+    background-color: red;
+    width: fit-content;
+    margin: 0;
+  }
+  .local_list_header > div {
+    width: 2rem;
+    height: 2rem;
+    background-color: green;
+  }
+  .local_list_main {
+    overflow: scroll!important;
+    height: 100%;
+    padding: 0!important;
+  }
+  .mesh_group_container {
+    margin: 0!important;
+  }
+  .mesh_group_container header h4{
+    background-color: var(--color-btn-disabled-bg);
+    width: fit-content;
+    margin-top: 1rem;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+  }
+  .local_list_no-meshes {
+    background-color: red;
   }
 
   /* CURRENT FUND CONTAINER */
@@ -6916,18 +7699,21 @@ const checkCurrencyPair = (pair: any) => {
     /* margin-left: .5rem;
     margin-right: .5rem; */
   }
+
+
   /* MESH */
   .mesh_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
   .mesh_wrapper {
     border-radius: 1rem;
     border: 1px solid var(--color-btn-hover-bg);
     padding: 1rem;
     transition: all .2s ease-in;
+    background-color: var(--color-global-baackground_light);
   }
   .mesh_wrapper  > p {
     margin: 0;
@@ -6976,20 +7762,166 @@ const checkCurrencyPair = (pair: any) => {
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
+  /* 
+    BEADCRUMBS
+    */
+  .bread-crumbs-group {
+      display: flex;
+      gap: .5rem;
+      margin-left: 1rem;
+  }
+  .bread-crumbs-group h1{
+      font-weight: normal!important;
+      font-size: .9rem!important;
+      margin: 0!important;
+      line-height: unset!important;
+      border-bottom: 1px solid var(--color-global-text);
+  }
+  .bread-crumbs-group div {
+    margin: 0;
+    text-align: right;
+    font-size: .8rem;
+  }
+  .bread-crumbs-group div:hover {
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-global-text);
+  }
+  .bread-crumbs-group ul {
+      margin: 0!important;
+  }
+
+  /* 
+  nav main list allocation currey stat
+  */
+  .meshes_local_section {
+    display: grid;
+    grid-template-areas: 
+      "nav nav"
+      "main list"
+      "allocation list"
+      "currency list"
+      "stat stat"
+    ;
+    gap: 1rem;
+  }
+  .section_wrapper {
+    cursor: pointer;
+  }
+  .section_wrapper div p {
+    white-space: nowrap;
+  }
+
+  /* 
+    WALLET STAT
+  */
+  .wallet-stat_section {
+    display: flex;
+    gap: 2rem;
+  }
+  .wallet-stat_container {
+    flex: 1 auto;
+    display: grid;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    margin: 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .wallet-stat_desc {
+    padding-bottom: 1rem;
+  }
+  .wallet-stat_desc p {
+    font-size: .8rem;
+    text-align: justify;
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+    MAIN (TOTAL SECTION)
+  */
+  .main-total_section {
+    margin-top: 1rem;
+  }
+  .main-total_wrapper {
+    background-color: var(--color-operation-type-donation); padding: 1rem; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between;
+  }
+  .main-total_more-wrapper {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: .5rem;
+  }
+  .main-total_amount-value_wrapper {
+    margin-top: 1.5rem;
+    text-align: center; 
+    font-size: 2.5rem; 
+    font-weight: normal;
+  }
+  .main-total_btns_wrapper {
+    display: flex; 
+    gap: 1rem; 
+    justify-content: center;
+    /* background-color: var(--color-global-baackground_light); */
+    width: fit-content;
+    padding: .5rem;
+    margin-bottom: 3rem;
+  }
+  .main-total_btn-el {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    cursor: pointer;
+    background-color: var(--color-global-baackground_light);
+    padding: .5rem;
+    border-radius: .5rem;
+  }
+  .main-total_btn-el:hover {
+    background-color: var(--color-global-baackground_light);
+    scale: 1.85;
+    border-radius: .25rem;
+  }
+
+  /* 
+    meshes_local_group
+   */
+  .meshes_local_group_wrapper {
+    position: relative;
+    padding: 1rem;
+  }
+  .group_wrapper_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-urgency-low);
+    opacity: 0.3;
+  }
+  .group_wrapper_content p {
+    margin: 0;
+    white-space: nowrap;
+  }
+  .group_wrapper_content p:last-child {
+    margin-top: .5rem;
+  }
+  
+  /* 
+    TOTAL CAP
+   */
   .total-cap_container {
     margin-top: 3rem;
     justify-content: space-between;
     align-items: flex-start;
     position: relative;
   }
-
-
-  /* TOTAL CAP */
   .total-cap_wrapper {
     border-radius: 1rem;
     width: 100%;
-    /* background-color: blue; */
-    /* padding: 1rem; */
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -7000,7 +7932,6 @@ const checkCurrencyPair = (pair: any) => {
     margin: 0!important;
   }
   .total-cap_avatar {
-    /* margin: 0 auto; */
     background-color: var(--color-global-text);
     width: 15rem;
     height: 15rem;
@@ -7035,8 +7966,6 @@ const checkCurrencyPair = (pair: any) => {
     color: var(--color-global-text_second);
     text-transform: uppercase;
     font-weight: bold;
-    /* font-size: 1rem; */
-    /* text-align: center; */
   }
   .total-cap_count {
     font-size: 1.5rem;
@@ -7075,6 +8004,81 @@ const checkCurrencyPair = (pair: any) => {
     justify-content: center;
   }
 
+  /* 
+    Allocation block 
+  */
+  .allocation-block_wrapper {
+    grid-area: allocation; 
+    background-color: var(--color-global-baackground_light);
+    padding: 1rem;
+  }
+  .allocation-block_list {
+    list-style: none; 
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .allocation-block_el {
+    border: 1px solid var(--color-btn-disabled-bg);
+    padding: .5rem 1rem;
+    transition: all .1s ease-in;
+  }
+  .allocation-block_el:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+  }
+  .allocation-block_el-name {
+
+  }
+  .allocation-block_el-allocation {
+    font-size: .8rem;
+    color: var(--color-global-text_second);
+  }
+
+  /* 
+    currency pairs
+  */
+  .currency-price-stock_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-btn-hover-bg);
+    grid-area: currency;  
+    list-style: none; 
+    margin: 0; 
+    padding: 0 1rem;
+    width: 100%;
+    overflow-x: scroll;
+    margin-bottom: 1rem;
+  }
+  .currency-price-stock_wrapper {
+    text-wrap: nowrap;
+  }
+
+  /* popup local meshes group */
+  .localGroupList_container {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--color-bg-popup);
+  }
+  .local_list__opened {
+    opacity: 1;
+    transition: all .3s ease-in;
+    z-index: 101;
+  }
+  .local_list__closed {
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: -1;
+    display: none;
+  }
+
   /* CURRENT FUND CONTAINER */
   .current-fund_container {
     margin-left: .5rem;
@@ -7086,6 +8090,7 @@ const checkCurrencyPair = (pair: any) => {
     /* margin-left: .5rem;
     margin-right: .5rem; */
   }
+
   /* MESH */
   .mesh_container {
     display: grid;
@@ -7098,6 +8103,7 @@ const checkCurrencyPair = (pair: any) => {
     border: 1px solid var(--color-btn-hover-bg);
     padding: 1rem;
     transition: all .2s ease-in;
+    background-color: var(--color-global-baackground_light);
   }
   .mesh_wrapper  > p {
     margin: 0;
@@ -7119,7 +8125,7 @@ const checkCurrencyPair = (pair: any) => {
   .mesh_content-el {
     margin: 0;
   }
-    .mesh_content-el:last-child {
+  .mesh_content-el:last-child {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -7139,6 +8145,56 @@ const checkCurrencyPair = (pair: any) => {
   }
   .mesh_footer {
     align-items: center;
+  }
+
+  /* 
+  local_list_wrapper
+  */
+  .local_list_wrapper {
+      /* width: 1399px; */
+      width: 95vw;
+      max-width: 1400px;
+      height: 90%;
+      margin-top: 3rem!important;
+      margin: 0 auto;
+      overflow: hidden;
+      background-color: var(--color-global-baackground_light);
+  }
+  .local_list_header {
+    background-color: var(--color-btn-disabled-bg);
+    /* width: fit-content; */
+    height: 3rem; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .local_list_header p {
+    background-color: red;
+    width: fit-content;
+    margin: 0;
+  }
+  .local_list_header > div {
+    width: 2rem;
+    height: 2rem;
+    background-color: green;
+  }
+  .local_list_main {
+    overflow: scroll!important;
+    height: 100%;
+    padding: 0!important;
+  }
+  .mesh_group_container {
+    margin: 0!important;
+  }
+  .mesh_group_container header h4{
+    background-color: var(--color-btn-disabled-bg);
+    width: fit-content;
+    margin-top: 1rem;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+  }
+  .local_list_no-meshes {
+    background-color: red;
   }
 }
 @media screen and (min-width: 1200px) {
@@ -7206,14 +8262,14 @@ const checkCurrencyPair = (pair: any) => {
     margin-top: 1.5rem;
     text-align: center; 
     font-size: 3rem; 
-    font-weight: bold;
+    font-weight: normal;
   }
 
   .main-total_btns_wrapper {
     display: flex; 
     gap: 1rem; 
     justify-content: center;
-    background-color: var(--color-global-baackground_light);
+    /* background-color: var(--color-global-baackground_light); */
     width: fit-content;
     padding: .5rem;
     margin-bottom: 3rem;
@@ -7223,6 +8279,9 @@ const checkCurrencyPair = (pair: any) => {
     flex-direction: column; 
     align-items: center;
     cursor: pointer;
+    background-color: var(--color-global-baackground_light);
+    padding: .5rem;
+    border-radius: .5rem;
   }
   /* .main-total_btn-el p {
     margin: 0;
@@ -7459,6 +8518,7 @@ const checkCurrencyPair = (pair: any) => {
 
   .group_wrapper_content p {
     margin: 0;
+    white-space: nowrap;
   }
 
   /* MESH */
@@ -7566,6 +8626,9 @@ const checkCurrencyPair = (pair: any) => {
   .section_wrapper:hover{
     /* background-color: red!important; */
     /* cursor: pointer; */
+  }
+  .section_wrapper div p {
+    white-space: nowrap;
   }
   .local_list_no-meshes {
     background-color: red;
