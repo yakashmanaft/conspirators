@@ -5119,7 +5119,7 @@ const checkCurrencyPair = (pair: any) => {
       </div>
 
       <!-- #. ALLOCATION -->
-      <div class="allocation-block_wrapper">
+      <div class="allocation-block_wrapper" style="grid-area: allocation;">
         <h4>Моя Аллокация</h4>
 
         <!-- ALLOCATION EL -->
@@ -5148,9 +5148,56 @@ const checkCurrencyPair = (pair: any) => {
       </div>
 
       <!-- #. МОНЕТЫ -->
-      <div>
-        123
+      <div style="grid-area: monet; background-color: var(--color-urgency-middle-10);">
+        Раздел про МОНЕТы
       </div>
+
+      <!-- #. income / outcome group stat -->
+      <div style="grid-area: inoutstatgrli;" class="income-outcome-group-list_wrapper">
+        <!--  -->
+        <ul>
+          <p>Взносы</p>
+          <li>Еженедельный взнос</li>
+          <li>Донаты</li>
+        </ul>
+        <!--  -->
+        <ul>
+          <p>Налог уплачен</p>
+          <li>Капитализация</li>
+          <li>Купоны</li>
+          <li>Дивиденды</li>    
+          <li>Возврат кредита</li>
+          <li>Возврат инвестиций проекы</li>
+          <li>Возврат инвестиции фонда</li>
+          <li>Продажа</li>
+          <li>Прочее</li>
+        </ul>
+        <!--  -->
+        <ul>
+          <p>Налог не уплачен</p>
+          <li>Купоны</li>
+          <li>Дивиденды</li>
+          <li>Возврат кредита</li>
+          <li>Возврат инвестиций проекты</li>
+          <li>Возврат инвестиции фонда</li>
+          <li>Продажа</li>
+          <li>Прочее</li>
+        </ul>
+        <!--  -->
+        <ul>
+          <li>Банк инвест проекты</li>
+          <li>Банк инввест фонда</li>
+          <li>Банк инвест депозиты</li>
+          <li>Выдача кредита</li>
+          <li>Вывод</li>
+          <li>Прочее</li>
+        </ul>
+      </div>
+      <div style="grid-area: inoutstatgrdata;" class="income-outcome-group-data_wrapper">
+        income / outcome group data
+      </div>
+
+
 
       <!-- #. MESHES CAST -->
       <ul style="grid-area: list; list-style: none; padding: 0; margin-top: 1rem; margin-bottom: -1rem; ">
@@ -8232,6 +8279,8 @@ const checkCurrencyPair = (pair: any) => {
       "allocation list"
       "currency list"
       "stat stat"
+      "monet monet"
+      "inoutstatgrli inoutstatgrdata"
     ;
     gap: 2rem;
   }
@@ -8634,6 +8683,16 @@ const checkCurrencyPair = (pair: any) => {
     background-color: red;
   }
 
+  /* 
+  
+  */
+  /* статистика доходов / расходов */
+  .income-outcome-group-list_wrapper {
+    background-color: red;
+  }
+  .income-outcome-group-data_wrapper {
+    background-color: blue;
+  }
 }
 
 /* Для Chrome, Safari, Opera */
