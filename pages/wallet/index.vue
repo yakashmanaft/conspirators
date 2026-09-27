@@ -8,11 +8,10 @@ import { Section } from '@/shared/section';
 // import { StackedCard } from "@/components/card"
 import { BreadCrumbs } from "@/components/breadcrumbs"; 
 import { Button } from "@/components/button";
-
-
-// components
 import { Chip } from "~/components/chip";
 import { session } from "grammy";
+import { GanttChart } from "~/components/ganttchart";
+import { Diagram } from "~/components/diagram";
 
 // helpers
 import { fixedBackgroundScroll } from '@/helpers/fixed_bgc_scroll'
@@ -2099,6 +2098,7 @@ const currency_to_show =  ref({
 // POPUP
 // info total amount
 const info_total_popup_isOpened = ref(false)
+const analytics_total_popup_isOpened = ref(false)
 
 // meshes_cast
 const currecy_pair = ref([
@@ -2629,6 +2629,124 @@ const meshes_cast = ref([
     amount: 5556.33
   },
 ])
+
+// = date_today
+const date = new Date();
+const date_today = ref(
+  new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0]
+);
+// GANTT
+const width = ref(60);
+const height = ref(40);
+const activeDate = ref(date_today.value);
+//= Gant production
+const gantt_production = ref(null);
+const productionDateRangeList = ["2017-05-01", "2026-12-31"];
+const productionData = ref([
+  {
+    type: "normal",
+    color: "",
+    name: "Донаты",
+    schedule: [
+      {
+        id: 1,
+        name: "0508Донаты2017",
+        price: 115.00,
+        qty: 1,
+        desc: "Немного описания. Евгений",
+        backgroundColor: "rgb(253, 211, 172)",
+        textColor: "rgb(245, 36, 9)",
+        days: ["2017-05-27", "2017-05-27"],
+      },
+      {
+        id: 2,
+        name: "0608Донаты2017",
+        price: 350.00,
+        qty: 1,
+        desc: "Немного описания. Сергей",
+        backgroundColor: "rgb(253, 211, 172)",
+        textColor: "rgb(245, 36, 9)",
+        days: ["2017-05-28", "2017-05-28"],
+      },
+    ],
+  },
+  {
+    type: "normal",
+    color: "",
+    name: "Еженедельный взнос",
+    schedule: [
+      {
+        id: 1,
+        name: "2509Еженедельныйвзнос2026",
+        price: 100.00,
+        qty: 1,
+        desc: "Немного описания. Евгений",
+        backgroundColor: "rgb(253, 211, 172)",
+        textColor: "rgb(245, 36, 9)",
+        days: ["2026-09-25", "2026-09-25"],
+      },
+      {
+        id: 2,
+        name: "2509Еженедельныйвзнос2026",
+        price: 100.00,
+        qty: 1,
+        desc: "Немного описания. Сергей",
+        backgroundColor: "rgb(253, 211, 172)",
+        textColor: "rgb(245, 36, 9)",
+        days: ["2026-09-25", "2026-09-25"],
+      },
+    ],
+  },
+]);
+// Gantt = working hours
+const gantt_workingHours = ref(null);
+const dateRangeList = ref(["2017-05-01", date_today.value]);
+const workingHoursData = ref([
+  {
+    type: "normal",
+    color: "",
+    name: "Иванов И.И.",
+    schedule: [],
+  },
+]);
+// = alike
+const alikeName = (item) => {
+  return "∞ " + item.name;
+};
+// = scheduleTitle
+const scheduleTitle = (item: any): String => {
+  return item.name + " 123 scheduleTitle";
+};
+// CLICK EVENTS
+// = клик по ячейке расписания
+const onScheduleClick = (item: any) => {
+  // const { itemText } = item
+  console.log(item);
+};
+// = scroll до конца
+const onScrollXEnd = (obj: any) => {
+  console.log(obj);
+  console.log("домотали до конца)");
+};
+// = download excel
+const onDownloadClick = (type: string) => {
+  // gantt_workingHours
+  // gantt_production
+  if (type === "Sharer") {
+    // console.log(`onDownloadClicked in gantt_workingHours`);
+    gantt_workingHours.value.exportGanttExcel({
+      fileName: "gantt working hours excel",
+    });
+  } else if (type === "Task") {
+    // console.log(`onDownloadClicked in gantt_production`);
+    gantt_production.value.exportGanttExcel({
+      fileName: "gantt production excel",
+    });
+  }
+};
+
 
 const filter_title = ref('Мешки')
 const local_list_filtered = ref( meshes_cast.value.filter(el => el.tag === 'Деньги на счетах' && el.currency === 'RUB'))
@@ -4264,6 +4382,10 @@ onMounted(() => {
     if(event.target.classList.contains('info_total_popup_container')) {
       info_total_popup_isOpened.value = false; 
     }
+    // analytics total popup close
+    if(event.target.classList.contains('info_total_popup_container')) {
+      analytics_total_popup_isOpened.value = false; 
+    }
   })
 
   // CRYPTO PRICES GET
@@ -5105,7 +5227,7 @@ const checkCurrencyPair = (pair: any) => {
               />
             </div>
             <!-- Аналитика -->
-            <div class="main-total_btn-el">
+            <div class="main-total_btn-el" @click="analytics_total_popup_isOpened = true">
               <Icon
                 class="link"
                 name="mdi:google-analytics"
@@ -5153,48 +5275,72 @@ const checkCurrencyPair = (pair: any) => {
       </div>
 
       <!-- #. income / outcome group stat -->
+      <div style="grid-area: inoutstat; width: 98vw!important;">
+        <GanttChart
+          ref="gantt_production"
+          :data="productionData"
+          :dateRangeList="productionDateRangeList"
+          :scheduleTitle="scheduleTitle"
+          :itemWidth="width"
+          :itemHeight="height"
+          :activeDate="activeDate"
+          itemText="Task"
+          dateText="Date"
+          :alikeName="alikeName"
+          @downloadClick="onDownloadClick"
+          @scheduleClick="onScheduleClick"
+          @scrollXEnd="onScrollXEnd"
+        />
+
+        <div>
+          123
+        </div>
+      </div>
+
       <div style="grid-area: inoutstatgrli;" class="income-outcome-group-list_wrapper">
         <!--  -->
         <ul>
-          <p>Взносы</p>
+          <div style="background-color: gray;">Налог уплачен / Налог не уплачен</div>
           <li>Еженедельный взнос</li>
           <li>Донаты</li>
-        </ul>
-        <!--  -->
-        <ul>
-          <p>Налог уплачен</p>
           <li>Капитализация</li>
           <li>Купоны</li>
           <li>Дивиденды</li>    
           <li>Возврат кредита</li>
-          <li>Возврат инвестиций проекы</li>
-          <li>Возврат инвестиции фонда</li>
-          <li>Продажа</li>
-          <li>Прочее</li>
-        </ul>
-        <!--  -->
-        <ul>
-          <p>Налог не уплачен</p>
-          <li>Купоны</li>
-          <li>Дивиденды</li>
-          <li>Возврат кредита</li>
           <li>Возврат инвестиций проекты</li>
           <li>Возврат инвестиции фонда</li>
+          <li>Возврат крипта</li>
+          <li>Возврат из МОНЕТы</li>
           <li>Продажа</li>
           <li>Прочее</li>
         </ul>
+
         <!--  -->
         <ul>
           <li>Банк инвест проекты</li>
           <li>Банк инввест фонда</li>
           <li>Банк инвест депозиты</li>
+          <li>Банк инвест крипта</li>
+          <li>Банк инвест в МОНЕТы</li>
           <li>Выдача кредита</li>
           <li>Вывод</li>
           <li>Прочее</li>
         </ul>
+        <ul>
+          <li>Налог уплаченный</li>
+          <li>Налог неуплаченный</li>
+          <li>Налог на доходы физических лиц (НДФЛ)</li>
+          <li>ОСНО	Налог на прибыль (базовая ставка 25%), НДС (базовая ставка 22%, льготная — 10% или 0% для отдельных операций), налог на имущество.</li>
+          <li>УСН	Единый налог: 6% с доходов или 15% с разницы между доходами и расходами. При доходе свыше 20 млн ₽ в год возникает обязанность платить НДС (по стандартным или пониженным ставкам 5% и 7%). Налог на имущество платится только с недвижимости, облагаемой по кадастровой стоимости.</li>
+          <li>СХН	Единый сельскохозяйственный налог (6% с разницы между доходами и расходами, связанными с сельхозпроизводством) и НДС (при отсутствии освобождения).</li>
+          <li>АУСН	Единый налог (1% с доходов). </li>
+          <li>Страховые взносы за сотрудников (соучастников). </li>
+          <li>Имущественные налоги</li>
+        </ul>
       </div>
       <div style="grid-area: inoutstatgrdata;" class="income-outcome-group-data_wrapper">
-        income / outcome group data
+
+        123
       </div>
 
 
@@ -5466,6 +5612,69 @@ const checkCurrencyPair = (pair: any) => {
           </ul>
           <p>Не нашли что искали? Давайте попробуем посомтреть в разделе <nuxt-link to="/help">Помощь</nuxt-link></p>
           <p>Либо напишите нам в разделе <nuxt-link to="/about">Контакты</nuxt-link></p>
+        </div>
+      </div>
+    </div>
+    <!-- analitics by main total btn -->
+    <div v-if="analytics_total_popup_isOpened" 
+    id="info_total_popup" class="info_total_popup_container">
+
+      <div class="info_total_popup_wrapper analytics_total_popup_wrapper">
+        
+        <div class="info_total_popup_btn-close" @click.stop="analytics_total_popup_isOpened = false">
+          <p style="margin: 0; color: var(--color-global-text_second);">Состав и капитализация</p>
+          <Icon             
+            name="material-symbols-light:cancel-outline-rounded"
+            size="2rem"
+            color="var(--color-global-text)"
+          />
+        </div>
+        <div class="info_total_popup_content analytics_total_popup_content">
+
+          <!-- Diagram -->
+           <div>
+            <Diagram
+              :meshes_list="meshes_computed"
+            />
+           </div>
+           <div>
+            <div>
+              <ul style="margin: 0; list-style: none; padding: 0; display: flex; gap: 1rem; width: 90vw; overflow-x: scroll; padding: 1rem 0;">
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-available" type="checkbox" checked>
+                  <label for="check-available" style="white-space: nowrap;margin: 0;">available</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-deposit" type="checkbox" checked>
+                  <label for="check-deposit" style="white-space: nowrap;margin: 0;">deposit</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-invested stock" type="checkbox" checked>
+                  <label for="check-invested stock" style="white-space: nowrap;margin: 0;">invested stock</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-invested currency" type="checkbox" checked>
+                  <label for="check-invested currency" style="white-space: nowrap;margin: 0;">invested currency</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-debt loan" type="checkbox" checked>
+                  <label for="check-debt loan" style="white-space: nowrap;margin: 0;">debt loan</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-credit loan" type="checkbox" checked>
+                  <label for="check-credit loan" style="white-space: nowrap;margin: 0;">credit loan</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-invested crypto" type="checkbox" checked>
+                  <label for="check-invested crypto" style="white-space: nowrap;margin: 0;">invested crypto</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-invested project" type="checkbox" checked>
+                  <label for="check-invested project" style="white-space: nowrap;margin: 0;">invested project</label></li>
+                <li style="display: flex; align-items: center; gap: .5rem;">
+                  <input id="check-invested М" type="checkbox" checked>
+                  <label for="check-invested М" style="white-space: nowrap;margin: 0;">invested МОНЕТы</label></li>
+              </ul>
+            </div>
+            Здесь график размещаем
+           </div>
+           <div style="margin-top: 2rem;">
+            <p><span style="background-color: var(--color-global-text); color: var(--color-global-baackground_light); padding: .25rem .75rem; border-radius: 1rem;">Всего</span> <span style="margin: .5rem">+2500 / -2500</span> <span>Фильтр</span></p>
+            Здесь график доходы расходы размещаем
+           </div>
         </div>
       </div>
     </div>
@@ -6134,6 +6343,9 @@ const checkCurrencyPair = (pair: any) => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.analytics_total_popup_content {
 }
 .transaction_popup_btn-close,
 .info_total_popup_btn-close {
@@ -8280,6 +8492,7 @@ const checkCurrencyPair = (pair: any) => {
       "currency list"
       "stat stat"
       "monet monet"
+      "inoutstat inoutstat"
       "inoutstatgrli inoutstatgrdata"
     ;
     gap: 2rem;
@@ -8454,6 +8667,19 @@ const checkCurrencyPair = (pair: any) => {
     align-items: center;
     justify-content: center;
     font-weight: lighter;
+  }
+
+  /* 
+  TOTAL STAT
+   */
+  .analytics_total_popup_wrapper {
+    min-width: 50vw!important;
+    max-width: 95vw!important;
+    height: 90%;
+    justify-content: unset!important;
+  }
+  .analytics_total_popup_content {
+    max-height: unset!important;
   }
 
   /* WALLET SECTION */
