@@ -704,6 +704,20 @@ const addNewProject = () => {
             <Button type="pseudo-btn" bg="bg-full" link="" @click="addNewProject">Создать</Button>
           </div>
         </div>
+
+        <br>
+        <div style="background-color: var(--color-global-baackground_light);">
+          <div v-for="(project, index) in computedProjects"
+            :key="project.id"
+            class="project-item_wrapper"
+            @click.stop="$router.push(`/projects/${project.id}`)">
+            {{ project.name }}
+            <br>
+            Инвестировано
+            <br>
+            Вернулось
+          </div>
+        </div>
       </div>
     </div>
 
@@ -924,6 +938,7 @@ const addNewProject = () => {
     justify-content: flex-start;
     padding-top: 1rem;
     padding-bottom: 2rem;
+    width: 80vw;
   }
   .item_filter_search {
     
@@ -985,6 +1000,7 @@ const addNewProject = () => {
     justify-content: flex-start;
     padding-top: 1rem;
     padding-bottom: 2rem;
+    width: 97vw;
   }
   .item_filter_search {
     

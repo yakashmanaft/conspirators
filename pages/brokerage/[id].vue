@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // shared
 import {Container} from '@/shared/container'
+import {DefaultPopup} from '@/shared/popup'
 
 // components
 import { BreadCrumbs } from '~/components/breadcrumbs';
@@ -88,6 +89,9 @@ useHead({
     // current_task
     const current_mesh = ref()
 
+    // 
+    const popup_opened = ref(false)
+
     // CLICK
     const addTaskLedgerItem = () => {
         alert('В разработке')
@@ -95,6 +99,15 @@ useHead({
     const changeChip = (obj: any) => {
         currentChip.value = obj
     }
+
+    const onClickButton = (btn_name: string) => {
+        popup_opened.value = true
+        onPage_btn_click.value.name = btn_name
+    }
+    const onPage_btn_click = ref({
+        id: null,
+        name: ''
+    })
 
     // COMPUTED
     //= current lead
@@ -121,6 +134,12 @@ useHead({
     // ONMOUNTED
     //
     onMounted(( ) => {
+        // на всякий случай сбрасываем фиксацию прокрутки страницы при открытой модалке...
+        let body = document.getElementsByTagName('body')[0]
+        body.style.position = 'unset'
+        body.style.margin = 'unset'
+        body.style.height = 'unset'
+        body.style.overflow = 'unset'
         
         setTimeout(() => {
 
@@ -515,7 +534,7 @@ useHead({
         let array:any = []
 
         brokerage?.value?.invested_mash?.forEach(el => {
-                transaction_ledger.filter(tr => {
+                transaction_ledger?.filter(tr => {
                 if(el.id === tr.from_item_id || el.id === tr.target_item_id) {
 
                     
@@ -557,29 +576,80 @@ useHead({
 
             <div class="title-section_container">
                 <BreadCrumbs class="show-max-767"/>
-                <h1 style="font-weight: bold; font-size: 42px;">
-                    {{ brokerage.name }} <span style="font-size: .8rem; font-weight: normal; cursor: pointer">(Изм.)</span>
-                </h1>
-            </div>
-            <div style="width: fit-content; border-radius: 1rem; margin-top: 1rem; margin-left: 1rem;">
-                <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">999,999,999.00 RUB</p>
-                <p style="margin: 0; color: var(--color-global-text_second);">+999 999.99 RUB</p>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 style="font-weight: bold; font-size: 42px;">
+                        {{ brokerage.name }} <span style="font-size: .8rem; font-weight: normal; cursor: pointer">(Изм.)</span>
+                    </h1>
+
+                    <div style="padding: 8px;background-color: var(--color-global-baackground_light); border-radius: .5rem;" @click.prevent="onClickButton('mesh_settings');">
+                        <Icon             
+                        name="hugeicons:setting-07"
+                        size="2rem"
+                        color="var(--color-global-text)"
+                        />
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <ul>
-                    <li>Операции</li>
-                    <li>Пополнить</li>
-                    <li>Аналитика</li>
-                </ul>
+            <!-- TOTAL TABLO + ACTION BUTTONS -->
+            <div style="background-color: var(--color-global-baackground_light); border-radius: var(--bs-border-radius); display: flex; flex-direction: column; align-items: center; position: relative; padding: 2rem 0;">
+
+                <!-- more actions -->
+                <div style="position: absolute; right: 2rem; top: 1rem;" @click.prevent="onClickButton('mesh_more_action');">
+                    <Icon  
+                    style="rotate: 90deg;"           
+                    name="hugeicons:more-vertical-circle-01"
+                    size="2rem"
+                    color="var(--color-global-text)"
+                    />
+                </div>
+
+                <!-- TOTAL -->
+                <div style="width: fit-content; text-align:center;">
+                    <p style="margin: 0; font-size: 1.5rem; font-weight: bold;">999,999,999.00 RUB</p>
+                    <p style="margin: 0; color: var(--color-global-text_second);">+17.25 % / +999 999.99 RUB</p>
+                </div>
+    
+                <!-- BTNs -->
+                <div>
+                    <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 1rem; align-items: center; margin-top: 2rem;">
+                        <!-- <li>Операции</li> -->
+                        <li style="padding: 8px;background-color: #fff; border-radius: .5rem;" @click.prevent="onClickButton('mesh_history');">
+                            <Icon             
+                            name="hugeicons:transaction-history"
+                            size="2rem"
+                            color="var(--color-global-text)"
+                            />
+                        </li>
+                        <!-- <li>Пополнить</li> -->
+                        <li style="padding: 8px;background-color: #fff; border-radius: .5rem;" @click.prevent="onClickButton('mesh_cashin');">
+                            <Icon             
+                            name="hugeicons:plus-sign"
+                            size="2rem"
+                            color="var(--color-global-text)"
+                            />
+                        </li>
+                        <!-- <li>Аналитика</li> -->
+                        <li style="padding: 8px;background-color: #fff; border-radius: .5rem;" @click.prevent="onClickButton('mesh_stats');">
+                            <Icon             
+                            name="hugeicons:analysis-text-link"
+                            size="2rem"
+                            color="var(--color-global-text)"
+                            />
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+
 
             <!-- PAPERS -->
             <article class="papers_container">
-                <header>
+                <header style="margin-top: 1rem;">
                     <!-- <p>Фонды | Акции | Облигации | Валюта</p> -->
-                    <h2>Состав ценных бумаг</h2>
-                    <ul style="list-style: none; padding: 0; margin: 0; display: flex;">
+                    <!-- <h2>Состав ценных бумаг</h2> -->
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1rem;">
                         <li>
                             <input id="bonds" type="checkbox">
                             <label for="bonds">Облигации</label>
@@ -601,11 +671,110 @@ useHead({
 
                 <section>
                     <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li>
-                            <h3 style="margin: 0;">Акции</h3>
+                        <li style="margin-top: 1rem;">
+                            <h4 style="margin: 0;">Валюта и металлы</h4>
                             <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">РусГидро</li>
-                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">КАМАЗ</li>
+                                <li style="margin-top: 1rem; background-color: var(--color-btn-text); display: grid; grid-template-columns: 64px 3fr 1fr; gap: .5rem; min-height: 65px; align-items: center;">
+                                    <div style="background-color: var(--color-operation-type-donation); height: 100%; display: flex; align-items: center; justify-content: center; ">
+                                        <Icon
+                                            name="hugeicons:coins-02"
+                                            size="24px"
+                                            color="var(--color-wallet-fund-invested-wo)"
+                                        />
+                                    </div>
+                                    <div style="text-align: start; padding: .5rem 1rem;">
+                                        <p style="margin: 0; font-weight: bold;">Рубль</p>
+                                        <!-- <p style="color: var(--color-global-text_second); margin: 0;">260 CNY | 12,68 RUB</p> -->
+                                    </div>
+                                    <div style="background-color: var(--color-global-baackground_light); text-align: end; padding: .5rem 1rem; height: 100%; display: flex; justify-content: flex-end; align-items: center;">
+                                        <p style="margin: 0;">26,10</p>
+                                        <!-- <p style="margin: 0;">
+                                            <span style="color: var(--color-wallet-fund-available-wo)">+374,88 RUB | 12,82% </span>
+                                            </p>    -->
+                                    </div>
+                                </li>
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text); display: grid; grid-template-columns: 64px 3fr 1fr; gap: .5rem;">
+                                    <div style="background-color: var(--color-operation-type-donation); height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <Icon
+                                            name="hugeicons:coins-02"
+                                            size="24px"
+                                            color="var(--color-wallet-fund-invested-wo)"
+                                        />
+                                    </div>
+                                    <div style="text-align: start; padding: .5rem 1rem;">
+                                        <p style="margin: 0; font-weight: bold;">Китайский юань</p>
+                                        <p style="color: var(--color-global-text_second); margin: 0;">260 CNY | 12,68 RUB</p>
+                                    </div>
+                                    <div style="background-color: var(--color-global-baackground_light); text-align: end; padding: .5rem 1rem;">
+                                        <p style="margin: 0;">3297,06</p>
+                                        <p style="margin: 0;">
+                                            <span style="color: var(--color-wallet-fund-available-wo)">+374,88 RUB | 12,82% </span>
+                                            </p>   
+                                    </div>
+                                </li>
+                                <!-- <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Рубль</li> -->
+                            </ul>
+                        </li>
+                        <li style="margin-top: 1rem;">
+                            <h4 style="margin: 0;">Акции</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-top: 1rem; background-color: var(--color-btn-text); display: grid; grid-template-columns: 64px 3fr 1fr; gap: .5rem;">
+                                    <div style="background-color: var(--color-operation-type-donation); height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <Icon
+                                            name="hugeicons:file-empty-02"
+                                            size="24px"
+                                            color="var(--color-wallet-fund-invested-wo)"
+                                        />
+                                    </div>
+                                    <div style="text-align: start; padding: .5rem 1rem;">
+                                        <p style="margin: 0; font-weight: bold;">Газпром нефть</p>
+                                        <p style="color: var(--color-global-text_second); margin: 0;">2 шт | 588,11 RUB</p>
+                                    </div>
+                                    <div style="background-color: var(--color-global-baackground_light); text-align: end; padding: .5rem 1rem;">
+                                        <p style="margin: 0;">1176,30</p>
+                                        <p style="margin: 0;">
+                                            <span style="color: var(--color-wallet-fund-available-wo)">+271,85 RUB | 30,06% </span>
+                                            </p>   
+                                    </div>
+                                </li>
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text); display: grid; grid-template-columns: 64px 3fr 1fr; gap: .5rem;">
+                                    <div style="background-color: var(--color-operation-type-donation); height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <Icon
+                                            name="hugeicons:file-empty-02"
+                                            size="24px"
+                                            color="var(--color-wallet-fund-invested-wo)"
+                                        />
+                                    </div>
+                                    <div style="text-align: start; padding: .5rem 1rem;">
+                                        <p style="margin: 0; font-weight: bold;">Корпоративный Центр Икс 5</p>
+                                        <p style="color: var(--color-global-text_second); margin: 0;">4 шт | 2 029,50 RUB</p>
+                                    </div>
+                                    <div style="background-color: var(--color-global-baackground_light); text-align: end; padding: .5rem 1rem;">
+                                        <p style="margin: 0;">8118,00</p>
+                                        <p style="margin: 0;">
+                                            <span style="color: var(--color-urgency-high-10)">-3313,90 RUB | 28,98% </span>
+                                            </p>   
+                                    </div>
+                                </li>
+                                <li style="margin-top: .5rem; background-color: var(--color-btn-text); display: grid; grid-template-columns: 64px 3fr 1fr; gap: .5rem; min-height: 64px; align-items: center">
+                                    <div style="background-color: var(--color-operation-type-donation); height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <Icon
+                                            name="hugeicons:file-empty-02"
+                                            size="24px"
+                                            color="var(--color-wallet-fund-invested-wo)"
+                                        />
+                                    </div>
+                                    <div style="text-align: start; padding: .5rem 1rem;">
+                                        <p style="margin: 0; font-weight: bold;">Нет акций</p>
+                                        <!-- <p style="color: var(--color-global-text_second); margin: 0;">4 шт | 2 029,50 RUB</p> -->
+                                    </div>
+                                    <div style="background-color: var(--color-global-baackground_light); text-align: end; padding: .5rem 1rem; height: 100%; display: flex; justify-content: flex-end; align-items: center;">
+                                        <p style="margin: 0;">Оставить заявку</p>
+                                        <!-- <p style="margin: 0;">
+                                            <span style="color: var(--color-urgency-high-10)">-3313,90 RUB | 28,98% </span>
+                                            </p>    -->
+                                    </div>
+                                </li>
                             </ul>
                         </li>
                         <li style="margin-top: 1rem;">
@@ -620,209 +789,9 @@ useHead({
                                 <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Вечный портфель</li>
                             </ul>
                         </li>
-                        <li style="margin-top: 1rem;">
-                            <h3 style="margin: 0;">Валюта и металлы</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Доллар</li>
-                                <li style="margin-top: .5rem; background-color: var(--color-btn-text);">Рубль</li>
-                            </ul>
-                        </li>
                     </ul>
                 </section>
-            </article>
-
-            <!-- ABOUNT BROKERAGE ACCOUNT -->
-            <article class="about_container">
-
-                <header>
-                    <h2>О счете</h2>
-                    <p>Действующие правила по счету / фонду</p>
-                </header>
-
-                <div class="about_el_container">
-
-                    <div class="about_el_wrapper">
-                        <p>{{ brokerage.broker_tag }}</p>
-                    </div>
-    
-                    <div class="about_el_wrapper">
-                        <p style="margin: 0;">Тарифы</p>
-                        <ul>
-                            <li>fee: {{ brokerage.fee }}</li>
-                            <li>tax: {{ brokerage.tax }}</li>
-                            <li>Тариф у брокера: Инвестор</li>
-                        </ul>
-                    </div>
-
-                    <div class="about_el_wrapper" style="grid-column: span 3">
-                         {{ brokerage }}
-                    </div>
-                </div>
-            </article>
-
-            <!-- Invested band and conspirators -->
-            <article style="margin: 1rem; border-radius: var(--bs-border-radius); ">
-                <header>
-                    <h2>Доли</h2>
-                    <p>Распределение средств, согласно текущей аллокации</p>
-                </header>
-                <div class="investor_container">
-                    <!-- ДОЛИ -->
-                    <!-- DIAGRAM -->
-                    <section class="diagram_wrapper">
-                        <!-- <h3>Заголовок</h3> -->
-                        <svg class="chart" viewBox="0 0 40 50">
-    
-                            <circle 
-                                v-for="(mesh, index) in brokerage.invested_mash"  
-                                class="unit" 
-                                r="15.9" 
-                                cx="50%" 
-                                cy="50%" 
-                                @click.stop="set_current_mesh(mesh, index)"
-                                @mouseover="current_mesh = mesh"
-                            >
-                               {{ mesh }}
-                            </circle>
-                        </svg>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-    
-                            <div v-if="current_mesh?.id">
-                                <p style="margin: 0;">
-                                    <span style="color:var(--color-global-text_second); font-size: .8rem;">{{ (calcInvestorAllocation(current_mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }} %</span> <br>
-                                    <span>{{ translate_invested_meshes(current_mesh.id) }}</span> <br>
-                                    <span style="font-weight: bold;">{{(calcInvestorInvested(current_mesh.id) - calcInvestorWithdraw(current_mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</span> 
-                                </p>
-                            </div>
-                            <div v-else>
-                                <p style="margin: 0;">
-                                    <span style="color:var(--color-global-text_second); font-size: .8rem;">100%</span> <br>
-                                    <span>TOTAL</span> <br> 
-                                    <span style="font-weight: bold;">{{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}</span>
-                                </p>
-                            </div>
-                            <div style="font-size: .8rem; margin-top: 1rem;">
-                                <p style="margin: 0; color: var(--color-global-text_second);">+12 345.99 / +57.89%</p>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- LIST -->
-                     <br>
-                    <section class="list-diagram_wrapper">
-                        <ul style="border-bottom: 1px solid var(--color-global-text_second); padding-bottom: 1rem;">
-                            <li>
-                                <div class="list-diagram-el_allocation">100%</div>
-                                <div class="list-diagram-el_investor">
-                                    <div style="text-transform: uppercase;">Total</div>
-                                    <div class="list-diagram-el_investor_amount">
-                                        {{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}
-                                    </div>
-                                </div>
-                                <div class="list-diagram-el_amount">
-                                    <div class="list-diagram-el_profit">
-                                        +0.00 / +0.00%
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul style="margin-top: 1rem;" v-if="brokerage?.invested_mash?.length">
-                            <li 
-                                v-for="mesh in brokerage.invested_mash"
-                                @click="link_to_investor(mesh.id)"
-                            >
-                                <div class="list-diagram-el_allocation">{{ (calcInvestorAllocation(mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }}%</div>
-                                <div class="list-diagram-el_investor">
-                                    <div>
-                                        {{ translate_invested_meshes(mesh?.id) }}
-                                    </div>
-                                    <div class="list-diagram-el_investor_amount">{{(calcInvestorInvested(mesh.id) - calcInvestorWithdraw(mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</div>
-                                </div>
-                                <div class="list-diagram-el_profit">+12 345.99 / +57.89%</div>
-                            </li>
-                        </ul>
-                        <ul style="margin-top: 1rem;" v-else>
-                            Нет инвесторов
-                        </ul>
-                    </section>
-                    
-                </div>
-            </article>
-
-            <!-- historical graph -->
-            <article class="historical-graph_container">
-
-                <header>
-                    <h2>Анализ</h2>
-                    
-                </header>
-                
-                <section>
-                    <h3>График стоимости портфеля</h3>
-
-                    <div>
-                        <ul style="padding-left: 1rem; display: flex; gap: 2rem;">
-                            <li>
-                                Инвестировано
-                            </li>
-                            <li>
-                                Профит
-                            </li>
-                        </ul>
-                        
-                        <ChartTest
-                            :chart_type="'line'"
-                            :chart_height="350"
-                            :chart_title="'График стоимости портфеля'"
-                            :chart_categories="calcTotalByGraphDate_Categories()"
-                        />
-
-                        <div>
-                            {{ calcTotalByGraphDate_Categories() }}
-                        </div>
-                    </div>
-                </section>
-            </article>
-
-            <!-- TRANSACTIONS -->
-            <article class="transaction_container">
-                <header>
-                    <h2>Транзакции</h2>
-                    <p>Пополнения, приобретения, продажи, доходы, выводы</p>
-                </header>
-
-                <section>
-                    <ul class="transaction-list_container">
-                        <li 
-                            v-for="tr in transaction_ledger?.sort(function(a,b){
-                                return new Date(b.created_at) - new Date(a.created_at);
-                            })" 
-                            style=""
-                            class="transaction-list_el"
-                        >
-                            <p style="margin: 0;">{{ tr.created_at }}</p>
-                            <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">
-                                -{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }}
-                            </p>
-                            <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">
-                                +{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
-                            </p>
-                            <p style="margin: 0;" v-else>
-                                {{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
-                            </p>
-                            <p style="margin: 0;">{{ tr.comments }}</p>
-        
-                            <!--  -->
-                            <div style="position: absolute; top: 1rem; right: 1rem;">
-                                <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">mesh: {{ tr.target_item_id }}</p>
-                                <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">mesh: {{ tr.from_item_id }}</p>
-                            </div>
-                            <!-- {{ tr }} -->
-                        </li>
-                    </ul>
-
-                </section>
-            </article>
-            
+            </article>  
 
 
             <div style="position: fixed; bottom: 4rem; left: 0; width: 100%; padding: 0 1rem 1rem 1rem;">
@@ -967,6 +936,319 @@ useHead({
             </div> -->
         </div>
 
+        <!--  -->
+        <DefaultPopup
+            v-if="popup_opened"
+            @emitClosePopup="popup_opened = false"
+            :popup_title="onPage_btn_click.name"
+        >
+            <!-- 
+            mesh_settings
+            -->
+            <!-- ABOUNT BROKERAGE ACCOUNT -->
+            <article v-if="onPage_btn_click.name === 'mesh_settings'" class="about_container">
+
+                <header>
+                    <h2>О счете</h2>
+                    <p>Действующие правила по счету / фонду</p>
+                </header>
+
+                <div class="about_el_container">
+
+                    <div class="about_el_wrapper">
+                        <p>{{ brokerage.broker_tag }}</p>
+                    </div>
+    
+                    <div class="about_el_wrapper">
+                        <p style="margin: 0;">Тарифы</p>
+                        <ul>
+                            <li>fee: {{ brokerage.fee }}</li>
+                            <li>tax: {{ brokerage.tax }}</li>
+                            <li>Тариф у брокера: Инвестор</li>
+                        </ul>
+                    </div>
+
+                    <div class="about_el_wrapper" style="grid-column: span 3">
+                         {{ brokerage }}
+                    </div>
+                </div>
+            </article>
+            <!-- what about invest income -->
+            <article v-if="onPage_btn_click.name === 'mesh_settings'" class="income-setting_container">
+                <header>
+                    <h2>Доходы</h2>
+                </header>
+
+                <!--  -->
+                <section style="background-color: var(--color-global-baackground_light); padding: 1rem; border-radius: var(--bs-border-radius)">
+                    <header style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="invest-income-to-debt" style="margin: 0;">Выводить доходы на счет</label>
+                        <input id="invest-income-to-debt" type="checkbox">
+                    </header>
+                    <main style="margin-top: 1rem">
+                        Доходный счет
+                    </main>
+                </section>
+            </article>
+            <!-- Invested band and conspirators -->
+            <article v-if="onPage_btn_click.name === 'mesh_settings'" style="margin-top: 1rem; border-radius: var(--bs-border-radius); ">
+                <header>
+                    <h2>Доли</h2>
+                    <p>Распределение средств, согласно текущей аллокации</p>
+                </header>
+                <div class="investor_container">
+                    <!-- ДОЛИ -->
+                    <!-- DIAGRAM -->
+                    <section class="diagram_wrapper">
+                        <!-- <h3>Заголовок</h3> -->
+                        <svg class="chart" viewBox="0 0 40 50">
+    
+                            <circle 
+                                v-for="(mesh, index) in brokerage.invested_mash"  
+                                class="unit" 
+                                r="15.9" 
+                                cx="50%" 
+                                cy="50%" 
+                                @click.stop="set_current_mesh(mesh, index)"
+                                @mouseover="current_mesh = mesh"
+                            >
+                               {{ mesh }}
+                            </circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+    
+                            <div v-if="current_mesh?.id">
+                                <p style="margin: 0;">
+                                    <span style="color:var(--color-global-text_second); font-size: .8rem;">{{ (calcInvestorAllocation(current_mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }} %</span> <br>
+                                    <span>{{ translate_invested_meshes(current_mesh.id) }}</span> <br>
+                                    <span style="font-weight: bold;">{{(calcInvestorInvested(current_mesh.id) - calcInvestorWithdraw(current_mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</span> 
+                                </p>
+                            </div>
+                            <div v-else>
+                                <p style="margin: 0;">
+                                    <span style="color:var(--color-global-text_second); font-size: .8rem;">100%</span> <br>
+                                    <span>TOTAL</span> <br> 
+                                    <span style="font-weight: bold;">{{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}</span>
+                                </p>
+                            </div>
+                            <div style="font-size: .8rem; margin-top: 1rem;">
+                                <p style="margin: 0; color: var(--color-global-text_second);">+12 345.99 / +57.89%</p>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- LIST -->
+                     <br>
+                    <section class="list-diagram_wrapper">
+                        <ul style="border-bottom: 1px solid var(--color-global-text_second); padding-bottom: 1rem;">
+                            <li>
+                                <div class="list-diagram-el_allocation">100%</div>
+                                <div class="list-diagram-el_investor">
+                                    <div style="text-transform: uppercase;">Total</div>
+                                    <div class="list-diagram-el_investor_amount">
+                                        {{calcTotalInvested() - calcTotalWithdraw() }} {{ currency_to_show.ticket }}
+                                    </div>
+                                </div>
+                                <div class="list-diagram-el_amount">
+                                    <div class="list-diagram-el_profit">
+                                        +0.00 / +0.00%
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul style="margin-top: 1rem;" v-if="brokerage?.invested_mash?.length">
+                            <li 
+                                v-for="mesh in brokerage.invested_mash"
+                                @click="link_to_investor(mesh.id)"
+                            >
+                                <div class="list-diagram-el_allocation">{{ (calcInvestorAllocation(mesh.id) * 100 / (calcTotalInvested() - calcTotalWithdraw())).toFixed(2) }}%</div>
+                                <div class="list-diagram-el_investor">
+                                    <div>
+                                        {{ translate_invested_meshes(mesh?.id) }}
+                                    </div>
+                                    <div class="list-diagram-el_investor_amount">{{(calcInvestorInvested(mesh.id) - calcInvestorWithdraw(mesh.id)).toFixed(2)}} {{ currency_to_show.ticket }}</div>
+                                </div>
+                                <div class="list-diagram-el_profit">+12 345.99 / +57.89%</div>
+                            </li>
+                        </ul>
+                        <ul style="margin-top: 1rem;" v-else>
+                            Нет инвесторов
+                        </ul>
+                    </section>
+                    
+                </div>
+            </article>
+
+            <!-- 
+            mesh_more_action
+            -->
+            <!-- withdraw-->
+            <article v-if="onPage_btn_click.name === 'mesh_more_action'">
+                <header>
+                    <h2>Вывод средств</h2>
+                </header>
+                <main>
+                    Выбранный счет для вывода  <br>
+                    8124658172356
+                </main>
+            </article>
+            <!--  -->
+
+            <!-- 
+            history btn 
+            -->
+            <!-- TRANSACTIONS -->
+            <article v-if="onPage_btn_click.name === 'mesh_history'" class="transaction_container">
+                <header>
+                    <h2>Транзакции</h2>
+                    <p>Пополнения, приобретения, продажи, доходы, выводы</p>
+                </header>
+
+                <section>
+                    <ul class="transaction-list_container">
+                        <li 
+                            v-for="tr in transaction_ledger?.sort(function(a,b){
+                                return new Date(b.created_at) - new Date(a.created_at);
+                            })" 
+                            style="position: relative;"
+                            class="transaction-list_el"
+                        >
+                            <p style="margin: 0;">{{ tr.created_at }}</p>
+                            <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">
+                                -{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }}
+                            </p>
+                            <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">
+                                +{{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
+                            </p>
+                            <p style="margin: 0;" v-else>
+                                {{ (tr.from_item_qty * tr.from_item_amount).toFixed(2) }} {{ currency_to_show.ticket }} 
+                            </p>
+                            <p style="margin: 0;">{{ tr.comments }}</p>
+        
+                            <!--  -->
+                            <div style="position: absolute; top: 1rem; right: 1rem;">
+                                <p style="margin: 0;" v-if="tr.purpose.slice(0, 5) === 'Вывод'">mesh: {{ tr.target_item_id }}</p>
+                                <p style="margin: 0;" v-else-if="tr.purpose.slice(0, 6) === 'Выдача'">mesh: {{ tr.from_item_id }}</p>
+                            </div>
+                            <!-- {{ tr }} -->
+                        </li>
+                    </ul>
+
+                </section>
+            </article>
+
+            <!-- 
+            mesh_cashin
+            -->
+            <!-- withdraw-->
+            <article v-if="onPage_btn_click.name === 'mesh_cashin'">
+                <header>
+                    <h2>Пополнение</h2>
+                </header>
+                <main>
+                    <ul>
+                        <li>
+                            Тип пополнения
+                            <ul>
+                                <li>Личный взнос</li>
+                                <li>Инвестиция банды</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Способ пополнения
+                            <ul>
+                                <li>
+                                    Взнос
+                                </li>
+                                <li>
+                                    Выберите мешок
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </main>
+            </article>
+            <!--  -->
+
+            <!-- 
+            mesh_stats
+            -->
+            <article v-if="onPage_btn_click.name === 'mesh_stats'">
+
+                <main>
+                    <!--  -->
+                    <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <li>
+                            <section style="background-color: var(--color-global-baackground_light); padding: 1rem; border-radius: var(--bs-border-radius)">
+                                <h4 style="margin: 0;">СК</h4>
+                                <p style="margin: 0; margin-top: .5rem;">178365,78 RUB</p>
+                            </section>
+                        </li>
+                        <!-- Инвестировано -->
+                        <li>
+                            <section style="background-color: var(--color-global-baackground_light); padding: 1rem; border-radius: var(--bs-border-radius)">
+                                <h4 style="margin: 0;">Инвестировано, всего</h4>
+                                <p style="margin: 0; margin-top: .5rem;">220900,78 RUB</p>
+                            </section>
+                        </li>
+                        <!-- Выведено -->
+                        <li>
+                            <section style="background-color: var(--color-global-baackground_light); padding: 1rem; border-radius: var(--bs-border-radius)">
+                                <h4 style="margin: 0;">Выведено, всего</h4>
+                                <p style="margin: 0; margin-top: .5rem;">51000,78 RUB</p>
+                            </section>
+                        </li>
+                        <!-- Текущая стоимость -->
+                        <li>
+                            <section style="background-color: var(--color-global-baackground_light); padding: 1rem; border-radius: var(--bs-border-radius)">
+                                <h4 style="margin: 0;">Текущая стоимость</h4>
+                                <p style="margin: 0; margin-top: .5rem;">178000,78 RUB</p>
+                            </section>
+                        </li>
+                        <!-- Доходность -->
+                        <li>
+                            <section style="background-color: var(--color-global-baackground_light); padding: 1rem; border-radius: var(--bs-border-radius)">
+                                <h4 style="margin: 0;">Доходность, всего</h4>
+                                <p style="margin: 0; margin-top: .5rem;">17.35 % / 35 567.08 RUB</p>
+                            </section>
+                        </li>
+                    </ul>
+                </main>
+            </article>
+            <!-- historical graph -->
+            <article v-if="onPage_btn_click.name === 'mesh_stats'" class="historical-graph_container">
+
+                <header>
+                    <h2>График стоимости портфеля</h2>
+                </header>
+                
+                <section>
+
+                    <div>
+                        <ul style="padding-left: 1rem; display: flex; gap: 2rem;">
+                            <li>
+                                Инвестировано
+                            </li>
+                            <li>
+                                Профит
+                            </li>
+                        </ul>
+                        
+                        <ChartTest
+                            :chart_type="'line'"
+                            :chart_height="350"
+                            :chart_title="'График стоимости портфеля'"
+                            :chart_categories="calcTotalByGraphDate_Categories()"
+                        />
+
+                        <div>
+                            {{ calcTotalByGraphDate_Categories() }}
+                        </div>
+                    </div>
+                </section>
+            </article>
+
+
+        </DefaultPopup>
         
     </Container>
 </template>
@@ -1230,6 +1512,14 @@ useHead({
     }
 }
 @media screen and (min-width: 992px) and (max-width: 1199px) {
+    /* INCOME SETTING */
+    .income-setting_container {
+
+    }
+    .income-setting_wrapper {
+
+    }
+
     .investor_container {
         display: flex;
         gap: 1rem;

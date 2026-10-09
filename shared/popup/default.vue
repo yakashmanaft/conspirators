@@ -77,6 +77,7 @@ window.addEventListener('click', (e) => {
     background-color: var(--color-btn-text); 
     width: 100%; 
     border-radius: 1rem 1rem 0 0;
+    z-index: 1;
 }
 .popup_header .close_btn {
     width: 32px;
@@ -129,9 +130,17 @@ window.addEventListener('click', (e) => {
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 992px) and (max-width: 1199px){
     .popup_wrapper {
         width: 60%;
+    }
+    .popup_wrapper {
+        background-color: var(--color-btn-text); 
+        height: 90vh; 
+        width: 90%; 
+        position: relative; 
+        border-radius: 1rem; 
+        padding: .5rem 1rem;
     }
 }
 
