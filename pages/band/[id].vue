@@ -59,6 +59,39 @@ useHead({
             title: 'Выполнение'
         }
     ]
+
+    // income aticle
+    const income_article_computed = computed(() => {
+        let income_article = [
+            {
+                id: 1,
+                name: 'Еженедельные взносы',
+                total: 800.00
+            },
+            {
+                id: 2,
+                name: 'Возврат кредита',
+                total: 1800.00
+            },
+            {
+                id: 3,
+                name: 'Купоны / дивиденды',
+                total: 22800.00
+            },
+            {
+                id: 4,
+                name: 'Продажа',
+                total: 12800.00
+            },
+            {
+                id: 5,
+                name: 'Дар',
+                total: 1800.00
+            }
+        ]
+        return income_article
+    })
+
     const project_role_chip_computed = computed(() => {
 
         let array:any = []
@@ -170,6 +203,17 @@ useHead({
     const route = useRoute()
     const router = useRouter()
 
+    const colors = ref({
+        unit1: '#86cfa3',
+        unit2: '#a2c6e0',
+        unit3: '#ffc7ec',
+        unit4: '#f8faa0',
+        unit5: '#adffd8',
+        unit6: '#f2c48f',
+        unit7: '#e3bfe2',
+        unit8: '#6f75ad',
+    },) 
+
     onMounted(async () => {
         await useBandStore().loadBandData()
         await usePartnerStore().loadPartnerData()
@@ -217,6 +261,12 @@ useHead({
 
             currentChipProjectRole.value = project_role_chip_computed.value[0]
         }
+
+        //
+        setTimeout(() => {
+
+            setStrokeDashArrayAndOffset()
+        }, 1000)
     })
 
     // CLICK
@@ -306,6 +356,8 @@ useHead({
         }
     }
 
+
+
     // SET
     //= set route eto sharer
     const setSharerRoute = (userID:number, userType: string) => {
@@ -349,6 +401,41 @@ useHead({
         } 
         else {
             return 'участников'
+        }
+    }
+
+    //= setStrokeDashArrayAndOffset 
+    const setStrokeDashArrayAndOffset = () => {
+        let chart = document.querySelector('.diagram-income_chart')
+
+        if(chart) {
+            let units = chart.querySelectorAll('.diagram-income_unit')
+
+            for(let i = 0; i <= income_article_computed.value?.length; i++) {
+
+                if(income_article_computed.value[i]) {
+
+                    let ratio = income_article_computed.value[i].total / 40000 * 100
+                    console.log(ratio)
+
+                    units[i].setAttribute('stroke-dasharray', `${ratio},100`)
+                    units[i].setAttribute('stroke-dashoffset', 0);
+
+                    if(i === 0) {
+                        units[i].setAttribute('stroke-dashoffset', 0);
+                    } else {
+                        // Получаем значение 'stroke-dasharray' предыдущего элемента
+                        let sdArrPrev = parseFloat(units[i - 1].getAttribute('stroke-dasharray')) * (-1);
+                         // Получаем значение 'stroke-dashoffset' предыдущего элемента
+                        let sdOffPrev = parseFloat(units[i - 1].getAttribute('stroke-dashoffset'));
+                        // Суммируем значения
+                        let sumParam = sdArrPrev + sdOffPrev;
+                        // console.log(sumParam );
+                        // Устанавливаем значения в текущий элемент
+                        units[i].setAttribute('stroke-dashoffset', sumParam);
+                    }
+                }
+            }
         }
     }
 
@@ -803,6 +890,49 @@ useHead({
             <!-- <div v-if="mesh.ownerType === 'user'">
                 <Button type="pseudo-btn" :link="`/partners/${mesh.ownerID}`">{{mesh.ownerType}}{{ mesh.ownerID }}</Button>
             </div> -->
+        </div>
+
+        <!-- STAT -->
+        <div class="stat_section" style="margin-top: 1rem;">
+            <!-- INCOME -->
+            <div class="stat-income_section">
+                
+                <!-- diagram_wrapper -->
+                <div class="diagram_section">
+
+                    <!-- diagram -->
+                    <div class="diagram_wrapper">
+
+                        <svg class="diagram-income_chart" viewBox="0 0 40 40">
+                            <circle v-for="el in income_article_computed" :key="el.id" class="diagram-income_unit" r="15.9" cx="50%" cy="50%">
+                                {{el}}
+                            </circle>
+                        </svg>
+                    </div>
+
+                    <!-- list -->
+                    <div class="diagram-income-list_wrapper">
+                        <ul style="list-style: none; margin: 0; padding: 0;">
+                            <li style="font-weight: bold; padding-bottom: .5rem;">
+                                <p style="margin: 0;">Поступило, всего</p>
+                                <p style="margin: 0;">40 000 RUB</p>
+                            </li>
+                            <li v-for="(element, id) in income_article_computed">
+                                <p style="margin: 0; color: var(--color-global-text_second)">{{id + 1}}. {{element.name}}</p>
+                                <p style="color: var(--color-urgency-low-10);margin: 0;">+{{ element.total }} RUB</p>
+                            </li>
+                            <li style="margin-top: .5rem;"><p style="margin: 0; color: var(--color-global-text_second)">
+                                Еще
+                            </p></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- OUTCOME -->
+            <div style="background-color: var(--color-urgency-high-10)">
+                outcome
+            </div>
+            
         </div>
 
         <!-- CHIP titles -->
@@ -1799,6 +1929,107 @@ useHead({
         margin-top: 2rem;
         margin-right: 1rem;
         width: 500px;
+    }
+
+    /* STAT SECTION */
+    .stat_section {
+        width: 98vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    .stat-income_section {
+        /* padding: 1rem; */
+        /* background-color: var(--color-global-baackground_light);  */
+    }
+
+    /* DIAGRAM */
+    .diagram_section {
+        display: grid; 
+        grid-template-areas: 
+            /* 'filter filter' */
+            'diagram legend';
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        grid-template-columns: 1fr 2fr;
+    }
+    .diagram_wrapper {
+        grid-area: diagram;
+        /* background-color: var(--color-global-baackground_light); */
+        /* width: 25rem;  */
+        width: 100%;
+        /* height: 25rem;  */
+        position: relative;
+        /* border-radius: var(--bs-border-radius); */
+        padding: 1rem;
+        border-radius: var(--bs-border-radius);
+        background: rgba(64, 204, 87, 10);
+        background: linear-gradient(0deg, rgba(64, 204, 87, .5) 0%, rgba(250, 248, 248, 1) 10%);
+    }
+    .diagram_wrapper svg{
+        margin: 0 auto;
+    }
+    .diagram-income_chart {
+        width: 200px;
+        /* height: 200px; */
+    }
+    .diagram-income-list_wrapper {
+        grid-area: legend;
+        /* background-color: var(--color-global-baackground_light); */
+        background: rgba(64, 204, 87, 10);
+        background: linear-gradient(0deg, rgba(64, 204, 87, .5) 0%, rgba(250, 248, 248, 1) 10%);
+        height: 100%;
+        padding: 1rem 1.5rem;
+        border-radius: var(--bs-border-radius);
+    }
+    .diagram-income_unit {
+        fill: none;
+        stroke-width: 8;
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
+    /* #1 */
+    .diagram-income_unit:nth-child(1) {
+        stroke: v-bind('colors.unit1');
+    }
+    /* #2 */
+    .diagram-income_unit:nth-child(2) {
+        stroke: v-bind('colors.unit2');
+    }
+    /* #3 */
+    .diagram-income_unit:nth-child(3) {
+        /* stroke: #ffc7ec; */
+        stroke: v-bind('colors.unit3');
+    }
+    /* #4 */
+    .diagram-income_unit:nth-child(4) {
+        stroke: v-bind('colors.unit4');
+    }
+    /* 5 */
+    .diagram-income_unit:nth-child(5) {
+        stroke: v-bind('colors.unit5');
+    }
+    /* #6 */
+    .diagram-income_unit:nth-child(6) {
+        stroke: v-bind('colors.unit6');
+    }
+    /* #7 */
+    .diagram-income_unit:nth-child(7) {
+        stroke: v-bind('colors.unit7');
+    }
+    /* #8 */
+    .diagram-income_unit:nth-child(8) {
+        stroke: v-bind('colors.unit8');
+    }
+    .diagram-income_unit__hovered {
+        stroke-width: 8;
+    }
+    .diagram-income-list_wrapper ul li{
+        color: var(--color-urgency-low-10);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
 @media screen and (min-width: 1400px) {
