@@ -571,6 +571,54 @@ useHead({
             <p v-if="band?.name === 'guest-band'" style="width: fit-content;background-color: var(--color-wallet-fund-debt-wo); color: var(--color-btn-text); padding: 2px 8px; border-radius: 1rem; margin-top: .5rem; font-size: .8rem;">Демонстрационная страница банды</p>
         </div>
 
+        <!-- TOTAL BUDGET ALLOWED -->
+        <div class="total-budget_container">
+
+            <!-- updated date -->
+            <p style="background-color: var(--color-urgency-low-wo);">Обновлено 01.10.2026</p>
+
+            <!-- STAT -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); background-color: var(--color-status-paused);">
+                <p>Потенциал</p>
+                <p>Факт</p>
+                <p>Рейтинг</p>
+                <p>Рейтинг</p>
+                <p>197486,17 RUB</p>
+                <p>159105,33 RUB</p>
+                <p>0,685</p>
+                <p>4,15</p>
+            </div>
+
+            <!-- available budger -->
+            <ul style="margin: 0; padding: 0; list-style: none; margin-top: 1rem;">
+                <p style="width: fit-content; background-color: var(--color-wallet-fund-available-wo);">26302,65 RUB</p>
+                <li>
+                    <p>Валюта ЦБ РФ (Наличка | Озон | Сбер | Яндекс Фии | Яндекс | А-Банк | ВТБ)</p>
+                    <p><span style="font-weight: bold;">26302,65 RUB</span> | 50,00 RUB | 6489,56 RUB | 4129,97 RUB | 2502,00 RUB | 10106,20 RUB | 24,92 RUB | 3000,00 RUB </p> 
+                </li>
+                <li>
+                    <p>Иностранная валюта (Наличка)</p>
+                    <p>0,00 RUB | 0,00 RUB</p>
+                    <p>usd/rub <br> 83,48 | 0,00 RUB</p>
+                    <p>eur/rub <br> 94,32 | 0,00 RUB</p>
+                    <p>cny/rub <br> 12,43 | 0,00 RUB</p>
+                </li>
+            </ul>
+
+            <!-- invest budget -->
+            <ul style="margin: 0; padding: 0; list-style: none; margin-top: 1rem;">
+                <p style="width: fit-content; background-color: var(--color-urgency-middle);">132802,68 RUB</p>
+                <li>
+                    <p>Фондовый рынок (Т-Банк | А-Банк)</p>
+                    <p><span style="font-weight: bold;">128802,68 RUB</span> | 98,42% 126768,68 RUB | 1,58% 2034,00 RUB</p> 
+                    <p>Вклады (-)</p>
+                    <p>0,00 RUB | 0,00 RUB</p> 
+                    <p>ЦФА (OZON)</p>
+                    <p>4000,00 RUB | 100% 4000 RUB</p> 
+                </li>
+            </ul>
+        </div>
+
         <!-- TOTAL CAP -->
         <div class="cap_container">
             <div class="cap-header_wrapper">
@@ -1942,6 +1990,15 @@ useHead({
         /* padding: 1rem; */
         /* background-color: var(--color-global-baackground_light);  */
     }
+
+    /* 
+        TOTAL BUDGET
+    */
+    .total-budget_container {
+        /* background-color: var(--color-urgency-low-wo); */
+        width: 98vw;
+    }
+
 
     /* DIAGRAM */
     .diagram_section {
