@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // shared
 import {Container} from '@/shared/container'
+import { DefaultPopup } from '@/shared/popup'
 
 // components
 import { BreadCrumbs } from '~/components/breadcrumbs';
@@ -11,6 +12,16 @@ import { ChartTest } from '~/components/chart';
 
 // utils
 import { translateName } from '@/utils/translators';
+
+
+// DEFAULT POPUP SETTINGS
+const default_popup_opened = ref(false)
+const choosen_mesh_group_name = ref('')
+const toggle_default_popup_func = (mesh_group_name: string) => {
+    choosen_mesh_group_name.value = mesh_group_name
+    default_popup_opened.value = !default_popup_opened.value
+}
+
 
 useHead({
         title: "Кооператив конспираторов",
@@ -571,345 +582,66 @@ useHead({
             <p v-if="band?.name === 'guest-band'" style="width: fit-content;background-color: var(--color-wallet-fund-debt-wo); color: var(--color-btn-text); padding: 2px 8px; border-radius: 1rem; margin-top: .5rem; font-size: .8rem;">Демонстрационная страница банды</p>
         </div>
 
+        <!-- updated date -->
+        <p style="background-color: var(--color-global-baackground_light); width: fit-content; padding: .5rem 1rem; border-radius: var(--bs-border-radius)">Обновлено 01.10.2026</p>
+
         <!-- TOTAL BUDGET ALLOWED -->
         <div class="total-budget_container">
 
-            <!-- updated date -->
-            <p style="background-color: var(--color-urgency-low-wo);">Обновлено 01.10.2026</p>
-
-            <!-- STAT -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); background-color: var(--color-status-paused);">
-                <p>Потенциал</p>
-                <p>Факт</p>
-                <p>Рейтинг</p>
-                <p>Рейтинг</p>
-                <p>197486,17 RUB</p>
-                <p>159105,33 RUB</p>
-                <p>0,685</p>
-                <p>4,15</p>
-            </div>
-
             <!-- available budger -->
-            <p style="display: flex;justify-content: space-between; margin-top: 1rem; background-color: var(--color-wallet-fund-available-wo);">
-                <span>available</span>
-                <span>26302.65 RUB</span>
+            <p 
+                style="display: flex;justify-content: space-between; background-color: var(--color-global-baackground_light)"
+                @click.prevent="toggle_default_popup_func('available')"
+            >
+                <span style="border-radius: .45rem; padding: .25rem 1rem; width: fit-content; background-color: var(--color-wallet-fund-available-wo);">available</span>
+                <span>{{ (1447.35 + 26302.65).toFixed(2)}} RUB</span>
+                
             </p>
-            <ul style="margin: 0; margin-top: 1rem;">
-                <li>
-                    <p style="font-weight: bold; display: flex; justify-content: space-between;">
-                        <span>Валюта ЦБ РФ</span>
-                        <span>26302,65 RUB</span>
-                    </p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Наличка (0.17%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (50.00).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">ОЗОН (26.47%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (6489.56).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">SBER (15.13%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (4129.97).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">YANDEX (ФИИ) (8.75%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (2502.00).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">YANDEX(35.32%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (10106.20).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">A-BANK (0.17%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (48.92).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">VTB (13.98%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (3000.00).toFixed(2) }}RUB
-                                </p> 
-                        </main>
-                    </section>
-                </li>
-                <li>
-                    <p>Иностранная валюта (Наличка)</p>
-                    <p>0,00 RUB | 0,00 RUB</p>
-                    <p>usd/rub <br> 83,48 | 0,00 RUB</p>
-                    <p>eur/rub <br> 94,32 | 0,00 RUB</p>
-                    <p>cny/rub <br> 12,43 | 0,00 RUB</p>
-                </li>
-            </ul>
+
 
             <!-- invest budget -->
-            <p style="background-color: var(--color-urgency-middle);">132802,68 RUB</p>
-            <ul style="margin: 0; margin-top: 1rem;">
-                <!-- Фондовый рынок -->
-                <li>
-                    <p style="font-weight: bold;">Фондовый рынок</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Т-Банк | BOT (Моя доля: 75.52%) (97.42%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">126963,12 RUB
-                                +{{ (126963.12 - 111388.42).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-111388.42/126963.12)*100).toFixed(2)
-                                 }}%
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">А-Банк | ЕС.Бонды (2.58%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">3365,00 RUB
-                                +{{ (3365.00 - 3300.00).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-3300.00/3365.00)*100).toFixed(2)
-                                 }}%
-                                </p> 
-                        </main>
-                    </section>
-                </li>
-                <!-- Вклады -->
-                <li>
-                    <p style="font-weight: bold;">Вклады</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Т-Банк</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">128802,68 RUB RUB | 98,42% 126768,68 RUB</p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
-                    </section>
-                </li>
-                <!-- ЦФА -->
-                <li>
-                    <p style="font-weight: bold;">ЦФА</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">OZON</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">4000,00 RUB | 100% 4000 RUB</p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">А-Банк</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">0,00 RUB | 0% 0,00 RUB</p> 
-                        </main>
-                    </section>
-                </li>
-                <!-- Металлы -->
-                <li>
-                    <p style="font-weight: bold;">Металлы</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">SBER</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">134,94 RUB
-                                +{{ (134.94 - 73.42).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-73.42/134.94)*100).toFixed(2)
-                                 }}%
-                                </p> 
-                        </main>
-                    </section>
-                </li>
-            </ul>
+            <p 
+                style="background-color: var(--color-global-baackground_light); display: flex; justify-content: space-between;" 
+                @click.prevent="toggle_default_popup_func('invested-near')"
+            >
+                <span style="border-radius: .45rem; padding: .25rem 1rem; width: fit-content; background-color: var(--color-urgency-middle)">INVESTED NEAR</span>
+                <span>{{ (126963.12 + 3365.00 + 134.94).toFixed(2)}} RUB</span>
+            </p>
 
             <!-- long maybe invest -->
-            <p style="background-color: var(--color-urgency-high-10);">132802,68 RUB</p>
-            <ul style="margin: 0; margin-top: 1rem;">
-                
-                <!-- ПДС -->
-                <li>
-                    <p style="font-weight: bold;">ПДС</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">SBER</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">10390,41 RUB
-                                +{{ (10390.41 - 5000.00).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-5000.00/10390.41)*100).toFixed(2)
-                                }}%
-                                </p> 
-                        </main>
-                    </section>
-                </li>
-                <!-- Кредиты -->
-                <li>
-                    <p style="font-weight: bold;">Выдача кредитов / займов</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Сергей (95.36%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">Остаток: {{ 11794.34 }}</p> 
-                        </main>
-                    </section>
-
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
-                    </section>
-                </li>
-                <!-- Крипто-дебет -->
-                <li>
-                    <p style="font-weight: bold;">Крипто-дебет</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Phantom Wallet (29.15%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ (83.48*100.59*0.08678).toFixed(2) }} RUB
-                                +{{ ((83.48*100.59*0.08678) - (83.48*1100.59*0.08678)).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-(83.48*100.59*0.08678)/(83.48*1100.59*0.08678))*100).toFixed(2)
-                                }}%
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Metamask Wallet (29.15%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ 83.48*187.91 }} RUB
-                                +{{ ((83.48*187.91) - 13200.00).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-13200.00/(83.48*187.91))*100).toFixed(2)
-                                }}%
-                                </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Telegram Wallet (15.59%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ 83.48*187.91 }} RUB
-                                +{{ ((83.48*187.91) - 13200.00).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-13200.00/(83.48*187.91))*100).toFixed(2)
-                                }}%
-                                </p> 
-                        </main>
-                    </section>
-                </li>
-                <!-- Крипто-stake -->
-                <li>
-                    <p style="font-weight: bold;">Крипто-стейкинг</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Phantom Wallet (100.00%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">
-                                {{ 83.48*100.59*1.1326 }} RUB
-                                +{{ ((83.48*100.59*1.1326) - (83.48*100.59*1.00)).toFixed(2) }}RUB |
-                                {{ 
-                                    ((1-(83.48*100.59*1.00)/(83.48*100.59*1.1326))*100).toFixed(2)
-                                }}%
-                                </p> 
-                        </main>
-                    </section>
-                </li>
-                <!-- Проекты -->
-                <li>
-                    <p style="font-weight: bold;">Проекты</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">1007Лотерея2025 (59.49%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">{{ ( -2350.00).toFixed(2) }} RUB 
-                                {{ ((2750.00 - 400.00)/2750.00 * 100).toFixed(2) }}%
-                            </p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">sportclubteam (40.51%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">{{ ( -1600.00).toFixed(2) }} RUB 
-                                {{ ((1600.00 - 0.00)/1600.00 * 100).toFixed(2) }}%
-                            </p> 
-                        </main>
-                    </section>
-
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
-                    </section>
-                </li>
-            </ul>
+            <p 
+                style="background-color: var(--color-global-baackground_light); display: flex; justify-content: space-between;"
+                @click.prevent="toggle_default_popup_func('invested-far')"
+            >
+                <span style="border-radius: .45rem; padding: .25rem 1rem; background-color: var(--color-urgency-high-10); width: fit-content;">INVESTED FAR</span>
+                <span>132802.68 RUB</span>
+            </p>
 
             <!-- wai guo -->
-            <p style="background-color: var(--color-error);">5501814,00 RUB</p>
-            <ul style="margin: 0; margin-top: 1rem;">
-                <!-- Налоги -->
-                <li>
-                    <p style="font-weight: bold;">Неуплаченные налоги</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Автомобиль Лада 2114 (0.00%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">{{ 0.00 }} RUB</p> 
-                        </main>
-                    </section>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Налог на доходы Самозянятый (100.00%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">{{ 15.00 }} RUB</p> 
-                        </main>
-                    </section>
-
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
-                    </section>
-                </li>
-                <!-- Ипотека -->
-                <li>
-                    <p style="font-weight: bold;">Ипотека</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">Объект (100.00%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">{{ 5042000.00 }} RUB</p> 
-                        </main>
-                    </section>
-                </li>
-                <!-- Кредитные карты -->
-                <li>
-                    <p style="font-weight: bold;">Кредитные карты</p>
-                    <section style="background-color: var(--color-global-baackground_light);">
-                        <header style="color: var(--color-global-text_second)">SBER (100.00%)</header>
-                        <main style="color: var(--color-global-text_second)">
-                            <p style="color: var(--color-global-text_second)">{{ 458400.00 }} RUB</p> 
-                        </main>
-                    </section>
-                </li>
-            </ul>
+            <p 
+                style="background-color: var(--color-global-baackground_light);"
+                @click.prevent="toggle_default_popup_func('debt')"
+            >
+                <span style="border-radius: .45rem; padding: .25rem 1rem; background-color: var(--color-error); width: fit-content;">Долги</span>
+                <span style="margin-top: .5rem;">5501814.00 RUB</span>
+            </p>
         </div>
 
         <!-- TOTAL CAP -->
         <div class="cap_container">
+            
             <div class="cap-header_wrapper">
 
-                <!-- ЗАГОЛОВОК + КАПА -->
-                <div>
-                    <h2 style="margin: 0; color: var(--color-global-text_second); ">Стоимость портфеля</h2>
-                    <p style="margin: 0;font-size: 2rem; font-weight: bold;">~2 468.75 RUB</p>
+                <!-- ЗАГОЛОВОК + КОЭФФИЦИЕНТ / РЕЙТИНГ-->
+                <div style="background-color: var(--color-global-text); padding: 1rem; border-radius: var(--bs-border-radius)">
+                    <h2 style="margin: 0; color: var(--color-btn-text); ">Рейтинг</h2>
+                    <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var( --color-btn-wo-bg)">4.15</p>
+                </div>
+
+                <!-- ЗАГОЛОВОК + КАПА В ДЕНЬГАХ -->
+                <div style="padding: 1rem; border-radius: var(--bs-border-radius)">
+                    <h2 style="margin: 0; color: var(--color-global-text_second); ">Капитал RUB</h2>
+                    <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-global-text)">~{{ 27750.00 + 130463.06 + 132802.68}}</p>
                 </div>
                 <!-- ФИЛЬТР СЕКЦИЙ МЕШКОВ -->
                 <div class="popup_label-btn">
@@ -1152,6 +884,242 @@ useHead({
         
                     </ul>
                     <p>2025</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INCOME / OUTCOME TOTAL -->   
+        <div class="cap-header_wrapper" style="margin-top: 2rem;">
+            <!-- ЗАГОЛОВОК + INCOME-->
+            <div style="background-color: var(--color-urgency-low-wo); padding: 1rem; border-radius: var(--bs-border-radius)">
+                <h2 style="margin: 0; color: var(--color-btn-text); ">Поступило RUB</h2>
+                <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-btn-text)">+2 468.99</p>
+            </div>
+            <!-- ЗАГОЛОВОК + OUTCOME-->
+            <div style="background-color: var(--color-wallet-fund-debt-wo); padding: 1rem; border-radius: var(--bs-border-radius)">
+                <h2 style="margin: 0; color: var(--color-btn-text); ">Расход RUB</h2>
+                <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-btn-text)">-2 468.99</p>
+            </div>
+        </div>  
+        <div>
+
+            <!-- history graph -->
+            <div id="history-graph" class="history_balance-container graph-container">
+        
+                <div class="year_balance-wrapper graph_year-wrapper">
+                    <p>2023</p>
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 30%;"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 50%;"></div>
+                                <div class="expense" style="height: 20%;"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 30%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Апр.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 55%;"></div>
+                            </div>
+                            <p>Май.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 85%;"></div>
+                            </div>
+                            <p>Июн.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Июл.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 45%;"></div>
+                                <div class="expense" style="height: 15%;"></div>
+                            </div>
+                            <p>Авг.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Сен.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Окт.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 77%;"></div>
+                                <div class="expense" style="height: 35%;"></div>
+                            </div>
+                            <p>Ноя.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 25%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Дек.</p>
+                        </li>
+                    </ul>
+                </div>
+        
+                <div class="year_balance-wrapper graph_year-wrapper">
+                    <p>2024</p>
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 30%;"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 50%;"></div>
+                                <div class="expense" style="height: 20%;"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 30%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Апр.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 55%;"></div>
+                            </div>
+                            <p>Май.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 85%;"></div>
+                            </div>
+                            <p>Июн.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Июл.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 45%;"></div>
+                                <div class="expense" style="height: 15%;"></div>
+                            </div>
+                            <p>Авг.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 70%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Сен.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Окт.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 77%;"></div>
+                                <div class="expense" style="height: 35%;"></div>
+                            </div>
+                            <p>Ноя.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 25%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Дек.</p>
+                        </li>
+                    </ul>
+                </div>
+        
+                <div class="year_balance-wrapper graph_year-wrapper">
+                    <p>2025</p>
+                    <ul>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 20%;"></div>
+                                <div class="expense" style="height: 30%;"></div>
+                            </div>
+                            <p>Янв.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 50%;"></div>
+                                <div class="expense" style="height: 20%;"></div>
+                            </div>
+                            <p>Фев.</p>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="income" style="height: 60%;"></div>
+                                <div class="expense" style="height: 25%;"></div>
+                            </div>
+                            <p>Мар.</p>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
+                        <li>
+                            <div></div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1688,8 +1656,367 @@ useHead({
     <br>
     <br>
     <br>
-        
     </Container>
+
+    <!-- DEFAULT POPUP -->
+    <DefaultPopup
+        v-if="default_popup_opened"
+        @emitClosePopup="toggle_default_popup_func('')"
+    >
+        default_popup_opened for: {{ choosen_mesh_group_name }}
+
+        <!-- FOR AVAILABLE -->
+        <ul v-if="choosen_mesh_group_name === 'available'">
+            <li>
+                <p style="font-weight: bold; display: flex; justify-content: space-between;">
+                    <span>Валюта ЦБ РФ</span>
+                    <span>26302,65 RUB</span>
+                </p>
+                <ul>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">Наличка (0.17%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (50.00).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">ОЗОН (26.47%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (6489.56).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">SBER (15.13%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (4129.97).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">YANDEX (ФИИ) (8.75%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (2502.00).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">YANDEX(35.32%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (10106.20).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">A-BANK (0.17%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (48.92).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                    <li>
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">VTB (13.98%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="color: var(--color-global-text_second)">
+                                    {{ (3000.00).toFixed(2) }}RUB
+                                    </p> 
+                            </main>
+                        </section>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p style="font-weight: bold; display: flex; justify-content: space-between;">
+                    <span>Иностранная валюта</span>
+                    <span>1447.35 RUB</span>
+                </p>
+                <ul>
+                    <li>
+                        <!-- Наличкка -->
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">Наличка (32.70%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="margin: 0;color: var(--color-global-text_second)">
+                                    {{ (473.23).toFixed(2) }}RUB
+                                    </p> 
+                                <ul>
+                                    <li>EUR 5.00*94.32 usd/rub 471.60 RUB</li>
+                                    <li>VND 500.00*0.003257 vnd/rub 1.63 RUB </li>
+                                </ul>
+                            </main>
+                        </section>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <!-- T-BANK -->
+                        <section style="background-color: var(--color-global-baackground_light);">
+                            <header style="color: var(--color-global-text_second)">T-Банк (67.30%)</header>
+                            <main style="color: var(--color-global-text_second)">
+                                <p style="margin: 0;color: var(--color-global-text_second)">
+                                    {{ (974.13).toFixed(2) }}RUB
+                                    </p> 
+                                <ul style="margin: 0">
+                                    <li>EUR 10.18.00*83.48 usd/rub 849.83 RUB</li>
+                                    <li>CNY 10.00*12.43 cny/rub 124.30 RUB </li>
+                                </ul>
+                            </main>
+                        </section>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- FOR INVESTED-NEAR -->
+        <ul v-if="choosen_mesh_group_name === 'invested-near'">
+            <!-- Фондовый рынок -->
+            <li>
+                <p style="font-weight: bold;">Фондовый рынок</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Т-Банк | BOT (Моя доля: 75.52%) (97.42%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">126963.12 RUB
+                            +{{ (126963.12 - 111388.42).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-111388.42/126963.12)*100).toFixed(2)
+                                }}%
+                            </p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">А-Банк | ЕС.Бонды (2.58%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">3365,00 RUB
+                            +{{ (3365.00 - 3300.00).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-3300.00/3365.00)*100).toFixed(2)
+                                }}%
+                            </p> 
+                    </main>
+                </section>
+            </li>
+            <!-- Вклады -->
+            <li>
+                <p style="font-weight: bold;">Вклады</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Т-Банк</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">0.00 RUB RUB | 0.00% 0.00 RUB</p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
+                </section>
+            </li>
+            <!-- ЦФА -->
+            <li>
+                <p style="font-weight: bold;">ЦФА</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">OZON</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">0.00 RUB | 0.00% 4000 RUB</p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">А-Банк</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">0.00 RUB | 0% 0.00 RUB</p> 
+                    </main>
+                </section>
+            </li>
+            <!-- Металлы -->
+            <li>
+                <p style="font-weight: bold;">Металлы</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">SBER</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">134.94 RUB
+                            +{{ (134.94 - 73.42).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-73.42/134.94)*100).toFixed(2)
+                                }}%
+                            </p> 
+                    </main>
+                </section>
+            </li>
+        </ul>
+
+        <!-- FOR INVESTED-FAR -->
+        <ul v-if="choosen_mesh_group_name === 'invested-far'">
+            
+            <!-- ПДС -->
+            <li>
+                <p style="font-weight: bold;">ПДС</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">SBER</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">10390,41 RUB
+                            +{{ (10390.41 - 5000.00).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-5000.00/10390.41)*100).toFixed(2)
+                            }}%
+                            </p> 
+                    </main>
+                </section>
+            </li>
+            <!-- Кредиты -->
+            <li>
+                <p style="font-weight: bold;">Выдача кредитов / займов</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Сергей (95.36%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">Остаток: {{ 11794.34 }}</p> 
+                    </main>
+                </section>
+
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
+                </section>
+            </li>
+            <!-- Крипто-дебет -->
+            <li>
+                <p style="font-weight: bold;">Крипто-дебет</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Phantom Wallet (29.15%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">
+                            {{ (83.48*100.59*0.08678).toFixed(2) }} RUB
+                            +{{ ((83.48*100.59*0.08678) - (83.48*1100.59*0.08678)).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-(83.48*100.59*0.08678)/(83.48*1100.59*0.08678))*100).toFixed(2)
+                            }}%
+                            </p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Metamask Wallet (29.15%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">
+                            {{ 83.48*187.91 }} RUB
+                            +{{ ((83.48*187.91) - 13200.00).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-13200.00/(83.48*187.91))*100).toFixed(2)
+                            }}%
+                            </p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Telegram Wallet (15.59%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">
+                            {{ 83.48*187.91 }} RUB
+                            +{{ ((83.48*187.91) - 13200.00).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-13200.00/(83.48*187.91))*100).toFixed(2)
+                            }}%
+                            </p> 
+                    </main>
+                </section>
+            </li>
+            <!-- Крипто-stake -->
+            <li>
+                <p style="font-weight: bold;">Крипто-стейкинг</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Phantom Wallet (100.00%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">
+                            {{ 83.48*100.59*1.1326 }} RUB
+                            +{{ ((83.48*100.59*1.1326) - (83.48*100.59*1.00)).toFixed(2) }}RUB |
+                            {{ 
+                                ((1-(83.48*100.59*1.00)/(83.48*100.59*1.1326))*100).toFixed(2)
+                            }}%
+                            </p> 
+                    </main>
+                </section>
+            </li>
+            <!-- Проекты -->
+            <li>
+                <p style="font-weight: bold;">Проекты</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">1007Лотерея2025 (59.49%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">{{ ( -2350.00).toFixed(2) }} RUB 
+                            {{ ((2750.00 - 400.00)/2750.00 * 100).toFixed(2) }}%
+                        </p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">sportclubteam (40.51%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">{{ ( -1600.00).toFixed(2) }} RUB 
+                            {{ ((1600.00 - 0.00)/1600.00 * 100).toFixed(2) }}%
+                        </p> 
+                    </main>
+                </section>
+
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
+                </section>
+            </li>
+        </ul>
+
+        <!-- FOR DEBT -->
+        <ul v-if="choosen_mesh_group_name === 'debt'">
+            <!-- Налоги -->
+            <li>
+                <p style="font-weight: bold;">Неуплаченные налоги</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Автомобиль Лада 2114 (0.00%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">{{ 0.00 }} RUB</p> 
+                    </main>
+                </section>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Налог на доходы Самозянятый (100.00%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">{{ 15.00 }} RUB</p> 
+                    </main>
+                </section>
+
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Нет мешков Добавить</header>
+                </section>
+            </li>
+            <!-- Ипотека -->
+            <li>
+                <p style="font-weight: bold;">Ипотека</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">Объект (100.00%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">{{ 5042000.00 }} RUB</p> 
+                    </main>
+                </section>
+            </li>
+            <!-- Кредитные карты -->
+            <li>
+                <p style="font-weight: bold;">Кредитные карты</p>
+                <section style="background-color: var(--color-global-baackground_light);">
+                    <header style="color: var(--color-global-text_second)">SBER (100.00%)</header>
+                    <main style="color: var(--color-global-text_second)">
+                        <p style="color: var(--color-global-text_second)">{{ 458400.00 }} RUB</p> 
+                    </main>
+                </section>
+            </li>
+        </ul>
+    </DefaultPopup>
 </template>
 
 <style scoped>
@@ -2054,7 +2381,7 @@ useHead({
         font-size: 1rem;
         font-weight: normal;
     }
-    .cap-header_wrapper > p {
+    .cap-header_wrapper p {
         margin: 0;
     }
     /* 
@@ -2105,7 +2432,7 @@ useHead({
         font-size: 1rem;
         font-weight: normal;
     }
-    .cap-header_wrapper > p {
+    .cap-header_wrapper p {
         margin: 0;
     }
 
@@ -2159,7 +2486,7 @@ useHead({
         font-size: 1rem;
         font-weight: normal;
     }
-    .cap-header_wrapper > p {
+    .cap-header_wrapper p {
         margin: 0;
     }
     /* 
@@ -2200,7 +2527,7 @@ useHead({
         font-size: 1rem;
         font-weight: normal;
     }
-    .cap-header_wrapper > p {
+    .cap-header_wrapper p {
         margin: 0;
     }
     /* 
@@ -2243,7 +2570,7 @@ useHead({
         font-size: 1rem;
         font-weight: normal;
     }
-    .cap-header_wrapper > p {
+    .cap-header_wrapper p {
         margin: 0;
     }
     /* 
@@ -2280,6 +2607,21 @@ useHead({
     .total-budget_container {
         /* background-color: var(--color-urgency-low-wo); */
         width: 98vw;
+        display: flex;
+        gap: 1rem;
+    }
+    .total-budget_container p {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--bs-border-radius)
+    }
+    .total-budget_container p span:first-child {
+        text-transform: uppercase;
+    }
+    .total-budget_container p span:last-child {
+        font-size: 2rem;
+        font-weight: bold;
     }
 
 
@@ -2392,7 +2734,7 @@ useHead({
         font-size: 1rem;
         font-weight: normal;
     }
-    .cap-header_wrapper > p {
+    .cap-header_wrapper p {
         margin: 0;
     }
     /* 
@@ -2409,6 +2751,23 @@ useHead({
         margin-top: 2rem;
         margin-right: 1rem;
         width: 500px;
+    }
+
+    /* cap_container */
+    .cap_container {
+
+    }
+
+    /* 
+        TOTAL BUDGET
+    */
+    .total-budget_container {
+        /* background-color: var(--color-urgency-low-wo); */
+        width: 98vw;
+        display: flex;
+    }
+    .total-budget_container p {
+        padding: 1rem;
     }
 }
 </style>
