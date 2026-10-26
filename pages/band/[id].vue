@@ -18,6 +18,10 @@ import { translateName } from '@/utils/translators';
 const default_popup_opened = ref(false)
 const choosen_mesh_group_name = ref('')
 const toggle_default_popup_func = (mesh_group_name: string) => {
+    setTimeout(() => {
+
+        setStrokeDashArrayAndOffset()
+    }, 500)
     choosen_mesh_group_name.value = mesh_group_name
     default_popup_opened.value = !default_popup_opened.value
 }
@@ -417,37 +421,41 @@ useHead({
 
     //= setStrokeDashArrayAndOffset 
     const setStrokeDashArrayAndOffset = () => {
-        let chart = document.querySelector('.diagram-income_chart')
+        let charts = document.querySelectorAll('.diagram-income_chart')
 
-        if(chart) {
-            let units = chart.querySelectorAll('.diagram-income_unit')
+        for(let j = 0; j <= charts.length; j++) {
 
-            for(let i = 0; i <= income_article_computed.value?.length; i++) {
-
-                if(income_article_computed.value[i]) {
-
-                    let ratio = income_article_computed.value[i].total / 40000 * 100
-                    console.log(ratio)
-
-                    units[i].setAttribute('stroke-dasharray', `${ratio},100`)
-                    units[i].setAttribute('stroke-dashoffset', 0);
-
-                    if(i === 0) {
+            if(charts[j]) {
+                let units = charts[j].querySelectorAll('.diagram-income_unit')
+    
+                for(let i = 0; i <= income_article_computed.value?.length; i++) {
+    
+                    if(income_article_computed.value[i]) {
+    
+                        let ratio = income_article_computed.value[i].total / 40000 * 100
+                        console.log(ratio)
+    
+                        units[i].setAttribute('stroke-dasharray', `${ratio},100`)
                         units[i].setAttribute('stroke-dashoffset', 0);
-                    } else {
-                        // Получаем значение 'stroke-dasharray' предыдущего элемента
-                        let sdArrPrev = parseFloat(units[i - 1].getAttribute('stroke-dasharray')) * (-1);
-                         // Получаем значение 'stroke-dashoffset' предыдущего элемента
-                        let sdOffPrev = parseFloat(units[i - 1].getAttribute('stroke-dashoffset'));
-                        // Суммируем значения
-                        let sumParam = sdArrPrev + sdOffPrev;
-                        // console.log(sumParam );
-                        // Устанавливаем значения в текущий элемент
-                        units[i].setAttribute('stroke-dashoffset', sumParam);
+    
+                        if(i === 0) {
+                            units[i].setAttribute('stroke-dashoffset', 0);
+                        } else {
+                            // Получаем значение 'stroke-dasharray' предыдущего элемента
+                            let sdArrPrev = parseFloat(units[i - 1].getAttribute('stroke-dasharray')) * (-1);
+                             // Получаем значение 'stroke-dashoffset' предыдущего элемента
+                            let sdOffPrev = parseFloat(units[i - 1].getAttribute('stroke-dashoffset'));
+                            // Суммируем значения
+                            let sumParam = sdArrPrev + sdOffPrev;
+                            // console.log(sumParam );
+                            // Устанавливаем значения в текущий элемент
+                            units[i].setAttribute('stroke-dashoffset', sumParam);
+                        }
                     }
                 }
             }
         }
+
     }
 
 
@@ -583,9 +591,26 @@ useHead({
         </div>
 
         <!-- updated date -->
-        <p style="background-color: var(--color-global-baackground_light); width: fit-content; padding: .5rem 1rem; border-radius: var(--bs-border-radius)">Обновлено 01.10.2026</p>
+        <p style="margin: 0; margin-top: 1rem; background-color: var(--color-global-baackground_light); width: fit-content; padding: .5rem 1rem; border-radius: var(--bs-border-radius)">Обновлено 01.10.2026</p>
 
-        <!-- TOTAL BUDGET ALLOWED -->
+        <!-- РЕЙТИНГ + КАПИТАЛИЗАЦИЯ ТОТАЛ -->
+        <div class="cap-header_wrapper">
+
+            <!-- ЗАГОЛОВОК + КОЭФФИЦИЕНТ / РЕЙТИНГ-->
+            <div style="background-color: var(--color-global-text); padding: 1rem; border-radius: var(--bs-border-radius)">
+                <h2 style="margin: 0; color: var(--color-btn-text); ">Рейтинг</h2>
+                <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var( --color-btn-wo-bg)">4.15</p>
+            </div>
+
+            <!-- ЗАГОЛОВОК + КАПА В ДЕНЬГАХ -->
+            <div style="padding: 1rem; border-radius: var(--bs-border-radius)">
+                <h2 style="margin: 0; color: var(--color-global-text_second); ">Капитал RUB</h2>
+                <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-global-text)">~{{ 27750.00 + 130463.06 + 132802.68}}</p>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 1rem; color: var(--color-global-text_second); font-weight: normal;">Состав портфеля</h2>
+        <!-- TOTAL ALLOWED BUDGET -->
         <div class="total-budget_container">
 
             <!-- available budger -->
@@ -593,8 +618,8 @@ useHead({
                 style="display: flex;justify-content: space-between; background-color: var(--color-global-baackground_light)"
                 @click.prevent="toggle_default_popup_func('available')"
             >
-                <span style="border-radius: .45rem; padding: .25rem 1rem; width: fit-content; background-color: var(--color-wallet-fund-available-wo);">available</span>
-                <span>{{ (1447.35 + 26302.65).toFixed(2)}} RUB</span>
+                <span style=" background-color: var(--color-urgency-low-wo);">Available</span>
+                <span>{{ (1447.35 + 26302.65).toFixed(2)}}</span>
                 
             </p>
 
@@ -604,8 +629,8 @@ useHead({
                 style="background-color: var(--color-global-baackground_light); display: flex; justify-content: space-between;" 
                 @click.prevent="toggle_default_popup_func('invested-near')"
             >
-                <span style="border-radius: .45rem; padding: .25rem 1rem; width: fit-content; background-color: var(--color-urgency-middle)">INVESTED NEAR</span>
-                <span>{{ (126963.12 + 3365.00 + 134.94).toFixed(2)}} RUB</span>
+                <span style="background-color: var(--color-urgency-middle)">Invested near</span>
+                <span>{{ (126963.12 + 3365.00 + 134.94).toFixed(2)}} </span>
             </p>
 
             <!-- long maybe invest -->
@@ -613,52 +638,41 @@ useHead({
                 style="background-color: var(--color-global-baackground_light); display: flex; justify-content: space-between;"
                 @click.prevent="toggle_default_popup_func('invested-far')"
             >
-                <span style="border-radius: .45rem; padding: .25rem 1rem; background-color: var(--color-urgency-high-10); width: fit-content;">INVESTED FAR</span>
-                <span>132802.68 RUB</span>
+                <span style="background-color: var(--color-urgency-high-10);">Invested far</span>
+                <span>132802.68</span>
             </p>
 
             <!-- wai guo -->
-            <p 
+            <p  
                 style="background-color: var(--color-global-baackground_light);"
                 @click.prevent="toggle_default_popup_func('debt')"
             >
-                <span style="border-radius: .45rem; padding: .25rem 1rem; background-color: var(--color-error); width: fit-content;">Долги</span>
-                <span style="margin-top: .5rem;">5501814.00 RUB</span>
+                <span style="background-color: var(--color-error);">Debt</span>
+                <span>5501814.00</span>
             </p>
         </div>
 
-        <!-- TOTAL CAP -->
+        <!-- TOTAL history CAP -->
         <div class="cap_container">
-            
-            <div class="cap-header_wrapper">
 
-                <!-- ЗАГОЛОВОК + КОЭФФИЦИЕНТ / РЕЙТИНГ-->
-                <div style="background-color: var(--color-global-text); padding: 1rem; border-radius: var(--bs-border-radius)">
-                    <h2 style="margin: 0; color: var(--color-btn-text); ">Рейтинг</h2>
-                    <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var( --color-btn-wo-bg)">4.15</p>
-                </div>
-
-                <!-- ЗАГОЛОВОК + КАПА В ДЕНЬГАХ -->
-                <div style="padding: 1rem; border-radius: var(--bs-border-radius)">
-                    <h2 style="margin: 0; color: var(--color-global-text_second); ">Капитал RUB</h2>
-                    <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-global-text)">~{{ 27750.00 + 130463.06 + 132802.68}}</p>
-                </div>
+            <div class="graph_header" >
+                <h2 style="color: var(--color-global-text_second); font-weight: normal;">История капитала</h2>
                 <!-- ФИЛЬТР СЕКЦИЙ МЕШКОВ -->
                 <div class="popup_label-btn">
                     <label for="popup_input-btn">
                         <div style="display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;">
-
+    
                             <Icon             
                                 name="material-symbols-light:filter-alt"
                                 size="2rem"
-                                color="var(--color-global-text)"
+                                color="var(--color-global-text_second)"
                             />
                             <div style="position: absolute; bottom: .2rem; right: .2rem; height: .6rem; width: .6rem; background-color: var(--color-urgency-middle); border-radius: 100%;"></div>
                         </div>
                     </label>
                     <input id="popup_input-btn" type="checkbox">
                     <div class="popup-container">
-
+    
                         <div class="popup_wrapper">
                             <h4>Выберите <br>типы мешков <br>к показу</h4>
                             <div>
@@ -889,238 +903,244 @@ useHead({
         </div>
 
         <!-- INCOME / OUTCOME TOTAL -->   
-        <div class="cap-header_wrapper" style="margin-top: 2rem;">
+        <h2 style="margin: 0; margin-top: 2rem; color: var(--color-global-text_second); font-weight: normal;">История транзакций</h2>
+        <div class="cap-header_wrapper">
             <!-- ЗАГОЛОВОК + INCOME-->
-            <div style="background-color: var(--color-urgency-low-wo); padding: 1rem; border-radius: var(--bs-border-radius)">
-                <h2 style="margin: 0; color: var(--color-btn-text); ">Поступило RUB</h2>
-                <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-btn-text)">+2 468.99</p>
+            <div 
+                style="padding: 1rem; border-radius: var(--bs-border-radius); background-color: var(--color-global-baackground_light);"
+                @click.prevent="toggle_default_popup_func('income-transaction')"    
+            >
+                <h2 style="margin: 0; color: var(--color-btn-text); background-color: var(--color-urgency-low-wo); width: fit-content; padding: .25rem 1rem; border-radius: var(--bs-border-radius);">Поступило</h2>
+                <p style="margin: 0; margin-top: .5rem; font-size: 1.5rem; color: var(--color-global-text)">+2 468.99</p>
             </div>
             <!-- ЗАГОЛОВОК + OUTCOME-->
-            <div style="background-color: var(--color-wallet-fund-debt-wo); padding: 1rem; border-radius: var(--bs-border-radius)">
-                <h2 style="margin: 0; color: var(--color-btn-text); ">Расход RUB</h2>
-                <p style="margin: 0;font-size: 2rem; font-weight: bold; color: var(--color-btn-text)">-2 468.99</p>
+            <div 
+                style="padding: 1rem; border-radius: var(--bs-border-radius); background-color: var(--color-global-baackground_light);"
+                @click.prevent="toggle_default_popup_func('outcome-transaction')"    
+            >
+                <h2 style="margin: 0; color: var(--color-btn-text); background-color: var(--color-wallet-fund-debt-wo); border-radius: var(--bs-border-radius);  padding: .25rem 1rem; ">Расход</h2>
+                <p style="margin: 0; margin-top: .5rem;font-size: 1.5rem; color: var(--color-global-text)">-2 468.99</p>
             </div>
         </div>  
-        <div>
 
-            <!-- history graph -->
-            <div id="history-graph" class="history_balance-container graph-container">
-        
-                <div class="year_balance-wrapper graph_year-wrapper">
-                    <p>2023</p>
-                    <ul>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 20%;"></div>
-                                <div class="expense" style="height: 30%;"></div>
-                            </div>
-                            <p>Янв.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 50%;"></div>
-                                <div class="expense" style="height: 20%;"></div>
-                            </div>
-                            <p>Фев.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Мар.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 30%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Апр.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 20%;"></div>
-                                <div class="expense" style="height: 55%;"></div>
-                            </div>
-                            <p>Май.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 70%;"></div>
-                                <div class="expense" style="height: 85%;"></div>
-                            </div>
-                            <p>Июн.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Июл.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 45%;"></div>
-                                <div class="expense" style="height: 15%;"></div>
-                            </div>
-                            <p>Авг.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 70%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Сен.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Окт.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 77%;"></div>
-                                <div class="expense" style="height: 35%;"></div>
-                            </div>
-                            <p>Ноя.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 25%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Дек.</p>
-                        </li>
-                    </ul>
-                </div>
-        
-                <div class="year_balance-wrapper graph_year-wrapper">
-                    <p>2024</p>
-                    <ul>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 20%;"></div>
-                                <div class="expense" style="height: 30%;"></div>
-                            </div>
-                            <p>Янв.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 50%;"></div>
-                                <div class="expense" style="height: 20%;"></div>
-                            </div>
-                            <p>Фев.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Мар.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 30%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Апр.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 20%;"></div>
-                                <div class="expense" style="height: 55%;"></div>
-                            </div>
-                            <p>Май.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 70%;"></div>
-                                <div class="expense" style="height: 85%;"></div>
-                            </div>
-                            <p>Июн.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Июл.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 45%;"></div>
-                                <div class="expense" style="height: 15%;"></div>
-                            </div>
-                            <p>Авг.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 70%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Сен.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Окт.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 77%;"></div>
-                                <div class="expense" style="height: 35%;"></div>
-                            </div>
-                            <p>Ноя.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 25%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Дек.</p>
-                        </li>
-                    </ul>
-                </div>
-        
-                <div class="year_balance-wrapper graph_year-wrapper">
-                    <p>2025</p>
-                    <ul>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 20%;"></div>
-                                <div class="expense" style="height: 30%;"></div>
-                            </div>
-                            <p>Янв.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 50%;"></div>
-                                <div class="expense" style="height: 20%;"></div>
-                            </div>
-                            <p>Фев.</p>
-                        </li>
-                        <li>
-                            <div>
-                                <div class="income" style="height: 60%;"></div>
-                                <div class="expense" style="height: 25%;"></div>
-                            </div>
-                            <p>Мар.</p>
-                        </li>
-                        <li>
-                            <div></div>
-                        </li>
-                        <li>
-                            <div></div>
-                        </li>
-                        <li>
-                            <div></div>
-                        </li>
-                    </ul>
-                </div>
+
+        <!-- history graph -->
+        <div id="history-graph" class="history_balance-container graph-container">
+    
+            <div class="year_balance-wrapper graph_year-wrapper">
+                <p>2023</p>
+                <ul>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 20%;"></div>
+                            <div class="expense" style="height: 30%;"></div>
+                        </div>
+                        <p>Янв.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 50%;"></div>
+                            <div class="expense" style="height: 20%;"></div>
+                        </div>
+                        <p>Фев.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Мар.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 30%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Апр.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 20%;"></div>
+                            <div class="expense" style="height: 55%;"></div>
+                        </div>
+                        <p>Май.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 70%;"></div>
+                            <div class="expense" style="height: 85%;"></div>
+                        </div>
+                        <p>Июн.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Июл.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 45%;"></div>
+                            <div class="expense" style="height: 15%;"></div>
+                        </div>
+                        <p>Авг.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 70%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Сен.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Окт.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 77%;"></div>
+                            <div class="expense" style="height: 35%;"></div>
+                        </div>
+                        <p>Ноя.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 25%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Дек.</p>
+                    </li>
+                </ul>
+            </div>
+    
+            <div class="year_balance-wrapper graph_year-wrapper">
+                <p>2024</p>
+                <ul>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 20%;"></div>
+                            <div class="expense" style="height: 30%;"></div>
+                        </div>
+                        <p>Янв.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 50%;"></div>
+                            <div class="expense" style="height: 20%;"></div>
+                        </div>
+                        <p>Фев.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Мар.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 30%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Апр.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 20%;"></div>
+                            <div class="expense" style="height: 55%;"></div>
+                        </div>
+                        <p>Май.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 70%;"></div>
+                            <div class="expense" style="height: 85%;"></div>
+                        </div>
+                        <p>Июн.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Июл.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 45%;"></div>
+                            <div class="expense" style="height: 15%;"></div>
+                        </div>
+                        <p>Авг.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 70%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Сен.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Окт.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 77%;"></div>
+                            <div class="expense" style="height: 35%;"></div>
+                        </div>
+                        <p>Ноя.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 25%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Дек.</p>
+                    </li>
+                </ul>
+            </div>
+    
+            <div class="year_balance-wrapper graph_year-wrapper">
+                <p>2025</p>
+                <ul>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 20%;"></div>
+                            <div class="expense" style="height: 30%;"></div>
+                        </div>
+                        <p>Янв.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 50%;"></div>
+                            <div class="expense" style="height: 20%;"></div>
+                        </div>
+                        <p>Фев.</p>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="income" style="height: 60%;"></div>
+                            <div class="expense" style="height: 25%;"></div>
+                        </div>
+                        <p>Мар.</p>
+                    </li>
+                    <li>
+                        <div></div>
+                    </li>
+                    <li>
+                        <div></div>
+                    </li>
+                    <li>
+                        <div></div>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -2016,6 +2036,181 @@ useHead({
                 </section>
             </li>
         </ul>
+
+        <!-- income-transaction -->
+        <ul v-if="choosen_mesh_group_name === 'income-transaction'" style="margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between ; height: 100%;">
+            <li style="background-color: red; flex: 1 auto;">
+                <!-- INCOME -->
+                <div class="stat-income_section">
+                    
+                    <!-- diagram_wrapper -->
+                    <div class="diagram_section" style="display: flex; flex-direction: column;">
+
+                        <!-- diagram -->
+                        <div class="diagram_wrapper">
+
+                            <svg class="diagram-income_chart" viewBox="0 0 40 40">
+                                <circle v-for="el in income_article_computed" :key="el.id" class="diagram-income_unit" r="15.9" cx="50%" cy="50%">
+                                    {{el}}
+                                </circle>
+                            </svg>
+                        </div>
+
+                        <!-- list -->
+                        <div class="diagram-income-list_wrapper">
+                            <ul style="list-style: none; margin: 0; padding: 0;">
+                                <li style="font-weight: bold; padding-bottom: .5rem;">
+                                    <p style="margin: 0;">Поступило, всего</p>
+                                    <p style="margin: 0;">40 000 RUB</p>
+                                </li>
+                                <li v-for="(element, id) in income_article_computed">
+                                    <p style="margin: 0; color: var(--color-global-text_second)">{{id + 1}}. {{element.name}}</p>
+                                    <p style="color: var(--color-urgency-low-10);margin: 0;">+{{ element.total }} RUB</p>
+                                </li>
+                                <li style="margin-top: .5rem;"><p style="margin: 0; color: var(--color-global-text_second)">
+                                    Еще
+                                </p></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+
+            <!-- transaction group -->
+            <li style="width: 50%; background-color: gray; overflow: scroll; padding-bottom: 2rem">
+                <ul>
+                    <li>
+                        <p>Вчера</p>
+                        <ul>
+                            <li>
+                                Возврат кредита Возврат3006Кредит2026 +300.00  (налог: не предусмотрен) 
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>23.10.2026</p>
+                        <ul>
+                            <li>
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+                            </li>
+                            <li>
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>22.10.2026</p>
+                        <ul>
+                            <li>
+                                Капитализация по вкладу (ОЗОН)+ 45.42 (налог: уплачен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>22.10.2026</p>
+                        <ul>
+                            <li>
+                                Банк. Вклад. Погашение 2207ОзонВкладЦФА15,7%3Мес2026 +4138.00  (налог: уплачен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>19.10.2026</p>
+                        <ul>
+                            <li>
+                                Купоны / дивиденды Возврат2008Брокерскийсчет2026 +12.56 (Налог: уплачен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>16.10.2026</p>
+                        <ul>
+                            <li>
+                                Купоны / дивиденды Возврат2008Брокерскийсчет2026 +11.56 (Налог: уплачен)
+                            </li>
+                            <li>
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+                            </li>
+                            <li>
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>13.10.2026</p>
+                        <ul>
+                            <li>
+                                Капитализация по вкладу (Яндекс) +38.20 (Налог: уплачен)
+                            </li>
+                            <li>
+                                Капитализация по вкладу (Яндекс ФИИ) +6.00 (Налог: уплачен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>11.10.2026</p>
+                        <ul>
+                            <li>
+                                Возврат кредита Возврат1109Кредит2026 +100.00  (налог: не предусмотрен) 
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>09.10.2026</p>
+                        <ul>
+                            <li>
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+                            </li>
+                            <li>
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>04.10.2026</p>
+                        <ul>
+                            <li>
+                                Возврат кредита Возврат2512Кредит2025 +200.00  (налог: не предусмотрен) 
+                            </li>
+                            <li>
+                                Капитализация по вкладу (ОЗОН) 57.17 (Налог: уплачен)
+                            </li>
+                            <li>
+                                Капитализация по вкладу (Яндекс) 77.13 (Налог: уплачен)
+                            </li>
+                            <li>
+                                Капитализация по вкладу (Яндекс ФИИ) +19.05 (Налог: уплачен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>02.10.2026</p>
+                        <ul>
+                            <li>
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+                            </li>
+                            <li>
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>01.10.2026</p>
+                        <ul>
+                            <li>
+                                Дар Соучастник Евгений +500.00  (налог: не предусмотрен)
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- outcome-transaction -->
+        <ul v-if="choosen_mesh_group_name === 'outcome-transaction'">
+            outcome-transactionoutcome-transaction
+        </ul>
     </DefaultPopup>
 </template>
 
@@ -2609,6 +2804,7 @@ useHead({
         width: 98vw;
         display: flex;
         gap: 1rem;
+        margin-top: 1rem;
     }
     .total-budget_container p {
         padding: 1rem;
@@ -2617,11 +2813,14 @@ useHead({
         border-radius: var(--bs-border-radius)
     }
     .total-budget_container p span:first-child {
-        text-transform: uppercase;
+        border-radius: var(--bs-border-radius); 
+        padding: .25rem 1rem; 
+        width: fit-content;
+        color: var(--color-global-baackground_light);
     }
     .total-budget_container p span:last-child {
-        font-size: 2rem;
-        font-weight: bold;
+        font-size: 1.5rem;
+        margin-top: .5rem;
     }
 
 
@@ -2712,6 +2911,15 @@ useHead({
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .cap_container {
+        margin-top: 1rem;
+    }
+    .graph_header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
     }
 }
 @media screen and (min-width: 1400px) {
