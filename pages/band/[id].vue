@@ -611,48 +611,46 @@ useHead({
 
         <h2 style="margin-top: 1rem; color: var(--color-global-text_second); font-weight: normal;">Состав портфеля</h2>
         <!-- TOTAL ALLOWED BUDGET -->
-        <div class="total-budget_container">
+        <div class="total-budget_container securities-list_container">
 
             <!-- available budger -->
-            <p 
-                style="display: flex;justify-content: space-between; background-color: var(--color-global-baackground_light)"
+            <div 
+                class="securities_wrapper" 
                 @click.prevent="toggle_default_popup_func('available')"
             >
-                <span style=" background-color: var(--color-urgency-low-wo);">Available</span>
-                <span>{{ (1447.35 + 26302.65).toFixed(2)}}</span>
-                
-            </p>
-
+                <h3 style="background-color: var(--color-urgency-low-wo);">Available</h3>
+                <p>{{ (1447.35 + 26302.65).toFixed(2)}}</p>
+            </div>
 
             <!-- invest budget -->
-            <p 
-                style="background-color: var(--color-global-baackground_light); display: flex; justify-content: space-between;" 
+             <div 
+                class="securities_wrapper"
                 @click.prevent="toggle_default_popup_func('invested-near')"
-            >
-                <span style="background-color: var(--color-urgency-middle)">Invested near</span>
-                <span>{{ (126963.12 + 3365.00 + 134.94).toFixed(2)}} </span>
-            </p>
+             >
+                <h3 style="background-color: var(--color-urgency-middle)">Invested near</h3>
+                <p>{{ (126963.12 + 3365.00 + 134.94).toFixed(2)}}</p>
+             </div>
 
             <!-- long maybe invest -->
-            <p 
-                style="background-color: var(--color-global-baackground_light); display: flex; justify-content: space-between;"
+            <div 
+                class="securities_wrapper"
                 @click.prevent="toggle_default_popup_func('invested-far')"
             >
-                <span style="background-color: var(--color-urgency-high-10);">Invested far</span>
-                <span>132802.68</span>
-            </p>
+                <h3 style="background-color: var(--color-urgency-high-10);">Invested far</h3>
+                <p>132802.68</p>
+            </div>
 
             <!-- wai guo -->
-            <p  
-                style="background-color: var(--color-global-baackground_light);"
+            <div
+                class="securities_wrapper"
                 @click.prevent="toggle_default_popup_func('debt')"
             >
-                <span style="background-color: var(--color-error);">Debt</span>
-                <span>5501814.00</span>
-            </p>
+                <h3 style="background-color: var(--color-error);">Debt</h3>
+                <p>5501814.00</p>
+            </div>
         </div>
 
-        <!-- TOTAL history CAP -->
+        <!-- ИСТОРИЯ КАПИТАЛА -->
         <div class="cap_container">
 
             <div class="graph_header" >
@@ -904,24 +902,22 @@ useHead({
 
         <!-- INCOME / OUTCOME TOTAL -->   
         <h2 style="margin: 0; margin-top: 2rem; color: var(--color-global-text_second); font-weight: normal;">История транзакций</h2>
-        <div class="cap-header_wrapper">
-            <!-- ЗАГОЛОВОК + INCOME-->
-            <div 
-                style="padding: 1rem; border-radius: var(--bs-border-radius); background-color: var(--color-global-baackground_light);"
-                @click.prevent="toggle_default_popup_func('income-transaction')"    
+        <div class="securities-list_container">
+            <div
+                class="securities_wrapper"
+                @click.prevent="toggle_default_popup_func('income-transaction')" 
             >
-                <h2 style="margin: 0; color: var(--color-btn-text); background-color: var(--color-urgency-low-wo); width: fit-content; padding: .25rem 1rem; border-radius: var(--bs-border-radius);">Поступило</h2>
-                <p style="margin: 0; margin-top: .5rem; font-size: 1.5rem; color: var(--color-global-text)">+2 468.99</p>
+                <h3 style="background-color: var(--color-urgency-low-wo);">Поступило</h3>
+                <p>+2 468.99</p>
             </div>
-            <!-- ЗАГОЛОВОК + OUTCOME-->
-            <div 
-                style="padding: 1rem; border-radius: var(--bs-border-radius); background-color: var(--color-global-baackground_light);"
-                @click.prevent="toggle_default_popup_func('outcome-transaction')"    
+            <div
+                class="securities_wrapper"
+                @click.prevent="toggle_default_popup_func('outcome-transaction')" 
             >
-                <h2 style="margin: 0; color: var(--color-btn-text); background-color: var(--color-wallet-fund-debt-wo); border-radius: var(--bs-border-radius);  padding: .25rem 1rem; ">Расход</h2>
-                <p style="margin: 0; margin-top: .5rem;font-size: 1.5rem; color: var(--color-global-text)">-2 468.99</p>
+                <h3 style="background-color: var(--color-wallet-fund-debt-wo);">Расход</h3>
+                <p>-2 468.99</p>
             </div>
-        </div>  
+        </div>
 
 
         <!-- history graph -->
@@ -1681,9 +1677,10 @@ useHead({
     <!-- DEFAULT POPUP -->
     <DefaultPopup
         v-if="default_popup_opened"
+        :popup_title="choosen_mesh_group_name"
         @emitClosePopup="toggle_default_popup_func('')"
     >
-        default_popup_opened for: {{ choosen_mesh_group_name }}
+        <!-- default_popup_opened for: {{ choosen_mesh_group_name }} -->
 
         <!-- FOR AVAILABLE -->
         <ul v-if="choosen_mesh_group_name === 'available'">
@@ -2038,8 +2035,22 @@ useHead({
         </ul>
 
         <!-- income-transaction -->
-        <ul v-if="choosen_mesh_group_name === 'income-transaction'" style="margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between ; height: 100%;">
-            <li style="background-color: red; flex: 1 auto;">
+        <div class="income-transaction-period_container">
+
+            <div class="income-transaction-period_wrapper">
+                <ul>
+                    <li>
+                        <p>01.01.2026</p>
+                    </li>
+                    <li>-</li>
+                    <li>
+                        <p>Сегодня</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul v-if="choosen_mesh_group_name === 'income-transaction'" style="margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between; gap: 1rem; height: 90%; width: 100%;">
+            <li style="width: 50%;">
                 <!-- INCOME -->
                 <div class="stat-income_section">
                     
@@ -2049,7 +2060,7 @@ useHead({
                         <!-- diagram -->
                         <div class="diagram_wrapper">
 
-                            <svg class="diagram-income_chart" viewBox="0 0 40 40">
+                            <svg class="diagram-income_chart" viewBox="0 0 50 40">
                                 <circle v-for="el in income_article_computed" :key="el.id" class="diagram-income_unit" r="15.9" cx="50%" cy="50%">
                                     {{el}}
                                 </circle>
@@ -2078,128 +2089,164 @@ useHead({
             </li>
 
             <!-- transaction group -->
-            <li style="width: 50%; background-color: gray; overflow: scroll; padding-bottom: 2rem">
-                <ul>
-                    <li>
-                        <p>Вчера</p>
-                        <ul>
-                            <li>
-                                Возврат кредита Возврат3006Кредит2026 +300.00  (налог: не предусмотрен) 
+            <li class="transaction-history-list_container no-scrollbar">
+                <ul class="transaction-history_list">
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">Сегодня</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>Внешний источник > Имя мешка</p>
+                                    <p>Возврат кредита Возврат3006Кредит2026</p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+200.00</p>
+                                    <p>(налог: нет)</p>
+                                </div>
+                                
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>23.10.2026</p>
-                        <ul>
-                            <li>
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
-                            </li>
-                            <li>
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <p>22.10.2026</p>
-                        <ul>
-                            <li>
-                                Капитализация по вкладу (ОЗОН)+ 45.42 (налог: уплачен)
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">Вчера</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                <div class="transaction-history-date-list-el_desc">
+                                    null > available-cash_47
+                                    Возврат кредита Возврат3006Кредит2026  
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+300.00</p>
+                                    <p>(налог: нет)</p>
+                                </div>
+                                
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>22.10.2026</p>
-                        <ul>
-                            <li>
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">23.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет) 
+                            </li>
+                            <li class="transaction-history-date-list_el">
+                                available-cash_26 > available-saving_account_10
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">22.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                invested_deposit_1 > available-saving_account_10
                                 Банк. Вклад. Погашение 2207ОзонВкладЦФА15,7%3Мес2026 +4138.00  (налог: уплачен)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>19.10.2026</p>
-                        <ul>
-                            <li>
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">19.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                invested_stock_1 >  available-saving_account_10
                                 Купоны / дивиденды Возврат2008Брокерскийсчет2026 +12.56 (Налог: уплачен)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>16.10.2026</p>
-                        <ul>
-                            <li>
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">16.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                invested_stock_1 >  available-saving_account_10
                                 Купоны / дивиденды Возврат2008Брокерскийсчет2026 +11.56 (Налог: уплачен)
                             </li>
-                            <li>
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+                            <li class="transaction-history-date-list_el">
+                                null >  available-saving_account_10
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет)
                             </li>
-                            <li>
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            <li class="transaction-history-date-list_el">
+                                available-cash_26 > available-saving_account_10
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>13.10.2026</p>
-                        <ul>
-                            <li>
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">13.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
                                 Капитализация по вкладу (Яндекс) +38.20 (Налог: уплачен)
                             </li>
-                            <li>
+                            <li class="transaction-history-date-list_el">
+                                bank_1 > available-saving_account_10
                                 Капитализация по вкладу (Яндекс ФИИ) +6.00 (Налог: уплачен)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>11.10.2026</p>
-                        <ul>
-                            <li>
-                                Возврат кредита Возврат1109Кредит2026 +100.00  (налог: не предусмотрен) 
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">11.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
+                                Возврат кредита Возврат1109Кредит2026 +100.00  (налог: нет)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>09.10.2026</p>
-                        <ul>
-                            <li>
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">09.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет)
                             </li>
-                            <li>
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            <li class="transaction-history-date-list_el">
+                                available-cash_26 > available-saving_account_10
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>04.10.2026</p>
-                        <ul>
-                            <li>
-                                Возврат кредита Возврат2512Кредит2025 +200.00  (налог: не предусмотрен) 
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">04.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
+                                Возврат кредита Возврат2512Кредит2025 +200.00  (налог: нет) 
                             </li>
-                            <li>
+                            <li class="transaction-history-date-list_el">
+                                available-saving_account_10
                                 Капитализация по вкладу (ОЗОН) 57.17 (Налог: уплачен)
                             </li>
-                            <li>
+                            <li class="transaction-history-date-list_el">
+                                bank_1 >  available-saving_account_10
                                 Капитализация по вкладу (Яндекс) 77.13 (Налог: уплачен)
                             </li>
-                            <li>
+                            <li class="transaction-history-date-list_el">
+                                bank_2 >  available-saving_account_10
                                 Капитализация по вкладу (Яндекс ФИИ) +19.05 (Налог: уплачен)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>02.10.2026</p>
-                        <ul>
-                            <li>
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: не предусмотрен)
+
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">02.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
+                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет)
                             </li>
-                            <li>
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: не предусмотрен)
+                            <li class="transaction-history-date-list_el">
+                                available-cash_26 > available-saving_account_10
+                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <p>01.10.2026</p>
-                        <ul>
-                            <li>
-                                Дар Соучастник Евгений +500.00  (налог: не предусмотрен)
+                    <li class="transaction-history_el">
+                        <p class="transaction-history_date">01.10.2026</p>
+                        <ul class="transaction-history-date_list">
+                            <li class="transaction-history-date-list_el">
+                                null > available-saving_account_10
+                                Дар Соучастник Евгений +500.00  (налог: нет)
                             </li>
                         </ul>
                     </li>
@@ -2792,6 +2839,7 @@ useHead({
         gap: 1rem;
     }
     .stat-income_section {
+        height: 100%;
         /* padding: 1rem; */
         /* background-color: var(--color-global-baackground_light);  */
     }
@@ -2823,9 +2871,75 @@ useHead({
         margin-top: .5rem;
     }
 
+    /* 
+        securities
+    */
+    .securities-list_container {
+        /* background-color: var(--color-urgency-low-wo); */
+        width: 98vw;
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .securities_wrapper {
+        background-color: var(--color-global-baackground_light);
+    }
+    .securities_wrapper h3 {
+        background-color: red;
+        margin: 0;
+        font-size: 1rem;
+        color: var(--color-btn-text);
+        padding: .25rem 1rem;
+        text-align: center;
+    }
+    .securities_wrapper p{
+        font-size: 1.5rem;
+        align-items: center;
+        margin: 0;
+        padding: 1rem;
+    }
+
+    /* 
+        income transaction period block
+    */
+    .income-transaction-period_container {
+        /* background-color: cyan; */
+        padding: 1.25rem 0 1rem 0;
+    }
+    .income-transaction-period_wrapper {
+        width: fit-content;
+        border-radius: var(--bs-border-radius);
+    }
+    .income-transaction-period_wrapper ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background-color: var(--color-status-finished);
+        /* background-color: var(--color-global-baackground_light); */
+        border-radius: var(--bs-border-radius);
+        padding: .25rem 1rem;
+    }
+    .income-transaction-period_wrapper ul li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .income-transaction-period_wrapper ul li:first-child,
+    .income-transaction-period_wrapper ul li:last-child {
+    }
+    .income-transaction-period_wrapper ul li:first-child p,
+    .income-transaction-period_wrapper ul li:last-child p {
+        margin: 0;
+        /* border-bottom :1px dashed var(--color-global-text); */
+    }
+
 
     /* DIAGRAM */
     .diagram_section {
+        height: 100%;
         display: grid; 
         grid-template-areas: 
             /* 'filter filter' */
@@ -2839,28 +2953,31 @@ useHead({
         grid-area: diagram;
         /* background-color: var(--color-global-baackground_light); */
         /* width: 25rem;  */
+        height: 100%; 
         width: 100%;
-        /* height: 25rem;  */
         position: relative;
         /* border-radius: var(--bs-border-radius); */
         padding: 1rem;
         border-radius: var(--bs-border-radius);
-        background: rgba(64, 204, 87, 10);
-        background: linear-gradient(0deg, rgba(64, 204, 87, .5) 0%, rgba(250, 248, 248, 1) 10%);
+        /* background: rgba(64, 204, 87, 10); */
+        /* background-color: var(--color-global-baackground_light); */
+        /* background: linear-gradient(0deg, rgba(64, 204, 87, .5) 0%, rgba(250, 248, 248, 1) 10%); */
+        display: flex;
     }
     .diagram_wrapper svg{
         margin: 0 auto;
     }
     .diagram-income_chart {
-        width: 200px;
+        width: 100%;
         /* height: 200px; */
     }
     .diagram-income-list_wrapper {
         grid-area: legend;
         /* background-color: var(--color-global-baackground_light); */
-        background: rgba(64, 204, 87, 10);
-        background: linear-gradient(0deg, rgba(64, 204, 87, .5) 0%, rgba(250, 248, 248, 1) 10%);
+        /* background: rgba(64, 204, 87, 10); */
+        /* background: linear-gradient(0deg, rgba(64, 204, 87, .5) 0%, rgba(250, 248, 248, 1) 10%); */
         height: 100%;
+        width: 100%;
         padding: 1rem 1.5rem;
         border-radius: var(--bs-border-radius);
     }
@@ -2920,6 +3037,80 @@ useHead({
         display: flex;
         align-items: center;
         gap: 1rem;
+    }
+
+    .transaction-history-list_container {
+        width: 50%; 
+        /* background-color: gray;  */
+        overflow: scroll; 
+        padding-bottom: 2rem;
+    }
+    /* transaction history list */
+    .transaction-history_list {
+        list-style: none;
+        padding: 0;
+    }
+    .transaction-history_el {
+        /* background-color: gray; */
+    }
+    .transaction-history_el:not(:first-child) {
+        margin-top: 1rem;
+    }
+    .transaction-history_date {
+        /* background-color: red; */
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .transaction-history-date_list {
+        list-style: none;
+        padding: 0;
+    }
+    .transaction-history-date-list_el {
+        background-color: var(--color-global-baackground_light);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        border-radius: var(--bs-border-radius);
+    }
+    .transaction-history-date-list_el:not(:first-child) {
+        margin-top: 1rem;
+    }
+    .transaction-history-date-list-el_desc {
+        background-color: red;
+    }
+    .transaction-history-date-list-el_desc p {
+        margin: 0;
+    }
+    .transaction-history-date-list-el_price {
+        /* background-color: var(--color-global-text_second); */
+        display: flex;
+        flex-direction: column;
+    }
+    .transaction-history-date-list-el_price p {
+        margin: 0;
+        white-space: nowrap;
+        text-align: right;
+    }
+    .transaction-history-date-list-el_price p:first-child {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    .transaction-history-date-list-el_price p:last-child {
+        color: var(--color-global-text_second);
+    }
+
+    /* Для Chrome, Safari, Opera */
+    .no-scrollbar::-webkit-scrollbar {
+    display: none;
+    }
+
+    .no-scrollbar {
+    /* Для Firefox */
+    scrollbar-width: none;
+
+    /* Для IE и Edge */
+    -ms-overflow-style: none;
     }
 }
 @media screen and (min-width: 1400px) {
