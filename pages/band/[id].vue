@@ -1682,6 +1682,22 @@ useHead({
     >
         <!-- default_popup_opened for: {{ choosen_mesh_group_name }} -->
 
+        <!-- income-transaction -->
+        <div class="income-transaction-period_container">
+
+            <div class="income-transaction-period_wrapper">
+                <ul>
+                    <li>
+                        <p>01.01.2026</p>
+                    </li>
+                    <li>-</li>
+                    <li>
+                        <p>Сегодня</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <!-- FOR AVAILABLE -->
         <ul v-if="choosen_mesh_group_name === 'available'">
             <li>
@@ -1808,7 +1824,7 @@ useHead({
             <li>
                 <p style="font-weight: bold;">Фондовый рынок</p>
                 <section style="background-color: var(--color-global-baackground_light);">
-                    <header style="color: var(--color-global-text_second)">Т-Банк | BOT (Моя доля: 75.52%) (97.42%)</header>
+                    <header style="color: var(--color-global-text_second)">Доля 75.52% Т-Банк | BOT (97.42%)</header>
                     <main style="color: var(--color-global-text_second)">
                         <p style="color: var(--color-global-text_second)">126963.12 RUB
                             +{{ (126963.12 - 111388.42).toFixed(2) }}RUB |
@@ -2033,22 +2049,7 @@ useHead({
                 </section>
             </li>
         </ul>
-
-        <!-- income-transaction -->
-        <div class="income-transaction-period_container">
-
-            <div class="income-transaction-period_wrapper">
-                <ul>
-                    <li>
-                        <p>01.01.2026</p>
-                    </li>
-                    <li>-</li>
-                    <li>
-                        <p>Сегодня</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
         <ul v-if="choosen_mesh_group_name === 'income-transaction'" style="margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between; gap: 1rem; height: 90%; width: 100%;">
             <li style="width: 50%;">
                 <!-- INCOME -->
@@ -2096,8 +2097,10 @@ useHead({
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
                                 <div class="transaction-history-date-list-el_desc">
-                                    <p>Внешний источник > Имя мешка</p>
-                                    <p>Возврат кредита Возврат3006Кредит2026</p>
+                                    <p>other > saving_account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Возврат кредита</span> <span>Имя кредита</span>
+                                    </p>
                                 </div>
                                 <div class="transaction-history-date-list-el_price">
                                     <p>+200.00</p>
@@ -2112,14 +2115,15 @@ useHead({
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
                                 <div class="transaction-history-date-list-el_desc">
-                                    null > available-cash_47
-                                    Возврат кредита Возврат3006Кредит2026  
+                                    <p>other > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Возврат кредита</span> <span>Имя кредита</span>  
+                                    </p>
                                 </div>
                                 <div class="transaction-history-date-list-el_price">
                                     <p>+300.00</p>
                                     <p>(налог: нет)</p>
                                 </div>
-                                
                             </li>
                         </ul>
                     </li>
@@ -2127,12 +2131,28 @@ useHead({
                         <p class="transaction-history_date">23.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                null > available-saving_account_10
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет) 
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>other > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Еженедельный взнос</span> <span>Соучастник</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
                             </li>
                             <li class="transaction-history-date-list_el">
-                                available-cash_26 > available-saving_account_10
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>debet card (Мой) > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Еженедельный взнос</span> <span>Мой</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
                             </li>
                         </ul>
                     </li>
@@ -2140,8 +2160,16 @@ useHead({
                         <p class="transaction-history_date">22.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                invested_deposit_1 > available-saving_account_10
-                                Банк. Вклад. Погашение 2207ОзонВкладЦФА15,7%3Мес2026 +4138.00  (налог: уплачен)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>deposit account > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Банк. Вклад. Погашение</span> <span>2207ОзонВкладЦФА15,7%3Мес2026</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+4138.00</p>
+                                    <p>(налог: уплачен)</p> 
+                                </div>
                             </li>
                         </ul>
                     </li>
@@ -2149,8 +2177,19 @@ useHead({
                         <p class="transaction-history_date">19.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                invested_stock_1 >  available-saving_account_10
-                                Купоны / дивиденды Возврат2008Брокерскийсчет2026 +12.56 (Налог: уплачен)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>brokerage_account > saving_account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Купоны / дивиденды</span> <span>2401Брокерскийсчет2021</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+12.56</p>
+                                    <p>(налог: уплачен)</p> 
+                                </div>
+
+                                <!-- invested_stock_1 >  available-saving_account_10 -->
+                                 <!-- Возврат2008Брокерскийсчет2026  (Налог: уплачен) -->
                             </li>
                         </ul>
                     </li>
@@ -2158,16 +2197,49 @@ useHead({
                         <p class="transaction-history_date">16.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                invested_stock_1 >  available-saving_account_10
-                                Купоны / дивиденды Возврат2008Брокерскийсчет2026 +11.56 (Налог: уплачен)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>brokerage_account > saving_account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Купоны / дивиденды</span> <span>2401Брокерскийсчет2021</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+11.56</p>
+                                    <p>(налог: уплачен)</p> 
+                                </div>
+                                
+                                <!-- invested_stock_1 >  available-saving_account_10 -->
+                                <!-- Купоны / дивиденды Возврат2008Брокерскийсчет2026 +11.56 (Налог: уплачен) -->
                             </li>
                             <li class="transaction-history-date-list_el">
-                                null >  available-saving_account_10
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>other > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Еженедельный взнос</span> <span>Соучастник</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
+
+                                <!-- null >  available-saving_account_10 -->
+                                <!-- Еженедельный взнос Соучастник Евгений +100.00  (налог: нет) -->
                             </li>
                             <li class="transaction-history-date-list_el">
-                                available-cash_26 > available-saving_account_10
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>debet card (Мой) > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Еженедельный взнос</span> <span>Мой</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
+
+                                <!-- available-cash_26 > available-saving_account_10 -->
+                                <!-- Еженедельный взнос Соучастник Сергей +100.00  (налог: нет) -->
                             </li>
                         </ul>
                     </li>
@@ -2175,12 +2247,33 @@ useHead({
                         <p class="transaction-history_date">13.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                null > available-saving_account_10
-                                Капитализация по вкладу (Яндекс) +38.20 (Налог: уплачен)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>saving capitalization > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Капитализация по вкладу</span> <span>Яндекс</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+38.20</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
+
+                                <!-- null > available-saving_account_10 -->
+                                <!-- Капитализация по вкладу (Яндекс) +38.20 (Налог: уплачен) -->
                             </li>
                             <li class="transaction-history-date-list_el">
-                                bank_1 > available-saving_account_10
-                                Капитализация по вкладу (Яндекс ФИИ) +6.00 (Налог: уплачен)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>saving capitalization > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Капитализация по вкладу</span> <span>Яндекс Фии</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+6.00</p>
+                                    <p>(налог: уплачен)</p> 
+                                </div>
+                                <!-- bank_1 > available-saving_account_10 -->
+                                <!-- Капитализация по вкладу (Яндекс ФИИ) +6.00 (Налог: уплачен) -->
                             </li>
                         </ul>
                     </li>
@@ -2188,8 +2281,18 @@ useHead({
                         <p class="transaction-history_date">11.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                null > available-saving_account_10
-                                Возврат кредита Возврат1109Кредит2026 +100.00  (налог: нет)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>other > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Возврат кредита</span> <span>2608Кредит2018</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
+                                <!-- null > available-saving_account_10 -->
+                                <!-- Возврат кредита Возврат1109Кредит2026 +100.00  (налог: нет) -->
                             </li>
                         </ul>
                     </li>
@@ -2197,12 +2300,34 @@ useHead({
                         <p class="transaction-history_date">09.10.2026</p>
                         <ul class="transaction-history-date_list">
                             <li class="transaction-history-date-list_el">
-                                null > available-saving_account_10
-                                Еженедельный взнос Соучастник Евгений +100.00  (налог: нет)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>other > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Еженедельный взнос</span> <span>Соучастник</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
+
+                                <!-- null > available-saving_account_10 -->
+                                <!-- Еженедельный взнос Соучастник Евгений +100.00  (налог: нет) -->
                             </li>
                             <li class="transaction-history-date-list_el">
-                                available-cash_26 > available-saving_account_10
-                                Еженедельный взнос Соучастник Сергей +100.00  (налог: нет)
+                                <div class="transaction-history-date-list-el_desc">
+                                    <p>debet card (Мой) > saving account</p>
+                                    <p class="transaction-history-date-list-el-desc_name">
+                                        <span>Еженедельный взнос</span> <span>Мой</span> 
+                                    </p>
+                                </div>
+                                <div class="transaction-history-date-list-el_price">
+                                    <p>+100.00</p>
+                                    <p>(налог: нет)</p> 
+                                </div>
+
+                                <!-- available-cash_26 > available-saving_account_10 -->
+                                <!-- Еженедельный взнос Соучастник Сергей +100.00  (налог: нет) -->
                             </li>
                         </ul>
                     </li>
@@ -3070,6 +3195,7 @@ useHead({
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 1rem;
         padding: 1rem;
         border-radius: var(--bs-border-radius);
     }
@@ -3077,10 +3203,17 @@ useHead({
         margin-top: 1rem;
     }
     .transaction-history-date-list-el_desc {
-        background-color: red;
+        /* background-color: red; */
     }
     .transaction-history-date-list-el_desc p {
+        color: var(--color-global-text_second);
         margin: 0;
+    }
+    .transaction-history-date-list-el-desc_name span:last-child {
+        /* font-weight: bold; */
+        /* background-color: var(--color-global-text_second); */
+        /* padding: .25rem .5rem; */
+        /* border-radius: var(--bs-bsorder-radius); */
     }
     .transaction-history-date-list-el_price {
         /* background-color: var(--color-global-text_second); */
@@ -3099,6 +3232,8 @@ useHead({
     .transaction-history-date-list-el_price p:last-child {
         color: var(--color-global-text_second);
     }
+
+    .transaction-history-date-list-el
 
     /* Для Chrome, Safari, Opera */
     .no-scrollbar::-webkit-scrollbar {
